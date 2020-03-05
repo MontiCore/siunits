@@ -1,0 +1,22 @@
+/* (c) https://github.com/MontiCore/monticore */
+package de.monticore.lang.literals;
+
+/**
+ * This grammar defines SI unit literals such as '3 m' or '2.5 km/h'
+*/
+
+component grammar SIUnitLiterals extends de.monticore.lang.siunits.SIUnits,
+                                         de.monticore.literals.MCCommonLiterals {
+
+    /** The unsigned SI unit literals
+            '[]' is necessary in ordner to distinguish the SI unit from a float literal '3.2f'
+    */
+    SIUnitLiteral implements Literal =
+        num:NumericLiteral "[" un:SIUnit "]";
+
+    /** The signed SI unit literals
+            '[]' is necessary in ordner to distinguish the SI unit from a float literal '3.2f'
+    */
+    SignedSIUnitLiteral implements SignedLiteral =
+        num:SignedNumericLiteral "[" un:SIUnit "]";
+}

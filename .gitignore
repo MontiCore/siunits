@@ -1,0 +1,15 @@
+target/
+.project
+.settings/
+.classpath
+*.log
+*.iml
+.idea/
+*.factorypath
+build
+.mvn/extensions.xml
+.profiler/
+.gradle
+*.bak
+out
+target-emf/
