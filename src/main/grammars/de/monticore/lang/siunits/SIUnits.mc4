@@ -21,8 +21,7 @@ component grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
             basic SI units with prefixes such as 'km', 'mm' or 'ms'.
             Other derived or officialy accepted units are also contained ('h', 'day', 'Ohm', ...)
     */
-    interface SIUnitBasic extends SIUnitExpression =
-        unit:Name;
+    interface SIUnitBasic extends SIUnitExpression;
 
     SIUnitMultExpression implements SIUnitExpression =
         left:SIUnitExpression "*" right:SIUnitExpression;
@@ -40,21 +39,19 @@ component grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
     // see https://en.wikipedia.org/wiki/SI_base_unit
     // see https://en.wikipedia.org/wiki/SI_derived_unit
     UnitBaseDimWithPrefix implements SIUnitBasic =
-        { _input.LT(1).getText().matches("(Y|Z|E|P|T|G|M|K|k|H|da|d|c|m|n|p|f|a|z|y)?(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat)") }?
+        { _input.LT(1).getText().matches("(Y|Z|E|P|T|G|M|k|h|da|d|c|m|n|p|f|a|z|y)?(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat)") }?
         unit:Name;
 
     // see https://en.wikipedia.org/wiki/Non-SI_units_mentioned_in_the_SI
     OfficallyAcceptedUnit implements SIUnitBasic =
-        { _input.LT(1).getText().matches("min|h|day|ha|l|L|t|au|Au|Np|B|db|eV|u") }?
+        { _input.LT(1).getText().matches("min|h|day|ha|l|L|t|Au|Np|B|dB|eV|u") }?
         unit:Name;
 
-    Degree implements SIUnitBasic =
-//        key("°") { next("C|F|K") }? unit:Name;
-        { _input.LT(1).getText().matches("°") }? unit:Name;
+    CelsiusFahrenheit implements SIUnitBasic =
+        "°" { _input.LT(1).getText().matches("F|C") }? unit:Name;
 
 
     // see https://en.wikipedia.org/wiki/SI_derived_unit
     SiUnitDimensionless implements SIUnitBasic =
-        { _input.LT(1).getText().matches("deg|rad|sr") }?
-        unit:Name;
+        "°" | ({ _input.LT(1).getText().matches("deg|rad|sr") }? unit:Name);
 }

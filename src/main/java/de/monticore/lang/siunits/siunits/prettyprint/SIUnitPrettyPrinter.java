@@ -107,16 +107,19 @@ public class SIUnitPrettyPrinter implements SIUnitsVisitor {
      */
     @Override
     public void visit(ASTSiUnitDimensionless node) {
-        printer.print(node.getUnit());
+        if (node.isPresentUnit())
+            printer.print(node.getUnit());
+        else
+            printer.print("°");
     }
 
     /**
-     * Prints a Degree
-     * @param node Degree
+     * Prints a Celsius or Fahrenheit Degree
+     * @param node CelciusFahrenheit
      */
     @Override
-    public void visit(ASTDegree node) {
-        printer.print("°");
+    public void visit(ASTCelsiusFahrenheit node) {
+        printer.print("°" + node.getUnit());
     }
 
 
