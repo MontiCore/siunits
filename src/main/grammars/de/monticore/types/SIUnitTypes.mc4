@@ -1,0 +1,14 @@
+/* (c) https://github.com/MontiCore/monticore */
+package de.monticore.types;
+
+/**
+ * This grammar interprets the SIUnits as types to distinguish between the type 'm' and the
+ * literal '3 m'
+*/
+
+component grammar SIUnitTypes extends de.monticore.lang.siunits.SIUnits,
+        de.monticore.types.MCBasicTypes {
+
+     SIUnitType implements MCObjectType =
+        SIUnit;
+}

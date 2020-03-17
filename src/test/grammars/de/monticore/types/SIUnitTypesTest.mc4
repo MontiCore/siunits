@@ -1,0 +1,5 @@
+package de.monticore.types;
+
+grammar SIUnitTypesTest extends de.monticore.types.SIUnitTypes {
+
+}
