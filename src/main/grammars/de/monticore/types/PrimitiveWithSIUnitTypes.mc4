@@ -2,7 +2,7 @@ package de.monticore.types;
 
 component grammar PrimitiveWithSIUnitTypes extends de.monticore.types.MCBasicTypes, de.monticore.types.SIUnitTypes {
 
-    LiteralWithSIUnitType implements MCObjectType =
+    PrimitiveWithSIUnitType implements MCObjectType =
         "<" MCPrimitiveType SIUnitType ">";
 
 }

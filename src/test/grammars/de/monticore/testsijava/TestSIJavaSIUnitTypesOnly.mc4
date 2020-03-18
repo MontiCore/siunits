@@ -1,0 +1,9 @@
+package de.monticore.testsijava;
+
+grammar TestSIJavaSIUnitTypesOnly extends de.monticore.testsijava.TestSIJava,
+                                            de.monticore.types.SIUnitTypes {
+
+    ExtCustomType =
+        "[" SIUnitType "]";
+
+}

@@ -1,4 +1,4 @@
-package de.monticore.testsijava._ast;
+package de.monticore.testsijava.testsijava._ast;
 
 public class ASTMethodDeclaration extends ASTMethodDeclarationTOP {
 

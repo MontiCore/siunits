@@ -1,0 +1,9 @@
+package de.monticore.testsijava;
+
+grammar TestSIJavaWithCustomTypes extends de.monticore.testsijava.TestSIJava,
+                                                    de.monticore.types.CustomPrimitiveWithSIUnitTypes {
+
+    ExtCustomType =
+        CustomPrimitiveWithSIUnitType;
+
+}

@@ -1,4 +1,4 @@
-package de.monticore.testsijava._visitor;
+package de.monticore.testsijava.testsijava._visitor;
 
 public class TestSIJavaBasicVisitor implements TestSIJavaVisitor {
 

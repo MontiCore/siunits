@@ -1,0 +1,7 @@
+package de.monticore.types;
+
+grammar CustomPrimitiveWithSIUnitTypes extends de.monticore.types.MCBasicTypes, de.monticore.types.SIUnitTypes {
+
+    CustomPrimitiveWithSIUnitType implements MCObjectType =
+        MCPrimitiveType "in" SIUnitType;
+}

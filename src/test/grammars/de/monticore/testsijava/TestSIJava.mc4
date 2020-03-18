@@ -1,10 +1,9 @@
-package de.monticore;
+package de.monticore.testsijava;
 
-grammar TestSIJava extends de.monticore.lang.literals.SIUnitLiterals,
+component grammar TestSIJava extends de.monticore.lang.literals.SIUnitLiterals,
                             de.monticore.expressions.CommonExpressions,
                             de.monticore.expressions.AssignmentExpressions,
-                            de.monticore.statements.MCCommonStatements,
-                            de.monticore.types.SIUnitTypes {
+                            de.monticore.statements.MCCommonStatements {
 
 symbol scope SIJavaClass =
 "package" package:(Name& || ".")+ ";"
@@ -12,19 +11,18 @@ symbol scope SIJavaClass =
     statement:SIJavaClassStatement*
 "}";
 
+external ExtCustomType;
+
+CustomType implements MCType =
+    ExtCustomType;
+
 interface SIJavaClassStatement;
 
 interface FieldOrVariableDeclaration extends Field =
-    SIUnitOrMCType Name ("=" assignment:Expression)? ";";
+    MCType Name ("=" assignment:Expression)? ";";
 
 FieldDeclaration implements FieldOrVariableDeclaration, SIJavaClassStatement =
-    SIUnitOrMCType Name ("=" assignment:Expression)? ";";
-
-SIUnitOrMCType =
-    ("[" SIUnitType "]") | MCType;
-
-SIUnitOrMCReturnType =
-    ("[" SIUnitType "]") | MCReturnType;
+    MCType Name ("=" assignment:Expression)? ";";
 
 SIUnitLiteralExperession implements Expression <350> =
     SIUnitLiteral;
@@ -35,15 +33,15 @@ symbol scope MethodDeclaration implements SIJavaClassStatement =
     "}";
 
 MethodSignature =
-    returnType:SIUnitOrMCReturnType Name "(" (SIJavaParameter||",")* ")";
+    returnType:MCReturnType Name "(" (SIJavaParameter||",")* ")";
 
 SIJavaParameter =
-    SIUnitOrMCType Name;
+    MCType Name;
 
 interface SIJavaMethodStatement;
 
 VariableDeclaration implements FieldOrVariableDeclaration, SIJavaMethodStatement <100> =
-    SIUnitOrMCType Name ("=" assignment:Expression)? ";";
+    MCType Name ("=" assignment:Expression)? ";";
 
 SIJavaMethodExpression implements SIJavaMethodStatement <10> =
     expression:Expression ";";
