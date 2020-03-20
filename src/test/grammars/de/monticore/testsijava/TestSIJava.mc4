@@ -1,4 +1,10 @@
+/* (c) https://github.com/MontiCore/monticore */
 package de.monticore.testsijava;
+
+/**
+ * This grammar is an example on how one could combine expressions with siunits.
+ * It is a very simple version of java with siunits and custom types that can be siunit types.
+*/
 
 component grammar TestSIJava extends de.monticore.lang.literals.SIUnitLiterals,
                             de.monticore.expressions.CommonExpressions,

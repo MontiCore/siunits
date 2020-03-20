@@ -2,8 +2,8 @@
 package de.monticore.types;
 
 /**
- * This grammar interprets the SIUnits as types to distinguish between the type 'm' and the
- * literal '3 m'
+ * This grammar interprets the SIUnits as types to distinguish between the type 'm', e.g. in a declaration
+ * and 'm' in an expression.
 */
 
 component grammar SIUnitTypes extends de.monticore.lang.siunits.SIUnits,

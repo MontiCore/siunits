@@ -27,9 +27,6 @@ public class SIUnitLiteralsTest {
         Log.enableFailQuick(true);
     }
 
-    /*
-     nimm auch hier Analog zu der Änderung in der Grammatik die parseSignedLiteral() Methode zum parsen
-     */
     private void checkSIUnitLiteral(double number, String unit, String s) throws IOException {
         ASTLiteral lit = parseLiteral(s);
         assertTrue(lit instanceof ASTSIUnitLiteral);
@@ -66,7 +63,7 @@ public class SIUnitLiteralsTest {
     private void checkPrettyPrint(String expected, String s) throws IOException {
         ASTSIUnitLiteral lit = (ASTSIUnitLiteral) parseLiteral(s);
         SIUnitLiteralsPrettyPrinter prettyPrinter = new SIUnitLiteralsPrettyPrinter(new IndentPrinter());
-        assertEquals(expected, prettyPrinter.prettyprint((ASTSIUnitLiteralsNode) lit));
+        assertEquals(expected, prettyPrinter.prettyprint(lit));
     }
 
     @Test

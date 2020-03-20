@@ -2,11 +2,15 @@ package de.monticore.lang.siunits.utility;
 
 import javax.measure.converter.LogConverter;
 import javax.measure.converter.MultiplyConverter;
-import javax.measure.converter.UnitConverter;
 import javax.measure.quantity.Dimensionless;
 import javax.measure.quantity.Length;
 import javax.measure.unit.*;
 
+/**
+ * This class is intended to handle the Units from the jscience package javax.measure.unit.
+ * It should be the only class to create Units or to print them. It is mainly used to handle
+ * SIUnits from the grammar de.monticore.lang.siunits.SIUnits.mc4
+ */
 public class UnitFactory {
 
     private static UnitFactory instance = null;
@@ -19,14 +23,9 @@ public class UnitFactory {
         return instance;
     }
 
-    public static Unit createStandardUnit(String s) {
-        return getInstance()._createStandardUnit(s);
-    }
-
-    private Unit _createStandardUnit(String s) {
-        return _createUnit(s).getStandardUnit();
-    }
-
+    /**
+     * Create a javax.measure.unit.Unit from a String, e.g. from km/(Ohm*s^2)
+     */
     public static Unit createUnit(String s) {
         return getInstance()._createUnit(s);
     }
@@ -35,10 +34,24 @@ public class UnitFactory {
         if ("1".equals(s))
             return Dimensionless.UNIT;
         String str = s
-                .replace("1/","(m/m)/");
+                .replace("1/", "(m/m)/");
         return Unit.valueOf(str);
     }
 
+    /**
+     * Create a javax.measure.unit.Unit from a String, e.g. from km/(Ohm*s^2) and returns without prefixes
+     */
+    public static Unit createStandardUnit(String s) {
+        return getInstance()._createStandardUnit(s);
+    }
+
+    private Unit _createStandardUnit(String s) {
+        return _createUnit(s).getStandardUnit();
+    }
+
+    /**
+     * Prints a unit in a former way
+     */
     public static String printUnit(Unit unit) {
         return getInstance()._printUnit(unit);
     }
@@ -53,6 +66,9 @@ public class UnitFactory {
                 .replace("℃", "°C");
     }
 
+    /**
+     * Prints a unit in a former way from a String, e.g. m*km^-1/g -> 1/kg
+     */
     public static String printFormatted(String s) {
         return getInstance()._printFormatted(s);
     }
@@ -61,6 +77,9 @@ public class UnitFactory {
         return printUnit(createUnit(s));
     }
 
+    /**
+     * Prints a unit in a former way from a String without prefixes, e.g. m*km^-1/g -> 1/g
+     */
     public static String printFormattedToStandard(String s) {
         return getInstance()._printFormattedToStandard(s);
     }

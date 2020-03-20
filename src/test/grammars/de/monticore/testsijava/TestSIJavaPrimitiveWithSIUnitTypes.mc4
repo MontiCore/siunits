@@ -1,4 +1,9 @@
+/* (c) https://github.com/MontiCore/monticore */
 package de.monticore.testsijava;
+
+/**
+ * This grammar extends the TestSIJava grammar with PrimitveWithSIUnitTypes
+*/
 
 grammar TestSIJavaPrimitiveWithSIUnitTypes extends de.monticore.testsijava.TestSIJava,
                                                     de.monticore.types.PrimitiveWithSIUnitTypes {

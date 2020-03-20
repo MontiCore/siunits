@@ -1,4 +1,4 @@
-package de.monticore.testsijava.testsijavaprimitivewithsiunittypes;
+package de.monticore.testsijava;
 
 import de.monticore.testsijava.testsijava._ast.ASTSIJavaClass;
 import de.monticore.testsijava.testsijavaprimitivewithsiunittypes._parser.TestSIJavaPrimitiveWithSIUnitTypesParser;
