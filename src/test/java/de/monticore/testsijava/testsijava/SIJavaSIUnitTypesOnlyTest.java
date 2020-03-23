@@ -1,7 +1,6 @@
-package de.monticore.testsijava;
+package de.monticore.testsijava.testsijava;
 
 import de.monticore.testsijava.testsijava._ast.ASTSIJavaClass;
-import de.monticore.testsijava.testsijavaprimitivewithsiunittypes._parser.TestSIJavaPrimitiveWithSIUnitTypesParser;
 import de.monticore.testsijava.testsijavasiunittypesonly._parser.TestSIJavaSIUnitTypesOnlyParser;
 import de.se_rwth.commons.logging.Log;
 import org.junit.Before;
@@ -12,7 +11,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertTrue;
 
-public class SIJavaPrimitiveWithSIUnitTypesTest {
+public class SIJavaSIUnitTypesOnlyTest {
 
     @Before
     public void init() {
@@ -21,7 +20,7 @@ public class SIJavaPrimitiveWithSIUnitTypesTest {
     }
 
     private ASTSIJavaClass parseModel(String input) {
-        TestSIJavaPrimitiveWithSIUnitTypesParser parser = new TestSIJavaPrimitiveWithSIUnitTypesParser();
+        TestSIJavaSIUnitTypesOnlyParser parser = new TestSIJavaSIUnitTypesOnlyParser();
         Optional<ASTSIJavaClass> res = Optional.empty();
         try {
             res = parser.parseSIJavaClass("src/test/resources/" + input);
@@ -34,13 +33,13 @@ public class SIJavaPrimitiveWithSIUnitTypesTest {
 
     @Test
     public void parseSIModelTest1() {
-        String model = "de/monticore/testsijava/testsijavaprimitivewithsiunittypes/MyClass.sijava";
+        String model = "de/monticore/testsijava/testsijava/testsijavasiunittypesonly/MyClass.sijava";
         parseModel(model);
     }
 
     @Test
     public void parseSIModelTest2() {
-        String model = "de/monticore/testsijava/testsijavaprimitivewithsiunittypes/MyClass_WithCoCoError.sijava";
+        String model = "de/monticore/testsijava/testsijava/testsijavasiunittypesonly/MyClass_WithCoCoError.sijava";
         parseModel(model);
     }
 }
