@@ -45,7 +45,7 @@ public class SymTypeOfPrimitiveWithSIUnit extends SymTypeExpression {
         jp.beginObject();
         // Care: the following String needs to be adapted if the package was renamed
         jp.member(JsonConstants.KIND, "de.monticore.types.check.SymTypeOfSIUnitWithLiteral");
-        jp.member("literalType", primitive.print());
+        jp.member("primitiveType", primitive.print());
         jp.member("siunitType", siunit.print());
         jp.endObject();
         return jp.getContent();

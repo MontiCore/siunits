@@ -8,18 +8,25 @@ package de.monticore.types.check;
 import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisScope;
 import de.monticore.types.siunittypes._ast.ASTSIUnitType;
 import de.monticore.types.siunittypes._visitor.SIUnitTypesVisitor;
+import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
 
 import java.util.Optional;
 
 /**
- * Visitor for Derivation of SymType from SIUnits
+ * Visitor for Derivation of SymType from SIUnitTypes
  * i.e. for
- * types/SIUnit.mc4
+ * types/SIUnitTypes.mc4
  */
 public class SynthesizeSymTypeFromSIUnitTypes implements ISynthesize, SIUnitTypesVisitor {
     /**
      * Using the visitor functionality to calculate the SymType Expression
      */
+
+    protected ITypeSymbolsScope scope;
+
+    public SynthesizeSymTypeFromSIUnitTypes(ITypeSymbolsScope scope) {
+        this.scope = scope;
+    }
 
     // ----------------------------------------------------------  realThis start
     // setRealThis, getRealThis are necessary to make the visitor compositional
@@ -44,17 +51,22 @@ public class SynthesizeSymTypeFromSIUnitTypes implements ISynthesize, SIUnitType
      * Storage in the Visitor: result of the last endVisit.
      * This attribute is synthesized upward.
      */
-    public Optional<SymTypeExpression> result;
+    public LastResult lastResult = new LastResult();
 
     public Optional<SymTypeExpression> getResult() {
-        return result;
+        return Optional.of(lastResult.getLast());
     }
 
     public void init() {
-        result = Optional.empty();
+        lastResult = new LastResult();
     }
 
+    public void setLastResult(LastResult lastResult){
+        this.lastResult = lastResult;
+    }
+
+    @Override
     public void endVisit(ASTSIUnitType siunittype) {
-        result = Optional.of(SIUnitSymTypeExpressionFactory.createSIUnit(siunittype.toString()));
+        lastResult.setLast(SIUnitSymTypeExpressionFactory.createSIUnit(siunittype.toString(), scope));
     }
 }

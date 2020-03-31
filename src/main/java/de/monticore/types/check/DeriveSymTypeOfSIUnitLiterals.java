@@ -51,7 +51,7 @@ public class DeriveSymTypeOfSIUnitLiterals extends DeriveSymTypeOfMCCommonLitera
         SymTypeExpression siunitType = SIUnitSymTypeExpressionFactory.createSIUnit(astsiUnit.toString(), this.enclosingScope);
         if (isSIUnitType(siunitType))
             result.setLast(SIUnitSymTypeExpressionFactory.createPrimitiveWithSIUnitType(
-                    siunitType, literalType, this.enclosingScope));
+                    literalType, siunitType, this.enclosingScope));
         else // case for siunit m/m
             result.setLast(literalType);
     }

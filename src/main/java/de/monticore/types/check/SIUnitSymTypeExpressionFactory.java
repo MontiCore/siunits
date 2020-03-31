@@ -139,12 +139,15 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
         return createSIUnit(typeSymbolLoader, numeratorSymTypes, denominatorSymTypes);
     }
 
-    public static SymTypeExpression createPrimitiveWithSIUnitType(SymTypeExpression siunitType, SymTypeConstant primitiveType, TypeSymbolLoader typeSymbolLoader) {
+    public static SymTypeExpression createPrimitiveWithSIUnitType(SymTypeConstant primitiveType, SymTypeExpression siunitType, TypeSymbolLoader typeSymbolLoader) {
         SymTypeExpression result;
-        if (!isSIUnitType(siunitType))
+        if (!primitiveType.isNumericType())
+            result = siunitType;
+        else if (!isSIUnitType(siunitType))
             result = primitiveType;
         else
             result = new SymTypeOfPrimitiveWithSIUnit(typeSymbolLoader, primitiveType, siunitType);
+
         // Check if the symType is already in the scope and add it otherwise
         // Needed because there can be created new SIUnitType while computing, e.g. varM*varS
         final String name = result.print();
@@ -156,8 +159,8 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
         return result;
     }
 
-    public static SymTypeExpression createPrimitiveWithSIUnitType(SymTypeExpression siunitType, SymTypeConstant primitiveType, ITypeSymbolsScope enclosingScope) {
-        String name = "(" + primitiveType.print() + "|" + siunitType.print() + ")";
-        return createPrimitiveWithSIUnitType(siunitType, primitiveType, new TypeSymbolLoader(name, enclosingScope));
+    public static SymTypeExpression createPrimitiveWithSIUnitType(SymTypeConstant primitiveType, SymTypeExpression siunitType, ITypeSymbolsScope enclosingScope) {
+        String name = "(" + primitiveType.print() + "," + siunitType.print() + ")";
+        return createPrimitiveWithSIUnitType(primitiveType, siunitType, new TypeSymbolLoader(name, enclosingScope));
     }
 }
