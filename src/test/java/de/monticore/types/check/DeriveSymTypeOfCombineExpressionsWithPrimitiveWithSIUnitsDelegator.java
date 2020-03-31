@@ -12,7 +12,7 @@ import java.util.Optional;
 /**
  * Delegator Visitor to test the combination of the grammars
  */
-public class DeriveSymTypeOfCombineExpressionsWithSIUnitsDelegator extends CombineExpressionsWithLiteralsDelegatorVisitor implements ITypesCalculator {
+public class DeriveSymTypeOfCombineExpressionsWithPrimitiveWithSIUnitsDelegator extends CombineExpressionsWithLiteralsDelegatorVisitor implements ITypesCalculator {
 
   private CombineExpressionsWithLiteralsDelegatorVisitor realThis;
 
@@ -32,78 +32,24 @@ public class DeriveSymTypeOfCombineExpressionsWithSIUnitsDelegator extends Combi
 
   private DeriveSymTypeOfMCCommonLiterals deriveSymTypeOfMCCommonLiterals;
 
-  private DeriveSymTypeOfMCCommonLiterals commonLiteralsTypesCalculator;
-
   private DeriveSymTypeOfCombineExpressions deriveSymTypeOfCombineExpressions;
 
-  private DeriveSymTypeOfSIUnitLiteralsSIUnitOnly deriveSymTypeOfSIUnitLiteralsSIUnitOnly;
+  private DeriveSymTypeOfSIUnitLiterals deriveSymTypeOfSIUnitLiterals;
 
-  private SynthesizeSymTypeFromMCSimpleGenericOrSIUnitTypes synthesizer;
+  private SynthesizeSymTypeOfCombinedTypes synthesize;
 
   private IDerivePrettyPrinter prettyPrinter;
 
   private LastResult lastResult = new LastResult();
 
-  public DeriveSymTypeOfCombineExpressionsWithSIUnitsDelegator(IExpressionsBasisScope scope, IDerivePrettyPrinter prettyPrinter){
+  IExpressionsBasisScope scope;
+
+  public DeriveSymTypeOfCombineExpressionsWithPrimitiveWithSIUnitsDelegator(IExpressionsBasisScope scope, IDerivePrettyPrinter prettyPrinter){
     this.realThis=this;
     this.prettyPrinter = prettyPrinter;
+    this.scope = scope;
 
-    deriveSymTypeOfCommonExpressions = new DeriveSymTypeOfCommonExpressionsWithSIUnitTypes();
-    deriveSymTypeOfCommonExpressions.setScope(scope);
-    deriveSymTypeOfCommonExpressions.setLastResult(lastResult);
-    deriveSymTypeOfCommonExpressions.setPrettyPrinter(prettyPrinter);
-    setCommonExpressionsVisitor(deriveSymTypeOfCommonExpressions);
-
-    deriveSymTypeOfAssignmentExpressions = new DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes();
-    deriveSymTypeOfAssignmentExpressions.setScope(scope);
-    deriveSymTypeOfAssignmentExpressions.setLastResult(lastResult);
-    deriveSymTypeOfAssignmentExpressions.setPrettyPrinter(prettyPrinter);
-    setAssignmentExpressionsVisitor(deriveSymTypeOfAssignmentExpressions);
-
-    deriveSymTypeOfBitExpressions = new DeriveSymTypeOfBitExpressions();
-    deriveSymTypeOfBitExpressions.setScope(scope);
-    deriveSymTypeOfBitExpressions.setLastResult(lastResult);
-    deriveSymTypeOfBitExpressions.setPrettyPrinter(prettyPrinter);
-    setBitExpressionsVisitor(deriveSymTypeOfBitExpressions);
-
-    deriveSymTypeOfExpression = new DeriveSymTypeOfExpression();
-    deriveSymTypeOfExpression.setScope(scope);
-    deriveSymTypeOfExpression.setLastResult(lastResult);
-    deriveSymTypeOfExpression.setPrettyPrinter(prettyPrinter);
-    setExpressionsBasisVisitor(deriveSymTypeOfExpression);
-
-    deriveSymTypeOfJavaClassExpressions = new DeriveSymTypeOfJavaClassExpressions();
-    deriveSymTypeOfJavaClassExpressions.setScope(scope);
-    deriveSymTypeOfJavaClassExpressions.setLastResult(lastResult);
-    deriveSymTypeOfJavaClassExpressions.setPrettyPrinter(prettyPrinter);
-    setJavaClassExpressionsVisitor(deriveSymTypeOfJavaClassExpressions);
-
-    deriveSymTypeOfSetExpressions = new DeriveSymTypeOfSetExpressions();
-    deriveSymTypeOfSetExpressions.setScope(scope);
-    deriveSymTypeOfSetExpressions.setLastResult(lastResult);
-    deriveSymTypeOfSetExpressions.setPrettyPrinter(prettyPrinter);
-    setSetExpressionsVisitor(deriveSymTypeOfSetExpressions);
-
-    deriveSymTypeOfLiterals = new DeriveSymTypeOfLiterals();
-    setMCLiteralsBasisVisitor(deriveSymTypeOfLiterals);
-    deriveSymTypeOfLiterals.setResult(lastResult);
-
-    deriveSymTypeOfSIUnitLiteralsSIUnitOnly = new DeriveSymTypeOfSIUnitLiteralsSIUnitOnly();
-    setSIUnitLiteralsVisitor(deriveSymTypeOfSIUnitLiteralsSIUnitOnly);
-    deriveSymTypeOfSIUnitLiteralsSIUnitOnly.setResult(lastResult);
-    deriveSymTypeOfSIUnitLiteralsSIUnitOnly.setScope(scope);
-
-    commonLiteralsTypesCalculator = new DeriveSymTypeOfMCCommonLiterals();
-    setMCCommonLiteralsVisitor(commonLiteralsTypesCalculator);
-    commonLiteralsTypesCalculator.setResult(lastResult);
-
-    synthesizer = new SynthesizeSymTypeFromMCSimpleGenericOrSIUnitTypes(scope);
-
-    deriveSymTypeOfCombineExpressions = new DeriveSymTypeOfCombineExpressions(synthesizer);
-    deriveSymTypeOfCombineExpressions.setLastResult(lastResult);
-    setCombineExpressionsWithLiteralsVisitor(deriveSymTypeOfCombineExpressions);
-
-    setScope(scope);
+    init();
   }
 
   /**
@@ -133,7 +79,8 @@ public class DeriveSymTypeOfCombineExpressionsWithSIUnitsDelegator extends Combi
     deriveSymTypeOfCommonExpressions.setLastResult(lastResult);
     deriveSymTypeOfExpression.setLastResult(lastResult);
     deriveSymTypeOfLiterals.setResult(lastResult);
-    deriveSymTypeOfSIUnitLiteralsSIUnitOnly.setResult(lastResult);
+    deriveSymTypeOfMCCommonLiterals.setResult(lastResult);
+    deriveSymTypeOfSIUnitLiterals.setResult(lastResult);
     deriveSymTypeOfBitExpressions.setLastResult(lastResult);
     deriveSymTypeOfJavaClassExpressions.setLastResult(lastResult);
     deriveSymTypeOfSetExpressions.setLastResult(lastResult);
@@ -144,14 +91,27 @@ public class DeriveSymTypeOfCombineExpressionsWithSIUnitsDelegator extends Combi
    * set the scope of the typescalculator, important for resolving for e.g. NameExpression
    */
   public void setScope(IExpressionsBasisScope scope){
+    this.scope = scope;
     deriveSymTypeOfAssignmentExpressions.setScope(scope);
     deriveSymTypeOfExpression.setScope(scope);
     deriveSymTypeOfCommonExpressions.setScope(scope);
     deriveSymTypeOfBitExpressions.setScope(scope);
     deriveSymTypeOfJavaClassExpressions.setScope(scope);
     deriveSymTypeOfSetExpressions.setScope(scope);
-    deriveSymTypeOfSIUnitLiteralsSIUnitOnly.setScope(scope);
-    synthesizer.setScope(scope);
+    deriveSymTypeOfSIUnitLiterals.setScope(scope);
+    synthesize.setScope(scope);
+  }
+
+  /**
+   * set the scope of the typescalculator, important for resolving for e.g. NameExpression
+   */
+  public void setPrettyPrinter(IDerivePrettyPrinter prettyPrinter){
+    deriveSymTypeOfCommonExpressions.setPrettyPrinter(prettyPrinter);
+    deriveSymTypeOfAssignmentExpressions.setPrettyPrinter(prettyPrinter);
+    deriveSymTypeOfBitExpressions.setPrettyPrinter(prettyPrinter);
+    deriveSymTypeOfExpression.setPrettyPrinter(prettyPrinter);
+    deriveSymTypeOfJavaClassExpressions.setPrettyPrinter(prettyPrinter);
+    deriveSymTypeOfSetExpressions.setPrettyPrinter(prettyPrinter);
   }
 
   /**
@@ -160,16 +120,31 @@ public class DeriveSymTypeOfCombineExpressionsWithSIUnitsDelegator extends Combi
   @Override
   public void init() {
     deriveSymTypeOfCommonExpressions = new DeriveSymTypeOfCommonExpressionsWithSIUnitTypes();
+    setCommonExpressionsVisitor(deriveSymTypeOfCommonExpressions);
     deriveSymTypeOfAssignmentExpressions = new DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes();
-    deriveSymTypeOfMCCommonLiterals = new DeriveSymTypeOfMCCommonLiterals();
-    deriveSymTypeOfExpression = new DeriveSymTypeOfExpression();
-    deriveSymTypeOfLiterals = new DeriveSymTypeOfLiterals();
+    setAssignmentExpressionsVisitor(deriveSymTypeOfAssignmentExpressions);
     deriveSymTypeOfBitExpressions = new DeriveSymTypeOfBitExpressions();
+    setBitExpressionsVisitor(deriveSymTypeOfBitExpressions);
+    deriveSymTypeOfExpression = new DeriveSymTypeOfExpression();
+    setExpressionsBasisVisitor(deriveSymTypeOfExpression);
     deriveSymTypeOfJavaClassExpressions = new DeriveSymTypeOfJavaClassExpressions();
+    setJavaClassExpressionsVisitor(deriveSymTypeOfJavaClassExpressions);
     deriveSymTypeOfSetExpressions = new DeriveSymTypeOfSetExpressions();
-    deriveSymTypeOfCombineExpressions = new DeriveSymTypeOfCombineExpressions(synthesizer);
-    deriveSymTypeOfSIUnitLiteralsSIUnitOnly = new DeriveSymTypeOfSIUnitLiteralsSIUnitOnly();
+    setSetExpressionsVisitor(deriveSymTypeOfSetExpressions);
+    deriveSymTypeOfLiterals = new DeriveSymTypeOfLiterals();
+    setMCLiteralsBasisVisitor(deriveSymTypeOfLiterals);
+    deriveSymTypeOfMCCommonLiterals = new DeriveSymTypeOfMCCommonLiterals();
+    setMCCommonLiteralsVisitor(deriveSymTypeOfMCCommonLiterals);
+    deriveSymTypeOfSIUnitLiterals = new DeriveSymTypeOfSIUnitLiterals();
+    setSIUnitLiteralsVisitor(deriveSymTypeOfSIUnitLiterals);
+
+    synthesize = new SynthesizeSymTypeOfCombinedTypes(scope);
+    deriveSymTypeOfCombineExpressions = new DeriveSymTypeOfCombineExpressions(synthesize);
+    setCombineExpressionsWithLiteralsVisitor(deriveSymTypeOfCombineExpressions);
+
+    setPrettyPrinter(prettyPrinter);
     setLastResult(lastResult);
+    setScope(scope);
   }
 
   /**

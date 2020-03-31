@@ -1,8 +1,7 @@
 package de.monticore.types;
 
 import de.monticore.prettyprint.IndentPrinter;
-import de.monticore.testsijava.testsijava._ast.ASTCustomType;
-import de.monticore.testsijava.testsijavasiunittypesonly._parser.TestSIJavaSIUnitTypesOnlyParser;
+import de.monticore.testsijava.testsijava._parser.TestSIJavaParser;
 import de.monticore.types.prettyprint.SIUnitTypesPrettyPrinter;
 import de.monticore.types.siunittypes._ast.ASTSIUnitType;
 import de.se_rwth.commons.logging.Log;
@@ -18,7 +17,7 @@ import static org.junit.Assert.*;
 
 public class SIUnitTypesTest {
 
-    TestSIJavaSIUnitTypesOnlyParser parser = new TestSIJavaSIUnitTypesOnlyParser();
+    TestSIJavaParser parser = new TestSIJavaParser();
     SIUnitTypesPrettyPrinter prettyPrinter = new SIUnitTypesPrettyPrinter(new IndentPrinter());
 
     @Before

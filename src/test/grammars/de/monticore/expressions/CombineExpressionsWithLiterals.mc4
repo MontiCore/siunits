@@ -10,7 +10,7 @@ grammar CombineExpressionsWithLiterals extends
 		         de.monticore.expressions.JavaClassExpressions,
 		           de.monticore.expressions.SetExpressions,
 		            de.monticore.types.MCSimpleGenericTypes,
-		             de.monticore.types.SIUnitTypes {
+		             de.monticore.types.PrimitiveWithSIUnitTypes {
 
     Foo="bar" Expression;
 

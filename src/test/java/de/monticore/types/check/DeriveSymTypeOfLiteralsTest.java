@@ -26,7 +26,7 @@ public class DeriveSymTypeOfLiteralsTest {
   }
 
   // This is the core Visitor under Test (but rather empty)
-  ITypesCalculator derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitsDelegator(ExpressionsBasisSymTabMill.expressionsBasisScopeBuilder().build(),
+  ITypesCalculator derLit = new DeriveSymTypeOfCombineExpressionsWithPrimitiveWithSIUnitsDelegator(ExpressionsBasisSymTabMill.expressionsBasisScopeBuilder().build(),
       new CombineExpressionsWithLiteralsPrettyPrinter(new IndentPrinter()));
   
   // other arguments not used (and therefore deliberately null)

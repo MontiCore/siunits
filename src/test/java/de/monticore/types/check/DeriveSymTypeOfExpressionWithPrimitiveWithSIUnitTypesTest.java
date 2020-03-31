@@ -11,7 +11,7 @@ import static de.monticore.types.check.DefsTypeBasic.add2scope;
 import static de.monticore.types.check.DefsTypeBasic.field;
 import static org.junit.Assert.assertEquals;
 
-public class DeriveSymTypeOfExpressionWithSIUnitWithLiteralTypesTest extends DeriveSymTypeOfExpressionTest {
+public class DeriveSymTypeOfExpressionWithPrimitiveWithSIUnitTypesTest extends DeriveSymTypeOfExpressionTest {
 
     @Before
     public void setupForEach() {
@@ -42,6 +42,6 @@ public class DeriveSymTypeOfExpressionWithSIUnitWithLiteralTypesTest extends Der
     @Test
     public void deriveTFromSIUnitLiteral() throws IOException {
         ASTExpression astex = p.parse_StringExpression("42.3 [km]").get();
-        assertEquals("m", tc.typeOf(astex).print());
+        assertEquals("(double,m)", tc.typeOf(astex).print());
     }
 }

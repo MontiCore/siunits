@@ -1,11 +1,9 @@
 package de.monticore.types;
 
 import de.monticore.prettyprint.IndentPrinter;
-import de.monticore.testsijava.testsijavaprimitivewithsiunittypes._parser.TestSIJavaPrimitiveWithSIUnitTypesParser;
+import de.monticore.testsijava.testsijava._parser.TestSIJavaParser;
 import de.monticore.types.prettyprint.PrimitiveWithSIUnitTypesPrettyPrinter;
-import de.monticore.types.prettyprint.SIUnitTypesPrettyPrinter;
 import de.monticore.types.primitivewithsiunittypes._ast.ASTPrimitiveWithSIUnitType;
-import de.monticore.types.siunittypes._ast.ASTSIUnitType;
 import de.se_rwth.commons.logging.Log;
 import de.se_rwth.commons.logging.LogStub;
 import org.junit.Before;
@@ -19,7 +17,7 @@ import static org.junit.Assert.*;
 
 public class PrimitiveWithSIUnitTypesTest {
 
-    TestSIJavaPrimitiveWithSIUnitTypesParser parser = new TestSIJavaPrimitiveWithSIUnitTypesParser();
+    TestSIJavaParser parser = new TestSIJavaParser();
     PrimitiveWithSIUnitTypesPrettyPrinter prettyPrinter;
 
     @Before

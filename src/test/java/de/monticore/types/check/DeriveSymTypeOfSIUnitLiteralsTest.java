@@ -6,7 +6,6 @@ import de.monticore.lang.literals.testsiunitliterals._parser.TestSIUnitLiteralsP
 import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
 import de.monticore.prettyprint.IndentPrinter;
 import de.se_rwth.commons.logging.Log;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -28,7 +27,7 @@ public class DeriveSymTypeOfSIUnitLiteralsTest {
     }
 
     // This is the core Visitor under Test (but rather empty)
-    DeriveSymTypeOfCombineExpressionsWithSIUnitsDelegator derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitsDelegator(ExpressionsBasisSymTabMill.expressionsBasisScopeBuilder().build(), new CombineExpressionsWithSIUnitLiteralsPrettyPrinter(new IndentPrinter()));
+    DeriveSymTypeOfCombineExpressionsWithPrimitiveWithSIUnitsDelegator derLit = new DeriveSymTypeOfCombineExpressionsWithPrimitiveWithSIUnitsDelegator(ExpressionsBasisSymTabMill.expressionsBasisScopeBuilder().build(), new CombineExpressionsWithSIUnitLiteralsPrettyPrinter(new IndentPrinter()));
 
     // other arguments not used (and therefore deliberately null)
 

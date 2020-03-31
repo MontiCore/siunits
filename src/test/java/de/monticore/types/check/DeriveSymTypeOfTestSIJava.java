@@ -4,15 +4,15 @@ import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisScope;
 import de.monticore.literals.mccommonliterals._ast.ASTSignedLiteral;
 import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
-import de.monticore.testsijava.testsijava._visitor.TestSIJavaBasicVisitor;
-import de.monticore.testsijava.testsijavasiunittypesonly._visitor.TestSIJavaSIUnitTypesOnlyDelegatorVisitor;
+import de.monticore.testsijava.testsijava._visitor.TestSIJavaDelegatorVisitor;
+import de.monticore.testsijava.testsijava.visitor.TestSIJavaBasicVisitor;
 
 import java.util.Optional;
 
-public class DeriveSymTypeOfTestSIJavaSIUnitTypesOnly extends TestSIJavaSIUnitTypesOnlyDelegatorVisitor
-        implements ITypesCalculator, ISynthesize {
+public class DeriveSymTypeOfTestSIJava extends TestSIJavaDelegatorVisitor
+        implements ITypesCalculator {
 
-    private TestSIJavaSIUnitTypesOnlyDelegatorVisitor realThis;
+    private TestSIJavaDelegatorVisitor realThis;
 
     private DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes deriveSymTypeOfAssignmentExpressions;
 
@@ -22,20 +22,16 @@ public class DeriveSymTypeOfTestSIJavaSIUnitTypesOnly extends TestSIJavaSIUnitTy
 
     private DeriveSymTypeOfLiterals deriveSymTypeOfLiterals;
 
-    private DeriveSymTypeOfSIUnitLiteralsSIUnitOnly deriveSymTypeOfSIUnitLiteralsSIUnitOnly;
+    private DeriveSymTypeOfSIUnitLiterals deriveSymTypeOfSIUnitLiterals;
 
     private DeriveSymTypeOfMCCommonLiterals deriveSymTypeOfMCCommonLiterals;
-
-    private DeriveSymTypeOfMCCommonLiterals commonLiteralsTypesCalculator;
-
-    private SynthesizeSymTypeFromSIUnitTypes synthesizeSymTypeFromSIUnitTypes;
 
     private LastResult lastResult = new LastResult();
 
     private IExpressionsBasisScope scope;
 
 
-    public DeriveSymTypeOfTestSIJavaSIUnitTypesOnly(IExpressionsBasisScope scope) {
+    public DeriveSymTypeOfTestSIJava(IExpressionsBasisScope scope) {
         this.realThis = this;
         this.scope = scope;
         init();
@@ -55,7 +51,7 @@ public class DeriveSymTypeOfTestSIJavaSIUnitTypesOnly extends TestSIJavaSIUnitTy
     }
 
     @Override
-    public TestSIJavaSIUnitTypesOnlyDelegatorVisitor getRealThis() {
+    public TestSIJavaDelegatorVisitor getRealThis() {
         return realThis;
     }
 
@@ -68,7 +64,7 @@ public class DeriveSymTypeOfTestSIJavaSIUnitTypesOnly extends TestSIJavaSIUnitTy
         deriveSymTypeOfCommonExpressions.setLastResult(lastResult);
         deriveSymTypeOfExpression.setLastResult(lastResult);
         deriveSymTypeOfLiterals.setResult(lastResult);
-        deriveSymTypeOfSIUnitLiteralsSIUnitOnly.setResult(lastResult);
+        deriveSymTypeOfSIUnitLiterals.setResult(lastResult);
     }
 
     /**
@@ -79,7 +75,7 @@ public class DeriveSymTypeOfTestSIJavaSIUnitTypesOnly extends TestSIJavaSIUnitTy
         deriveSymTypeOfAssignmentExpressions.setScope(scope);
         deriveSymTypeOfExpression.setScope(scope);
         deriveSymTypeOfCommonExpressions.setScope(scope);
-        deriveSymTypeOfSIUnitLiteralsSIUnitOnly.setScope(scope);
+        deriveSymTypeOfSIUnitLiterals.setScope(scope);
     }
 
     /**
@@ -92,16 +88,14 @@ public class DeriveSymTypeOfTestSIJavaSIUnitTypesOnly extends TestSIJavaSIUnitTy
         deriveSymTypeOfMCCommonLiterals = new DeriveSymTypeOfMCCommonLiterals();
         deriveSymTypeOfExpression = new DeriveSymTypeOfExpression();
         deriveSymTypeOfLiterals = new DeriveSymTypeOfLiterals();
-        deriveSymTypeOfSIUnitLiteralsSIUnitOnly = new DeriveSymTypeOfSIUnitLiteralsSIUnitOnly();
-        synthesizeSymTypeFromSIUnitTypes = new SynthesizeSymTypeFromSIUnitTypes();
+        deriveSymTypeOfSIUnitLiterals = new DeriveSymTypeOfSIUnitLiterals();
 
         setCommonExpressionsVisitor(deriveSymTypeOfCommonExpressions);
         setAssignmentExpressionsVisitor(deriveSymTypeOfAssignmentExpressions);
         setExpressionsBasisVisitor(deriveSymTypeOfExpression);
         setMCLiteralsBasisVisitor(deriveSymTypeOfLiterals);
         setMCCommonLiteralsVisitor(deriveSymTypeOfMCCommonLiterals);
-        setSIUnitLiteralsVisitor(deriveSymTypeOfSIUnitLiteralsSIUnitOnly);
-        setSIUnitTypesVisitor(synthesizeSymTypeFromSIUnitTypes);
+        setSIUnitLiteralsVisitor(deriveSymTypeOfSIUnitLiterals);
         setTestSIJavaVisitor(new TestSIJavaBasicVisitor());
 
         setScope(scope);
@@ -134,14 +128,5 @@ public class DeriveSymTypeOfTestSIJavaSIUnitTypesOnly extends TestSIJavaSIUnitTy
         }
         lastResult.setLastAbsent();
         return result;
-    }
-
-    // ISynthesize methods
-    @Override
-    public Optional<SymTypeExpression> getResult() {
-        if (lastResult.isPresentLast())
-            return Optional.of(lastResult.getLast());
-        else
-            return Optional.empty();
     }
 }

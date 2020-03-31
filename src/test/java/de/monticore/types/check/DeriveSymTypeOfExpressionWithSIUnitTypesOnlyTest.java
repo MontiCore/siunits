@@ -7,7 +7,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static de.monticore.types.check.DefsTypeBasic.*;
+import static de.monticore.types.check.DefsTypeBasic.add2scope;
+import static de.monticore.types.check.DefsTypeBasic.field;
 import static org.junit.Assert.assertEquals;
 
 public class DeriveSymTypeOfExpressionWithSIUnitTypesOnlyTest extends DeriveSymTypeOfExpressionTest {
@@ -36,11 +37,5 @@ public class DeriveSymTypeOfExpressionWithSIUnitTypesOnlyTest extends DeriveSymT
     String s = "varKM";
     ASTExpression astex = p.parse_StringExpression(s).get();
     assertEquals("m",tc.typeOf(astex).print());
-  }
-
-  @Test
-  public void deriveTFromSIUnitLiteral() throws IOException {
-    ASTExpression astex = p.parse_StringExpression("42.3 [km]").get();
-    assertEquals("m", tc.typeOf(astex).print());
   }
 }
