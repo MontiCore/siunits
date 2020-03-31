@@ -6,49 +6,45 @@ package de.monticore.testsijava;
  * It is a very simple version of java with siunits and custom types that can be siunit types.
 */
 
-component grammar TestSIJava extends de.monticore.lang.literals.SIUnitLiterals,
+grammar TestSIJava extends de.monticore.lang.literals.SIUnitLiterals,
                             de.monticore.expressions.CommonExpressions,
                             de.monticore.expressions.AssignmentExpressions,
-                            de.monticore.statements.MCCommonStatements {
+                            de.monticore.statements.MCCommonStatements,
+                            de.monticore.types.PrimitiveWithSIUnitTypes {
 
-symbol scope SIJavaClass =
-"package" package:(Name& || ".")+ ";"
-"siclass" Name "{"
-    statement:SIJavaClassStatement*
-"}";
-
-external ExtCustomType;
-
-CustomType implements MCType =
-    ExtCustomType;
-
-interface SIJavaClassStatement;
-
-interface FieldOrVariableDeclaration extends Field =
-    MCType Name ("=" assignment:Expression)? ";";
-
-FieldDeclaration implements FieldOrVariableDeclaration, SIJavaClassStatement =
-    MCType Name ("=" assignment:Expression)? ";";
-
-SIUnitLiteralExperession implements Expression <350> =
-    SIUnitLiteral;
-
-symbol scope MethodDeclaration implements SIJavaClassStatement =
-    "metod" MethodSignature "{"
-        statement:SIJavaMethodStatement*
+    symbol scope SIJavaClass =
+    "package" package:(Name& || ".")+ ";"
+    "siclass" Name "{"
+        statement:SIJavaClassStatement*
     "}";
 
-MethodSignature =
-    returnType:MCReturnType Name "(" (SIJavaParameter||",")* ")";
+    interface SIJavaClassStatement;
 
-SIJavaParameter =
-    MCType Name;
+    FieldDeclaration implements Field, SIJavaClassStatement, SIJavaMethodStatement =
+        MCType Name ("=" assignment:Expression)? ";";
 
-interface SIJavaMethodStatement;
+    SIFieldDeclaration implements Field, SIJavaClassStatement, SIJavaMethodStatement =
+        "si" Name "=" (SIUnitType | Expression) ";";
 
-VariableDeclaration implements FieldOrVariableDeclaration, SIJavaMethodStatement <100> =
-    MCType Name ("=" assignment:Expression)? ";";
+    SIUnitLiteralExperession implements Expression <350> =
+        SIUnitLiteral;
 
-SIJavaMethodExpression implements SIJavaMethodStatement <10> =
-    expression:Expression ";";
+    symbol scope MethodDeclaration implements SIJavaClassStatement =
+        "metod" MethodSignature "{"
+            statement:SIJavaMethodStatement*
+        "}";
+
+    MethodSignature =
+        returnType:MCReturnType Name "(" (SIJavaParameter||",")* ")";
+
+    SIJavaParameter =
+        MCType Name;
+
+    interface SIJavaMethodStatement;
+
+    SIJavaMethodExpression implements SIJavaMethodStatement <10> =
+        expression:Expression ";";
+
+    CustomSIUnitType implements MCObjectType =
+        "[" SIUnitType "]";
 }

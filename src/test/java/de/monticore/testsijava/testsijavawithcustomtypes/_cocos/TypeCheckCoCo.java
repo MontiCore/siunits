@@ -1,13 +1,14 @@
-package de.monticore.testsijava.testsijava._cocos;
+package de.monticore.testsijava.testsijavawithcustomtypes._cocos;
+
 
 import de.monticore.ast.ASTNode;
-import de.monticore.testsijava.testsijava._ast.*;
-import de.monticore.testsijava.testsijava._symboltable.ITestSIJavaScope;
-import de.monticore.testsijava.testsijava._symboltable.TestSIJavaSymbolTableCreator;
-import de.monticore.testsijava.testsijava._visitor.TestSIJavaVisitor;
-import de.monticore.types.check.DeriveSymTypeOfTestSIJava;
+import de.monticore.testsijava.testsijavawithcustomtypes._ast.*;
+import de.monticore.testsijava.testsijavawithcustomtypes._symboltable.ITestSIJavaWithCustomTypesScope;
+import de.monticore.testsijava.testsijavawithcustomtypes._symboltable.TestSIJavaWithCustomTypesSymbolTableCreator;
+import de.monticore.testsijava.testsijavawithcustomtypes._visitor.TestSIJavaWithCustomTypesVisitor;
+import de.monticore.types.check.DeriveSymTypeOfTestSIJavaWithCustomTypes;
 import de.monticore.types.check.SymTypeExpression;
-import de.monticore.types.check.SynthesizeSymTypeFromTestSIJava;
+import de.monticore.types.check.SynthesizeSymTypeFromTestSIJavaWithCustomTypes;
 import de.monticore.types.check.TypeCheck;
 import de.monticore.types.mcbasictypes._ast.ASTMCType;
 import de.se_rwth.commons.logging.Log;
@@ -16,12 +17,12 @@ import de.se_rwth.commons.logging.Log;
  * Checks for incompatible types in assignments and other expressions.
  * Take note, that this CoCo requires the TestSIJavaSymbolTableCreator to set the types for every
  *  field declaration when building the symbol table
- *  @see TestSIJavaSymbolTableCreator#visit(ASTFieldDeclaration node)
+ *  @see TestSIJavaWithCustomTypesSymbolTableCreator#visit(ASTFieldDeclaration node)
  */
-public class TypeCheckCoCo implements TestSIJavaASTSIJavaClassCoCo {
-    ITestSIJavaScope scope;
+public class TypeCheckCoCo implements TestSIJavaWithCustomTypesASTSIJavaClassCoCo {
+    ITestSIJavaWithCustomTypesScope scope;
 
-    public TypeCheckCoCo(ITestSIJavaScope scope) {
+    public TypeCheckCoCo(ITestSIJavaWithCustomTypesScope scope) {
         this.scope = scope;
     }
 
@@ -34,14 +35,14 @@ public class TypeCheckCoCo implements TestSIJavaASTSIJavaClassCoCo {
     /**
      * checks the nodes of the SIJavaLanguage
      */
-    private class CheckVisitor implements TestSIJavaVisitor {
+    private class CheckVisitor implements TestSIJavaWithCustomTypesVisitor {
         private TypeCheck tc;
-        private DeriveSymTypeOfTestSIJava der;
+        private DeriveSymTypeOfTestSIJavaWithCustomTypes der;
         private boolean result;
 
-        private CheckVisitor(ITestSIJavaScope scope) {
-            der = new DeriveSymTypeOfTestSIJava(scope); // custom Derive-Class
-            this.tc = new TypeCheck(new SynthesizeSymTypeFromTestSIJava(scope), der); // and custom Synthesize-Class
+        private CheckVisitor(ITestSIJavaWithCustomTypesScope scope) {
+            der = new DeriveSymTypeOfTestSIJavaWithCustomTypes(scope); // custom Derive-Class
+            this.tc = new TypeCheck(new SynthesizeSymTypeFromTestSIJavaWithCustomTypes(scope), der); // and custom Synthesize-Class
         }
 
         @Override
@@ -54,7 +55,29 @@ public class TypeCheckCoCo implements TestSIJavaASTSIJavaClassCoCo {
         }
 
         @Override
+        public void visit(ASTVariableDeclaration node) {
+            checkASTFieldOrVariableDeclaration(node);
+        }
+
+        @Override
         public void visit(ASTFieldDeclaration node) {
+            checkASTFieldOrVariableDeclaration(node);
+        }
+
+        @Override
+        public void visit(ASTSIJavaMethodExpression node) {
+            // Set scope so that DeriveSymTypeOfExpression can derive the type of a NameExpression
+            der.setScope(node.getEnclosingScope());
+            try {
+                // should throw an exception if there are incompatible types
+                SymTypeExpression assignmentType2 = tc.typeOf(node.getExpression());
+                if (assignmentType2 == null) logError(node, "Incompatible types");
+            } catch (Exception e) {
+                logError(node, "Incompatible types");
+            }
+        }
+
+        private void checkASTFieldOrVariableDeclaration(ASTFieldOrVariableDeclaration node) {
             if (node.isPresentAssignment()) {
                 // Set scope so that DeriveSymTypeOfExpression can derive the type of a NameExpression
                 der.setScope(node.getEnclosingScope());
@@ -72,19 +95,6 @@ public class TypeCheckCoCo implements TestSIJavaASTSIJavaClassCoCo {
                 } catch (Exception e) {
                     logError(node, "Incompatible types in the assignment");
                 }
-            }
-        }
-
-        @Override
-        public void visit(ASTSIJavaMethodExpression node) {
-            // Set scope so that DeriveSymTypeOfExpression can derive the type of a NameExpression
-            der.setScope(node.getEnclosingScope());
-            try {
-                // should throw an exception if there are incompatible types
-                SymTypeExpression assignmentType2 = tc.typeOf(node.getExpression());
-                if (assignmentType2 == null) logError(node, "Incompatible types");
-            } catch (Exception e) {
-                logError(node, "Incompatible types");
             }
         }
 

@@ -1,6 +1,6 @@
-package de.monticore.testsijava.testsijava;
+package de.monticore.testsijava;
 
-import de.monticore.testsijava.testsijava._ast.ASTSIJavaClass;
+import de.monticore.testsijava.testsijavawithcustomtypes._ast.ASTSIJavaClass;
 import de.monticore.testsijava.testsijavawithcustomtypes._parser.TestSIJavaWithCustomTypesParser;
 import de.se_rwth.commons.logging.Log;
 import org.junit.Before;
@@ -33,13 +33,13 @@ public class SIJavaWithCustomTypesTest {
 
     @Test
     public void parseSIModelTest1() {
-        String model = "de/monticore/testsijava/testsijava/testsijavawithcustomtypes/MyClass.sijava";
+        String model = "de/monticore/testsijava/testsijavawithcustomtypes/MyClass.sijava";
         parseModel(model);
     }
 
     @Test
     public void parseSIModelTest2() {
-        String model = "de/monticore/testsijava/testsijava/testsijavawithcustomtypes/MyClass_WithCoCoError.sijava";
+        String model = "de/monticore/testsijava/testsijavawithcustomtypes/MyClass_WithCoCoError.sijava";
         parseModel(model);
     }
 }

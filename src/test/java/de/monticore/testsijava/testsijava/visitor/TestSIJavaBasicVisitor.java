@@ -1,4 +1,6 @@
-package de.monticore.testsijava.testsijava._visitor;
+package de.monticore.testsijava.testsijava.visitor;
+
+import de.monticore.testsijava.testsijava._visitor.TestSIJavaVisitor;
 
 public class TestSIJavaBasicVisitor implements TestSIJavaVisitor {
 

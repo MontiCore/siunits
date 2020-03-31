@@ -5,10 +5,45 @@ package de.monticore.testsijava;
  * This grammar extends the TestSIJava grammar with some CustomPrimitveWithSIUnitTypes
 */
 
-grammar TestSIJavaWithCustomTypes extends de.monticore.testsijava.TestSIJava,
-                                                    de.monticore.types.CustomPrimitiveWithSIUnitTypes {
+grammar TestSIJavaWithCustomTypes extends de.monticore.lang.literals.SIUnitLiterals,
+                            de.monticore.expressions.CommonExpressions,
+                            de.monticore.expressions.AssignmentExpressions,
+                            de.monticore.statements.MCCommonStatements,
+                            de.monticore.types.CustomPrimitiveWithSIUnitTypes {
 
-    ExtCustomType =
-        CustomPrimitiveWithSIUnitType;
+    symbol scope SIJavaClass =
+    "package" package:(Name& || ".")+ ";"
+    "siclass" Name "{"
+        statement:SIJavaClassStatement*
+    "}";
 
+    interface SIJavaClassStatement;
+
+    interface FieldOrVariableDeclaration extends Field =
+        MCType Name ("=" assignment:Expression)? ";";
+
+    FieldDeclaration implements FieldOrVariableDeclaration, SIJavaClassStatement =
+        MCType Name ("=" assignment:Expression)? ";";
+
+    SIUnitLiteralExperession implements Expression <350> =
+        SIUnitLiteral;
+
+    symbol scope MethodDeclaration implements SIJavaClassStatement =
+        "metod" MethodSignature "{"
+            statement:SIJavaMethodStatement*
+        "}";
+
+    MethodSignature =
+        returnType:MCReturnType Name "(" (SIJavaParameter||",")* ")";
+
+    SIJavaParameter =
+        MCType Name;
+
+    interface SIJavaMethodStatement;
+
+    VariableDeclaration implements FieldOrVariableDeclaration, SIJavaMethodStatement <100> =
+        MCType Name ("=" assignment:Expression)? ";";
+
+    SIJavaMethodExpression implements SIJavaMethodStatement <10> =
+        expression:Expression ";";
 }
