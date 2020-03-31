@@ -1,7 +1,7 @@
 package de.monticore.lang.siunits.siunits._ast;
 
-import de.monticore.lang.siunits.utility.UnitFactory;
 import de.monticore.lang.siunits.siunits.prettyprint.SIUnitPrettyPrinter;
+import de.monticore.lang.siunits.utility.UnitFactory;
 
 import javax.measure.unit.Unit;
 

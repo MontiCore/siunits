@@ -1,8 +1,8 @@
 package de.monticore.lang.siunits.siunits.prettyprint;
 
-import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.lang.siunits.siunits._ast.*;
 import de.monticore.lang.siunits.siunits._visitor.SIUnitsVisitor;
+import de.monticore.prettyprint.IndentPrinter;
 
 public class SIUnitPrettyPrinter implements SIUnitsVisitor {
 

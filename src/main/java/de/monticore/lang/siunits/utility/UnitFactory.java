@@ -4,7 +4,9 @@ import javax.measure.converter.LogConverter;
 import javax.measure.converter.MultiplyConverter;
 import javax.measure.quantity.Dimensionless;
 import javax.measure.quantity.Length;
-import javax.measure.unit.*;
+import javax.measure.unit.SI;
+import javax.measure.unit.Unit;
+import javax.measure.unit.UnitFormat;
 
 /**
  * This class is intended to handle the Units from the jscience package javax.measure.unit.

@@ -1,10 +1,9 @@
 package de.monticore.lang.siunitliterals;
 
-import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
 import de.monticore.lang.literals.prettyprint.SIUnitLiteralsPrettyPrinter;
 import de.monticore.lang.literals.siunitliterals._ast.ASTSIUnitLiteral;
-import de.monticore.lang.literals.siunitliterals._ast.ASTSIUnitLiteralsNode;
 import de.monticore.lang.literals.testsiunitliterals._parser.TestSIUnitLiteralsParser;
+import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
 import de.monticore.prettyprint.IndentPrinter;
 import de.se_rwth.commons.logging.Log;
 import de.se_rwth.commons.logging.LogStub;
@@ -15,9 +14,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Optional;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class SIUnitLiteralsTest {
 
