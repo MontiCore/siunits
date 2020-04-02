@@ -6,8 +6,6 @@ import de.monticore.lang.literals.siunitliterals._ast.ASTSignedSIUnitLiteral;
 import de.monticore.lang.literals.siunitliterals._visitor.SIUnitLiteralsVisitor;
 import de.monticore.lang.siunits.siunits._ast.ASTSIUnit;
 
-import static de.monticore.types.check.SymTypeExpressionHelperWithSIUnitTypes.isSIUnitType;
-
 public class DeriveSymTypeOfSIUnitLiterals extends DeriveSymTypeOfMCCommonLiterals
         implements SIUnitLiteralsVisitor {
 
@@ -49,8 +47,8 @@ public class DeriveSymTypeOfSIUnitLiterals extends DeriveSymTypeOfMCCommonLitera
 
     private void traverseSIUnitLiteral(SymTypeConstant literalType, ASTSIUnit astsiUnit) {
         SymTypeExpression siunitType = SIUnitSymTypeExpressionFactory.createSIUnit(astsiUnit.toString(), this.enclosingScope);
-        if (isSIUnitType(siunitType))
-            result.setLast(SIUnitSymTypeExpressionFactory.createPrimitiveWithSIUnitType(
+        if (siunitType instanceof SymTypeOfSIUnit)
+            result.setLast(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(
                     literalType, siunitType, this.enclosingScope));
         else // case for siunit m/m
             result.setLast(literalType);

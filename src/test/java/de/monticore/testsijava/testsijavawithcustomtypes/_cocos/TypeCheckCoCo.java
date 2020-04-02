@@ -6,9 +6,9 @@ import de.monticore.testsijava.testsijavawithcustomtypes._ast.*;
 import de.monticore.testsijava.testsijavawithcustomtypes._symboltable.ITestSIJavaWithCustomTypesScope;
 import de.monticore.testsijava.testsijavawithcustomtypes._symboltable.TestSIJavaWithCustomTypesSymbolTableCreator;
 import de.monticore.testsijava.testsijavawithcustomtypes._visitor.TestSIJavaWithCustomTypesVisitor;
-import de.monticore.types.check.DeriveSymTypeOfTestSIJavaWithCustomTypes;
+import de.monticore.types.check.DeriveSymTypeOfTestSIJavaWithCustomPrimitiveWithSIUnitTypes;
 import de.monticore.types.check.SymTypeExpression;
-import de.monticore.types.check.SynthesizeSymTypeFromTestSIJavaWithCustomTypes;
+import de.monticore.types.check.SynthesizeSymTypeFromTestSIJavaWithCustomPrimitiveWithSIUnitTypes;
 import de.monticore.types.check.TypeCheck;
 import de.monticore.types.mcbasictypes._ast.ASTMCType;
 import de.se_rwth.commons.logging.Log;
@@ -37,12 +37,12 @@ public class TypeCheckCoCo implements TestSIJavaWithCustomTypesASTSIJavaClassCoC
      */
     private class CheckVisitor implements TestSIJavaWithCustomTypesVisitor {
         private TypeCheck tc;
-        private DeriveSymTypeOfTestSIJavaWithCustomTypes der;
+        private DeriveSymTypeOfTestSIJavaWithCustomPrimitiveWithSIUnitTypes der;
         private boolean result;
 
         private CheckVisitor(ITestSIJavaWithCustomTypesScope scope) {
-            der = new DeriveSymTypeOfTestSIJavaWithCustomTypes(scope); // custom Derive-Class
-            this.tc = new TypeCheck(new SynthesizeSymTypeFromTestSIJavaWithCustomTypes(scope), der); // and custom Synthesize-Class
+            der = new DeriveSymTypeOfTestSIJavaWithCustomPrimitiveWithSIUnitTypes(scope); // custom Derive-Class
+            this.tc = new TypeCheck(new SynthesizeSymTypeFromTestSIJavaWithCustomPrimitiveWithSIUnitTypes(scope), der); // and custom Synthesize-Class
         }
 
         @Override

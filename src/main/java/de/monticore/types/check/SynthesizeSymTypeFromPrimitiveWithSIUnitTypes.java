@@ -4,10 +4,9 @@ import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisS
 import de.monticore.types.primitivewithsiunittypes._ast.ASTPrimitiveWithSIUnitType;
 import de.monticore.types.primitivewithsiunittypes._visitor.PrimitiveWithSIUnitTypesVisitor;
 import de.monticore.types.siunittypes._ast.ASTSIUnitType;
-import de.monticore.types.siunittypes._visitor.SIUnitTypesVisitor;
 import de.se_rwth.commons.logging.Log;
 
-import static de.monticore.types.check.SymTypeExpressionHelper.isNumericType;
+import static de.monticore.types.check.TypeCheck.*;
 
 /**
  * Visitor for Derivation of SymType from PrimitiveWithSIUnitTypes
@@ -48,19 +47,29 @@ public class SynthesizeSymTypeFromPrimitiveWithSIUnitTypes extends SynthesizeSym
 
     @Override
     public void traverse(ASTPrimitiveWithSIUnitType node) {
-        SymTypeExpression primitiveType = null;
+        SymTypeExpression numericType = null;
         SymTypeExpression siunitType = null;
         node.getMCPrimitiveType().accept(getRealThis());
         if (!lastResult.isPresentLast() || !isNumericType(lastResult.getLast())) {
             Log.error("0x"); // TODO
         }
-        primitiveType = lastResult.getLast();
+        numericType = lastResult.getLast();
         lastResult.reset();
         node.getSIUnitType().accept(getRealThis());
         if (!lastResult.isPresentLast()){
             Log.error("0x"); // TODO
         }
         siunitType = lastResult.getLast();
-        lastResult.setLast(SIUnitSymTypeExpressionFactory.createPrimitiveWithSIUnitType((SymTypeConstant) primitiveType, siunitType, scope));
+        lastResult.setLast(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType((SymTypeConstant) numericType, siunitType, scope));
+    }
+
+    /**
+     * test if the expression is of numeric type (double, float, long, int, char, short, byte)
+     */
+    private static boolean isNumericType(SymTypeExpression type) {
+        return (isDouble(type) || isFloat(type) ||
+                isLong(type) || isInt(type) ||
+                isChar(type) || isShort(type) ||
+                isByte(type));
     }
 }

@@ -11,7 +11,7 @@ import static de.monticore.types.check.DefsTypeBasic.add2scope;
 import static de.monticore.types.check.DefsTypeBasic.field;
 import static org.junit.Assert.assertEquals;
 
-public class DeriveSymTypeOfExpressionWithPrimitiveWithSIUnitTypesTest extends DeriveSymTypeOfExpressionTest {
+public class DeriveSymTypeOfExpressionWithSIUnitTypesTest extends DeriveSymTypeOfExpressionTest {
 
     @Before
     public void setupForEach() {

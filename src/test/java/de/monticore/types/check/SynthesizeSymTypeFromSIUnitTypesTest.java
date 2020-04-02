@@ -18,7 +18,7 @@ import java.util.Optional;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class SynthesizeSymTypeFromSIUnitTypeTypesTest {
+public class SynthesizeSymTypeFromSIUnitTypesTest {
 
     private TestSIJavaParser parser = new TestSIJavaParser();
     // This is the TypeChecker under Test:

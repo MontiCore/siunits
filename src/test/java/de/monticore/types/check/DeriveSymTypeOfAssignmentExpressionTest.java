@@ -89,7 +89,7 @@ public class DeriveSymTypeOfAssignmentExpressionTest {
     CombineExpressionsWithLiteralsParser p = new CombineExpressionsWithLiteralsParser();
 
     // This is an auxiliary
-    DeriveSymTypeOfCombineExpressionsWithPrimitiveWithSIUnitsDelegator derLit = new DeriveSymTypeOfCombineExpressionsWithPrimitiveWithSIUnitsDelegator(ExpressionsBasisSymTabMill.expressionsBasisScopeBuilder().build(), new CombineExpressionsWithLiteralsPrettyPrinter(new IndentPrinter()));
+    DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator(ExpressionsBasisSymTabMill.expressionsBasisScopeBuilder().build(), new CombineExpressionsWithLiteralsPrettyPrinter(new IndentPrinter()));
 
     // other arguments not used (and therefore deliberately null)
 

@@ -9,7 +9,7 @@ import de.monticore.testsijava.testsijavawithcustomtypes.visitor.TestSIJavaWithC
 
 import java.util.Optional;
 
-public class DeriveSymTypeOfTestSIJavaWithCustomTypes extends TestSIJavaWithCustomTypesDelegatorVisitor
+public class DeriveSymTypeOfTestSIJavaWithCustomPrimitiveWithSIUnitTypes extends TestSIJavaWithCustomTypesDelegatorVisitor
         implements ITypesCalculator {
 
     private TestSIJavaWithCustomTypesDelegatorVisitor realThis;
@@ -31,7 +31,7 @@ public class DeriveSymTypeOfTestSIJavaWithCustomTypes extends TestSIJavaWithCust
     private IExpressionsBasisScope scope;
 
 
-    public DeriveSymTypeOfTestSIJavaWithCustomTypes(IExpressionsBasisScope scope) {
+    public DeriveSymTypeOfTestSIJavaWithCustomPrimitiveWithSIUnitTypes(IExpressionsBasisScope scope) {
         this.realThis = this;
         this.scope = scope;
         init();

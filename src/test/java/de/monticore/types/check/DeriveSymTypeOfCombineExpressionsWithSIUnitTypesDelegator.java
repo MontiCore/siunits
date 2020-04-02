@@ -12,7 +12,7 @@ import java.util.Optional;
 /**
  * Delegator Visitor to test the combination of the grammars
  */
-public class DeriveSymTypeOfCombineExpressionsWithPrimitiveWithSIUnitsDelegator extends CombineExpressionsWithLiteralsDelegatorVisitor implements ITypesCalculator {
+public class DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator extends CombineExpressionsWithLiteralsDelegatorVisitor implements ITypesCalculator {
 
   private CombineExpressionsWithLiteralsDelegatorVisitor realThis;
 
@@ -44,7 +44,7 @@ public class DeriveSymTypeOfCombineExpressionsWithPrimitiveWithSIUnitsDelegator 
 
   IExpressionsBasisScope scope;
 
-  public DeriveSymTypeOfCombineExpressionsWithPrimitiveWithSIUnitsDelegator(IExpressionsBasisScope scope, IDerivePrettyPrinter prettyPrinter){
+  public DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator(IExpressionsBasisScope scope, IDerivePrettyPrinter prettyPrinter){
     this.realThis=this;
     this.prettyPrinter = prettyPrinter;
     this.scope = scope;

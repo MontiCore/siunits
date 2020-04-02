@@ -7,7 +7,7 @@ import de.monticore.testsijava.testsijavawithcustomtypes.visitor.TestSIJavaWithC
 
 import java.util.Optional;
 
-public class SynthesizeSymTypeFromTestSIJavaWithCustomTypes extends TestSIJavaWithCustomTypesDelegatorVisitor
+public class SynthesizeSymTypeFromTestSIJavaWithCustomPrimitiveWithSIUnitTypes extends TestSIJavaWithCustomTypesDelegatorVisitor
         implements ISynthesize {
 
     private SynthesizeSymTypeFromMCBasicTypes symTypeFromMCBasicTypes;
@@ -39,7 +39,7 @@ public class SynthesizeSymTypeFromTestSIJavaWithCustomTypes extends TestSIJavaWi
 
     protected IExpressionsBasisScope scope;
 
-    public SynthesizeSymTypeFromTestSIJavaWithCustomTypes(IExpressionsBasisScope scope) {
+    public SynthesizeSymTypeFromTestSIJavaWithCustomPrimitiveWithSIUnitTypes(IExpressionsBasisScope scope) {
         this.scope = scope;
         init();
     }

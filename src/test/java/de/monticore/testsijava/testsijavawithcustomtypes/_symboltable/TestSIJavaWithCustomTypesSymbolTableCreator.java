@@ -4,7 +4,7 @@ package de.monticore.testsijava.testsijavawithcustomtypes._symboltable;
 import de.monticore.testsijava.testsijavawithcustomtypes._ast.ASTFieldDeclaration;
 import de.monticore.testsijava.testsijavawithcustomtypes._ast.ASTVariableDeclaration;
 import de.monticore.types.check.SymTypeExpression;
-import de.monticore.types.check.SynthesizeSymTypeFromTestSIJavaWithCustomTypes;
+import de.monticore.types.check.SynthesizeSymTypeFromTestSIJavaWithCustomPrimitiveWithSIUnitTypes;
 import de.monticore.types.check.TypeCheck;
 import de.monticore.types.mcbasictypes._ast.ASTMCType;
 import de.monticore.types.typesymbols._symboltable.FieldSymbol;
@@ -28,7 +28,7 @@ public class TestSIJavaWithCustomTypesSymbolTableCreator extends TestSIJavaWithC
         addToScopeAndLinkWithNode(symbol, node);
 
         // Add type in the symbol table creation process
-        TypeCheck tc = new TypeCheck(new SynthesizeSymTypeFromTestSIJavaWithCustomTypes(this.scopeStack.getFirst()), null);
+        TypeCheck tc = new TypeCheck(new SynthesizeSymTypeFromTestSIJavaWithCustomPrimitiveWithSIUnitTypes(this.scopeStack.getFirst()), null);
         ASTMCType astType = node.getMCType();
         SymTypeExpression symTypeExpression = tc.symTypeFromAST(astType);
         symbol.setType(symTypeExpression);
@@ -41,7 +41,7 @@ public class TestSIJavaWithCustomTypesSymbolTableCreator extends TestSIJavaWithC
         addToScopeAndLinkWithNode(symbol, node);
 
         // Add type in the symbol table creation process
-        TypeCheck tc = new TypeCheck(new SynthesizeSymTypeFromTestSIJavaWithCustomTypes(this.scopeStack.getFirst()), null);
+        TypeCheck tc = new TypeCheck(new SynthesizeSymTypeFromTestSIJavaWithCustomPrimitiveWithSIUnitTypes(this.scopeStack.getFirst()), null);
         ASTMCType astType = node.getMCType();
         SymTypeExpression symTypeExpression = tc.symTypeFromAST(astType);
         symbol.setType(symTypeExpression);

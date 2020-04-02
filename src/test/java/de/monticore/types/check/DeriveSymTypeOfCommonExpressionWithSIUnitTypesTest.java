@@ -14,7 +14,7 @@ import static de.monticore.types.check.DefsTypeBasic.field;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-public class DeriveSymTypeOfCommonExpressionWithSIUnitWithLiteralTypesTest extends DeriveSymTypeOfCommonExpressionTest {
+public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSymTypeOfCommonExpressionTest {
 
     /**
      * Focus: Deriving Type of SIUnitLiterals, here:
@@ -396,11 +396,11 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitWithLiteralTypesTest exten
         SymTypeConstant l = SIUnitSymTypeExpressionFactory.createTypeConstant("long");
 
         // SIUnitLiterals
-        add2scope(scope, field("varD_S", SIUnitSymTypeExpressionFactory.createPrimitiveWithSIUnitType(d, s, scope)));
-        add2scope(scope, field("varI_M", SIUnitSymTypeExpressionFactory.createPrimitiveWithSIUnitType(i, m, scope)));
-        add2scope(scope, field("varD_M", SIUnitSymTypeExpressionFactory.createPrimitiveWithSIUnitType(d, m, scope)));
-        add2scope(scope, field("varL_KMe2perH", SIUnitSymTypeExpressionFactory.createPrimitiveWithSIUnitType(l, kMe2perH, scope)));
-        add2scope(scope, field("varD_KMe2perHmSe4", SIUnitSymTypeExpressionFactory.createPrimitiveWithSIUnitType(d, kMe2perHMSe4, scope)));
+        add2scope(scope, field("varD_S", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(d, s, scope)));
+        add2scope(scope, field("varI_M", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(i, m, scope)));
+        add2scope(scope, field("varD_M", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(d, m, scope)));
+        add2scope(scope, field("varL_KMe2perH", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(l, kMe2perH, scope)));
+        add2scope(scope, field("varD_KMe2perHmSe4", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(d, kMe2perHMSe4, scope)));
 
         add2scope(scope, field("varS", s));
         add2scope(scope, field("varM", m));
@@ -408,7 +408,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitWithLiteralTypesTest exten
         add2scope(scope, field("varKMe2perHMSe4", kMe2perHMSe4));
 
 
-        derLit = new DeriveSymTypeOfCombineExpressionsWithPrimitiveWithSIUnitsDelegator(scope, new CombineExpressionsWithLiteralsPrettyPrinter(new IndentPrinter()));
+        derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator(scope, new CombineExpressionsWithLiteralsPrettyPrinter(new IndentPrinter()));
         tc = new TypeCheck(null, derLit);
     }
 

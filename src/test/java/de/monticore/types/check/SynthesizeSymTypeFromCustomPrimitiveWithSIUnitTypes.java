@@ -3,12 +3,8 @@ package de.monticore.types.check;
 import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisScope;
 import de.monticore.types.customprimitivewithsiunittypes._ast.ASTCustomPrimitiveWithSIUnitType;
 import de.monticore.types.customprimitivewithsiunittypes._visitor.CustomPrimitiveWithSIUnitTypesVisitor;
-import de.monticore.types.primitivewithsiunittypes._ast.ASTPrimitiveWithSIUnitType;
-import de.monticore.types.primitivewithsiunittypes._visitor.PrimitiveWithSIUnitTypesVisitor;
 import de.monticore.types.siunittypes._ast.ASTSIUnitType;
 import de.se_rwth.commons.logging.Log;
-
-import static de.monticore.types.check.SymTypeExpressionHelper.isNumericType;
 
 /**
  * Visitor for Derivation of SymType from PrimitiveWithSIUnitTypes
@@ -62,6 +58,13 @@ public class SynthesizeSymTypeFromCustomPrimitiveWithSIUnitTypes extends Synthes
             Log.error("0x"); // TODO
         }
         siunitType = lastResult.getLast();
-        lastResult.setLast(SIUnitSymTypeExpressionFactory.createPrimitiveWithSIUnitType((SymTypeConstant) primitiveType, siunitType, scope));
+        lastResult.setLast(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType((SymTypeConstant) primitiveType, siunitType, scope));
+    }
+
+    /**
+     * test if the expression is of numeric type (double, float, long, int, char, short, byte)
+     */
+    private static boolean isNumericType(SymTypeExpression type) {
+        return type.isTypeConstant() && ((SymTypeConstant) type).isNumericType();
     }
 }
