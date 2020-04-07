@@ -36,16 +36,16 @@ public class DeriveSymTypeOfSIUnitLiterals extends DeriveSymTypeOfMCCommonLitera
     @Override
     public void traverse(ASTSIUnitLiteral node) {
         node.getNum().accept(getRealThis());
-        traverseSIUnitLiteral((SymTypeConstant) result.getLast(), node.getUn());
+        traverseSIUnitLiteral(result.getLast(), node.getUn());
     }
 
     @Override
     public void traverse(ASTSignedSIUnitLiteral node) {
         node.getNum().accept(getRealThis());
-        traverseSIUnitLiteral((SymTypeConstant) result.getLast(), node.getUn());
+        traverseSIUnitLiteral(result.getLast(), node.getUn());
     }
 
-    private void traverseSIUnitLiteral(SymTypeConstant literalType, ASTSIUnit astsiUnit) {
+    private void traverseSIUnitLiteral(SymTypeExpression literalType, ASTSIUnit astsiUnit) {
         SymTypeExpression siunitType = SIUnitSymTypeExpressionFactory.createSIUnit(astsiUnit.toString(), this.enclosingScope);
         if (siunitType instanceof SymTypeOfSIUnit)
             result.setLast(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(

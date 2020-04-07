@@ -5,6 +5,7 @@
  */
 package de.monticore.types.check;
 
+import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisScope;
 import de.monticore.types.siunittypes._ast.ASTSIUnitType;
 import de.monticore.types.siunittypes._visitor.SIUnitTypesVisitor;
 import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
@@ -21,9 +22,9 @@ public class SynthesizeSymTypeFromSIUnitTypes implements ISynthesize, SIUnitType
      * Using the visitor functionality to calculate the SymType Expression
      */
 
-    protected ITypeSymbolsScope scope;
+    protected IExpressionsBasisScope scope;
 
-    public SynthesizeSymTypeFromSIUnitTypes(ITypeSymbolsScope scope) {
+    public SynthesizeSymTypeFromSIUnitTypes(IExpressionsBasisScope scope) {
         this.scope = scope;
     }
 

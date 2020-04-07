@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static de.monticore.types.check.TypeCheck.*;
+
 public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
     /**
      * createSIUnitBasic: for SIUnitBasicTypes
@@ -50,16 +52,6 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
 
     public static SymTypeOfSIUnitBasic createSIUnitBasic(TypeSymbolLoader typeSymbolLoader) {
         return new SymTypeOfSIUnitBasic(typeSymbolLoader);
-    }
-
-    /**
-     * createSIUnit: for SIUnitTypes
-     * returns SymTypeExpression because the unit could be dimensionless (e.g. m/m)
-     *
-     * @param name Of form km^2*s/kg, ...
-     */
-    public static SymTypeExpression createSIUnit(String name) {
-        return createSIUnit(name, DefsSIUnitType.getSIUnitTypeSymbolsScope());
     }
 
     /**
@@ -148,8 +140,10 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
     /**
      * creates a numeric with siunit type
      */
-    public static SymTypeExpression createNumericWithSIUnitType(SymTypeConstant numericType, SymTypeExpression siunitType, TypeSymbolLoader typeSymbolLoader) {
+    public static SymTypeExpression createNumericWithSIUnitType(SymTypeExpression numericType, SymTypeExpression siunitType, TypeSymbolLoader typeSymbolLoader) {
         SymTypeExpression result;
+        if (!isNumericType(numericType))
+            Log.error("0x SymTypeExpression must be numeric type");
         if (!(siunitType instanceof SymTypeOfSIUnit))
             result = numericType;
         else
@@ -169,8 +163,18 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
     /**
      * creates a numeric with siunit type
      */
-    public static SymTypeExpression createNumericWithSIUnitType(SymTypeConstant numericType, SymTypeExpression siunitType, ITypeSymbolsScope enclosingScope) {
+    public static SymTypeExpression createNumericWithSIUnitType(SymTypeExpression numericType, SymTypeExpression siunitType, ITypeSymbolsScope enclosingScope) {
         String name = "(" + numericType.print() + "," + siunitType.print() + ")";
         return createNumericWithSIUnitType(numericType, siunitType, new TypeSymbolLoader(name, enclosingScope));
+    }
+
+    /**
+     * test if the expression is of numeric type (double, float, long, int, char, short, byte)
+     */
+    private static boolean isNumericType(SymTypeExpression type) {
+        return (isDouble(type) || isFloat(type) ||
+                isLong(type) || isInt(type) ||
+                isChar(type) || isShort(type) ||
+                isByte(type));
     }
 }

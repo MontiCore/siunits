@@ -23,7 +23,7 @@ public class SIUnitPrettyPrinter implements SIUnitsVisitor {
      * @return the printer
      */
     public IndentPrinter getPrinter() {
-        return this.printer;
+        return printer;
     }
 
     /**

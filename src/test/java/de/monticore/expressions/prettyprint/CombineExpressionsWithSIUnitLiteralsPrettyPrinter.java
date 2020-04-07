@@ -5,7 +5,7 @@ package de.monticore.expressions.prettyprint;
 import de.monticore.MCCommonLiteralsPrettyPrinter;
 import de.monticore.expressions.combineexpressionswithliterals._visitor.CombineExpressionsWithLiteralsDelegatorVisitor;
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
-import de.monticore.lang.literals.prettyprint.SIUnitLiteralsPrettyPrinter;
+import de.monticore.lang.literals.siunitliterals.prettyprint.SIUnitLiteralsPrettyPrinter;
 import de.monticore.literals.mccommonliterals._ast.ASTSignedLiteral;
 import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
 import de.monticore.prettyprint.IndentPrinter;

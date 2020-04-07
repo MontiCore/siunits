@@ -4,6 +4,7 @@ import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisS
 import de.monticore.types.primitivewithsiunittypes._ast.ASTPrimitiveWithSIUnitType;
 import de.monticore.types.primitivewithsiunittypes._visitor.PrimitiveWithSIUnitTypesVisitor;
 import de.monticore.types.siunittypes._ast.ASTSIUnitType;
+import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
 import de.se_rwth.commons.logging.Log;
 
 import static de.monticore.types.check.TypeCheck.*;
@@ -42,7 +43,7 @@ public class SynthesizeSymTypeFromPrimitiveWithSIUnitTypes extends SynthesizeSym
 
     @Override
     public void endVisit(ASTSIUnitType node) {
-        lastResult.setLast(SIUnitSymTypeExpressionFactory.createSIUnit(node.toString()));
+        lastResult.setLast(SIUnitSymTypeExpressionFactory.createSIUnit(node.toString(), scope));
     }
 
     @Override
@@ -60,13 +61,13 @@ public class SynthesizeSymTypeFromPrimitiveWithSIUnitTypes extends SynthesizeSym
             Log.error("0x"); // TODO
         }
         siunitType = lastResult.getLast();
-        lastResult.setLast(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType((SymTypeConstant) numericType, siunitType, scope));
+        lastResult.setLast(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(numericType, siunitType, scope));
     }
 
     /**
      * test if the expression is of numeric type (double, float, long, int, char, short, byte)
      */
-    private static boolean isNumericType(SymTypeExpression type) {
+    private boolean isNumericType(SymTypeExpression type) {
         return (isDouble(type) || isFloat(type) ||
                 isLong(type) || isInt(type) ||
                 isChar(type) || isShort(type) ||

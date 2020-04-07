@@ -1,4 +1,4 @@
-package de.monticore.lang.literals.prettyprint;
+package de.monticore.lang.literals.siunitliterals.prettyprint;
 
 import de.monticore.MCCommonLiteralsPrettyPrinter;
 import de.monticore.lang.literals.siunitliterals._ast.ASTSIUnitLiteral;
@@ -25,37 +25,37 @@ public class SIUnitLiteralsPrettyPrinter extends MCCommonLiteralsPrettyPrinter
      * @return the printer
      */
     public IndentPrinter getPrinter() {
-        return this.printer;
+        return printer;
     }
 
 
     /**
      * Prints a SIUnitLiteral
-     * Cannot be visit or endVisit because the MCCommonLiteralsPrettyPrinter would print "3 kg/s^2" as "32 kg/s^2"
-     * @param a SIUnitLiteral
+     * Cannot be visit or endVisit because the MCCommonLiteralsPrettyPrinter (superclass) would print "3 kg/s^2" as "32 kg/s^2"
+     * @param node SIUnitLiteral
      */
     @Override
-    public void traverse(ASTSIUnitLiteral a) {
-        a.getNum().accept(getRealThis());
+    public void traverse(ASTSIUnitLiteral node) {
+        node.getNum().accept(getRealThis());
         printer.print(" ");
-        a.getUn().accept(new SIUnitPrettyPrinter(printer));
+        node.getUn().accept(new SIUnitPrettyPrinter(printer));
     }
 
     @Override
-    public void traverse(ASTSignedSIUnitLiteral a) {
-        a.getNum().accept(getRealThis());
+    public void traverse(ASTSignedSIUnitLiteral node) {
+        node.getNum().accept(getRealThis());
         printer.print(" ");
-        a.getUn().accept(new SIUnitPrettyPrinter(printer));
+        node.getUn().accept(new SIUnitPrettyPrinter(printer));
     }
 
     /**
      * This method prettyprints a given node from SIUnitLiterals grammar.
      *
-     * @param a A node from SIUnitLiterals grammar.
+     * @param node A node from SIUnitLiterals grammar.
      * @return String representation.
      */
-    public String prettyprint(ASTSIUnitLiteralsNode a) {
-        a.accept(getRealThis());
+    public String prettyprint(ASTSIUnitLiteralsNode node) {
+        node.accept(getRealThis());
         return printer.getContent();
     }
 

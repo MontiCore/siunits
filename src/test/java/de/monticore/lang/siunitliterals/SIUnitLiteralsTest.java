@@ -1,6 +1,6 @@
 package de.monticore.lang.siunitliterals;
 
-import de.monticore.lang.literals.prettyprint.SIUnitLiteralsPrettyPrinter;
+import de.monticore.lang.literals.siunitliterals.prettyprint.SIUnitLiteralsPrettyPrinter;
 import de.monticore.lang.literals.siunitliterals._ast.ASTSIUnitLiteral;
 import de.monticore.lang.literals.testsiunitliterals._parser.TestSIUnitLiteralsParser;
 import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;

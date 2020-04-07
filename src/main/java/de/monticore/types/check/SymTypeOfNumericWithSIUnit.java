@@ -6,29 +6,30 @@ import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolLoader;
 import de.se_rwth.commons.logging.Log;
 
+import static de.monticore.types.check.TypeCheck.*;
+
+/**
+ * SymTypeOfNumericWithSIUnit stores any kind of Numerics combined with SIUnit applied
+ * to Arguments, such as <int m>, <double m/s>, <short m/s^2>, <int s/m> ...
+ */
 public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
 
     private SymTypeExpression siunitType;
-    private SymTypeConstant numericType;
+    private SymTypeExpression numericType;
 
     /**
      * Constructor with all parameters that are stored:
      */
-    public SymTypeOfNumericWithSIUnit(TypeSymbolLoader typeSymbolLoader, SymTypeConstant numericType, SymTypeExpression siunitType) {
-        init(typeSymbolLoader, numericType, siunitType);
-    }
-
-    public SymTypeOfNumericWithSIUnit(ITypeSymbolsScope enclosingScope, SymTypeConstant numericType, SymTypeExpression siunitType) {
-        init(new TypeSymbolLoader(print(), enclosingScope), numericType, siunitType);
-    }
-
-    private void init(TypeSymbolLoader typeSymbolLoader, SymTypeConstant numericType, SymTypeExpression siunitType) {
-        if (!numericType.isNumericType()) {
-            Log.error("0x SymTypeConstant must be numeric type");
-        }
+    public SymTypeOfNumericWithSIUnit(TypeSymbolLoader typeSymbolLoader, SymTypeExpression numericType, SymTypeExpression siunitType) {
         this.typeSymbolLoader = typeSymbolLoader;
         this.numericType = numericType;
         this.siunitType = siunitType;
+    }
+
+    public SymTypeOfNumericWithSIUnit(ITypeSymbolsScope enclosingScope, SymTypeConstant numericType, SymTypeExpression siunitType) {
+        this.numericType = numericType;
+        this.siunitType = siunitType;
+        this.typeSymbolLoader = new TypeSymbolLoader(print(), enclosingScope);
     }
 
     /**
@@ -50,9 +51,9 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
         JsonPrinter jp = new JsonPrinter();
         jp.beginObject();
         // Care: the following String needs to be adapted if the package was renamed
-        jp.member(JsonConstants.KIND, "de.monticore.types.check.SymTypeOfSIUnitWithLiteral");
-        jp.member("numericType", numericType.print());
-        jp.member("siunitType", siunitType.print());
+        jp.member(JsonConstants.KIND, "de.monticore.types.check.SymTypeOfNumericWithSIUnit");
+        jp.member("numericType", numericType.printAsJson());
+        jp.member("siunitType", siunitType.printAsJson());
         jp.endObject();
         return jp.getContent();
     }
@@ -72,11 +73,11 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
         this.siunitType = siunitType;
     }
 
-    public SymTypeConstant getNumericType() {
+    public SymTypeExpression getNumericType() {
         return numericType;
     }
 
-    public void setNumericType(SymTypeConstant numericType) {
+    public void setNumericType(SymTypeExpression numericType) {
         this.numericType = numericType;
     }
 }

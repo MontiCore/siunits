@@ -40,7 +40,7 @@ public class SynthesizeSymTypeFromCustomPrimitiveWithSIUnitTypes extends Synthes
 
     @Override
     public void endVisit(ASTSIUnitType node) {
-        lastResult.setLast(SIUnitSymTypeExpressionFactory.createSIUnit(node.toString()));
+        lastResult.setLast(SIUnitSymTypeExpressionFactory.createSIUnit(node.toString(), scope));
     }
 
     @Override

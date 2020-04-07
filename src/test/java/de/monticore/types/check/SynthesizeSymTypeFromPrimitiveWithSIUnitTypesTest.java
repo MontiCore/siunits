@@ -1,7 +1,5 @@
-/* (c) https://github.com/MontiCore/monticore */
 package de.monticore.types.check;
 
-import de.monticore.expressions.expressionsbasis._symboltable.ExpressionsBasisScope;
 import de.monticore.expressions.expressionsbasis._symboltable.ExpressionsBasisSymTabMill;
 import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisScope;
 import de.monticore.testsijava.testsijava._parser.TestSIJavaParser;
@@ -16,10 +14,9 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-public class SynthesizeSymTypeFromSIUnitTypesTest {
+public class SynthesizeSymTypeFromPrimitiveWithSIUnitTypesTest {
 
     private TestSIJavaParser parser = new TestSIJavaParser();
     // This is the TypeChecker under Test:
@@ -33,7 +30,7 @@ public class SynthesizeSymTypeFromSIUnitTypesTest {
 
     @Before
     public void setupForEach() {
-        tc = new TypeCheck(new SynthesizeSymTypeFromSIUnitTypes(
+        tc = new TypeCheck(new SynthesizeSymTypeFromPrimitiveWithSIUnitTypes(
                 ExpressionsBasisSymTabMill.expressionsBasisScopeBuilder().build()), null);
     }
 
