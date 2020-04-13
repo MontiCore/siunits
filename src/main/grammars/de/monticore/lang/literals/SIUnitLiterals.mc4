@@ -12,11 +12,17 @@ component grammar SIUnitLiterals extends de.monticore.lang.siunits.SIUnits,
             '[]' is necessary in ordner to distinguish the SI unit from a float literal '3.2f'
     */
     SIUnitLiteral implements Literal =
-        num:NumericLiteral "[" un:SIUnit "]";
+        num:NumericLiteral
+        { !(_input.LT(1).getText().startsWith("F") ||
+         _input.LT(1).getText().startsWith("L") ||
+          _input.LT(1).getText().startsWith("l")) }? un:SIUnit;
 
     /** The signed SI unit literals
             '[]' is necessary in ordner to distinguish the SI unit from a float literal '3.2f'
     */
     SignedSIUnitLiteral implements SignedLiteral =
-        num:SignedNumericLiteral "[" un:SIUnit "]";
+        num:SignedNumericLiteral
+        { !(_input.LT(1).getText().startsWith("F") ||
+         _input.LT(1).getText().startsWith("L") ||
+          _input.LT(1).getText().startsWith("l")) }? un:SIUnit;
 }

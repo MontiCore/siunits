@@ -41,7 +41,7 @@ public class DeriveSymTypeOfExpressionWithSIUnitTypesTest extends DeriveSymTypeO
 
     @Test
     public void deriveTFromSIUnitLiteral() throws IOException {
-        ASTExpression astex = p.parse_StringExpression("42.3 [km]").get();
+        ASTExpression astex = p.parse_StringExpression("42.3 km").get();
         assertEquals("(double,m)", tc.typeOf(astex).print());
     }
 }

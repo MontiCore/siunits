@@ -56,7 +56,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void deriveFromIncSuffixExpression() throws IOException {
         //example with siunit literal
-        String s = "4[km]++";
+        String s = "4km++";
         ASTExpression astex = p.parse_StringExpression(s).get();
         assertEquals("(int,m)", tc.typeOf(astex).print());
     }
@@ -80,7 +80,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void deriveFromDecSuffixExpression() throws IOException {
         //example with siunit literal
-        String s = "4.2[km]--";
+        String s = "4.2km--";
         ASTExpression astex = p.parse_StringExpression(s).get();
         assertEquals("(double,m)", tc.typeOf(astex).print());
     }
@@ -104,7 +104,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void deriveFromIncPrefixExpression() throws IOException {
         //example with siunit literal
-        String s = "++4[km]";
+        String s = "++4km";
         ASTExpression astex = p.parse_StringExpression(s).get();
         assertEquals("(int,m)", tc.typeOf(astex).print());
     }
@@ -128,7 +128,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void deriveFromDecPrefixExpression() throws IOException {
         //example with siunit literal
-        String s = "--4.1[km]";
+        String s = "--4.1km";
         ASTExpression astex = p.parse_StringExpression(s).get();
         assertEquals("(double,m)", tc.typeOf(astex).print());
     }
@@ -152,7 +152,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void deriveFromMinusPrefixExpression() throws IOException {
         //example with siunit literal
-        String s = "-4.3[km]";
+        String s = "-4.3km";
         ASTExpression astex = p.parse_StringExpression(s).get();
         assertEquals("(double,m)", tc.typeOf(astex).print());
     }
@@ -176,7 +176,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void deriveFromPlusPrefixExpression() throws IOException {
         //example with siunit literal
-        String s = "+4[km]";
+        String s = "+4km";
         ASTExpression astex = p.parse_StringExpression(s).get();
         assertEquals("(int,m)", tc.typeOf(astex).print());
     }
@@ -200,17 +200,17 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void deriveFromPlusAssignmentExpression() throws IOException {
         //example with double m += int m
-        String s = "varD_M+=4[km]";
+        String s = "varD_M+=4km";
         ASTExpression astex = p.parse_StringExpression(s).get();
         assertEquals("(double,m)", tc.typeOf(astex).print());
 
         //example with int m += double m
-        s = "varI_M+=4.2[km]";
+        s = "varI_M+=4.2km";
         astex = p.parse_StringExpression(s).get();
         assertEquals("(int,m)", tc.typeOf(astex).print());
 
         //example with double m += int m
-        s = "varI_M+=4[km]";
+        s = "varI_M+=4km";
         astex = p.parse_StringExpression(s).get();
         assertEquals("(int,m)", tc.typeOf(astex).print());
     }
@@ -219,7 +219,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidPlusAssignmentExpression1() throws IOException {
         //not possible because s = s + m cannot be calculated
-        String s = "varD_S+=4[km]";
+        String s = "varD_S+=4km";
         ASTExpression astex = p.parse_StringExpression(s).get();
         try{
             tc.typeOf(astex);
@@ -232,7 +232,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidPlusAssignmentExpression2() throws IOException {
         //not possible because += is not defined for siunits
-        String s = "varS+=4[km]";
+        String s = "varS+=4km";
         ASTExpression astex = p.parse_StringExpression(s).get();
         try{
             tc.typeOf(astex);
@@ -248,7 +248,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void deriveFromMinusAssignmentExpression() throws IOException {
         //example with siunit literal long m^2/s -= int m^2/s
-        String s = "varL_KMe2perH-=4[m^2/s]";
+        String s = "varL_KMe2perH-=4m^2/s";
         ASTExpression astex = p.parse_StringExpression(s).get();
         assertEquals("(long,m^2/s)", tc.typeOf(astex).print());
     }
@@ -256,7 +256,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidMinusAssignmentExpression1() throws IOException {
         //not possible because s = s - m cannot be calculated
-        String s = "varD_S-=4[km]";
+        String s = "varD_S-=4km";
         ASTExpression astex = p.parse_StringExpression(s).get();
         try{
             tc.typeOf(astex);
@@ -269,7 +269,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidMinusAssignmentExpression2() throws IOException {
         //not possible because -= is not defined for siunits
-        String s = "varS-=4[km]";
+        String s = "varS-=4km";
         ASTExpression astex = p.parse_StringExpression(s).get();
         try{
             tc.typeOf(astex);
@@ -405,12 +405,12 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void deriveFromModuloAssignmentExpression() throws IOException {
         //example with siunit literal int m %= double m
-        String s = "varI_M%=9.2 [m]";
+        String s = "varI_M%=9.2 m";
         ASTExpression astex = p.parse_StringExpression(s).get();
         assertEquals("(int,m)", tc.typeOf(astex).print());
 
         //example with siunit literal double m %= int m
-        s = "varD_M%=9 [m]";
+        s = "varD_M%=9 m";
         astex = p.parse_StringExpression(s).get();
         assertEquals("(double,m)", tc.typeOf(astex).print());
     }
@@ -418,7 +418,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidModuloAssignmentExpression1() throws IOException {
         //not possible because s = s % m cannot be calculated
-        String s = "varD_S%=3[m]";
+        String s = "varD_S%=3m";
         ASTExpression astex = p.parse_StringExpression(s).get();
         try{
             tc.typeOf(astex);
@@ -508,7 +508,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidOrAssignmentExpression1() throws IOException {
         //not possible because int m = int m | int m cannot be calculated
-        String s = "varI_M|=3 [m]";
+        String s = "varI_M|=3 m";
         ASTExpression astex = p.parse_StringExpression(s).get();
         try{
             tc.typeOf(astex);
@@ -547,7 +547,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidBinaryXorAssignmentExpression1() throws IOException {
         //not possible because int m = int m ^ int m cannot be calculated
-        String s = "varI_M^=3 [m]";
+        String s = "varI_M^=3 m";
         ASTExpression astex = p.parse_StringExpression(s).get();
         try{
             tc.typeOf(astex);
@@ -560,7 +560,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidBinaryXorAssignmentExpression2() throws IOException {
         //not possible because int m = int m ^ int m cannot be calculated
-        String s = "varM^=3 [m]";
+        String s = "varM^=3 m";
         ASTExpression astex = p.parse_StringExpression(s).get();
         try{
             tc.typeOf(astex);
@@ -585,7 +585,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidDoubleLeftAssignmentExpression1() throws IOException {
         //not possible because int m = int m << int m cannot be calculated
-        String s = "varI_M<<=3 [m]";
+        String s = "varI_M<<=3 m";
         ASTExpression astex = p.parse_StringExpression(s).get();
         try {
             tc.typeOf(astex);
@@ -626,7 +626,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidDoubleRightAssignmentExpression1() throws IOException {
         //not possible because int m = int m >> int m cannot be calculated
-        String s = "varI_M>>=3[m]";
+        String s = "varI_M>>=3m";
         ASTExpression astex = p.parse_StringExpression(s).get();
         try{
             tc.typeOf(astex);
@@ -696,7 +696,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void deriveFromRegularAssignmentExpression() throws IOException {
         //example with km - km
-        String s = "varD_KMe2perHmSe4 = 3 [mm^2/(h^2*ks^3)]";
+        String s = "varD_KMe2perHmSe4 = 3 mm^2/(h^2*ks^3)";
         ASTExpression astex = p.parse_StringExpression(s).get();
         assertEquals("(double,m^2/s^5)", tc.typeOf(astex).print());
 
@@ -710,8 +710,8 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
 
     @Test
     public void testInvalidRegularAssignmentExpression1() throws IOException {
-        //not possible because [m^2/s^5] and [m/s^5] are incompatible types
-        String s = "varD_KMe2perHmSe4 = 3 [mm/(h^2*ks^3)]";
+        //not possible because m^2/s^5 and m/s^5 are incompatible types
+        String s = "varD_KMe2perHmSe4 = 3 mm/(h^2*ks^3)";
         ASTExpression astex = p.parse_StringExpression(s).get();
         try{
             tc.typeOf(astex);
@@ -723,8 +723,8 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
 
     @Test
     public void testInvalidRegularAssignmentExpression2() throws IOException {
-        //not possible because [m^2/s^5] and [m/s^5] are incompatible types
-        String s = "varM = 3 [m]";
+        //not possible because m^2/s^5 and m/s^5 are incompatible types
+        String s = "varM = 3 m";
         ASTExpression astex = p.parse_StringExpression(s).get();
         try{
             tc.typeOf(astex);
