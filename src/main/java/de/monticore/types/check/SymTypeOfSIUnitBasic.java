@@ -19,6 +19,10 @@ import de.monticore.types.typesymbols._symboltable.TypeSymbolLoader;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * SymTypeOfSIUnit stores any kind of SIUnit applied
+ * to Arguments, such as m, s, s^2, kg...
+ */
 public class SymTypeOfSIUnitBasic extends SymTypeExpression {
 
     protected Optional<Integer> exponent = Optional.of(Integer.valueOf(1));

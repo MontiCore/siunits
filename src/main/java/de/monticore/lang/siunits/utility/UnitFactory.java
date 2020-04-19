@@ -11,7 +11,7 @@ import javax.measure.unit.UnitFormat;
 /**
  * This class is intended to handle the Units from the jscience package javax.measure.unit.
  * It should be the only class to create Units or to print them. It is mainly used to handle
- * SIUnits from the grammar de.monticore.lang.siunits.SIUnits.mc4
+ * SI units from the grammar de.monticore.lang.siunits.SIUnits.mc4
  */
 public class UnitFactory {
 

@@ -6,15 +6,14 @@ import de.monticore.lang.literals.siunitliterals._ast.ASTSignedSIUnitLiteral;
 import de.monticore.lang.literals.siunitliterals._visitor.SIUnitLiteralsVisitor;
 import de.monticore.lang.siunits.siunits._ast.ASTSIUnit;
 
+/**
+ * This class is used to derive the type of an SIUnitLiteral
+ */
 public class DeriveSymTypeOfSIUnitLiterals extends DeriveSymTypeOfMCCommonLiterals
         implements SIUnitLiteralsVisitor {
 
     private IExpressionsBasisScope enclosingScope;
-    // ----------------------------------------------------------  realThis start
-    // setRealThis, getRealThis are necessary to make the visitor compositional
-    //
-    // (the Vistors are then composed using theRealThis Pattern)
-    //
+
     SIUnitLiteralsVisitor realThis = this;
 
     @Override

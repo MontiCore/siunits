@@ -3,13 +3,15 @@ package de.monticore.lang.literals;
 
 /**
  * This grammar defines SI unit literals such as '3 m' or '2.5 km/h'
+ * When the number is followed by L or F (Liter or Farad) an underscore between number and unit
+ * is required, to differ from Float- and Longliterals. In all other cases the underscore is
+ * optional, e.g. '3.2 _F', '3.2 m/F', '3.2 m' or '3.2 _m'.
 */
 
 component grammar SIUnitLiterals extends de.monticore.lang.siunits.SIUnits,
                                          de.monticore.literals.MCCommonLiterals {
 
-    /** The unsigned SI unit literals
-    */
+    // The unsigned SI unit literals
     SIUnitLiteral implements Literal =
         num:NumericLiteral
         { !(_input.LT(1).getText().startsWith("F") ||
@@ -17,8 +19,7 @@ component grammar SIUnitLiterals extends de.monticore.lang.siunits.SIUnits,
           _input.LT(1).getText().startsWith("l")) }? un:SIUnit |
         num:NumericLiteral "_" un:SIUnit;
 
-    /** The signed SI unit literals
-    */
+    // The signed SI unit literals
     SignedSIUnitLiteral implements SignedLiteral =
         num:SignedNumericLiteral
         { !(_input.LT(1).getText().startsWith("F") ||

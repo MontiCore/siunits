@@ -2,7 +2,7 @@
 package de.monticore.types;
 
 /**
- * This grammar interprets the SIUnits as types to distinguish between the type 'm', e.g. in a declaration
+ * This grammar interprets the SI units as types to distinguish between the type 'm', e.g. in a declaration
  * and 'm' in an expression.
 */
 

@@ -13,6 +13,12 @@ import java.util.stream.Collectors;
 
 import static de.monticore.types.check.TypeCheck.*;
 
+/**
+ * SIUnitSymTypeExpressionFactory contains static functions that create
+ * the SymTypeOfSIUnit or SymTypeOfNumericWithSIUnit
+ * This factory therefore should be the only source to create those SymTypeExpressions.
+ * No other source is needed.
+ */
 public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
     /**
      * createSIUnitBasic: for SIUnitBasicTypes
@@ -143,7 +149,7 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
     public static SymTypeExpression createNumericWithSIUnitType(SymTypeExpression numericType, SymTypeExpression siunitType, TypeSymbolLoader typeSymbolLoader) {
         SymTypeExpression result;
         if (!isNumericType(numericType))
-            Log.error("0x SymTypeExpression must be numeric type");
+            Log.error("0xA0498 SymTypeExpression must be numeric type");
         if (!(siunitType instanceof SymTypeOfSIUnit))
             result = numericType;
         else

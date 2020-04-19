@@ -2,8 +2,7 @@
 package de.monticore.types;
 
 /**
- * This grammar interprets Primitive with SIUnits as types to distinguish between the type
- * 'double m', e.g. in a declaration and '3.2 m' in an expression.
+ * This grammar is one way to represent the type of a primitive combined with a SI unit type.
 */
 
 component grammar PrimitiveWithSIUnitTypes extends de.monticore.types.MCBasicTypes, de.monticore.types.SIUnitTypes {

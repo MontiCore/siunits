@@ -6,6 +6,10 @@ import de.monticore.expressions.commonexpressions._ast.ASTMultExpression;
 
 import java.util.Optional;
 
+/**
+ * This class is used to derive the symtype of common expressions where SI unit types are used, including primitive
+ * with SI unit types.
+ */
 public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTypeOfCommonExpressions {
 
     @Override

@@ -5,6 +5,10 @@ import de.monticore.expressions.assignmentexpressions._ast.ASTConstantsAssignmen
 
 import java.util.Optional;
 
+/**
+ * This class is used to derive the symtype of assignment expressions where SI unit types are used, including primitive
+ * with SI unit types.
+ */
 public class DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes extends DeriveSymTypeOfAssignmentExpressions {
 
     /**
