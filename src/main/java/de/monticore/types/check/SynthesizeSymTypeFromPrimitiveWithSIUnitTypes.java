@@ -52,13 +52,13 @@ public class SynthesizeSymTypeFromPrimitiveWithSIUnitTypes extends SynthesizeSym
         SymTypeExpression siunitType = null;
         node.getMCPrimitiveType().accept(getRealThis());
         if (!lastResult.isPresentLast() || !isNumericType(lastResult.getLast())) {
-            Log.error("0x"); // TODO
+            Log.error("0xA0495");
         }
         numericType = lastResult.getLast();
         lastResult.reset();
         node.getSIUnitType().accept(getRealThis());
         if (!lastResult.isPresentLast()){
-            Log.error("0x"); // TODO
+            Log.error("0xA0496");
         }
         siunitType = lastResult.getLast();
         lastResult.setLast(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(numericType, siunitType, scope));
