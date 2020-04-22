@@ -3,6 +3,7 @@ package de.monticore.lang.siunitliterals;
 import de.monticore.lang.literals.siunitliterals.prettyprint.SIUnitLiteralsPrettyPrinter;
 import de.monticore.lang.literals.siunitliterals._ast.ASTSIUnitLiteral;
 import de.monticore.lang.literals.testsiunitliterals._parser.TestSIUnitLiteralsParser;
+import de.monticore.literals.mccommonliterals._ast.ASTBasicLongLiteral;
 import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
 import de.monticore.prettyprint.IndentPrinter;
 import de.se_rwth.commons.logging.Log;
@@ -57,9 +58,11 @@ public class SIUnitLiteralsTest {
     }
 
     @Test
-    public void testOptionalUnit() {
+    public void testLongLiteral() {
         try {
-            checkSIUnitLiteral(30, "kg", "30L");
+            ASTLiteral literal = parseLiteral("30.2F");
+            assert (literal instanceof ASTSIUnitLiteral);
+            assert (((ASTSIUnitLiteral) literal).getNum() instanceof ASTBasicLongLiteral);
         } catch (IOException e) {
             fail(e.getMessage());
         }
