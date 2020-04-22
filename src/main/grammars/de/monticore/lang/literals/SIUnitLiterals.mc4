@@ -16,7 +16,7 @@ component grammar SIUnitLiterals extends de.monticore.lang.siunits.SIUnits,
         num:NumericLiteral
         { !(_input.LT(1).getText().startsWith("F") ||
          _input.LT(1).getText().startsWith("L") ||
-          _input.LT(1).getText().startsWith("l")) }? un:SIUnit |
+          _input.LT(1).getText().startsWith("l")) }? un:SIUnit? |
         num:NumericLiteral "_" un:SIUnit;
 
     // The signed SI unit literals
@@ -24,6 +24,6 @@ component grammar SIUnitLiterals extends de.monticore.lang.siunits.SIUnits,
         num:SignedNumericLiteral
         { !(_input.LT(1).getText().startsWith("F") ||
          _input.LT(1).getText().startsWith("L") ||
-          _input.LT(1).getText().startsWith("l")) }? un:SIUnit |
+          _input.LT(1).getText().startsWith("l")) }? un:SIUnit? |
         num:SignedNumericLiteral "_" un:SIUnit;
 }

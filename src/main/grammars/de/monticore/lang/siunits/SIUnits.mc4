@@ -41,8 +41,8 @@ component grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
     // see https://en.wikipedia.org/wiki/SI_base_unit
     // see https://en.wikipedia.org/wiki/SI_derived_unit
     UnitBaseDimWithPrefix implements SIUnitBasic =
-        { _input.LT(1).getText().matches("(Y|Z|E|P|T|G|M|k|h|da|d|c|m|n|p|f|a|z|y)?
-            (m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat)") }?
+        { _input.LT(1).getText().matches("(Y|Z|E|P|T|G|M|k|h|da|d|c|m|n|p|f|a|z|y)?" +
+            "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat)") }?
         unit:Name;
 
     // see https://en.wikipedia.org/wiki/Non-SI_units_mentioned_in_the_SI

@@ -20,7 +20,7 @@ public class SIUnitLiteralsTest {
 
     @BeforeClass
     public static void init() {
-        LogStub.init();
+        Log.init();
         Log.enableFailQuick(true);
     }
 
@@ -51,8 +51,16 @@ public class SIUnitLiteralsTest {
             checkSIUnitLiteral(30.4, "s^3/m^2*kg", "30.4s^3/m^2*kg");
             checkSIUnitLiteral(30.4, "deg", "30.4 deg");
             checkSIUnitLiteral(30.4, "min/h", "30.4 min/h");
+        } catch (IOException e) {
+            fail(e.getMessage());
         }
-        catch (IOException e) {
+    }
+
+    @Test
+    public void testOptionalUnit() {
+        try {
+            checkSIUnitLiteral(30, "kg", "30L");
+        } catch (IOException e) {
             fail(e.getMessage());
         }
     }
