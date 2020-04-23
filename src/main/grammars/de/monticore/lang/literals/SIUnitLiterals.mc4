@@ -12,18 +12,24 @@ component grammar SIUnitLiterals extends de.monticore.lang.siunits.SIUnits,
                                          de.monticore.literals.MCCommonLiterals {
 
     // The unsigned SI unit literals
-    SIUnitLiteral implements Literal =
+    SIUnitLiteral implements Literal <3> =
+        longLiteral:BasicLongLiteral un:SIUnit |
+        floatLiteral:BasicFloatLiteral un:SIUnit |
+        num:NumericLiteral "_" un:SIUnit |
         num:NumericLiteral
         { !(_input.LT(1).getText().startsWith("F") ||
-         _input.LT(1).getText().startsWith("L") ||
-          _input.LT(1).getText().startsWith("l")) }? un:SIUnit? |
-        num:NumericLiteral "_" un:SIUnit;
+            _input.LT(1).getText().startsWith("L") ||
+            _input.LT(1).getText().startsWith("l")) }? un:SIUnit
+    ;
 
     // The signed SI unit literals
-    SignedSIUnitLiteral implements SignedLiteral =
+    SignedSIUnitLiteral implements SignedLiteral <3> =
+        num:SignedNumericLiteral "_" un:SIUnit |
+        longLiteral:SignedBasicLongLiteral un:SIUnit |
+        floatLiteral:SignedBasicFloatLiteral un:SIUnit |
         num:SignedNumericLiteral
         { !(_input.LT(1).getText().startsWith("F") ||
-         _input.LT(1).getText().startsWith("L") ||
-          _input.LT(1).getText().startsWith("l")) }? un:SIUnit? |
-        num:SignedNumericLiteral "_" un:SIUnit;
+            _input.LT(1).getText().startsWith("L") ||
+            _input.LT(1).getText().startsWith("l")) }? un:SIUnit
+    ;
 }
