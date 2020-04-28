@@ -12,7 +12,7 @@ import java.util.Optional;
  */
 public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTypeOfCommonExpressions {
 
-    @Override
+     @Override
     protected Optional<SymTypeExpression> calculateMultExpression(ASTMultExpression expr) {
         SymTypeExpression leftResult = acceptThisAndReturnSymTypeExpressionOrLogError(expr.getLeft(), "0xA0491");
         SymTypeExpression rightResult = acceptThisAndReturnSymTypeExpressionOrLogError(expr.getRight(), "0xA0492");

@@ -4,9 +4,6 @@ import de.monticore.symboltable.serialization.JsonConstants;
 import de.monticore.symboltable.serialization.JsonPrinter;
 import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolLoader;
-import de.se_rwth.commons.logging.Log;
-
-import static de.monticore.types.check.TypeCheck.*;
 
 /**
  * SymTypeOfNumericWithSIUnit stores any kind of Numerics combined with SIUnit applied

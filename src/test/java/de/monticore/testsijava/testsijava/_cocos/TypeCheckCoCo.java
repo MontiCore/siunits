@@ -1,7 +1,9 @@
 package de.monticore.testsijava.testsijava._cocos;
 
 import de.monticore.ast.ASTNode;
-import de.monticore.testsijava.testsijava._ast.*;
+import de.monticore.testsijava.testsijava._ast.ASTFieldDeclaration;
+import de.monticore.testsijava.testsijava._ast.ASTSIJavaClass;
+import de.monticore.testsijava.testsijava._ast.ASTSIJavaMethodExpression;
 import de.monticore.testsijava.testsijava._symboltable.ITestSIJavaScope;
 import de.monticore.testsijava.testsijava._symboltable.TestSIJavaSymbolTableCreator;
 import de.monticore.testsijava.testsijava._visitor.TestSIJavaVisitor;

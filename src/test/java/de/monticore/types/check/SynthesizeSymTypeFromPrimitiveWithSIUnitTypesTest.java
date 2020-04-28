@@ -1,10 +1,8 @@
 package de.monticore.types.check;
 
 import de.monticore.expressions.expressionsbasis._symboltable.ExpressionsBasisSymTabMill;
-import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisScope;
 import de.monticore.testsijava.testsijava._parser.TestSIJavaParser;
 import de.monticore.types.siunittypes._ast.ASTSIUnitType;
-import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
 import de.se_rwth.commons.logging.Log;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -14,7 +12,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SynthesizeSymTypeFromPrimitiveWithSIUnitTypesTest {
 

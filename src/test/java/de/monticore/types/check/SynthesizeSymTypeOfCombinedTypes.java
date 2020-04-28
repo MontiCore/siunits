@@ -1,7 +1,6 @@
 package de.monticore.types.check;
 
 import de.monticore.expressions.combineexpressionswithliterals._visitor.CombineExpressionsWithLiteralsDelegatorVisitor;
-import de.monticore.expressions.combineexpressionswithliterals._visitor.CombineExpressionsWithLiteralsVisitor;
 import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisScope;
 
 import java.util.Optional;

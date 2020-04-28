@@ -8,26 +8,21 @@ package de.monticore.lang.literals;
  * optional, e.g. '3.2 _F', '3.2 m/F', '3.2 m' or '3.2 _m'.
 */
 
-grammar SIUnitLiterals extends de.monticore.lang.siunits.SIUnits,
+component grammar SIUnitLiterals extends de.monticore.lang.siunits.SIUnits,
                                          de.monticore.literals.MCCommonLiterals {
 
     // The unsigned SI unit literals
     SIUnitLiteral implements Literal <10> =
-        longLiteral:BasicLongLiteral un:SIUnit |
-        floatLiteral:BasicFloatLiteral un:SIUnit |
-        num:NumericLiteral " " un:SIUnit |
-        num:NumericLiteral
-        { !(_input.LT(1).getText().startsWith("F") ||
-            _input.LT(1).getText().startsWith("L")) }? un:SIUnit { noSpace() }?
+        num:NumericLiteral un:SIUnit
     ;
 
     // The signed SI unit literals
     SignedSIUnitLiteral implements SignedLiteral <10> =
         longLiteral:SignedBasicLongLiteral un:SIUnit |
         floatLiteral:SignedBasicFloatLiteral un:SIUnit |
-        num:SignedNumericLiteral " " un:SIUnit |
         num:SignedNumericLiteral
         { !(_input.LT(1).getText().startsWith("F") ||
-            _input.LT(1).getText().startsWith("L")) }? un:SIUnit { noSpace() }?
+         _input.LT(1).getText().startsWith("L")) }? un:SIUnit |
+        num:SignedNumericLiteral "~" un:SIUnit
     ;
 }

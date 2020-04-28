@@ -1,7 +1,7 @@
 package de.monticore.lang.siunitliterals;
 
 import de.monticore.lang.literals.siunitliterals._ast.ASTSIUnitLiteral;
-import de.monticore.lang.literals.siunitliterals._parser.SIUnitLiteralsParser;
+import de.monticore.lang.literals.testsiunitliterals._parser.TestSIUnitLiteralsParser;
 import de.monticore.literals.mccommonliterals._ast.ASTBasicFloatLiteral;
 import de.monticore.literals.mccommonliterals._ast.ASTBasicLongLiteral;
 import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
@@ -40,7 +40,7 @@ public class SIUnitLiteralsTest {
     }
 
     private ASTLiteral parseLiteral(String input) throws IOException {
-        SIUnitLiteralsParser parser = new SIUnitLiteralsParser();
+        TestSIUnitLiteralsParser parser = new TestSIUnitLiteralsParser();
         Optional<ASTLiteral> res = parser.parseLiteral(new StringReader(input));
         assertTrue(res.isPresent());
         return res.get();
@@ -74,7 +74,7 @@ public class SIUnitLiteralsTest {
             checkSIUnitLiteral("30.4F F");
             checkSIUnitLiteral("30.4F kg");
             checkSIUnitLiteral("30L F");
-            checkSIUnitLiteral("30 F");
+            checkSIUnitLiteral("30.2 F");
             checkSIUnitLiteral("30 L");
             checkSIUnitLiteral("30 l");
         } catch (IOException e) {
@@ -118,7 +118,7 @@ public class SIUnitLiteralsTest {
 
     @Test
     public void testInvalid1() throws IOException {
-        SIUnitLiteralsParser parser = new SIUnitLiteralsParser();
+        TestSIUnitLiteralsParser parser = new TestSIUnitLiteralsParser();
         Optional<ASTLiteral> res = parser.parseLiteral(new StringReader("3.2F"));
         assertTrue(res.isPresent());
         assertFalse(res.get() instanceof ASTSIUnitLiteral);
@@ -126,7 +126,7 @@ public class SIUnitLiteralsTest {
 
     @Test
     public void testInvalid2() throws IOException {
-        SIUnitLiteralsParser parser = new SIUnitLiteralsParser();
+        TestSIUnitLiteralsParser parser = new TestSIUnitLiteralsParser();
         Optional<ASTLiteral> res = parser.parseLiteral(new StringReader("3L"));
         assertTrue(res.isPresent());
         assertFalse(res.get() instanceof ASTSIUnitLiteral);

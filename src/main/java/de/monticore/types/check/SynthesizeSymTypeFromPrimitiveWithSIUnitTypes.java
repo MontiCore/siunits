@@ -4,7 +4,6 @@ import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisS
 import de.monticore.types.primitivewithsiunittypes._ast.ASTPrimitiveWithSIUnitType;
 import de.monticore.types.primitivewithsiunittypes._visitor.PrimitiveWithSIUnitTypesVisitor;
 import de.monticore.types.siunittypes._ast.ASTSIUnitType;
-import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
 import de.se_rwth.commons.logging.Log;
 
 import static de.monticore.types.check.TypeCheck.*;

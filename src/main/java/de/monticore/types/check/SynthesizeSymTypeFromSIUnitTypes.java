@@ -8,7 +8,6 @@ package de.monticore.types.check;
 import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisScope;
 import de.monticore.types.siunittypes._ast.ASTSIUnitType;
 import de.monticore.types.siunittypes._visitor.SIUnitTypesVisitor;
-import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
 
 import java.util.Optional;
 
