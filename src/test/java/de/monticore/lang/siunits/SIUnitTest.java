@@ -50,9 +50,7 @@ public class SIUnitTest {
             checkSIUnit("deg", "deg");
             checkSIUnit("s^-1", "1/s");
             checkSIUnit("°C", "°C");
-            checkSIUnit("° C", "°C");
             checkSIUnit("°F", "°F");
-            checkSIUnit("° F", "°F");
         }
         catch (IOException e) {
             fail(e.getMessage());

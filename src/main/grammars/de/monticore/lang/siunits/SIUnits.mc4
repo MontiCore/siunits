@@ -51,7 +51,7 @@ component grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
         unit:Name;
 
     CelsiusFahrenheit implements SIUnitBasic =
-        "°" { _input.LT(1).getText().matches("F|C") }? unit:Name;
+        { _input.LT(2).getText().matches("F|C") }? "°" unit:Name;
 
 
     // see https://en.wikipedia.org/wiki/SI_derived_unit
