@@ -70,29 +70,12 @@ public class SIUnitLiteralsTest {
     public void testWithFloatOrLongLiteral() {
         try {
             checkSIUnitLiteral("30.2F km");
-//            checkSIUnitLiteral("30.2F ~ F");
             checkSIUnitLiteral("30.4F F");
             checkSIUnitLiteral("30.4F kg");
             checkSIUnitLiteral("30L F");
             checkSIUnitLiteral("30.2 F");
             checkSIUnitLiteral("30 L");
             checkSIUnitLiteral("30 l");
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
-    }
-
-    @Ignore
-    @Test
-    public void testWithDelimiter() {
-        try {
-            checkSIUnitLiteral("30.4F ~ F");
-            checkSIUnitLiteral("30.2 ~ F");
-            checkSIUnitLiteral("30L ~ L");
-
-            checkSIUnitLiteral("30.4~ F");
-            checkSIUnitLiteral("30.4 ~F");
-            checkSIUnitLiteral("30.4~F");
         } catch (IOException e) {
             fail(e.getMessage());
         }
@@ -128,6 +111,14 @@ public class SIUnitLiteralsTest {
     public void testInvalid2() throws IOException {
         TestSIUnitLiteralsParser parser = new TestSIUnitLiteralsParser();
         Optional<ASTLiteral> res = parser.parseLiteral(new StringReader("3L"));
+        assertTrue(res.isPresent());
+        assertFalse(res.get() instanceof ASTSIUnitLiteral);
+    }
+
+    @Test
+    public void testInvalid3() throws IOException {
+        TestSIUnitLiteralsParser parser = new TestSIUnitLiteralsParser();
+        Optional<ASTLiteral> res = parser.parseLiteral(new StringReader("3l"));
         assertTrue(res.isPresent());
         assertFalse(res.get() instanceof ASTSIUnitLiteral);
     }
