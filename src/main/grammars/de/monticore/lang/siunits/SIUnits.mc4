@@ -7,23 +7,17 @@ package de.monticore.lang.siunits;
 
 component grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
 
-    // Every SIUnit is either a dimensionless unit such as 'deg' or a SIUnitExpression
+    /**
+      * Every SIUnit is either a dimensionless unit such as 'deg' or a SIUnitExpression
+      */
     SIUnit =
         SiUnitDimensionless | SIUnitExpression;
 
     /**
-     * The SIUnitExpression describes a expression containing SIUnitBasics as primitives
+     * The SIUnitExpression describes an expression containing SIUnitBasics as primitives
      * so that every combination of '*', '/', '^x' and '()' is possible
      */
     interface SIUnitExpression;
-
-    /**
-     * The SIUnitBasics are the primitives of the SIUnitExpressions and contains
-     * the basic SI units without prefixes such as 'm', 's' or 'kg' as well as the
-     * basic SI units with prefixes such as 'km', 'mm' or 'ms'.
-     * Other derived or officialy accepted units are also contained ('h', 'day', 'Ohm', ...)
-     */
-    interface SIUnitBasic extends SIUnitExpression;
 
     SIUnitMultExpression implements SIUnitExpression =
         left:SIUnitExpression "*" right:SIUnitExpression;
@@ -36,6 +30,14 @@ component grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
 
     SIUnitBracketExpression implements SIUnitExpression =
         "(" expression:SIUnit ")";
+
+    /**
+     * The SIUnitBasics are the primitives of the SIUnitExpressions and contains
+     * the basic SI units without prefixes such as 'm', 's' or 'kg' as well as the
+     * basic SI units with prefixes such as 'km', 'mm' or 'ms'.
+     * Other derived or officialy accepted units are also contained ('h', 'day', 'Ohm', ...)
+     */
+    interface SIUnitBasic extends SIUnitExpression;
 
     // see https://en.wikipedia.org/wiki/Metric_prefix
     // see https://en.wikipedia.org/wiki/SI_base_unit
@@ -56,5 +58,6 @@ component grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
 
     // see https://en.wikipedia.org/wiki/SI_derived_unit
     SiUnitDimensionless implements SIUnitBasic =
-        "°" | ({ _input.LT(1).getText().matches("deg|rad|sr") }? unit:Name);
+        "°" |
+        { _input.LT(1).getText().matches("deg|rad|sr") }? unit:Name;
 }
