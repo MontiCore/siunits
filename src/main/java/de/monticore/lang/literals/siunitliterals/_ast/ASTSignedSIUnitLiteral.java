@@ -4,10 +4,19 @@ import de.monticore.MCCommonLiteralsPrettyPrinter;
 import de.monticore.lang.siunits.siunits.prettyprint.SIUnitPrettyPrinter;
 import de.monticore.prettyprint.IndentPrinter;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
+
 public class ASTSignedSIUnitLiteral extends ASTSignedSIUnitLiteralTOP {
-    public double getNumber() {
+    public Number getNumber() {
         MCCommonLiteralsPrettyPrinter literalsPrinter = new MCCommonLiteralsPrettyPrinter(new IndentPrinter());
-        return Double.parseDouble(literalsPrinter.prettyprint(getNum()));
+        Number num = null;
+        try {
+            num = NumberFormat.getInstance().parse(literalsPrinter.prettyprint(getNum()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return num;
     }
 
     public String getUnit() {
