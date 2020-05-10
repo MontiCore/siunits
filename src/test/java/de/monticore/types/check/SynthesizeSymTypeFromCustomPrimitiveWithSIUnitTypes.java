@@ -1,9 +1,9 @@
 package de.monticore.types.check;
 
 import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisScope;
-import de.monticore.types.customprimitivewithsiunittypes._ast.ASTCustomPrimitiveWithSIUnitType;
-import de.monticore.types.customprimitivewithsiunittypes._visitor.CustomPrimitiveWithSIUnitTypesVisitor;
-import de.monticore.types.siunittypes._ast.ASTSIUnitType;
+import de.monticore.lang.types.customprimitivewithsiunittypes._ast.ASTCustomPrimitiveWithSIUnitType;
+import de.monticore.lang.types.customprimitivewithsiunittypes._visitor.CustomPrimitiveWithSIUnitTypesVisitor;
+import de.monticore.lang.types.siunittypes._ast.ASTSIUnitType;
 import de.se_rwth.commons.logging.Log;
 
 /**

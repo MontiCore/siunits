@@ -1,9 +1,10 @@
 package de.monticore.types.check;
 
 import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisScope;
-import de.monticore.types.primitivewithsiunittypes._ast.ASTPrimitiveWithSIUnitType;
-import de.monticore.types.primitivewithsiunittypes._visitor.PrimitiveWithSIUnitTypesVisitor;
-import de.monticore.types.siunittypes._ast.ASTSIUnitType;
+import de.monticore.lang.siunits.utility.UnitPrettyPrinter;
+import de.monticore.lang.types.primitivewithsiunittypes._ast.ASTPrimitiveWithSIUnitType;
+import de.monticore.lang.types.primitivewithsiunittypes._visitor.PrimitiveWithSIUnitTypesVisitor;
+import de.monticore.lang.types.siunittypes._ast.ASTSIUnitType;
 import de.se_rwth.commons.logging.Log;
 
 import static de.monticore.types.check.TypeCheck.*;
@@ -42,7 +43,7 @@ public class SynthesizeSymTypeFromPrimitiveWithSIUnitTypes extends SynthesizeSym
 
     @Override
     public void endVisit(ASTSIUnitType node) {
-        lastResult.setLast(SIUnitSymTypeExpressionFactory.createSIUnit(node.toString(), scope));
+        lastResult.setLast(SIUnitSymTypeExpressionFactory.createSIUnit(UnitPrettyPrinter.printUnit(node.getSIUnit()), scope));
     }
 
     @Override

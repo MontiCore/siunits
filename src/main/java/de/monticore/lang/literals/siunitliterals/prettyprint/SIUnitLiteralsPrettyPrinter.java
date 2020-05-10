@@ -2,10 +2,9 @@ package de.monticore.lang.literals.siunitliterals.prettyprint;
 
 import de.monticore.MCCommonLiteralsPrettyPrinter;
 import de.monticore.lang.literals.siunitliterals._ast.ASTSIUnitLiteral;
-import de.monticore.lang.literals.siunitliterals._ast.ASTSIUnitLiteralsNode;
 import de.monticore.lang.literals.siunitliterals._ast.ASTSignedSIUnitLiteral;
 import de.monticore.lang.literals.siunitliterals._visitor.SIUnitLiteralsVisitor;
-import de.monticore.lang.siunits.siunits.prettyprint.SIUnitPrettyPrinter;
+import de.monticore.lang.siunits.prettyprint.SIUnitPrettyPrinter;
 import de.monticore.prettyprint.IndentPrinter;
 
 public class SIUnitLiteralsPrettyPrinter extends MCCommonLiteralsPrettyPrinter
@@ -49,12 +48,23 @@ public class SIUnitLiteralsPrettyPrinter extends MCCommonLiteralsPrettyPrinter
     }
 
     /**
-     * This method prettyprints a given node from SIUnitLiterals grammar.
+     * This method prettyprints a given SIUnitLiteral.
      *
-     * @param node A node from SIUnitLiterals grammar.
+     * @param node A SIUnitLiteral.
      * @return String representation.
      */
-    public String prettyprint(ASTSIUnitLiteralsNode node) {
+    public String prettyprint(ASTSIUnitLiteral node) {
+        node.accept(getRealThis());
+        return printer.getContent();
+    }
+
+    /**
+     * This method prettyprints a given SignedSIUnitLiterals.
+     *
+     * @param node A SignedSIUnitLiterals.
+     * @return String representation.
+     */
+    public String prettyprint(ASTSignedSIUnitLiteral node) {
         node.accept(getRealThis());
         return printer.getContent();
     }

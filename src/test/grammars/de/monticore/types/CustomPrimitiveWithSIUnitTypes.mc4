@@ -1,8 +1,0 @@
-/* (c) https://github.com/MontiCore/monticore */
-package de.monticore.types;
-
-component grammar CustomPrimitiveWithSIUnitTypes extends de.monticore.types.MCBasicTypes, de.monticore.types.SIUnitTypes {
-
-    CustomPrimitiveWithSIUnitType implements MCObjectType =
-        MCPrimitiveType "in" SIUnitType;
-}

@@ -1,0 +1,47 @@
+/* (c) https://github.com/MontiCore/monticore */
+package de.monticore.lang.testsijava;
+
+/**
+ * This grammar is an example on how one could combine expressions with SIUnits and SIUnitLiterals.
+ * It is a very simple version of java with siunits and custom types that can be siunit types.
+*/
+
+grammar TestSIJava extends de.monticore.lang.literals.SIUnitLiterals,
+                            de.monticore.expressions.CommonExpressions,
+                            de.monticore.expressions.AssignmentExpressions,
+                            de.monticore.statements.MCCommonStatements,
+                            de.monticore.lang.types.PrimitiveWithSIUnitTypes {
+
+    symbol scope SIJavaClass =
+    "package" package:(Name& || ".")+ ";"
+    "siclass" Name "{"
+        statement:SIJavaClassStatement*
+    "}";
+
+    interface SIJavaClassStatement;
+
+    FieldDeclaration implements Field, SIJavaClassStatement, SIJavaMethodStatement =
+        MCType Name ("=" assignment:Expression)? ";";
+
+    SIFieldDeclaration implements Field, SIJavaClassStatement, SIJavaMethodStatement =
+        "si" Name "=" (SIUnitType | Expression) ";";
+
+    SIUnitLiteralExperession implements Expression <350> =
+        SIUnitLiteral;
+
+    symbol scope MethodDeclaration implements SIJavaClassStatement =
+        "metod" MethodSignature "{"
+            statement:SIJavaMethodStatement*
+        "}";
+
+    MethodSignature =
+        returnType:MCReturnType Name "(" (SIJavaParameter||",")* ")";
+
+    SIJavaParameter =
+        MCType Name;
+
+    interface SIJavaMethodStatement;
+
+    SIJavaMethodExpression implements SIJavaMethodStatement <10> =
+        expression:Expression ";";
+}

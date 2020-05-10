@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 
 public class SymTypeOfSIUnit extends SymTypeExpression {
 
-    private List<SymTypeOfSIUnitBasic> numerator = new LinkedList<>();
-    private List<SymTypeOfSIUnitBasic> denominator = new LinkedList<>();
+    private List<SymTypeOfSIUnitBasic> numerator;
+    private List<SymTypeOfSIUnitBasic> denominator;
 
     /**
      * Constructor with all parameters that are stored:
@@ -42,15 +42,6 @@ public class SymTypeOfSIUnit extends SymTypeExpression {
         if (numerator.size() == 0 && denominator.size() == 0)
             return true;
         if (getUnit() instanceof Dimensionless)
-            return true;
-        return false;
-    }
-
-    // should never happen
-    public boolean isOne() {
-        if (numerator.size() == 0 && denominator.size() == 0)
-            return true;
-        if ("1".equals(getUnit().toString()))
             return true;
         return false;
     }

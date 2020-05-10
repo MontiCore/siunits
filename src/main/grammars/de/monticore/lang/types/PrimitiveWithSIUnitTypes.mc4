@@ -1,0 +1,13 @@
+/* (c) https://github.com/MontiCore/monticore */
+package de.monticore.lang.types;
+
+/**
+ * This grammar is one way to represent the type of a primitive combined with a SI unit type.
+ */
+
+component grammar PrimitiveWithSIUnitTypes extends de.monticore.types.MCBasicTypes, de.monticore.lang.types.SIUnitTypes {
+
+    PrimitiveWithSIUnitType implements MCObjectType =
+        "<" MCPrimitiveType SIUnitType ">";
+
+}

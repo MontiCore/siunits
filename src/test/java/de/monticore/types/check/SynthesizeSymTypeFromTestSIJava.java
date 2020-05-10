@@ -1,9 +1,9 @@
 package de.monticore.types.check;
 
 import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisScope;
-import de.monticore.testsijava.testsijava._visitor.TestSIJavaDelegatorVisitor;
-import de.monticore.testsijava.testsijava._visitor.TestSIJavaVisitor;
-import de.monticore.testsijava.testsijava.visitor.TestSIJavaBasicVisitor;
+import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaDelegatorVisitor;
+import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaVisitor;
+import de.monticore.lang.testsijava.testsijava.visitor.TestSIJavaBasicVisitor;
 
 import java.util.Optional;
 

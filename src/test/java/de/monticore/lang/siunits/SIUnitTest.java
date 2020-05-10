@@ -2,7 +2,8 @@ package de.monticore.lang.siunits;
 
 import com.google.common.collect.Lists;
 import de.monticore.lang.literals.testsiunitliterals._parser.TestSIUnitLiteralsParser;
-import de.monticore.lang.siunits.siunits._ast.ASTSIUnit;
+import de.monticore.lang.siunits._ast.ASTSIUnit;
+import de.monticore.lang.siunits.utility.UnitPrettyPrinter;
 import de.se_rwth.commons.logging.Log;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -25,10 +26,12 @@ public class SIUnitTest {
         Log.enableFailQuick(false);
     }
 
-    private void checkSIUnit(String s, String expected) throws IOException {
+    private void checkSIUnit(String s, String unitAsString, String standardUnitAsString) throws IOException {
         ASTSIUnit lit = parseSIUnit(s);
-        String print = lit.toString();
-        assertEquals(expected, print);
+        String printFromLit = UnitPrettyPrinter.printUnit(lit);
+        String printStandardFromLit = UnitPrettyPrinter.printStandardUnit(lit);
+        assertEquals(unitAsString, printFromLit);
+        assertEquals(standardUnitAsString, printStandardFromLit);
     }
 
     private ASTSIUnit parseSIUnit(String input) throws IOException {
@@ -40,17 +43,18 @@ public class SIUnitTest {
     @Test
     public void testSIUnit() {
         try {
-            checkSIUnit("kg", "kg");
-            checkSIUnit("cd", "cd");
-            checkSIUnit("m", "m");
-            checkSIUnit("s^2", "s^2");
-            checkSIUnit("s^2/kg", "s^2/kg");
-            checkSIUnit("s^2/min", "s^2/min");
-            checkSIUnit("s^2*kg/(min*m)", "s^2*kg/(min*m)");
-            checkSIUnit("deg", "deg");
-            checkSIUnit("s^-1", "1/s");
-            checkSIUnit("°C", "°C");
-            checkSIUnit("°F", "°F");
+            checkSIUnit("kg", "kg", "kg");
+            checkSIUnit("cd", "cd", "cd");
+            checkSIUnit("m", "m", "m");
+            checkSIUnit("s^2", "s^2", "s^2");
+            checkSIUnit("s^2/kg", "s^2/kg", "s^2/kg");
+            checkSIUnit("s^2/min", "s^2/min", "s");
+            checkSIUnit("s^2*kg/(min*m)", "s^2*kg/(min*m)", "s*kg/m");
+            checkSIUnit("deg", "deg", "rad");
+            checkSIUnit("s^-1", "1/s", "1/s");
+            checkSIUnit("1/s", "1/s", "1/s");
+            checkSIUnit("°C", "°C", "K");
+            checkSIUnit("°F", "°F", "K");
         }
         catch (IOException e) {
             fail(e.getMessage());
@@ -105,7 +109,7 @@ public class SIUnitTest {
         }
 
         if (res.isPresent()) {
-            String print = res.get().toString();
+            String print = UnitPrettyPrinter.printUnit(res.get());
             if (expected.equals(print)) {
                 return true;
             } else {

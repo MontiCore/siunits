@@ -2,14 +2,14 @@
 package de.monticore.lang.literals;
 
 /**
- * This grammar defines SI unit literals such as '3 m' or '2.5 km/h'
+ * This grammar defines SI unit literals such as '3 m' or '2.5 km/h'.
  * If the number is followed by L (or F respectively), the literal will be parsed as either a BasicLongLiteral "30L"
- *  (BasicFloatLiteral "30.2F") or as a Liter Literal "30 L" (Farad Literal "30.2 F") depending on the space between
- *  number and "L" ("F"). If the numericLiteral is a BasicLongLiteral or BasicFloatLiteral the SIUnit needs to be
- *  separated by a space ("30Lkg" not parsable).
-*/
+ * (BasicFloatLiteral "30.2F") or as a Liter Literal "30 L" (Farad Literal "30.2 F") depending on the space between
+ * number and "L" ("F"). If the numericLiteral is a BasicLongLiteral or BasicFloatLiteral the SIUnit needs to be
+ * separated by a space ("30Lkg" not parsable).
+ */
 
-component grammar SIUnitLiterals extends de.monticore.lang.siunits.SIUnits,
+component grammar SIUnitLiterals extends de.monticore.lang.SIUnits,
                                          de.monticore.literals.MCCommonLiterals {
 
     // The unsigned SI unit literals

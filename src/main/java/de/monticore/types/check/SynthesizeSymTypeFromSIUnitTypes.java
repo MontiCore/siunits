@@ -6,8 +6,9 @@
 package de.monticore.types.check;
 
 import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisScope;
-import de.monticore.types.siunittypes._ast.ASTSIUnitType;
-import de.monticore.types.siunittypes._visitor.SIUnitTypesVisitor;
+import de.monticore.lang.siunits.prettyprint.SIUnitPrettyPrinter;
+import de.monticore.lang.types.siunittypes._ast.ASTSIUnitType;
+import de.monticore.lang.types.siunittypes._visitor.SIUnitTypesVisitor;
 
 import java.util.Optional;
 
@@ -66,6 +67,7 @@ public class SynthesizeSymTypeFromSIUnitTypes implements ISynthesize, SIUnitType
 
     @Override
     public void endVisit(ASTSIUnitType siunittype) {
-        lastResult.setLast(SIUnitSymTypeExpressionFactory.createSIUnit(siunittype.toString(), scope));
+        lastResult.setLast(SIUnitSymTypeExpressionFactory.createSIUnit(
+                SIUnitPrettyPrinter.prettyprint(siunittype.getSIUnit()), scope));
     }
 }

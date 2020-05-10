@@ -1,6 +1,6 @@
 package de.monticore.types.check;
 
-import de.monticore.lang.siunits.utility.UnitFactory;
+import de.monticore.lang.siunits.utility.UnitPrettyPrinter;
 import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
 import de.monticore.types.typesymbols._symboltable.TypeSymbol;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolLoader;
@@ -43,7 +43,7 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
      */
     public static SymTypeOfSIUnitBasic createSIUnitBasic(String nameWithPrefix, Integer exponent) {
         SymTypeOfSIUnitBasic symType = null;
-        String nameWithOutPrefix = UnitFactory.printFormattedToStandard(nameWithPrefix);
+        String nameWithOutPrefix = UnitPrettyPrinter.printStandardUnit(nameWithPrefix);
         if (DefsSIUnitType.getSIUnitBasicTypes().containsKey(nameWithOutPrefix)) // Then there is no prefix
             symType = DefsSIUnitType.getSIUnitBasicTypes().get(nameWithOutPrefix);
         else
@@ -68,7 +68,7 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
      * @param enclosingScope The node's enclosing scope
      */
     public static SymTypeExpression createSIUnit(String name, ITypeSymbolsScope enclosingScope) {
-        String formattedStandard = UnitFactory.printFormattedToStandard(name);
+        String formattedStandard = UnitPrettyPrinter.printStandardUnit(name);
         String[] split = formattedStandard.split("\\/");
         List<String> numeratorStringList = Arrays.asList(split[0].split("\\*"));
         List<String> denominatorStringList = new ArrayList<>();

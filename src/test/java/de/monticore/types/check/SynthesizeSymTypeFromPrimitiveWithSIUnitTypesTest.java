@@ -1,8 +1,8 @@
 package de.monticore.types.check;
 
 import de.monticore.expressions.expressionsbasis._symboltable.ExpressionsBasisSymTabMill;
-import de.monticore.testsijava.testsijava._parser.TestSIJavaParser;
-import de.monticore.types.siunittypes._ast.ASTSIUnitType;
+import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
+import de.monticore.lang.types.siunittypes._ast.ASTSIUnitType;
 import de.se_rwth.commons.logging.Log;
 import org.junit.Before;
 import org.junit.BeforeClass;

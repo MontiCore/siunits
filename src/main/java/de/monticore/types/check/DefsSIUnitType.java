@@ -28,11 +28,13 @@ public class DefsSIUnitType extends DefsTypeBasic {
         sIUnitBasicTypes = new HashMap<>();
 
         List<String> officallyAcceptedUnits = Arrays.asList
-                ("min","h","day","ha","t","Au","Np","B","dB","eV","u");
-        List<String> siUnitDimensionlesses = Arrays.asList("deg", "rad", "sr");
+                ("min", "h", "day", "ha", "t", "Au", "Np", "B", "dB", "eV", "u");
+        List<String> siUnitDimensionlesses = Arrays.asList
+                ("deg", "rad", "sr");
         List<String> unitBases = Arrays.asList
-                ("m","kg","s","A","K","mol","cd","Hz","N","Pa","J","W","C","V","F","Ohm","S","Wb","T","H","lm","lx","Bq","Gy","Sv","kat");
-        List<String> celsiusFahrenheit = Arrays.asList("°C, °F");
+                ("m", "kg", "s", "A", "K", "mol", "cd", "Hz", "N", "Pa", "J", "W", "C", "V", "F", "Ohm", "S", "Wb", "T", "H", "lm", "lx", "Bq", "Gy", "Sv", "kat");
+        List<String> celsiusFahrenheit = Arrays.asList
+                ("°C", "°F");
 
         TypeSymbolsScope scope = new TypeSymbolsScope();
 
