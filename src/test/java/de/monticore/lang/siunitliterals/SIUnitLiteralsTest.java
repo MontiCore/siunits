@@ -3,7 +3,7 @@ package de.monticore.lang.siunitliterals;
 import de.monticore.lang.literals.siunitliterals._ast.ASTSIUnitLiteral;
 import de.monticore.lang.literals.siunitliterals.utility.SIUnitLiteralDecoder;
 import de.monticore.lang.literals.testsiunitliterals._parser.TestSIUnitLiteralsParser;
-import de.monticore.lang.siunits.prettyprint.SIUnitPrettyPrinter;
+import de.monticore.lang.siunits.prettyprint.SIUnitsPrettyPrinter;
 import de.monticore.lang.siunits.utility.UnitPrettyPrinter;
 import de.monticore.literals.mccommonliterals._ast.ASTBasicFloatLiteral;
 import de.monticore.literals.mccommonliterals._ast.ASTBasicLongLiteral;
@@ -32,7 +32,7 @@ public class SIUnitLiteralsTest {
         assertTrue(lit instanceof ASTSIUnitLiteral);
 
         SIUnitLiteralDecoder decoder = new SIUnitLiteralDecoder();
-        String unitAsString = SIUnitPrettyPrinter.prettyprint(((ASTSIUnitLiteral) lit).getUn());
+        String unitAsString = SIUnitsPrettyPrinter.prettyprint(((ASTSIUnitLiteral) lit).getUn());
 
         assertEquals(number, decoder.getDouble((ASTSIUnitLiteral) lit), 0.0001);
         assertEquals(value, decoder.valueOf((ASTSIUnitLiteral) lit), 0.0001);

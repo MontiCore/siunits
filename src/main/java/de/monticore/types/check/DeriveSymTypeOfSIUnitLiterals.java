@@ -5,7 +5,7 @@ import de.monticore.lang.literals.siunitliterals._ast.ASTSIUnitLiteral;
 import de.monticore.lang.literals.siunitliterals._ast.ASTSignedSIUnitLiteral;
 import de.monticore.lang.literals.siunitliterals._visitor.SIUnitLiteralsVisitor;
 import de.monticore.lang.siunits._ast.ASTSIUnit;
-import de.monticore.lang.siunits.prettyprint.SIUnitPrettyPrinter;
+import de.monticore.lang.siunits.prettyprint.SIUnitsPrettyPrinter;
 
 /**
  * This class is used to derive the type of an SIUnitLiteral
@@ -46,7 +46,7 @@ public class DeriveSymTypeOfSIUnitLiterals extends DeriveSymTypeOfMCCommonLitera
     }
 
     private void traverseSIUnitLiteral(SymTypeExpression literalType, ASTSIUnit astsiUnit) {
-        SymTypeExpression siunitType = SIUnitSymTypeExpressionFactory.createSIUnit(SIUnitPrettyPrinter.prettyprint(astsiUnit), this.enclosingScope);
+        SymTypeExpression siunitType = SIUnitSymTypeExpressionFactory.createSIUnit(SIUnitsPrettyPrinter.prettyprint(astsiUnit), this.enclosingScope);
         if (siunitType instanceof SymTypeOfSIUnit)
             result.setLast(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(
                     literalType, siunitType, this.enclosingScope));

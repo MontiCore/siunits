@@ -2,7 +2,7 @@
 package de.monticore.lang.siunits.utility;
 
 import de.monticore.lang.siunits._ast.ASTSIUnit;
-import de.monticore.lang.siunits.prettyprint.SIUnitWithBracketsPrettyPrinter;
+import de.monticore.lang.siunits.prettyprint.SIUnitsWithBracketsPrettyPrinter;
 
 import javax.measure.unit.Unit;
 
@@ -48,7 +48,7 @@ public class UnitPrettyPrinter {
     }
 
     private String _printUnit(ASTSIUnit siunit) {
-        return _printUnit(SIUnitWithBracketsPrettyPrinter.prettyprint(siunit));
+        return _printUnit(SIUnitsWithBracketsPrettyPrinter.prettyprint(siunit));
     }
 
     /**

@@ -2,7 +2,7 @@ package de.monticore.lang.siunits.utility;
 
 import de.monticore.lang.siunits._ast.ASTSIUnit;
 import de.monticore.lang.siunits._parser.SIUnitsParser;
-import de.monticore.lang.siunits.prettyprint.SIUnitWithBracketsPrettyPrinter;
+import de.monticore.lang.siunits.prettyprint.SIUnitsWithBracketsPrettyPrinter;
 import de.se_rwth.commons.logging.Log;
 
 import javax.measure.converter.LogConverter;
@@ -34,7 +34,7 @@ public class UnitFactory {
     }
 
     private Unit _createUnit(ASTSIUnit siunit) {
-        String print = SIUnitWithBracketsPrettyPrinter.prettyprint(siunit);
+        String print = SIUnitsWithBracketsPrettyPrinter.prettyprint(siunit);
         String str = print
                 .replace("1/", "(m/m)/");
         return Unit.valueOf(str);

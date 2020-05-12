@@ -4,7 +4,12 @@ import de.monticore.lang.siunits._ast.*;
 import de.monticore.lang.siunits._visitor.SIUnitsVisitor;
 import de.monticore.prettyprint.IndentPrinter;
 
-public class SIUnitPrettyPrinter implements SIUnitsVisitor {
+/**
+ * Prettyprints a {@link de.monticore.lang.siunits._ast.ASTSIUnit} from the
+ * de.monticore.lang.SIUnits grammar with brackets around each SIUnitExpression.
+ * E.g. km/s*kg -> ((km/s)*kg).
+ */
+public class SIUnitsWithBracketsPrettyPrinter implements SIUnitsVisitor {
 
     private SIUnitsVisitor realThis = this;
 
@@ -15,7 +20,7 @@ public class SIUnitPrettyPrinter implements SIUnitsVisitor {
      * Constructor
      * @param printer
      */
-    public SIUnitPrettyPrinter(IndentPrinter printer) {
+    public SIUnitsWithBracketsPrettyPrinter(IndentPrinter printer) {
         this.printer = printer;
     }
 
@@ -32,9 +37,11 @@ public class SIUnitPrettyPrinter implements SIUnitsVisitor {
      */
     @Override
     public void traverse(ASTSIUnitMultExpression node) {
+        printer.print("(");
         node.getLeft().accept(getRealThis());
         printer.print("*");
         node.getRight().accept(getRealThis());
+        printer.print(")");
     }
 
     /**
@@ -43,9 +50,11 @@ public class SIUnitPrettyPrinter implements SIUnitsVisitor {
      */
     @Override
     public void traverse(ASTSIUnitDivExpression node) {
+        printer.print("(");
         node.getLeft().accept(getRealThis());
         printer.print("/");
         node.getRight().accept(getRealThis());
+        printer.print(")");
     }
 
     /**
@@ -54,8 +63,18 @@ public class SIUnitPrettyPrinter implements SIUnitsVisitor {
      */
     @Override
     public void traverse(ASTSIUnitOneDivExpression node) {
-        printer.print("1/");
+        printer.print("(1/");
         node.getRight().accept(getRealThis());
+        printer.print(")");
+    }
+
+    /**
+     * Prints a SIUnitExponentExpression
+     * @param node SIUnitExponentExpression
+     */
+    @Override
+    public void visit(ASTSIUnitExponentExpression node) {
+        printer.print("(");
     }
 
     /**
@@ -64,7 +83,7 @@ public class SIUnitPrettyPrinter implements SIUnitsVisitor {
      */
     @Override
     public void endVisit(ASTSIUnitExponentExpression node) {
-        printer.print("^" + node.getExponent().getValue());
+        printer.print("^" + node.getExponent().getValue() + ")");
     }
 
     @Override
@@ -124,7 +143,7 @@ public class SIUnitPrettyPrinter implements SIUnitsVisitor {
      * @return String representation.
      */
     public static String prettyprint(ASTSIUnitsNode node) {
-        SIUnitPrettyPrinter pp = new SIUnitPrettyPrinter(new IndentPrinter());
+        SIUnitsWithBracketsPrettyPrinter pp = new SIUnitsWithBracketsPrettyPrinter(new IndentPrinter());
         node.accept(pp);
         return pp.getPrinter().getContent();
     }

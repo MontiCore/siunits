@@ -4,7 +4,7 @@ import de.monticore.MCCommonLiteralsPrettyPrinter;
 import de.monticore.lang.literals.siunitliterals._ast.ASTSIUnitLiteral;
 import de.monticore.lang.literals.siunitliterals._ast.ASTSignedSIUnitLiteral;
 import de.monticore.lang.literals.siunitliterals._visitor.SIUnitLiteralsVisitor;
-import de.monticore.lang.siunits.prettyprint.SIUnitPrettyPrinter;
+import de.monticore.lang.siunits.prettyprint.SIUnitsPrettyPrinter;
 import de.monticore.prettyprint.IndentPrinter;
 
 public class SIUnitLiteralsPrettyPrinter extends MCCommonLiteralsPrettyPrinter
@@ -37,14 +37,14 @@ public class SIUnitLiteralsPrettyPrinter extends MCCommonLiteralsPrettyPrinter
     public void traverse(ASTSIUnitLiteral node) {
         node.getNum().accept(getRealThis());
         printer.print(" ");
-        node.getUn().accept(new SIUnitPrettyPrinter(printer));
+        node.getUn().accept(new SIUnitsPrettyPrinter(printer));
     }
 
     @Override
     public void traverse(ASTSignedSIUnitLiteral node) {
         node.getNum().accept(getRealThis());
         printer.print(" ");
-        node.getUn().accept(new SIUnitPrettyPrinter(printer));
+        node.getUn().accept(new SIUnitsPrettyPrinter(printer));
     }
 
     /**
