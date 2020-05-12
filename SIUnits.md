@@ -22,7 +22,7 @@ found in the package ```de.monticore.lang.siunits.prettyprint```.
 ## [SIUnitLiterals.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/literals/SIUnitLiterals.mc4)
 ### Description
 The SIUnitLiterals combine a NumericalLiteral or a SignedNumericalLiteral from the [MCCommonLiterals.mc4](https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/grammars/de/monticore/literals/MCCommonLiterals.mc4) 
-grammar with a SIUnit from the [SIUnits](#siunits.mc4) grammar. A SIUnitLiteral can be used in an expression as a 
+grammar with a SIUnit from the [SIUnits](#siunitsmc4) grammar. A SIUnitLiteral can be used in an expression as a 
 Literal Expression (see grammar [ExpressionBasis.mc4](https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/grammars/de/monticore/expressions/ExpressionsBasis.mc4)).
 ### Functionality
 The [SIUnitLiteralDecoder](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/literals/siunitliterals/utility/SIUnitLiteralDecoder.java)
@@ -34,7 +34,7 @@ prettyprints a SIUnitLiteral.
 
 ## [SIUnitTypes.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/SIUnitTypes.mc4)
 ### Description
-The SIUnitTypes interprete the SIUnits as type.
+The SIUnitTypes interprete the SIUnits as types.
 ### Generators
 The [SIUnitTypesPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/types/prettyprint/SIUnitTypesPrettyPrinter.java)
 prettyprints a SIUnitType and can be found in the package ```de.monticore.lang.types.prettyprint```.
@@ -43,7 +43,10 @@ prettyprints a SIUnitType and can be found in the package ```de.monticore.lang.t
 ### Description
 A PrimitiveWithSIUnitType combines a MCPrimitiveType from the [MCBasicTypes](https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/grammars/de/monticore/types/MCBasicTypes.mc4) 
 grammar with a SIUnitType. It is mostly used to describe the type of a SIUnitLiteral but is also useful to derive the type
-of an expression with both SIUnits and an NumericLiteral. The primitive part should always be a numeric type.
+of an expression with both SIUnits and an NumericLiteral. The primitive part should always be a numeric type. <br>
+Please note that this is only one way to represent this combination of types. An example on how to implement this in 
+another way is presented in the [CustomPrimitiveWithSIUnitTypes.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/lang/types/CustomPrimitiveWithSIUnitTypes.mc4)
+grammar.
 ### Functionality
 The [PrimitiveIsNumericType](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/types/primitivewithsiunittypes/_cocos/PrimitiveIsNumericType.java)
 CoCo checks whether the MCPrimitiveType is a numeric type.
@@ -53,4 +56,7 @@ prettyprints a PrimitiveWithSIUnitType and can be found in the package ```de.mon
 
 ## TypeCheck
 The classes for the TypeCheck mechanic can be found in the package ```de.monticore.types.check```. SymTypes can be
-synthesized from a SIUnitType and a PrimitiveWithSIUnitType and can be derived from SIUnitLiterals or Expressions.
+synthesized from a SIUnitType and a PrimitiveWithSIUnitType and can be derived from SIUnitLiterals. In addition, the 
+original derive classes for expressions from grammars [AssignmentExpressions.mc4](https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/grammars/de/monticore/expressions/AssignmentExpressions.mc4)
+and [CommonExpressions.mc4](https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/grammars/de/monticore/expressions/CommonExpressions.mc4) 
+were extended to work with SIUnits and SIUnitLiterals as well.
