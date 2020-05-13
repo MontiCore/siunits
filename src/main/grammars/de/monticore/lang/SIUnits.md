@@ -1,7 +1,8 @@
 <!-- (c) https://github.com/MontiCore/monticore -->
 
 # SIUnits
-This language introduces SI units and functionality.
+This language introduces SI units and allows language developers to integrate literals enriched with an SI unit to their language. Furthermore,
+this language provides functionality for unit compatibility and type checking.
 
 ## [SIUnits.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/SIUnits.mc4)
 ### Description
