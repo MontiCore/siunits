@@ -35,7 +35,8 @@ prettyprints a SIUnitLiteral.
 
 ## [SIUnitTypes.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/SIUnitTypes.mc4)
 ### Description
-The SIUnitTypes interprete the SIUnits as type.
+The SIUnitTypes interprete the SIUnits as type. Therefore, the grammar extends de.monticore.lang.SIUnits and de.monticore.types.MCBasicTypes
+
 ### Generators
 The [SIUnitTypesPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/types/prettyprint/SIUnitTypesPrettyPrinter.java)
 prettyprints a SIUnitType and can be found in the package ```de.monticore.lang.types.prettyprint```.
