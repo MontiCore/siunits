@@ -12,7 +12,8 @@ The grammar files are (see details below):
 ### Description
 This is the base grammar of the SIUnits language. It introduces SI units and other units that can be derived from them.
 This grammar defines SI units as well as unit prefixes and SI unit expressions allowing us to parse simple and derived units 
-such as `m`, `km`, `km^2` or `m*deg/(h^2*mg)`
+such as `m`, `km`, `km^2` or `m*deg/(h^2*mg)`.
+
 For calculating with the units the [Unit](http://unitsofmeasurement.github.io/unit-api/site/apidocs/javax/measure/Unit.html)
 class from the [javax.measure](http://unitsofmeasurement.github.io/unit-api/site/apidocs/javax/measure/package-summary.html) 
 package is used.
