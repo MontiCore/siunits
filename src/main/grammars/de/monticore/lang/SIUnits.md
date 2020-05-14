@@ -32,6 +32,19 @@ found in the package ```de.monticore.lang.siunits.prettyprint```.
 The SIUnitLiterals combine a NumericalLiteral or a SignedNumericalLiteral from the [MCCommonLiterals.mc4](https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/grammars/de/monticore/literals/MCCommonLiterals.mc4) 
 grammar with a SIUnit from the [SIUnits](#siunits.mc4) grammar. A SIUnitLiteral can be used in an expression as a 
 Literal Expression (see grammar [ExpressionBasis.mc4](https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/grammars/de/monticore/expressions/ExpressionsBasis.mc4)).
+
+SIUnitLiterals allows us to parse literals of the following forms. 
+The unit may be of any form allowed by the SIUnits.mc4 grammar, i.e. including unit expressions:
+Unitless integer: `5`
+Unitless long: `5l`
+Unitless float: `5.0`
+Unitless float (explicit): `5.0f` or `5.0F`
+
+Integer with unit: `5km` or `5 km`; The space is obligatory for Farads and liters (`5 F` and `5 l`)
+Long with unit: `5l km`
+Gloat with unit: `5.0km` or `5.0 km`; The space is obligatory for Farads and liters (`5.0 F` and `5.0 l`)
+Float (explicit) with unit: `5.0f kg` or `5.0F kg`
+
 ### Functionality
 The [SIUnitLiteralDecoder](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/literals/siunitliterals/utility/SIUnitLiteralDecoder.java)
 extracts the number of an SIUnitLiteral as either a java ```double``` or a java ```Number``` and calculates the value of
