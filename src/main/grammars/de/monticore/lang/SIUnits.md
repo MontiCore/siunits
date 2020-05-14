@@ -41,9 +41,9 @@ Standard unitless literals:
 * Unitless float (explicit): `5.0f` or `5.0F`
 
 Literals in combination with a unit. The unit may be of any form allowed by the SIUnits.mc4 grammar, i.e. including unit expressions:
-* Integer with unit: `5km` or `5 km`; The space is obligatory for Farads and liters (`5 F` and `5 l`)
+* Integer with unit: `5km` or `5 km`; The space is obligatory for Farads and liters to avoid confusion with floats and longs (`5 F` and `5 l`)
 * Long with unit: `5l km`
-* Gloat with unit: `5.0km` or `5.0 km`; The space is obligatory for Farads and liters (`5.0 F` and `5.0 l`)
+* Gloat with unit: `5.0km` or `5.0 km`; The space is obligatory for Farads and liters to avoid confusion with floats and longs  (`5.0 F` and `5.0 l`)
 * Float (explicit) with unit: `5.0f kg` or `5.0F kg`
 
 ### Functionality
