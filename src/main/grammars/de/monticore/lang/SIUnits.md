@@ -67,6 +67,11 @@ prettyprints a SIUnitType and can be found in the package ```de.monticore.lang.t
 A PrimitiveWithSIUnitType combines a MCPrimitiveType from the [MCBasicTypes](https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/grammars/de/monticore/types/MCBasicTypes.mc4) 
 grammar with a SIUnitType. It is mostly used to describe the type of a SIUnitLiteral but is also useful to derive the type
 of an expression with both SIUnits and an NumericLiteral. The primitive part should always be a numeric type.
+
+The grammar provides an exemplary syntax for primitive types combined with a unit, e.g.
+`int in km/s^2`
+
+A DSL developer should implement his own rule in order to use an alternative syntax.
 ### Functionality
 The [PrimitiveIsNumericType](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/types/primitivewithsiunittypes/_cocos/PrimitiveIsNumericType.java)
 CoCo checks whether the MCPrimitiveType is a numeric type.
