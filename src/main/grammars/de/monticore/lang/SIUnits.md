@@ -83,3 +83,8 @@ prettyprints a PrimitiveWithSIUnitType and can be found in the package ```de.mon
 ## TypeCheck
 The classes for the TypeCheck mechanic can be found in the package ```de.monticore.types.check```. SymTypes can be
 synthesized from a SIUnitType and a PrimitiveWithSIUnitType and can be derived from SIUnitLiterals or Expressions.
+
+## Extensibility
+* New units can be added directly in the grammar [SIUnits.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/SIUnits.mc4)
+* An alternative syntax fot the definition of primitive types combined with SI units can be defined by implementing `MCObjectType` as is done in
+* [PrimitiveWithSIUnitTypes](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/PrimitiveWithSIUnitTypes.mc4)
