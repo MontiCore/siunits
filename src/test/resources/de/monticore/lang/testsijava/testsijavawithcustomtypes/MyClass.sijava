@@ -1,13 +1,13 @@
 package de.monticore.testsijava;
 
 siclass MyClass {
-    double in km/h var = 3.0 m/s;
+    double <km/h> var = 3.0 m/s;
     int varInt = 3;
-    metod int in m method1 () {
-        int in km/ms^2 var2 = 4 m/s^2;
+    metod int <m> method1 () {
+        int <km/ms^2> var2 = 4 m/s^2;
         var2 = 5 m / (2s * 5ms);
         var2 = 5 km/ks^2;
-        int in h varS = 3s;
-        int in dm varM = 10 m;
+        int <h> varS = 3s;
+        int <dm> varM = 10 m;
     }
 }
