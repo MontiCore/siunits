@@ -30,8 +30,8 @@ found in the package ```de.monticore.lang.siunits.prettyprint```.
 ## [SIUnitLiterals.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/literals/SIUnitLiterals.mc4)
 ### Description
 The SIUnitLiterals combine a NumericalLiteral or a SignedNumericalLiteral from the [MCCommonLiterals.mc4](https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/grammars/de/monticore/literals/MCCommonLiterals.mc4) 
-grammar with a SIUnit from the [SIUnits](#siunits.mc4) grammar. A SIUnitLiteral can be used in an expression as a 
-Literal Expression (see grammar [ExpressionBasis.mc4](https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/grammars/de/monticore/expressions/ExpressionsBasis.mc4)).
+grammar with a SIUnit from the [SIUnits](#siunitsmc4) grammar. A SIUnitLiteral can be used in an expression as a 
+Literal Expression (see grammar [ExpressionBasis.mc4](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/expressions/ExpressionsBasis.mc4)).
 
 SIUnitLiterals allows us to parse literals of the following forms. 
 Standard unitless literals:
@@ -49,7 +49,9 @@ Literals in combination with a unit. The unit may be of any form allowed by the 
 ### Functionality
 The [SIUnitLiteralDecoder](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/literals/siunitliterals/utility/SIUnitLiteralDecoder.java)
 extracts the number of an SIUnitLiteral as either a java ```double``` or a java ```Number``` and calculates the value of
-a SIUnitLiteral (```valueOf(3 km)) = 3000 m```).
+a SIUnitLiteral (```valueOf(3 km)) = 3000```). For this it uses the [NumberDecoder](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/literals/siunitliterals/utility/NumberDecoder.java)
+which extracts the number of a NumericLiteral or SignedNumericLiteral as either a java ```double``` or a java ```Number```.
+
 ### Generators
 The [SIUnitLiteralsPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/literals/siunitliterals/prettyprint/SIUnitLiteralsPrettyPrinter.java)
 prettyprints a SIUnitLiteral.
@@ -64,12 +66,12 @@ prettyprints a SIUnitType and can be found in the package ```de.monticore.lang.t
 
 ## [PrimitiveWithSIUnitTypes](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/PrimitiveWithSIUnitTypes.mc4)
 ### Description
-A PrimitiveWithSIUnitType combines a MCPrimitiveType from the [MCBasicTypes](https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/grammars/de/monticore/types/MCBasicTypes.mc4) 
+A PrimitiveWithSIUnitType combines a MCPrimitiveType from the [MCBasicTypes](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/types/MCBasicTypes.mc4) 
 grammar with a SIUnitType. It is mostly used to describe the type of a SIUnitLiteral but is also useful to derive the type
 of an expression with both SIUnits and an NumericLiteral. The primitive part should always be a numeric type.
 
 The grammar provides an exemplary syntax for primitive types combined with a unit, e.g.
-`int in km/s^2`, where `int` is a primitive type from [MCBasicTypes](https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/grammars/de/monticore/types/MCBasicTypes.mc4),
+`int in km/s^2`, where `int` is a primitive type from [MCBasicTypes](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/types/MCBasicTypes.mc4),
 `in` is the concrete syntax introduced by the grammar and the unit expression is an SI unit type from [SIUnitTypes.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/SIUnitTypes.mc4)
 
 A DSL developer should implement his own rule in order to use an alternative syntax.
@@ -83,8 +85,22 @@ prettyprints a PrimitiveWithSIUnitType and can be found in the package ```de.mon
 ## TypeCheck
 The classes for the TypeCheck mechanic can be found in the package ```de.monticore.types.check```. SymTypes can be
 synthesized from a SIUnitType and a PrimitiveWithSIUnitType and can be derived from SIUnitLiterals or Expressions.
+The classes for deriving from AssignmentExpressions and CommonExpressions got extended, so they work with SIUnits and
+SIUnitLiterals as well.
+(For more info see [TypeCheck](https://git.rwth-aachen.de/monticore/monticore/-/tree/master/monticore-grammar/src/main/java/de/monticore/types/check))
+
+To get the TypeCheck mechanic work with your DSL, the language needs to extend the [de.monticore.types.TypeSymbols.mc4](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/types/TypeSymbols.mc4)
+grammar. Create a derive and a synthesize class for your language which usually combine the existing derive/synthsize
+classes with a DelegetorVisitor. In addition, each TypeSymbol, TypeVarSymbol, FieldSymbol, and MethodSymbol needs to be 
+set a SymType while building the symbol table. Furthermore, each Expression, Literal, SignedLiteral, and MCType and
+MCReturnType need to have an enclosing scope. Exemplary, this is all done for the [TestSIJava](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/lang/testsijava/TestSIJava.mc4)
+language. For further explanation, see the documentation for the [TestSIJava](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/lang/testsijava/TestSIJava.md) language.
 
 ## Extensibility
 * New units can be added directly in the grammar [SIUnits.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/SIUnits.mc4)
-* An alternative syntax fot the definition of primitive types combined with SI units can be defined by implementing `MCObjectType` as is done in
-[PrimitiveWithSIUnitTypes](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/PrimitiveWithSIUnitTypes.mc4)
+* An alternative syntax fot the definition of primitive types combined with SI units can be defined by implementing `MCObjectType` as it is done in
+[CustomPrimitiveWithSIUnitTypes](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/lang/types/CustomPrimitiveWithSIUnitTypes.mc4)
+    * To include the new custom types to the TypeCheck mechanic, a DSL developer needs to implement a Synthesize-Class 
+    which extends the [SynthesizeSymTypeFromPrimitiveWithSIUnitTypes](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/SynthesizeSymTypeFromPrimitiveWithSIUnitTypes.java)
+    class and implements its visitor. For reference have a look on [SynthesizeSymTypeFromCustomPrimitiveWithSIUnitTypes.java](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/types/check/SynthesizeSymTypeFromCustomPrimitiveWithSIUnitTypes.java).
+    
