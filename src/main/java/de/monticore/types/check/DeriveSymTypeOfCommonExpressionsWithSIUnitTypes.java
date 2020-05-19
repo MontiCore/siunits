@@ -16,7 +16,7 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
     protected Optional<SymTypeExpression> calculateMultExpression(ASTMultExpression expr) {
         SymTypeExpression leftResult = acceptThisAndReturnSymTypeExpressionOrLogError(expr.getLeft(), "0xA0491");
         SymTypeExpression rightResult = acceptThisAndReturnSymTypeExpressionOrLogError(expr.getRight(), "0xA0492");
-        Optional<SymTypeExpression> wholeResult = calculateMultDivideExpression("*", leftResult, rightResult);
+        Optional<SymTypeExpression> wholeResult = calculateMultDivideExpression(expr, "*", leftResult, rightResult);
         if (wholeResult.isPresent())
             return wholeResult;
         return super.calculateMultExpression(expr);
@@ -26,27 +26,27 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
     protected Optional<SymTypeExpression> calculateDivideExpression(ASTDivideExpression expr) {
         SymTypeExpression leftResult = acceptThisAndReturnSymTypeExpressionOrLogError(expr.getLeft(), "0xA0493");
         SymTypeExpression rightResult = acceptThisAndReturnSymTypeExpressionOrLogError(expr.getRight(), "0xA0494");
-        Optional<SymTypeExpression> wholeResult = calculateMultDivideExpression("/", leftResult, rightResult);
+        Optional<SymTypeExpression> wholeResult = calculateMultDivideExpression(expr, "/", leftResult, rightResult);
         if (wholeResult.isPresent())
             return wholeResult;
         return super.calculateDivideExpression(expr);
     }
 
-    protected Optional<SymTypeExpression> calculateMultDivideExpression(String operator, SymTypeExpression leftResult, SymTypeExpression rightResult) {
+    protected Optional<SymTypeExpression> calculateMultDivideExpression(ASTInfixExpression expr, String operator, SymTypeExpression leftResult, SymTypeExpression rightResult) {
         if (isSIUnitType(leftResult) && isSIUnitType(rightResult)) {
             // if both are SI unit types the result the result has to be calculated depending on the operator
             String newUnitName = leftResult.print() + operator + "(" + rightResult.print() + ")";
-            return Optional.of(SIUnitSymTypeExpressionFactory.createSIUnit(newUnitName, scope));
+            return Optional.of(SIUnitSymTypeExpressionFactory.createSIUnit(newUnitName, getScope(expr.getEnclosingScope())));
         } else if (isSIUnitType(leftResult) && isNumericType(rightResult)) {
-            return Optional.of(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(rightResult, leftResult, scope));
+            return Optional.of(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(rightResult, leftResult, getScope(expr.getEnclosingScope())));
         } else if (isNumericType(leftResult) && isSIUnitType(rightResult)) {
             SymTypeExpression siUnitType;
             if ("*".equals(operator))
                 siUnitType = rightResult;
             else {
-                siUnitType = SIUnitSymTypeExpressionFactory.createSIUnit("(" + rightResult.print() + ")^-1", scope);
+                siUnitType = SIUnitSymTypeExpressionFactory.createSIUnit("(" + rightResult.print() + ")^-1", getScope(expr.getEnclosingScope()));
             }
-            return Optional.of(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(leftResult, siUnitType, scope));
+            return Optional.of(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(leftResult, siUnitType, getScope(expr.getEnclosingScope())));
         } else if (isNumericWithSIUnitType(leftResult) || isNumericWithSIUnitType(rightResult)) {
             // The result is again a PrimitiveWithSIUnitType
             Optional<SymTypeExpression> numericType = getBinaryNumericPromotionOfNumeric(leftResult, rightResult);
@@ -59,10 +59,10 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
                 } else if (!rightSIUnitType.isPresent()) {
                     siUnitType = leftSIUnitType;
                 } else {
-                    siUnitType = calculateMultDivideExpression(operator, leftSIUnitType.get(), rightSIUnitType.get());
+                    siUnitType = calculateMultDivideExpression(expr, operator, leftSIUnitType.get(), rightSIUnitType.get());
                 }
                 return Optional.of(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(
-                        numericType.get(), siUnitType.get(), scope));
+                        numericType.get(), siUnitType.get(), getScope(expr.getEnclosingScope())));
             }
         }
         return Optional.empty();
@@ -109,7 +109,7 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
                 Optional<SymTypeExpression> numericType = getBinaryNumericPromotionOfNumeric(leftResult, rightResult);
                 if (numericType.isPresent() && isNumericType(numericType.get())) {
                     return Optional.of(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(
-                            numericType.get(), leftSIUnitType.get(), scope));
+                            numericType.get(), leftSIUnitType.get(), leftResult.getTypeInfo().getEnclosingScope()));
                 }
             }
             // Should not happen, will be handled in traverse
@@ -142,7 +142,7 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
             if (numericType.isPresent() && isNumericType(numericType.get())
                     && siUnitType.isPresent()) {
                 return Optional.of(SIUnitSymTypeExpressionFactory.
-                        createNumericWithSIUnitType(numericType.get(), siUnitType.get(), scope));
+                        createNumericWithSIUnitType(numericType.get(), siUnitType.get(), type.getTypeInfo().getEnclosingScope()));
             }
             return Optional.empty();
         }

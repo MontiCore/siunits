@@ -1,8 +1,6 @@
 package de.monticore.types.check;
 
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
-import de.monticore.expressions.prettyprint.CombineExpressionsWithLiteralsPrettyPrinter;
-import de.monticore.prettyprint.IndentPrinter;
 import de.se_rwth.commons.logging.Log;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +29,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         // example with siunit
         String s = "4.1m/h + 12m/s";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("(double,m/s)", tc.typeOf(astex).print());
     }
 
@@ -38,6 +37,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     public void testInvalidPlusExpression1() throws IOException {
         String s = "4.1km/h + 12m";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -50,6 +50,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     public void testInvalidPlusExpression2() throws IOException {
         String s = "4.1km/h + 12";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -62,6 +63,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     public void testInvalidPlusExpression3() throws IOException {
         String s = "varM + 2 m";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -78,6 +80,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         // example with siunit
         String s = "4.1km/h - 12m/s";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("(double,m/s)", tc.typeOf(astex).print());
     }
 
@@ -85,6 +88,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     public void testInvalidMinusExpression1() throws IOException {
         String s = "4.1km/h - 12m";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -97,6 +101,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     public void testInvalidMinusExpression2() throws IOException {
         String s = "4.1km/h - 12";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -109,6 +114,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     public void testInvalidMinusExpression3() throws IOException {
         String s = "varM - 2 m";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -125,31 +131,37 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         // example with siunit
         String s = "4.1km * 12s";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("(double,m*s)", tc.typeOf(astex).print());
 
         // example with siunit
         s = "4.1km * 12.3";
         astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("(double,m)", tc.typeOf(astex).print());
 
         // example with siunit
         s = "4.1km * 12.3m^-1";
         astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("double", tc.typeOf(astex).print());
 
         // example with siunit
         s = "varM * varS";
         astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("m*s", tc.typeOf(astex).print());
 
         // example with siunit
         s = "varI_M * varS";
         astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("(int,m*s)", tc.typeOf(astex).print());
 
         // example with siunit
         s = "varM * 3.2";
         astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("(double,m)", tc.typeOf(astex).print());
     }
 
@@ -157,6 +169,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     public void testInvalidMultExpression() throws IOException {
         String s = "3 m*true";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -173,31 +186,37 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         // example with siunit
         String s = "4.1km / 12s";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("(double,m/s)", tc.typeOf(astex).print());
 
         // example with siunit
         s = "4.1km / 12.3";
         astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("(double,m)", tc.typeOf(astex).print());
 
         // example with siunit
         s = "4km / 12 m";
         astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("int", tc.typeOf(astex).print());
 
         // example with siunit
         s = "varM / varM";
         astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("int", tc.typeOf(astex).print());
 
         // example with siunit
         s = "varM / varS";
         astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("m/s", tc.typeOf(astex).print());
 
         // example with siunit
         s = "3.2 / varS";
         astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("(double,1/s)", tc.typeOf(astex).print());
     }
 
@@ -205,6 +224,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     public void testInvalidDivideExpression() throws IOException {
         String s = "3 m/true";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -221,6 +241,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         //example with two ints
         String s = "3 m%2m";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("(int,m)", tc.typeOf(astex).print());
     }
 
@@ -228,6 +249,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     public void testInvalidModuloExpression() throws IOException {
         String s = "3 m%2";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -244,6 +266,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         // example with siunit
         String s = "4.1km <= 12m";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("boolean", tc.typeOf(astex).print());
     }
 
@@ -251,6 +274,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     public void testInvalidLessEqualExpression1() throws IOException {
         String s = "4.1km <= 12s";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -263,6 +287,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     public void testInvalidLessEqualExpression2() throws IOException {
         String s = "varS <= varM";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -279,6 +304,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         // example with siunit
         String s = "4.1km >= 12m";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("boolean", tc.typeOf(astex).print());
     }
 
@@ -286,6 +312,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     public void testInvalidGreaterEqualExpression1() throws IOException {
         String s = "4.1km >= 12s";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -298,6 +325,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     public void testInvalidGreaterEqualExpression2() throws IOException {
         String s = "varM >= 3 m";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -314,6 +342,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         // example with siunit
         String s = "4.1km < 12m";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("boolean", tc.typeOf(astex).print());
     }
 
@@ -321,6 +350,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     public void testInvalidLessThanExpression1() throws IOException {
         String s = "4.1km < 12s";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -333,6 +363,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     public void testInvalidLessThanExpression2() throws IOException {
         String s = "varS < 12s";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -349,6 +380,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         // example with siunit
         String s = "4.1km > 12m";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("boolean", tc.typeOf(astex).print());
     }
 
@@ -356,6 +388,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     public void testInvalidGreaterThanExpression1() throws IOException {
         String s = "4.1km > 12s";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -368,6 +401,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     public void testInvalidGreaterThanExpression2() throws IOException {
         String s = "4.1km > varM";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -406,10 +440,6 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         add2scope(scope, field("varM", m));
         add2scope(scope, field("varKMe2perH", kMe2perH));
         add2scope(scope, field("varKMe2perHMSe4", kMe2perHMSe4));
-
-
-        derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator(scope, new CombineExpressionsWithLiteralsPrettyPrinter(new IndentPrinter()));
-        tc = new TypeCheck(null, derLit);
     }
 
     /**
@@ -423,16 +453,20 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         //example with two siunit types
         String s = "3 km/s==2 m^2/1 m*s";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("boolean", tc.typeOf(astex).print());
 
         //example with two siunit types
         s = "varI_M==3 m";
         astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("boolean", tc.typeOf(astex).print());
 
         //example with two siunit types
         s = "varM==varS";
         astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("boolean", tc.typeOf(astex).print());
     }
 
@@ -442,6 +476,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
 
         String s = "varM==3 m";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -457,6 +492,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         //person1 has the type Person, foo is a boolean
         String s = "varI_M==3";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -476,11 +512,13 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         //example with two siunit types
         String s = "varI_M/varD_S!=5m^2/(m*s)";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("boolean", tc.typeOf(astex).print());
 
         //example with two siunit types
         s = "varM!=varS";
         astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("boolean", tc.typeOf(astex).print());
     }
 
@@ -490,6 +528,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
 
         String s = "varM!=varI_M";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -504,6 +543,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         //person1 is a Person, foo is a boolean
         String s = "varM!=3";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -519,6 +559,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     public void deriveFromBooleanAndOpExpression() throws IOException {
         String s = "(3 km/h<=4m/s&&5>6)";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("boolean", tc.typeOf(astex).print());
     }
 
@@ -527,6 +568,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         //only possible with two booleans
         String s = "3 km &&true";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -542,6 +584,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     public void deriveFromBooleanOrOpExpression() throws IOException {
         String s = "(3 km/h<=4m/s||5>6)";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("boolean", tc.typeOf(astex).print());
     }
 
@@ -550,6 +593,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         //only possible with two booleans
         String s = "3 m||true";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -563,6 +607,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         //only possible with a boolean as inner expression
         String s = "!4 m";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");
@@ -582,6 +627,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         //test with siunits
         String s = "(varS*3 s/(2*varM*varM-4 km^2))";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("(int,s^2/m^2)", tc.typeOf(astex).print());
     }
 
@@ -596,6 +642,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         //test with siunits
         String s = "3<9?varM:varM*varM/varM";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("m", tc.typeOf(astex).print());
     }
 
@@ -607,6 +654,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         //true and 7 are not of the same type
         String s = "3<4?varS:varM";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         try {
             tc.typeOf(astex);
             fail("Exception not thrown");

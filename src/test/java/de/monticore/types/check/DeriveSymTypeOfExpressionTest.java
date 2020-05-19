@@ -2,12 +2,11 @@
 package de.monticore.types.check;
 
 import com.google.common.collect.Lists;
+import de.monticore.expressions.combineexpressionswithliterals.CombineExpressionsWithLiteralsMill;
 import de.monticore.expressions.combineexpressionswithliterals._parser.CombineExpressionsWithLiteralsParser;
+import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICombineExpressionsWithLiteralsScope;
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
-import de.monticore.expressions.expressionsbasis._symboltable.ExpressionsBasisScope;
-import de.monticore.expressions.expressionsbasis._symboltable.ExpressionsBasisSymTabMill;
-import de.monticore.expressions.prettyprint.CombineExpressionsWithLiteralsPrettyPrinter;
-import de.monticore.prettyprint.IndentPrinter;
+import de.monticore.types.typesymbols.TypeSymbolsMill;
 import de.monticore.types.typesymbols._symboltable.FieldSymbol;
 import de.monticore.types.typesymbols._symboltable.TypeSymbol;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolLoader;
@@ -28,7 +27,8 @@ public class DeriveSymTypeOfExpressionTest {
    * Focus: Deriving Type of Literals, here:
    *    literals/MCLiteralsBasis.mc4
    */
-  protected ExpressionsBasisScope scope;
+  protected ICombineExpressionsWithLiteralsScope scope;
+  protected FlatExpressionScopeSetter flatExpressionScopeSetter;
   
   @BeforeClass
   public static void setup() {
@@ -40,7 +40,7 @@ public class DeriveSymTypeOfExpressionTest {
   public void setupForEach() {
     // Setting up a Scope Infrastructure (without a global Scope)
     scope =
-            ExpressionsBasisSymTabMill.expressionsBasisScopeBuilder()
+            CombineExpressionsWithLiteralsMill.combineExpressionsWithLiteralsScopeBuilder()
                     .setEnclosingScope(null)       // No enclosing Scope: Search ending here
                 .setExportingSymbols(true)
                     .setAstNode(null)
@@ -76,10 +76,20 @@ public class DeriveSymTypeOfExpressionTest {
 
     //testing for generics
     TypeVarSymbol genArgs = typeVariable("GenArg");
-    TypeSymbol genSuperType = type("GenSuper",Lists.newArrayList(),Lists.newArrayList(),Lists.newArrayList(),Lists.newArrayList(genArgs),scope);
+    TypeSymbol genSuperType = TypeSymbolsMill.typeSymbolBuilder()
+        .setSpannedScope(TypeSymbolsMill.typeSymbolsScopeBuilder().build())
+        .setTypeParameterList(Lists.newArrayList(genArgs))
+        .setEnclosingScope(scope)
+        .setName("GenSuper")
+        .build();
     SymTypeExpression genArg = SymTypeExpressionFactory.createTypeVariable(new TypeSymbolLoader("GenArg",scope));
     SymTypeExpression genSuper = SymTypeExpressionFactory.createGenerics(new TypeSymbolLoader("GenSuper",scope),genArg);
-    TypeSymbol genSubType = type("GenSub",Lists.newArrayList(),Lists.newArrayList(),Lists.newArrayList(genSuper),Lists.newArrayList(genArgs),scope);
+    TypeSymbol genSubType = TypeSymbolsMill.typeSymbolBuilder()
+        .setSpannedScope(TypeSymbolsMill.typeSymbolsScopeBuilder().build())
+        .setName("GenSub").setSuperTypeList(Lists.newArrayList(genSuper))
+        .setTypeParameterList(Lists.newArrayList(genArgs))
+        .setEnclosingScope(scope)
+        .build();
     SymTypeExpression genSub = SymTypeExpressionFactory.createGenerics(new TypeSymbolLoader("GenSub",scope),genArg);
     FieldSymbol genSubField = field("genericSub",genSub);
     FieldSymbol genSuperField = field("genericSuper",genSuper);
@@ -87,7 +97,8 @@ public class DeriveSymTypeOfExpressionTest {
     add2scope(scope,genSubType);
     add2scope(scope,genSubField);
     add2scope(scope,genSuperField);
-    derLit.setScope(scope);
+
+    flatExpressionScopeSetter = new FlatExpressionScopeSetter(scope);
   }
   
   // Parer used for convenience:
@@ -98,7 +109,7 @@ public class DeriveSymTypeOfExpressionTest {
   DeriveSymTypeOfExpression derEx = new DeriveSymTypeOfExpression();
 
   // This is an auxiliary
-  DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator(ExpressionsBasisSymTabMill.expressionsBasisScopeBuilder().build(), new CombineExpressionsWithLiteralsPrettyPrinter(new IndentPrinter()));
+  DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator();
   
   // other arguments not used (and therefore deliberately null)
   
@@ -111,6 +122,7 @@ public class DeriveSymTypeOfExpressionTest {
   @Test
   public void deriveTFromASTNameExpression() throws IOException {
     ASTExpression astex = p.parse_StringExpression("foo").get();
+    astex.accept(flatExpressionScopeSetter);
     assertEquals("int", tc.typeOf(astex).print());
   }
 
@@ -118,6 +130,7 @@ public class DeriveSymTypeOfExpressionTest {
   public void deriveTFromASTNameExpression2() throws IOException {
     String s = "bar2";
     ASTExpression astex = p.parse_StringExpression(s).get();
+    astex.accept(flatExpressionScopeSetter);
     assertEquals("boolean", tc.typeOf(astex).print());
   }
 
@@ -125,6 +138,7 @@ public class DeriveSymTypeOfExpressionTest {
   public void deriveTFromASTNameExpression3() throws IOException{
     String s = "person1";
     ASTExpression astex = p.parse_StringExpression(s).get();
+    astex.accept(flatExpressionScopeSetter);
     assertEquals("Person", tc.typeOf(astex).print());
   }
 
@@ -132,6 +146,7 @@ public class DeriveSymTypeOfExpressionTest {
   public void deriveTFromASTNameExpression4() throws IOException{
     String s = "student1";
     ASTExpression astex = p.parse_StringExpression(s).get();
+    astex.accept(flatExpressionScopeSetter);
     assertEquals("Student",tc.typeOf(astex).print());
   }
 
@@ -139,24 +154,28 @@ public class DeriveSymTypeOfExpressionTest {
   public void deriveTFromASTNameExpression5() throws IOException{
     String s = "firstsemester";
     ASTExpression astex = p.parse_StringExpression(s).get();
+    astex.accept(flatExpressionScopeSetter);
     assertEquals("FirstSemesterStudent",tc.typeOf(astex).print());
   }
 
    @Test
   public void deriveTFromLiteral() throws IOException {
     ASTExpression astex = p.parse_StringExpression("42").get();
+    astex.accept(flatExpressionScopeSetter);
     assertEquals("int", tc.typeOf(astex).print());
   }
 
   @Test
   public void deriveTFromLiteralString() throws IOException {
     ASTExpression astex = p.parse_StringExpression("\"aStringi\"").get();
+    astex.accept(flatExpressionScopeSetter);
     assertEquals("String", tc.typeOf(astex).print());
   }
 
   @Test
   public void genericsTest() throws IOException {
     ASTExpression astex = p.parse_StringExpression("genericSuper = genericSub").get();
+    astex.accept(flatExpressionScopeSetter);
     assertEquals("GenSuper<GenArg>",tc.typeOf(astex).print());
   }
 

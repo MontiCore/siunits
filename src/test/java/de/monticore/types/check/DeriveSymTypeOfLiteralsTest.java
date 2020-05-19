@@ -1,11 +1,8 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.types.check;
 
-import de.monticore.expressions.expressionsbasis._symboltable.ExpressionsBasisSymTabMill;
-import de.monticore.expressions.prettyprint.CombineExpressionsWithLiteralsPrettyPrinter;
-import de.monticore.literals.mccommonliterals._ast.MCCommonLiteralsMill;
+import de.monticore.literals.mccommonliterals.MCCommonLiteralsMill;
 import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
-import de.monticore.prettyprint.IndentPrinter;
 import de.se_rwth.commons.logging.LogStub;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -26,8 +23,7 @@ public class DeriveSymTypeOfLiteralsTest {
   }
 
   // This is the core Visitor under Test (but rather empty)
-  ITypesCalculator derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator(ExpressionsBasisSymTabMill.expressionsBasisScopeBuilder().build(),
-      new CombineExpressionsWithLiteralsPrettyPrinter(new IndentPrinter()));
+  ITypesCalculator derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator();
   
   // other arguments not used (and therefore deliberately null)
   

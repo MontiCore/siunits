@@ -1,7 +1,6 @@
 package de.monticore.types.check;
 
 import de.monticore.expressions.combineexpressionswithliterals._visitor.CombineExpressionsWithLiteralsDelegatorVisitor;
-import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisScope;
 
 import java.util.Optional;
 
@@ -14,27 +13,20 @@ public class SynthesizeSymTypeOfCombinedTypes extends CombineExpressionsWithLite
 
     private SynthesizeSymTypeFromSIUnitTypes symTypeFromSIUnitTypes;
 
-    private CombineExpressionsWithLiteralsDelegatorVisitor realThis;
+    private CombineExpressionsWithLiteralsDelegatorVisitor realThis = this;
 
-    private LastResult lastResult = new LastResult();
-
-    IExpressionsBasisScope scope;
-
-    public SynthesizeSymTypeOfCombinedTypes(IExpressionsBasisScope scope) {
-        realThis = this;
-        this.scope = scope;
-    }
+    private TypeCheckResult typeCheckResult = new TypeCheckResult();
 
     @Override
     public Optional<SymTypeExpression> getResult() {
-        return Optional.of(lastResult.getLast());
+        return Optional.of(typeCheckResult.getLast());
     }
 
     @Override
     public void init() {
-        symTypeFromMCSimpleGenericTypes = new SynthesizeSymTypeFromMCSimpleGenericTypes(scope);
-        symTypeFromPrimitiveWithSIUnitTypes = new SynthesizeSymTypeFromPrimitiveWithSIUnitTypes(scope);
-        symTypeFromSIUnitTypes = new SynthesizeSymTypeFromSIUnitTypes(scope);
+        symTypeFromMCSimpleGenericTypes = new SynthesizeSymTypeFromMCSimpleGenericTypes();
+        symTypeFromPrimitiveWithSIUnitTypes = new SynthesizeSymTypeFromPrimitiveWithSIUnitTypes();
+        symTypeFromSIUnitTypes = new SynthesizeSymTypeFromSIUnitTypes();
 
         setMCSimpleGenericTypesVisitor(symTypeFromMCSimpleGenericTypes);
         setMCCollectionTypesVisitor(symTypeFromMCSimpleGenericTypes);
@@ -42,14 +34,9 @@ public class SynthesizeSymTypeOfCombinedTypes extends CombineExpressionsWithLite
         setPrimitiveWithSIUnitTypesVisitor(symTypeFromPrimitiveWithSIUnitTypes);
         setSIUnitTypesVisitor(symTypeFromSIUnitTypes);
 
-        lastResult = new LastResult();
-        symTypeFromMCSimpleGenericTypes.setLastResult(lastResult);
-        symTypeFromPrimitiveWithSIUnitTypes.setLastResult(lastResult);
-    }
-
-    public void setScope(IExpressionsBasisScope scope) {
-        this.scope = scope;
-        init();
+        typeCheckResult = new TypeCheckResult();
+        symTypeFromMCSimpleGenericTypes.setTypeCheckResult(typeCheckResult);
+        symTypeFromPrimitiveWithSIUnitTypes.setTypeCheckResult(typeCheckResult);
     }
 
     @Override

@@ -5,10 +5,12 @@
  */
 package de.monticore.types.check;
 
-import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisScope;
 import de.monticore.lang.siunits.prettyprint.SIUnitsPrettyPrinter;
 import de.monticore.lang.types.siunittypes._ast.ASTSIUnitType;
 import de.monticore.lang.types.siunittypes._visitor.SIUnitTypesVisitor;
+import de.monticore.types.mcbasictypes._symboltable.IMCBasicTypesScope;
+import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
+import de.se_rwth.commons.logging.Log;
 
 import java.util.Optional;
 
@@ -21,12 +23,6 @@ public class SynthesizeSymTypeFromSIUnitTypes implements ISynthesize, SIUnitType
     /**
      * Using the visitor functionality to calculate the SymType Expression
      */
-
-    protected IExpressionsBasisScope scope;
-
-    public SynthesizeSymTypeFromSIUnitTypes(IExpressionsBasisScope scope) {
-        this.scope = scope;
-    }
 
     // ----------------------------------------------------------  realThis start
     // setRealThis, getRealThis are necessary to make the visitor compositional
@@ -51,23 +47,32 @@ public class SynthesizeSymTypeFromSIUnitTypes implements ISynthesize, SIUnitType
      * Storage in the Visitor: result of the last endVisit.
      * This attribute is synthesized upward.
      */
-    public LastResult lastResult = new LastResult();
+    public TypeCheckResult typeCheckResult = new TypeCheckResult();
 
     public Optional<SymTypeExpression> getResult() {
-        return Optional.of(lastResult.getLast());
+        return Optional.of(typeCheckResult.getLast());
     }
 
     public void init() {
-        lastResult = new LastResult();
+        typeCheckResult = new TypeCheckResult();
     }
 
-    public void setLastResult(LastResult lastResult){
-        this.lastResult = lastResult;
+    public void setTypeCheckResult(TypeCheckResult typeCheckResult){
+        this.typeCheckResult = typeCheckResult;
     }
 
     @Override
     public void endVisit(ASTSIUnitType siunittype) {
-        lastResult.setLast(SIUnitSymTypeExpressionFactory.createSIUnit(
-                SIUnitsPrettyPrinter.prettyprint(siunittype.getSIUnit()), scope));
+        typeCheckResult.setLast(SIUnitSymTypeExpressionFactory.createSIUnit(
+                SIUnitsPrettyPrinter.prettyprint(siunittype.getSIUnit()), getScope(siunittype.getEnclosingScope())));
+    }
+
+    public ITypeSymbolsScope getScope (IMCBasicTypesScope mcBasicTypesScope){
+        // is accepted only here, decided on 07.04.2020
+        if(!(mcBasicTypesScope instanceof ITypeSymbolsScope)){
+            Log.error("0xA0481 the enclosing scope of the type does not implement the interface ITypeSymbolsScope");
+        }
+        // is accepted only here, decided on 07.04.2020
+        return (ITypeSymbolsScope) mcBasicTypesScope;
     }
 }

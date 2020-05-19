@@ -19,7 +19,6 @@ public class DeriveSymTypeOfExpressionWithSIUnitTypesTest extends DeriveSymTypeO
         add2scope(scope, field("varM", SIUnitSymTypeExpressionFactory.createSIUnit("m", scope)));
         add2scope(scope, field("varKM", SIUnitSymTypeExpressionFactory.createSIUnit("km", scope)));
         add2scope(scope, field("varS", SIUnitSymTypeExpressionFactory.createSIUnit("s", scope)));
-        derLit.setScope(scope);
     }
 
     // ------------------------------------------------------  Tests for Function 2
@@ -29,6 +28,7 @@ public class DeriveSymTypeOfExpressionWithSIUnitTypesTest extends DeriveSymTypeO
     public void deriveTFromASTNameExpression6() throws IOException {
         String s = "varM";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("m", tc.typeOf(astex).print());
     }
 
@@ -36,12 +36,14 @@ public class DeriveSymTypeOfExpressionWithSIUnitTypesTest extends DeriveSymTypeO
     public void deriveTFromASTNameExpression7() throws IOException {
         String s = "varKM";
         ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("m", tc.typeOf(astex).print());
     }
 
     @Test
     public void deriveTFromSIUnitLiteral() throws IOException {
         ASTExpression astex = p.parse_StringExpression("42.3 km").get();
+        astex.accept(flatExpressionScopeSetter);
         assertEquals("(double,m)", tc.typeOf(astex).print());
     }
 }

@@ -1,8 +1,8 @@
 package de.monticore.types.check;
 
-import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisScope;
 import de.monticore.lang.literals.siunitliterals._ast.ASTSIUnitLiteral;
 import de.monticore.lang.literals.siunitliterals._ast.ASTSignedSIUnitLiteral;
+import de.monticore.lang.literals.siunitliterals._symboltable.ISIUnitLiteralsScope;
 import de.monticore.lang.literals.siunitliterals._visitor.SIUnitLiteralsVisitor;
 import de.monticore.lang.siunits._ast.ASTSIUnit;
 import de.monticore.lang.siunits.prettyprint.SIUnitsPrettyPrinter;
@@ -12,8 +12,6 @@ import de.monticore.lang.siunits.prettyprint.SIUnitsPrettyPrinter;
  */
 public class DeriveSymTypeOfSIUnitLiterals extends DeriveSymTypeOfMCCommonLiterals
         implements SIUnitLiteralsVisitor {
-
-    private IExpressionsBasisScope enclosingScope;
 
     SIUnitLiteralsVisitor realThis = this;
 
@@ -27,29 +25,25 @@ public class DeriveSymTypeOfSIUnitLiterals extends DeriveSymTypeOfMCCommonLitera
         return realThis;
     }
 
-    public void setScope(IExpressionsBasisScope enclosingScope) {
-        this.enclosingScope = enclosingScope;
-    }
-
     // visit methods
 
     @Override
     public void traverse(ASTSIUnitLiteral node) {
         node.getNum().accept(getRealThis());
-        traverseSIUnitLiteral(result.getLast(), node.getUn());
+        traverseSIUnitLiteral(result.getLast(), node.getUn(), node.getEnclosingScope());
     }
 
     @Override
     public void traverse(ASTSignedSIUnitLiteral node) {
         node.getNum().accept(getRealThis());
-        traverseSIUnitLiteral(result.getLast(), node.getUn());
+        traverseSIUnitLiteral(result.getLast(), node.getUn(), node.getEnclosingScope());
     }
 
-    private void traverseSIUnitLiteral(SymTypeExpression literalType, ASTSIUnit astsiUnit) {
-        SymTypeExpression siunitType = SIUnitSymTypeExpressionFactory.createSIUnit(SIUnitsPrettyPrinter.prettyprint(astsiUnit), this.enclosingScope);
+    private void traverseSIUnitLiteral(SymTypeExpression literalType, ASTSIUnit astsiUnit, ISIUnitLiteralsScope enclosingScope) {
+        SymTypeExpression siunitType = SIUnitSymTypeExpressionFactory.createSIUnit(SIUnitsPrettyPrinter.prettyprint(astsiUnit), getScope(enclosingScope));
         if (siunitType instanceof SymTypeOfSIUnit)
             result.setLast(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(
-                    literalType, siunitType, this.enclosingScope));
+                    literalType, siunitType, getScope(enclosingScope)));
         else // case for siunit m/m
             result.setLast(literalType);
     }

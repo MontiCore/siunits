@@ -1,8 +1,9 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.types.check;
 
-import de.monticore.expressions.expressionsbasis._symboltable.ExpressionsBasisSymTabMill;
+import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
+import de.monticore.lang.testsijava.testsijava._symboltable.ITestSIJavaScope;
 import de.monticore.lang.types.siunittypes._ast.ASTSIUnitType;
 import de.se_rwth.commons.logging.Log;
 import org.junit.Before;
@@ -20,7 +21,7 @@ public class SynthesizeSymTypeFromSIUnitTypesTest {
 
     private TestSIJavaParser parser = new TestSIJavaParser();
     // This is the TypeChecker under Test:
-    private TypeCheck tc;
+    private TypeCheck tc = new TypeCheck(new SynthesizeSymTypeFromSIUnitTypes());
 
     @BeforeClass
     public static void setup() {
@@ -28,10 +29,15 @@ public class SynthesizeSymTypeFromSIUnitTypesTest {
         Log.enableFailQuick(false);
     }
 
+    ITestSIJavaScope scope;
+
     @Before
     public void setupForEach() {
-        tc = new TypeCheck(new SynthesizeSymTypeFromSIUnitTypes(
-                ExpressionsBasisSymTabMill.expressionsBasisScopeBuilder().build()), null);
+        scope = TestSIJavaMill.testSIJavaScopeBuilder()
+                .setEnclosingScope(null)       // No enclosing Scope: Search ending here
+                .setExportingSymbols(true)
+                .setAstNode(null)
+                .setName("Phantasy2").build();     // hopefully unused
     }
 
     // ------------------------------------------------------  Tests for Function 1, 1b, 1c
@@ -43,6 +49,7 @@ public class SynthesizeSymTypeFromSIUnitTypesTest {
 
     private void check(String control, String s) throws IOException {
         ASTSIUnitType asttype = parseSIUnitType(s);
+        asttype.setEnclosingScope(scope);
         SymTypeExpression type = tc.symTypeFromAST(asttype);
         assertEquals(control, type.print());
     }

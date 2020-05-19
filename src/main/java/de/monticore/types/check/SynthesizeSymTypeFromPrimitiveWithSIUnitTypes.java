@@ -1,8 +1,8 @@
 package de.monticore.types.check;
 
-import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisScope;
 import de.monticore.lang.siunits.utility.UnitPrettyPrinter;
 import de.monticore.lang.types.primitivewithsiunittypes._ast.ASTPrimitiveWithSIUnitType;
+import de.monticore.lang.types.primitivewithsiunittypes._ast.ASTPrimitiveWithSIUnitTypeInt;
 import de.monticore.lang.types.primitivewithsiunittypes._visitor.PrimitiveWithSIUnitTypesVisitor;
 import de.monticore.lang.types.siunittypes._ast.ASTSIUnitType;
 import de.se_rwth.commons.logging.Log;
@@ -27,10 +27,6 @@ public class SynthesizeSymTypeFromPrimitiveWithSIUnitTypes extends SynthesizeSym
     //
     PrimitiveWithSIUnitTypesVisitor realThis = this;
 
-    public SynthesizeSymTypeFromPrimitiveWithSIUnitTypes(IExpressionsBasisScope scope) {
-        super(scope);
-    }
-
     @Override
     public void setRealThis(PrimitiveWithSIUnitTypesVisitor realThis) {
         this.realThis = realThis;
@@ -43,25 +39,30 @@ public class SynthesizeSymTypeFromPrimitiveWithSIUnitTypes extends SynthesizeSym
 
     @Override
     public void endVisit(ASTSIUnitType node) {
-        lastResult.setLast(SIUnitSymTypeExpressionFactory.createSIUnit(UnitPrettyPrinter.printUnit(node.getSIUnit()), scope));
+        typeCheckResult.setLast(SIUnitSymTypeExpressionFactory.createSIUnit(UnitPrettyPrinter.printUnit(node.getSIUnit()), getScope(node.getEnclosingScope())));
     }
 
     @Override
     public void traverse(ASTPrimitiveWithSIUnitType node) {
+        traversePrimitiveWithSIUnitType(node);
+    }
+
+    protected void traversePrimitiveWithSIUnitType(ASTPrimitiveWithSIUnitTypeInt node) {
         SymTypeExpression numericType = null;
         SymTypeExpression siunitType = null;
-        node.getMCPrimitiveType().accept(getRealThis());
-        if (!lastResult.isPresentLast() || !isNumericType(lastResult.getLast())) {
+
+        node.getPrimitiveType().accept(getRealThis());
+        if (!typeCheckResult.isPresentLast() || !isNumericType(typeCheckResult.getLast())) {
             Log.error("0xA0495");
         }
-        numericType = lastResult.getLast();
-        lastResult.reset();
-        node.getSIUnitType().accept(getRealThis());
-        if (!lastResult.isPresentLast()){
+        numericType = typeCheckResult.getLast();
+        typeCheckResult.reset();
+        node.getSiunitType().accept(getRealThis());
+        if (!typeCheckResult.isPresentLast()){
             Log.error("0xA0496");
         }
-        siunitType = lastResult.getLast();
-        lastResult.setLast(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(numericType, siunitType, scope));
+        siunitType = typeCheckResult.getLast();
+        typeCheckResult.setLast(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(numericType, siunitType, getScope(node.getEnclosingScope())));
     }
 
     /**

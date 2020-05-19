@@ -30,7 +30,7 @@ public class DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes extends DeriveS
             if (numericType.isPresent() && isNumericType(numericType.get())
                     && TypeCheck.compatible(leftSIUnit.get(), rightSIUnit.get())) {
                 return Optional.of(SIUnitSymTypeExpressionFactory.
-                        createNumericWithSIUnitType(numericType.get(), leftSIUnit.get(), scope));
+                        createNumericWithSIUnitType(numericType.get(), leftSIUnit.get(), getScope(expr.getEnclosingScope())));
             }
         } else if (isNumericWithSIUnitType(leftResult) && isNumericType(rightResult)
                 && (expr.getOperator() == ASTConstantsAssignmentExpressions.STAREQUALS ||
@@ -41,7 +41,7 @@ public class DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes extends DeriveS
             Optional<SymTypeExpression> siUnitType = getSIUnit(leftResult);
             if (numericType.isPresent() && isNumericType(numericType.get()) && siUnitType.isPresent()) {
                 return Optional.of(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(
-                        numericType.get(), siUnitType.get(), scope));
+                        numericType.get(), siUnitType.get(), getScope(expr.getEnclosingScope())));
             }
         }
         return super.calculateTypeArithmetic(expr, leftResult, rightResult);
@@ -63,7 +63,7 @@ public class DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes extends DeriveS
             Optional<SymTypeExpression> siUnitType = super.calculateRegularAssignment(expr, leftSIUnit.get(), rightSIUnit.get());
             if (numericType.isPresent() && isNumericType(numericType.get()) && siUnitType.isPresent()) {
                 return Optional.of(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(
-                        numericType.get(), siUnitType.get(), scope));
+                        numericType.get(), siUnitType.get(), getScope(expr.getEnclosingScope())));
             }
         }
         return super.calculateRegularAssignment(expr, leftResult, rightResult);
@@ -111,7 +111,7 @@ public class DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes extends DeriveS
             numericType = super.getUnaryNumericPromotionType(numericType.get());
             if (numericType.isPresent() && isNumericType(numericType.get())) {
                 return Optional.of(SIUnitSymTypeExpressionFactory.
-                        createNumericWithSIUnitType(numericType.get(), siUnitType.get(), scope));
+                        createNumericWithSIUnitType(numericType.get(), siUnitType.get(), type.getTypeInfo().getEnclosingScope()));
             }
             return Optional.empty();
         }
