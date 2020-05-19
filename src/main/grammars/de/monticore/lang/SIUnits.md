@@ -86,7 +86,8 @@ prettyprints a PrimitiveWithSIUnitType and can be found in the package ```de.mon
 The classes for the TypeCheck mechanic can be found in the package ```de.monticore.types.check```. SymTypes can be
 synthesized from a SIUnitType and a PrimitiveWithSIUnitType and can be derived from SIUnitLiterals or Expressions.
 The classes for deriving from AssignmentExpressions and CommonExpressions got extended, so they work with SIUnits and
-SIUnitLiterals as well.
+SIUnitLiterals as well. E.g. ```3m + 2s``` should not be possible, while the type of ```3m / 2.2s``` is ```(double,m/s)```.
+
 (For more info see [TypeCheck](https://git.rwth-aachen.de/monticore/monticore/-/tree/master/monticore-grammar/src/main/java/de/monticore/types/check))
 
 To get the TypeCheck mechanic work with your DSL, the language needs to extend the [de.monticore.types.TypeSymbols.mc4](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/types/TypeSymbols.mc4)
