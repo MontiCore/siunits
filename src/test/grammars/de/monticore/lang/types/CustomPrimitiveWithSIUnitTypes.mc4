@@ -5,8 +5,8 @@ package de.monticore.lang.types;
  * This grammar is another way to represent the type of a primitive combined with a SI unit type.
  */
 
-component grammar CustomPrimitiveWithSIUnitTypes extends de.monticore.types.MCBasicTypes, de.monticore.lang.types.SIUnitTypes {
+component grammar CustomPrimitiveWithSIUnitTypes extends de.monticore.lang.types.PrimitiveWithSIUnitTypes {
 
-    CustomPrimitiveWithSIUnitType implements MCObjectType =
-        MCPrimitiveType "in" SIUnitType;
+    CustomPrimitiveWithSIUnitType implements PrimitiveWithSIUnitTypeInt =
+        primitiveType:MCPrimitiveType "<" siunitType:SIUnitType ">";
 }

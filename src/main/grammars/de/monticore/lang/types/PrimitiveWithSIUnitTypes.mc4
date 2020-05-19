@@ -8,7 +8,10 @@ package de.monticore.lang.types;
 
 component grammar PrimitiveWithSIUnitTypes extends de.monticore.types.MCBasicTypes, de.monticore.lang.types.SIUnitTypes {
 
-    PrimitiveWithSIUnitType implements MCObjectType =
-        "<" MCPrimitiveType SIUnitType ">";
+    interface PrimitiveWithSIUnitTypeInt extends MCObjectType =
+        primitiveType:MCPrimitiveType siunitType:SIUnitType;
+
+    PrimitiveWithSIUnitType implements PrimitiveWithSIUnitTypeInt =
+        primitiveType:MCPrimitiveType "in" siunitType:SIUnitType;
 
 }
