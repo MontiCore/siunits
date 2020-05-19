@@ -88,6 +88,7 @@ public class SIUnitLiteralsTest {
             checkSIUnitLiteral("30.4F kg", 30.4, "kg", 30.4, "kg");
             checkSIUnitLiteral("30L F", 30, "F", 30, "F");
             checkSIUnitLiteral("30.2 F", 30.2, "F", 30.2, "F");
+            checkSIUnitLiteral("30F", 30, "F", 30, "F");
             checkSIUnitLiteral("30 L", 30, "L", 0.03, "m^3");
             checkSIUnitLiteral("30.2L", 30.2, "L", 0.0302, "m^3");
             checkSIUnitLiteral("30 l", 30, "l", 0.03, "m^3");
