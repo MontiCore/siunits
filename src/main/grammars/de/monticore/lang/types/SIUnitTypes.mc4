@@ -9,6 +9,6 @@ package de.monticore.lang.types;
 component grammar SIUnitTypes extends de.monticore.lang.SIUnits,
         de.monticore.types.MCBasicTypes {
 
-     SIUnitType implements MCObjectType =
+     SIUnitType implements MCObjectType <100> =
         SIUnit;
 }
