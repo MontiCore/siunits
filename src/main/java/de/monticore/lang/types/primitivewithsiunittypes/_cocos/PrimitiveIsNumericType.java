@@ -10,7 +10,7 @@ public class PrimitiveIsNumericType implements PrimitiveWithSIUnitTypesASTPrimit
 
     @Override
     public void check(ASTPrimitiveWithSIUnitType node) {
-        if (node.getMCPrimitiveType().isBoolean())
+        if (node.getPrimitiveType().isBoolean())
             Log.error("0xA0499 Primitive type must be a numeric type");
     }
 }

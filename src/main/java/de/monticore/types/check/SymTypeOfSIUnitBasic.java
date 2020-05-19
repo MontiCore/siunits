@@ -79,11 +79,6 @@ public class SymTypeOfSIUnitBasic extends SymTypeExpression {
         return clone;
     }
 
-    @Override
-    public boolean isPrimitive() {
-        return true;
-    }
-
     public boolean isExponentPresent() {
         return exponent.isPresent();
     }

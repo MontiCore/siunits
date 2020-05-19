@@ -2,6 +2,7 @@
 
 package de.monticore.lang.literals;
 
-grammar TestSIUnitLiterals extends de.monticore.lang.literals.SIUnitLiterals {
+grammar TestSIUnitLiterals extends de.monticore.lang.literals.SIUnitLiterals,
+                                    de.monticore.types.TypeSymbols {
 
 }

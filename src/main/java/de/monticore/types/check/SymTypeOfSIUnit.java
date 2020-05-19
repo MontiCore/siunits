@@ -9,7 +9,6 @@ import de.monticore.types.typesymbols._symboltable.TypeSymbolsScope;
 
 import javax.measure.quantity.Dimensionless;
 import javax.measure.unit.Unit;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
