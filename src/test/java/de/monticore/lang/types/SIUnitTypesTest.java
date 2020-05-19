@@ -1,9 +1,9 @@
 package de.monticore.lang.types;
 
-import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
 import de.monticore.lang.types.prettyprint.SIUnitTypesPrettyPrinter;
 import de.monticore.lang.types.siunittypes._ast.ASTSIUnitType;
+import de.monticore.prettyprint.IndentPrinter;
 import de.se_rwth.commons.logging.Log;
 import de.se_rwth.commons.logging.LogStub;
 import org.junit.Before;

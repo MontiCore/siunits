@@ -1,9 +1,9 @@
 package de.monticore.lang.types;
 
-import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
 import de.monticore.lang.types.prettyprint.PrimitiveWithSIUnitTypesPrettyPrinter;
 import de.monticore.lang.types.primitivewithsiunittypes._ast.ASTPrimitiveWithSIUnitType;
+import de.monticore.prettyprint.IndentPrinter;
 import de.se_rwth.commons.logging.Log;
 import de.se_rwth.commons.logging.LogStub;
 import org.junit.Before;
@@ -28,11 +28,11 @@ public class PrimitiveWithSIUnitTypesTest {
 
     @Test
     public void test() {
-        test("<double km/h>", "<double  km/h>", false);
-        test("<long km/h>", "<long  km/h>", false);
-        test("<int h/km>", "<int h/km>", false);
-        test("<void km>", "<void km>", true);
-        test("<km int>", "<km int>", true);
+        test("double in km/h", "double in  km/h", false);
+        test("long in km/h", "long  in km/h", false);
+        test("int in h/km", "int in h/km", false);
+        test("void in km", "void in km", true);
+        test("km in int", "km in int", true);
     }
 
     private void test(String control, String s, boolean expectedParseError) {

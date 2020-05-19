@@ -3,7 +3,6 @@ package de.monticore.lang.types.primitivewithsiunittypes._cocos;
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
 import de.monticore.lang.types.primitivewithsiunittypes._ast.ASTPrimitiveWithSIUnitType;
 import de.monticore.lang.types.primitivewithsiunittypes._ast.ASTPrimitiveWithSIUnitTypesNode;
-import de.monticore.lang.types.primitivewithsiunittypes._cocos.PrimitiveWithSIUnitTypesCoCoChecker;
 import de.se_rwth.commons.logging.Log;
 import de.se_rwth.commons.logging.LogStub;
 import org.junit.Before;
@@ -24,13 +23,13 @@ public class PrimitiveIsNumericTypeTest {
     @Test
     public void testPositive() throws IOException {
         String[] toTest = {
-                "<byte m>",
-                "<short m>",
-                "<int m>",
-                "<long m>",
-                "<char m>",
-                "<float m>",
-                "<double m>"
+                "byte in m",
+                "short in m",
+                "int in m",
+                "long in m",
+                "char in m",
+                "float in m",
+                "double in m"
         };
         for (String s : toTest)
             test(s, false);
@@ -38,7 +37,7 @@ public class PrimitiveIsNumericTypeTest {
 
     @Test
     public void testNegative() throws IOException {
-        test("<boolean m>", true);
+        test("boolean in m", true);
     }
 
     private void test(String s, boolean errorExpected) throws IOException {

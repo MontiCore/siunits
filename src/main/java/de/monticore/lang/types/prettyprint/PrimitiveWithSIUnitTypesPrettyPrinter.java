@@ -1,12 +1,12 @@
 package de.monticore.lang.types.prettyprint;
 
 import de.monticore.lang.siunits.prettyprint.SIUnitsPrettyPrinter;
-import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.lang.types.primitivewithsiunittypes._ast.ASTPrimitiveWithSIUnitType;
 import de.monticore.lang.types.primitivewithsiunittypes._ast.ASTPrimitiveWithSIUnitTypesNode;
 import de.monticore.lang.types.primitivewithsiunittypes._visitor.PrimitiveWithSIUnitTypesVisitor;
-import de.monticore.types.prettyprint.MCBasicTypesPrettyPrinter;
 import de.monticore.lang.types.siunittypes._visitor.SIUnitTypesVisitor;
+import de.monticore.prettyprint.IndentPrinter;
+import de.monticore.types.prettyprint.MCBasicTypesPrettyPrinter;
 
 public class PrimitiveWithSIUnitTypesPrettyPrinter extends MCBasicTypesPrettyPrinter
         implements PrimitiveWithSIUnitTypesVisitor {
@@ -47,11 +47,9 @@ public class PrimitiveWithSIUnitTypesPrettyPrinter extends MCBasicTypesPrettyPri
 
     @Override
     public void traverse(ASTPrimitiveWithSIUnitType node) {
-        printer.print("<");
-        node.getMCPrimitiveType().accept(getRealThis());
-        printer.print(" ");
+        node.getPrimitiveType().accept(getRealThis());
+        printer.print(" in ");
         SIUnitsPrettyPrinter sipp = new SIUnitTypesPrettyPrinter(printer);
-        node.getSIUnitType().getSIUnit().accept(sipp);
-        printer.print(">");
+        node.getSiunitType().getSIUnit().accept(sipp);
     }
 }
