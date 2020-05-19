@@ -16,7 +16,7 @@
     <properties>
 
         <!-- .. SE-Libraries .................................................. -->
-        <monticore.version>6.1.0-SNAPSHOT</monticore.version>
+        <monticore.version>6.2.0-SNAPSHOT</monticore.version>
         <mc.grammars.assembly.version>0.0.11-SNAPSHOT</mc.grammars.assembly.version>
 
         <!-- .. Libraries .................................................. -->
