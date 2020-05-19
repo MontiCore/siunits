@@ -40,7 +40,7 @@ Literals in combination with a unit. The unit may be of any form allowed by the 
 * Gloat with unit: `5.0km` or `5.0 km`; The space is obligatory for Farads and liters to avoid confusion with floats and longs  (`5.0 F` and `5.0 l`)
 * Float (explicit) with unit: `5.0f kg` or `5.0F kg`
 
-Standard unitless literals are parsed as Literals as provided by the MCCommonLiteraks grammar:
+Standard unitless literals are parsed as Literals as provided by the MCCommonLiterals grammar:
 * Unitless integer: `5`
 * Unitless long: `5l`
 * Unitless float: `5.0`
