@@ -1,12 +1,13 @@
 package de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable;
 
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._ast.ASTFieldDeclaration;
+import de.monticore.lang.testsijava.testsijavawithcustomtypes._ast.ASTMethodDeclaration;
+import de.monticore.lang.testsijava.testsijavawithcustomtypes._ast.ASTSIJavaMethodStatement;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._ast.ASTVariableDeclaration;
 import de.monticore.types.check.SymTypeExpression;
 import de.monticore.types.check.SynthesizeSymTypeFromTestSIJavaWithCustomPrimitiveWithSIUnitTypes;
 import de.monticore.types.check.TypeCheck;
 import de.monticore.types.mcbasictypes._ast.ASTMCType;
-import de.monticore.types.typesymbols._symboltable.FieldSymbol;
 
 import java.util.Deque;
 
@@ -24,28 +25,36 @@ public class TestSIJavaWithCustomTypesSymbolTableCreator extends TestSIJavaWithC
     }
 
     @Override
-    public void visit (ASTFieldDeclaration node)  {
-        FieldSymbol symbol = create_FieldDeclaration(node);
-        initialize_FieldDeclaration(symbol, node);
-        addToScopeAndLinkWithNode(symbol, node);
+    public void endVisit (ASTFieldDeclaration node)  {
+        super.endVisit(node);
+        // Add the enclosing scope
+        node.accept(new TestSIJavaWithCustomTypesScopeSetter(node.getEnclosingScope()));
 
         // Add type in the symbol table creation process
-        TypeCheck tc = new TypeCheck(new SynthesizeSymTypeFromTestSIJavaWithCustomPrimitiveWithSIUnitTypes(this.scopeStack.getFirst()), null);
+        TypeCheck tc = new TypeCheck(new SynthesizeSymTypeFromTestSIJavaWithCustomPrimitiveWithSIUnitTypes(), null);
         ASTMCType astType = node.getMCType();
         SymTypeExpression symTypeExpression = tc.symTypeFromAST(astType);
-        symbol.setType(symTypeExpression);
+        node.getSymbol().setType(symTypeExpression);
     }
 
     @Override
-    public void visit (ASTVariableDeclaration node) {
-        FieldSymbol symbol = create_VariableDeclaration(node);
-        initialize_VariableDeclaration(symbol, node);
-        addToScopeAndLinkWithNode(symbol, node);
+    public void endVisit (ASTVariableDeclaration node) {
+        super.endVisit(node);
+        // Add the enclosing scope
+        node.accept(new TestSIJavaWithCustomTypesScopeSetter(node.getEnclosingScope()));
 
         // Add type in the symbol table creation process
-        TypeCheck tc = new TypeCheck(new SynthesizeSymTypeFromTestSIJavaWithCustomPrimitiveWithSIUnitTypes(this.scopeStack.getFirst()), null);
+        TypeCheck tc = new TypeCheck(new SynthesizeSymTypeFromTestSIJavaWithCustomPrimitiveWithSIUnitTypes(), null);
         ASTMCType astType = node.getMCType();
         SymTypeExpression symTypeExpression = tc.symTypeFromAST(astType);
-        symbol.setType(symTypeExpression);
+        node.getSymbol().setType(symTypeExpression);
+    }
+
+    @Override
+    public void endVisit(ASTMethodDeclaration node) {
+        super.endVisit(node);
+        for (ASTSIJavaMethodStatement statement: node.getStatementList()) {
+            statement.accept(new TestSIJavaWithCustomTypesScopeSetter(node.getSpannedScope()));
+        }
     }
 }

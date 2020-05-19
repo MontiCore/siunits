@@ -1,6 +1,5 @@
 package de.monticore.types.check;
 
-import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisScope;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._visitor.TestSIJavaWithCustomTypesDelegatorVisitor;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._visitor.TestSIJavaWithCustomTypesVisitor;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes.visitor.TestSIJavaWithCustomTypesBasicVisitor;
@@ -12,35 +11,33 @@ public class SynthesizeSymTypeFromTestSIJavaWithCustomPrimitiveWithSIUnitTypes e
 
     private SynthesizeSymTypeFromMCBasicTypes symTypeFromMCBasicTypes;
     private SynthesizeSymTypeFromSIUnitTypes symTypeFromSIUnitTypes;
+    private SynthesizeSymTypeFromPrimitiveWithSIUnitTypes symTypeFromPrimitiveWithSIUnitTypes;
     private SynthesizeSymTypeFromCustomPrimitiveWithSIUnitTypes symTypeFromCustomPrimitiveWithSIUnitTypes;
 
 
     public void init() {
-        lastResult = new LastResult();
+        typeCheckResult = new TypeCheckResult();
 
-        symTypeFromMCBasicTypes = new SynthesizeSymTypeFromMCBasicTypes(scope);
-        symTypeFromSIUnitTypes = new SynthesizeSymTypeFromSIUnitTypes(scope);
-        symTypeFromCustomPrimitiveWithSIUnitTypes = new SynthesizeSymTypeFromCustomPrimitiveWithSIUnitTypes(scope);
+        symTypeFromMCBasicTypes = new SynthesizeSymTypeFromMCBasicTypes();
+        symTypeFromSIUnitTypes = new SynthesizeSymTypeFromSIUnitTypes();
+        symTypeFromPrimitiveWithSIUnitTypes = new SynthesizeSymTypeFromCustomPrimitiveWithSIUnitTypes();
+        symTypeFromCustomPrimitiveWithSIUnitTypes = new SynthesizeSymTypeFromCustomPrimitiveWithSIUnitTypes();
 
-        symTypeFromMCBasicTypes.setLastResult(lastResult);
-        symTypeFromSIUnitTypes.setLastResult(lastResult);
-        symTypeFromCustomPrimitiveWithSIUnitTypes.setLastResult(lastResult);
+        symTypeFromMCBasicTypes.setTypeCheckResult(typeCheckResult);
+        symTypeFromSIUnitTypes.setTypeCheckResult(typeCheckResult);
+        symTypeFromPrimitiveWithSIUnitTypes.setTypeCheckResult(typeCheckResult);
+        symTypeFromCustomPrimitiveWithSIUnitTypes.setTypeCheckResult(typeCheckResult);
 
         setMCBasicTypesVisitor(symTypeFromMCBasicTypes);
         setSIUnitTypesVisitor(symTypeFromSIUnitTypes);
+        setPrimitiveWithSIUnitTypesVisitor(symTypeFromPrimitiveWithSIUnitTypes);
         setCustomPrimitiveWithSIUnitTypesVisitor(symTypeFromCustomPrimitiveWithSIUnitTypes);
         setTestSIJavaWithCustomTypesVisitor(new TestSIJavaWithCustomTypesBasicVisitor());
+
+        setTypeCheckResult(new TypeCheckResult());
     }
 
-
-    /**
-     * Using the visitor functionality to calculate the SymType Expression
-     */
-
-    protected IExpressionsBasisScope scope;
-
-    public SynthesizeSymTypeFromTestSIJavaWithCustomPrimitiveWithSIUnitTypes(IExpressionsBasisScope scope) {
-        this.scope = scope;
+    public SynthesizeSymTypeFromTestSIJavaWithCustomPrimitiveWithSIUnitTypes() {
         init();
     }
 
@@ -62,13 +59,17 @@ public class SynthesizeSymTypeFromTestSIJavaWithCustomPrimitiveWithSIUnitTypes e
      * Storage in the Visitor: result of the last endVisit.
      * This attribute is synthesized upward.
      */
-    public LastResult lastResult = new LastResult();
+    public TypeCheckResult typeCheckResult = new TypeCheckResult();
 
     public Optional<SymTypeExpression> getResult() {
-        return Optional.of(lastResult.getLast());
+        return Optional.of(typeCheckResult.getLast());
     }
 
-    public void setLastResult(LastResult lastResult){
-        this.lastResult = lastResult;
+    public void setTypeCheckResult(TypeCheckResult typeCheckResult){
+        this.typeCheckResult = typeCheckResult;
+        this.symTypeFromMCBasicTypes.setTypeCheckResult(typeCheckResult);
+        this.symTypeFromSIUnitTypes.setTypeCheckResult(typeCheckResult);
+        this.symTypeFromPrimitiveWithSIUnitTypes.setTypeCheckResult(typeCheckResult);
+        this.symTypeFromCustomPrimitiveWithSIUnitTypes.setTypeCheckResult(typeCheckResult);
     }
 }

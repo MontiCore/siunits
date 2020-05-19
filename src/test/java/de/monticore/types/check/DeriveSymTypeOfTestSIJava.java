@@ -1,11 +1,10 @@
 package de.monticore.types.check;
 
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
-import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisScope;
-import de.monticore.literals.mccommonliterals._ast.ASTSignedLiteral;
-import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
 import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaDelegatorVisitor;
 import de.monticore.lang.testsijava.testsijava.visitor.TestSIJavaBasicVisitor;
+import de.monticore.literals.mccommonliterals._ast.ASTSignedLiteral;
+import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
 
 import java.util.Optional;
 
@@ -26,14 +25,11 @@ public class DeriveSymTypeOfTestSIJava extends TestSIJavaDelegatorVisitor
 
     private DeriveSymTypeOfMCCommonLiterals deriveSymTypeOfMCCommonLiterals;
 
-    private LastResult lastResult = new LastResult();
-
-    private IExpressionsBasisScope scope;
+    private TypeCheckResult typeCheckResult = new TypeCheckResult();
 
 
-    public DeriveSymTypeOfTestSIJava(IExpressionsBasisScope scope) {
+    public DeriveSymTypeOfTestSIJava() {
         this.realThis = this;
-        this.scope = scope;
         init();
     }
 
@@ -43,10 +39,10 @@ public class DeriveSymTypeOfTestSIJava extends TestSIJavaDelegatorVisitor
     public Optional<SymTypeExpression> calculateType(ASTExpression e) {
         e.accept(realThis);
         Optional<SymTypeExpression> result = Optional.empty();
-        if (lastResult.isPresentLast()) {
-            result = Optional.ofNullable(lastResult.getLast());
+        if (typeCheckResult.isPresentLast()) {
+            result = Optional.ofNullable(typeCheckResult.getLast());
         }
-        lastResult.setLastAbsent();
+        typeCheckResult.setLastAbsent();
         return result;
     }
 
@@ -58,24 +54,13 @@ public class DeriveSymTypeOfTestSIJava extends TestSIJavaDelegatorVisitor
     /**
      * set the last result of all calculators to the same object
      */
-    public void setLastResult(LastResult lastResult) {
-        deriveSymTypeOfAssignmentExpressions.setLastResult(lastResult);
-        deriveSymTypeOfMCCommonLiterals.setResult(lastResult);
-        deriveSymTypeOfCommonExpressions.setLastResult(lastResult);
-        deriveSymTypeOfExpression.setLastResult(lastResult);
-        deriveSymTypeOfLiterals.setResult(lastResult);
-        deriveSymTypeOfSIUnitLiterals.setResult(lastResult);
-    }
-
-    /**
-     * set the scope of the typescalculator, important for resolving for e.g. NameExpression
-     */
-    public void setScope(IExpressionsBasisScope scope) {
-        this.scope = scope;
-        deriveSymTypeOfAssignmentExpressions.setScope(scope);
-        deriveSymTypeOfExpression.setScope(scope);
-        deriveSymTypeOfCommonExpressions.setScope(scope);
-        deriveSymTypeOfSIUnitLiterals.setScope(scope);
+    public void setTypeCheckResult(TypeCheckResult typeCheckResult) {
+        deriveSymTypeOfAssignmentExpressions.setTypeCheckResult(typeCheckResult);
+        deriveSymTypeOfMCCommonLiterals.setTypeCheckResult(typeCheckResult);
+        deriveSymTypeOfCommonExpressions.setTypeCheckResult(typeCheckResult);
+        deriveSymTypeOfExpression.setTypeCheckResult(typeCheckResult);
+        deriveSymTypeOfLiterals.setTypeCheckResult(typeCheckResult);
+        deriveSymTypeOfSIUnitLiterals.setTypeCheckResult(typeCheckResult);
     }
 
     /**
@@ -98,8 +83,7 @@ public class DeriveSymTypeOfTestSIJava extends TestSIJavaDelegatorVisitor
         setSIUnitLiteralsVisitor(deriveSymTypeOfSIUnitLiterals);
         setTestSIJavaVisitor(new TestSIJavaBasicVisitor());
 
-        setScope(scope);
-        setLastResult(lastResult);
+        setTypeCheckResult(typeCheckResult);
     }
 
     /**
@@ -109,10 +93,10 @@ public class DeriveSymTypeOfTestSIJava extends TestSIJavaDelegatorVisitor
     public Optional<SymTypeExpression> calculateType(ASTLiteral lit) {
         lit.accept(realThis);
         Optional<SymTypeExpression> result = Optional.empty();
-        if (lastResult.isPresentLast()) {
-            result = Optional.ofNullable(lastResult.getLast());
+        if (typeCheckResult.isPresentLast()) {
+            result = Optional.ofNullable(typeCheckResult.getLast());
         }
-        lastResult.setLastAbsent();
+        typeCheckResult.setLastAbsent();
         return result;
     }
 
@@ -123,10 +107,10 @@ public class DeriveSymTypeOfTestSIJava extends TestSIJavaDelegatorVisitor
     public Optional<SymTypeExpression> calculateType(ASTSignedLiteral lit) {
         lit.accept(realThis);
         Optional<SymTypeExpression> result = Optional.empty();
-        if (lastResult.isPresentLast()) {
-            result = Optional.ofNullable(lastResult.getLast());
+        if (typeCheckResult.isPresentLast()) {
+            result = Optional.ofNullable(typeCheckResult.getLast());
         }
-        lastResult.setLastAbsent();
+        typeCheckResult.setLastAbsent();
         return result;
     }
 }

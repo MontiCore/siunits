@@ -1,6 +1,5 @@
 package de.monticore.types.check;
 
-import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisScope;
 import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaDelegatorVisitor;
 import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaVisitor;
 import de.monticore.lang.testsijava.testsijava.visitor.TestSIJavaBasicVisitor;
@@ -15,31 +14,25 @@ public class SynthesizeSymTypeFromTestSIJava extends TestSIJavaDelegatorVisitor
     private SynthesizeSymTypeFromPrimitiveWithSIUnitTypes symTypeFromPrimitiveWithSIUnitTypes;
 
     public void init() {
-        lastResult = new LastResult();
+        typeCheckResult = new TypeCheckResult();
 
-        symTypeFromMCBasicTypes = new SynthesizeSymTypeFromMCBasicTypes(scope);
-        symTypeFromSIUnitTypes = new SynthesizeSymTypeFromSIUnitTypes(scope);
-        symTypeFromPrimitiveWithSIUnitTypes = new SynthesizeSymTypeFromPrimitiveWithSIUnitTypes(scope);
+        symTypeFromMCBasicTypes = new SynthesizeSymTypeFromMCBasicTypes();
+        symTypeFromSIUnitTypes = new SynthesizeSymTypeFromSIUnitTypes();
+        symTypeFromPrimitiveWithSIUnitTypes = new SynthesizeSymTypeFromPrimitiveWithSIUnitTypes();
 
-        symTypeFromMCBasicTypes.setLastResult(lastResult);
-        symTypeFromSIUnitTypes.setLastResult(lastResult);
-        symTypeFromPrimitiveWithSIUnitTypes.setLastResult(lastResult);
+        symTypeFromMCBasicTypes.setTypeCheckResult(typeCheckResult);
+        symTypeFromSIUnitTypes.setTypeCheckResult(typeCheckResult);
+        symTypeFromPrimitiveWithSIUnitTypes.setTypeCheckResult(typeCheckResult);
 
         setMCBasicTypesVisitor(symTypeFromMCBasicTypes);
         setSIUnitTypesVisitor(symTypeFromSIUnitTypes);
         setPrimitiveWithSIUnitTypesVisitor(symTypeFromPrimitiveWithSIUnitTypes);
         setTestSIJavaVisitor(new TestSIJavaBasicVisitor());
+
+        setTypeCheckResult(new TypeCheckResult());
     }
 
-
-    /**
-     * Using the visitor functionality to calculate the SymType Expression
-     */
-
-    protected IExpressionsBasisScope scope;
-
-    public SynthesizeSymTypeFromTestSIJava(IExpressionsBasisScope scope) {
-        this.scope = scope;
+    public SynthesizeSymTypeFromTestSIJava() {
         init();
     }
 
@@ -61,13 +54,16 @@ public class SynthesizeSymTypeFromTestSIJava extends TestSIJavaDelegatorVisitor
      * Storage in the Visitor: result of the last endVisit.
      * This attribute is synthesized upward.
      */
-    public LastResult lastResult = new LastResult();
+    public TypeCheckResult typeCheckResult;
 
     public Optional<SymTypeExpression> getResult() {
-        return Optional.of(lastResult.getLast());
+        return Optional.of(typeCheckResult.getLast());
     }
 
-    public void setLastResult(LastResult lastResult){
-        this.lastResult = lastResult;
+    public void setTypeCheckResult(TypeCheckResult typeCheckResult){
+        this.typeCheckResult = typeCheckResult;
+        this.symTypeFromMCBasicTypes.setTypeCheckResult(typeCheckResult);
+        this.symTypeFromSIUnitTypes.setTypeCheckResult(typeCheckResult);
+        this.symTypeFromPrimitiveWithSIUnitTypes.setTypeCheckResult(typeCheckResult);
     }
 }

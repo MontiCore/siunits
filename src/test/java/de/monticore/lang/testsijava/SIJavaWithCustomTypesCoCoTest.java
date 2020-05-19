@@ -1,13 +1,16 @@
 package de.monticore.lang.testsijava;
 
 import de.monticore.io.paths.ModelPath;
+import de.monticore.lang.testsijava.testsijavawithcustomtypes.TestSIJavaWithCustomTypesMill;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._ast.ASTSIJavaClass;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._cocos.TestSIJavaWithCustomTypesCoCoChecker;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._cocos.TypeCheckCoCo;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._parser.TestSIJavaWithCustomTypesParser;
-import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.*;
+import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.ITestSIJavaWithCustomTypesScope;
+import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.TestSIJavaWithCustomTypesGlobalScope;
+import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.TestSIJavaWithCustomTypesLanguage;
+import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.TestSIJavaWithCustomTypesSymbolTableCreator;
 import de.se_rwth.commons.logging.Log;
-import de.se_rwth.commons.logging.LogStub;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -21,7 +24,7 @@ public class SIJavaWithCustomTypesCoCoTest {
 
     @BeforeClass
     public static void init() {
-        LogStub.init();
+        Log.init();
         Log.enableFailQuick(false);
     }
 
@@ -30,7 +33,7 @@ public class SIJavaWithCustomTypesCoCoTest {
         ASTSIJavaClass model = parseModel(input);
         ITestSIJavaWithCustomTypesScope globalScope = buildScope(model);
         TestSIJavaWithCustomTypesCoCoChecker checker = new TestSIJavaWithCustomTypesCoCoChecker();
-        checker.addCoCo(new TypeCheckCoCo(globalScope));
+        checker.addCoCo(new TypeCheckCoCo());
 
         try {
             checker.checkAll(model);
@@ -47,7 +50,7 @@ public class SIJavaWithCustomTypesCoCoTest {
         ITestSIJavaWithCustomTypesScope globalScope = new TestSIJavaWithCustomTypesGlobalScope(new ModelPath(Paths.get(path)), lang);
 
         TestSIJavaWithCustomTypesSymbolTableCreator TestSIJavaSymbolTableCreator
-                = TestSIJavaWithCustomTypesSymTabMill.testSIJavaWithCustomTypesSymbolTableCreatorBuilder().addToScopeStack(globalScope).build();
+                = TestSIJavaWithCustomTypesMill.testSIJavaWithCustomTypesSymbolTableCreatorBuilder().addToScopeStack(globalScope).build();
         TestSIJavaSymbolTableCreator.createFromAST(model);
 
         return globalScope;

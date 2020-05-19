@@ -4,7 +4,6 @@ import de.monticore.ast.ASTNode;
 import de.monticore.lang.testsijava.testsijava._ast.ASTFieldDeclaration;
 import de.monticore.lang.testsijava.testsijava._ast.ASTSIJavaClass;
 import de.monticore.lang.testsijava.testsijava._ast.ASTSIJavaMethodExpression;
-import de.monticore.lang.testsijava.testsijava._symboltable.ITestSIJavaScope;
 import de.monticore.lang.testsijava.testsijava._symboltable.TestSIJavaSymbolTableCreator;
 import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaVisitor;
 import de.monticore.types.check.DeriveSymTypeOfTestSIJava;
@@ -21,17 +20,10 @@ import de.se_rwth.commons.logging.Log;
  *  @see TestSIJavaSymbolTableCreator#visit(ASTFieldDeclaration node)
  */
 public class TypeCheckCoCo implements TestSIJavaASTSIJavaClassCoCo {
-    ITestSIJavaScope scope;
-
-    public TypeCheckCoCo(ITestSIJavaScope scope) {
-        this.scope = scope;
-    }
-
     @Override
     public void check(ASTSIJavaClass node) {
-        node.accept(new CheckVisitor(scope));
+        node.accept(new CheckVisitor());
     }
-
 
     /**
      * checks the nodes of the SIJavaLanguage
@@ -41,9 +33,9 @@ public class TypeCheckCoCo implements TestSIJavaASTSIJavaClassCoCo {
         private DeriveSymTypeOfTestSIJava der;
         private boolean result;
 
-        private CheckVisitor(ITestSIJavaScope scope) {
-            der = new DeriveSymTypeOfTestSIJava(scope); // custom Derive-Class
-            this.tc = new TypeCheck(new SynthesizeSymTypeFromTestSIJava(scope), der); // and custom Synthesize-Class
+        private CheckVisitor() {
+            der = new DeriveSymTypeOfTestSIJava(); // custom Derive-Class
+            this.tc = new TypeCheck(new SynthesizeSymTypeFromTestSIJava(), der); // and custom Synthesize-Class
         }
 
         @Override
@@ -58,16 +50,13 @@ public class TypeCheckCoCo implements TestSIJavaASTSIJavaClassCoCo {
         @Override
         public void visit(ASTFieldDeclaration node) {
             if (node.isPresentAssignment()) {
-                // Set scope so that DeriveSymTypeOfExpression can derive the type of a NameExpression
-                der.setScope(node.getEnclosingScope());
-
                 ASTMCType astType = node.getMCType();
                 SymTypeExpression varType = tc.symTypeFromAST(astType);
 
                 try {
                     // should throw an exception if there are incompatible types in the assignment expression
                     //  e.g. [m var = 3m + 3s
-                    if (!tc.isOfTypeForAssign(varType, node.getAssignment(), node.getEnclosingScope())) {
+                    if (!tc.isOfTypeForAssign(varType, node.getAssignment())) {
                         SymTypeExpression assignmentType = tc.typeOf(node.getAssignment());
                         logError_notCompatible(node, varType.print(), assignmentType.print());
                     }
@@ -79,8 +68,6 @@ public class TypeCheckCoCo implements TestSIJavaASTSIJavaClassCoCo {
 
         @Override
         public void visit(ASTSIJavaMethodExpression node) {
-            // Set scope so that DeriveSymTypeOfExpression can derive the type of a NameExpression
-            der.setScope(node.getEnclosingScope());
             try {
                 // should throw an exception if there are incompatible types
                 SymTypeExpression assignmentType2 = tc.typeOf(node.getExpression());

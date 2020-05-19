@@ -9,7 +9,8 @@ grammar TestSIJavaWithCustomTypes extends de.monticore.lang.literals.SIUnitLiter
                             de.monticore.expressions.CommonExpressions,
                             de.monticore.expressions.AssignmentExpressions,
                             de.monticore.statements.MCCommonStatements,
-                            de.monticore.lang.types.CustomPrimitiveWithSIUnitTypes {
+                            de.monticore.lang.types.CustomPrimitiveWithSIUnitTypes,
+                            de.monticore.types.TypeSymbols {
 
     symbol scope SIJavaClass =
     "package" package:(Name& || ".")+ ";"
@@ -25,9 +26,6 @@ grammar TestSIJavaWithCustomTypes extends de.monticore.lang.literals.SIUnitLiter
     FieldDeclaration implements FieldOrVariableDeclaration, SIJavaClassStatement =
         MCType Name ("=" assignment:Expression)? ";";
 
-    SIUnitLiteralExperession implements Expression <350> =
-        SIUnitLiteral;
-
     symbol scope MethodDeclaration implements SIJavaClassStatement =
         "metod" MethodSignature "{"
             statement:SIJavaMethodStatement*
@@ -36,7 +34,7 @@ grammar TestSIJavaWithCustomTypes extends de.monticore.lang.literals.SIUnitLiter
     MethodSignature =
         returnType:MCReturnType Name "(" (SIJavaParameter||",")* ")";
 
-    SIJavaParameter =
+    SIJavaParameter implements Field =
         MCType Name;
 
     interface SIJavaMethodStatement;

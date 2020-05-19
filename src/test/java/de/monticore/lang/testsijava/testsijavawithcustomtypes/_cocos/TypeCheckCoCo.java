@@ -3,7 +3,6 @@ package de.monticore.lang.testsijava.testsijavawithcustomtypes._cocos;
 
 import de.monticore.ast.ASTNode;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._ast.*;
-import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.ITestSIJavaWithCustomTypesScope;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.TestSIJavaWithCustomTypesSymbolTableCreator;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._visitor.TestSIJavaWithCustomTypesVisitor;
 import de.monticore.types.check.DeriveSymTypeOfTestSIJavaWithCustomPrimitiveWithSIUnitTypes;
@@ -20,15 +19,10 @@ import de.se_rwth.commons.logging.Log;
  *  @see TestSIJavaWithCustomTypesSymbolTableCreator#visit(ASTFieldDeclaration node)
  */
 public class TypeCheckCoCo implements TestSIJavaWithCustomTypesASTSIJavaClassCoCo {
-    ITestSIJavaWithCustomTypesScope scope;
-
-    public TypeCheckCoCo(ITestSIJavaWithCustomTypesScope scope) {
-        this.scope = scope;
-    }
 
     @Override
     public void check(ASTSIJavaClass node) {
-        node.accept(new CheckVisitor(scope));
+        node.accept(new CheckVisitor());
     }
 
 
@@ -40,9 +34,9 @@ public class TypeCheckCoCo implements TestSIJavaWithCustomTypesASTSIJavaClassCoC
         private DeriveSymTypeOfTestSIJavaWithCustomPrimitiveWithSIUnitTypes der;
         private boolean result;
 
-        private CheckVisitor(ITestSIJavaWithCustomTypesScope scope) {
-            der = new DeriveSymTypeOfTestSIJavaWithCustomPrimitiveWithSIUnitTypes(scope); // custom Derive-Class
-            this.tc = new TypeCheck(new SynthesizeSymTypeFromTestSIJavaWithCustomPrimitiveWithSIUnitTypes(scope), der); // and custom Synthesize-Class
+        private CheckVisitor() {
+            der = new DeriveSymTypeOfTestSIJavaWithCustomPrimitiveWithSIUnitTypes(); // custom Derive-Class
+            this.tc = new TypeCheck(new SynthesizeSymTypeFromTestSIJavaWithCustomPrimitiveWithSIUnitTypes(), der); // and custom Synthesize-Class
         }
 
         @Override
@@ -66,8 +60,6 @@ public class TypeCheckCoCo implements TestSIJavaWithCustomTypesASTSIJavaClassCoC
 
         @Override
         public void visit(ASTSIJavaMethodExpression node) {
-            // Set scope so that DeriveSymTypeOfExpression can derive the type of a NameExpression
-            der.setScope(node.getEnclosingScope());
             try {
                 // should throw an exception if there are incompatible types
                 SymTypeExpression assignmentType2 = tc.typeOf(node.getExpression());
@@ -79,8 +71,6 @@ public class TypeCheckCoCo implements TestSIJavaWithCustomTypesASTSIJavaClassCoC
 
         private void checkASTFieldOrVariableDeclaration(ASTFieldOrVariableDeclaration node) {
             if (node.isPresentAssignment()) {
-                // Set scope so that DeriveSymTypeOfExpression can derive the type of a NameExpression
-                der.setScope(node.getEnclosingScope());
 
                 ASTMCType astType = node.getMCType();
                 SymTypeExpression varType = tc.symTypeFromAST(astType);
@@ -88,7 +78,7 @@ public class TypeCheckCoCo implements TestSIJavaWithCustomTypesASTSIJavaClassCoC
                 try {
                     // should throw an exception if there are incompatible types in the assignment expression
                     //  e.g. [m var = 3m + 3s
-                    if (!tc.isOfTypeForAssign(varType, node.getAssignment(), node.getEnclosingScope())) {
+                    if (!tc.isOfTypeForAssign(varType, node.getAssignment())) {
                         SymTypeExpression assignmentType = tc.typeOf(node.getAssignment());
                         logError_notCompatible(node, varType.print(), assignmentType.print());
                     }
