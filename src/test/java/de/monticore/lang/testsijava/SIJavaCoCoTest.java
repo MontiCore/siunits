@@ -11,6 +11,7 @@ import de.monticore.lang.testsijava.testsijava._symboltable.TestSIJavaGlobalScop
 import de.monticore.lang.testsijava.testsijava._symboltable.TestSIJavaLanguage;
 import de.monticore.lang.testsijava.testsijava._symboltable.TestSIJavaSymbolTableCreator;
 import de.se_rwth.commons.logging.Log;
+import de.se_rwth.commons.logging.LogStub;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -24,7 +25,7 @@ public class SIJavaCoCoTest {
 
     @BeforeClass
     public static void init() {
-        Log.init();
+        LogStub.init();
         Log.enableFailQuick(false);
     }
 

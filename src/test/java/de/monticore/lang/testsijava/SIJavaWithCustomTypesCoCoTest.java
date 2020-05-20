@@ -11,6 +11,7 @@ import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.TestS
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.TestSIJavaWithCustomTypesLanguage;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.TestSIJavaWithCustomTypesSymbolTableCreator;
 import de.se_rwth.commons.logging.Log;
+import de.se_rwth.commons.logging.LogStub;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -24,7 +25,7 @@ public class SIJavaWithCustomTypesCoCoTest {
 
     @BeforeClass
     public static void init() {
-        Log.init();
+        LogStub.init();
         Log.enableFailQuick(false);
     }
 

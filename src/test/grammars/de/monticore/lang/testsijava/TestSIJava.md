@@ -28,7 +28,7 @@ allows for the correct resolving of methods, types, and fields.
 * [TestSIJavaSymbolTableCreator.java](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/lang/testsijava/testsijava/_symboltable/TestSIJavaSymbolTableCreator.java) 
 sets the SymType for each FieldSymbol and MethodSymbol. This must be done while building the symbol table, otherwise the 
 derive classes cannot know the type of a field. It also sets the enclosing scope of each node in the ast. This is 
-mandatory in order for TypeChecking. In order to do so it uses the [TestSIJavaScopeSetter.java](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/lang/testsijava/testsijava/_symboltable/TestSIJavaScopeSetter.java)
+mandatory in order for TypeChecking. In order to do so it uses the [TestSIJavaFlatExpressionScopeSetter.java](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/lang/testsijava/testsijava/_symboltable/TestSIJavaFlatExpressionScopeSetter.java)
 which extends the [FlatExpressionScopeSetterAbs.java](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/types/check/FlatExpressionScopeSetterAbs.java)
 * [SynthesizeSymTypeFromTestSIJava.java](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/types/check/SynthesizeSymTypeFromTestSIJava.java) 
 is the custom synthesize class to synthesize the SymType of a node which extends the MCType interface. It uses the

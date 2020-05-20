@@ -7,11 +7,9 @@ import de.monticore.lang.types.siunittypes._ast.ASTSIUnitType;
 import de.monticore.types.check.FlatExpressionScopeSetterAbs;
 import de.monticore.types.mcbasictypes._ast.ASTMCPrimitiveType;
 
-public class TestSIJavaScopeSetter extends FlatExpressionScopeSetterAbs implements TestSIJavaVisitor {
+public class TestSIJavaFlatExpressionScopeSetter extends FlatExpressionScopeSetterAbs implements TestSIJavaVisitor {
 
-    private TestSIJavaVisitor realThis = this;
-
-    public TestSIJavaScopeSetter(ITestSIJavaScope scope) {
+    public TestSIJavaFlatExpressionScopeSetter(ITestSIJavaScope scope) {
         super(scope);
     }
 
@@ -19,6 +17,10 @@ public class TestSIJavaScopeSetter extends FlatExpressionScopeSetterAbs implemen
     protected ITestSIJavaScope getScope() {
         return (TestSIJavaScope) scope;
     }
+
+    // ************************* Visitor *************************
+
+    private TestSIJavaVisitor realThis = this;
 
     @Override
     public void setRealThis(TestSIJavaVisitor realThis) {
@@ -28,21 +30,6 @@ public class TestSIJavaScopeSetter extends FlatExpressionScopeSetterAbs implemen
     @Override
     public TestSIJavaVisitor getRealThis() {
         return realThis;
-    }
-
-    @Override
-    public void visit(ASTPrimitiveWithSIUnitType node) {
-        node.setEnclosingScope(getScope());
-    }
-
-    @Override
-    public void visit(ASTSIUnitType node) {
-        node.setEnclosingScope(getScope());
-    }
-
-    @Override
-    public void visit(ASTMCPrimitiveType node) {
-        node.setEnclosingScope(getScope());
     }
 
 }
