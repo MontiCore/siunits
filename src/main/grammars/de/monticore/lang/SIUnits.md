@@ -124,4 +124,9 @@ language. For further explanation, see the documentation for the [TestSIJava](ht
     * To include the new custom types to the TypeCheck mechanic, a DSL developer needs to implement a Synthesize-Class 
     which extends the [SynthesizeSymTypeFromPrimitiveWithSIUnitTypes](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/SynthesizeSymTypeFromPrimitiveWithSIUnitTypes.java)
     class and implements its visitor. For reference have a look on [SynthesizeSymTypeFromCustomPrimitiveWithSIUnitTypes.java](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/types/check/SynthesizeSymTypeFromCustomPrimitiveWithSIUnitTypes.java).
+
+## Usage
+Usage of the SI Units package is shown using the [SI Java test language](https://git.rwth-aachen.de/monticore/languages/siunits/-/tree/master/src/test/grammars/de/monticore/lang/testsijava) and 
+is explained in [this tutorial](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/lang/testsijava/TestSIJava.md)
+
     
