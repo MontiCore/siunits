@@ -1,17 +1,34 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.lang.types;
 
+/* Alpha-version: This is intended to become a MontiCore stable grammar. */
+
 /**
- * This grammar is one way to represent the type of a primitive combined with a SI unit type.
+ * This grammar is one way to represent the type of a primitive 
+ * combined with a SI unit type.
  * The primitive part should always be a numeric type.
  */
 
-component grammar PrimitiveWithSIUnitTypes extends de.monticore.types.MCBasicTypes, de.monticore.lang.types.SIUnitTypes {
+// TODO: umbenennung in SIUnitTypes4Computing ?
+// Und Positionierung als Alternative (die nicht auf SIUnitTypes4Math basiert)
+
+component grammar PrimitiveWithSIUnitTypes extends 
+        de.monticore.types.MCBasicTypes, 
+        de.monticore.lang.types.SIUnitTypes     {
 
     interface PrimitiveWithSIUnitTypeInt extends MCObjectType =
         primitiveType:MCPrimitiveType siunitType:SIUnitType;
 
+// TODO: wir sind uns hier ja syntaktisch noch nicht einig
+// bzw. überlegen noch? siehe unten?
     PrimitiveWithSIUnitType implements PrimitiveWithSIUnitTypeInt =
         primitiveType:MCPrimitiveType "in" siunitType:SIUnitType;
+
+// Vorschlag:
+//     SIUnitType implements MCObjectType =
+//        SIUnit "<" MCPrimitiveType ">" ;
+
+//     SIUnitFloatType implements MCObjectType =
+//        SIUnit  ;
 
 }

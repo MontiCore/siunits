@@ -1,24 +1,45 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.lang.literals;
 
-/**
- * This grammar defines SI unit literals such as '3 m' or '2.5 km/h'.
- * If the number is followed by L (or F respectively), the literal will be parsed as either a BasicLongLiteral "30L"
- * (BasicFloatLiteral "30.2F") or as a Liter Literal "30 L" (Farad Literal "30.2 F") depending on the space between
- * number and "L" ("F"). If the numericLiteral is a BasicLongLiteral or BasicFloatLiteral the SIUnit needs to be
- * separated by a space ("30Lkg" not parsable).
- */
+/* Alpha-version: This is intended to become a MontiCore stable grammar. */
 
-component grammar SIUnitLiterals extends de.monticore.lang.SIUnits,
-                                         de.monticore.literals.MCCommonLiterals {
+/**
+ * This grammar defines SI unit literals 
+ * based on all the available SI units such as 
+ * '3 m', '2.5 km', '1 km^2' or '3.54l m*deg/(h^2*mg)'
+ *
+TODO: klären: stimmt diese Aussage, wenn nicht: abweichung kurz erklären
+ * The definitions are fully compliant to the definitions given in
+ *  International Bureau of Weights and Measures (20 May 2019), 
+ *  SI Brochure: The International System of Units (SI)
+ *  (9th ed.)
+ *
+ * Caution:
+ * Java long and float unfortunately conflict with SI Units "F" and "L".
+ * We therefore decided:
+ * If the number is followed by L (or F respectively), the literal will 
+ * be parsed as BasicLongLiteral "30L" or BasicFloatLiteral "30.2F"
+ * Only if a space is inbetween: it becomes a Liter Literal "30 L" 
+ * or Farad Literal "30.2 F".
+ * Accordingly "30Lkg" is not parsable, but "30L kg" and "30 Lkg" are.
+ * 
+ * The grammar extends the MontiCore common literals, because it uses
+ * natural numbers e.g. as exponent.
+ * 
+ */
+ 
+component grammar SIUnitLiterals extends 
+                  de.monticore.lang.SIUnits,
+                  de.monticore.literals.MCCommonLiterals  {
 
     // The unsigned SI unit literals
     SIUnitLiteral implements Literal <10> =
-        num:NumericLiteral un:SIUnit
-    ;
+    // TODO: delete "num:" "un:"
+        num:NumericLiteral un:SIUnit ;
 
     // The signed SI unit literals
     SignedSIUnitLiteral implements SignedLiteral <10> =
-        num:SignedNumericLiteral un:SIUnit
-    ;
+    // TODO: delete "num:" "un:"
+        num:SignedNumericLiteral un:SIUnit ;
+        
 }
