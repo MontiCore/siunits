@@ -41,6 +41,8 @@ DelegatorVisitorPattern to utilize the existing derive classes. It sets the same
 object to each of the underlying derive class, so they can share their results. It is mainly used in the TypeCheckCoco 
 but also in the SymbolTable creation process to calculate the SymType of an SIVariable Declaration of the form ```si var = var_M/var_S```.
 
+### Symbol Table
+
 ### Models
 Valid models can be found [here](https://git.rwth-aachen.de/monticore/languages/siunits/-/tree/master/src/test/resources/de/monticore/lang/testsijava/testsijava).
 This package also contains models which can be parsed but do not fulfil the TypeCheckCoCo.
