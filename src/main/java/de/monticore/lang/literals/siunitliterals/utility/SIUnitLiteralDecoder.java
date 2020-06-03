@@ -38,7 +38,8 @@ public class SIUnitLiteralDecoder {
     }
 
     /**
-     * Calculates the value of a {@link de.monticore.lang.literals.siunitliterals._ast.ASTSIUnitLiteral}, meaning valueOf(1 km) = 1000.
+     * Calculates the value of a {@link de.monticore.lang.literals.siunitliterals._ast.ASTSIUnitLiteral} as Base Unit
+     * meaning valueOf(1 km) = 1000, valueOf(1 l) = 0.001 (1 l = 1 dm^3 = 0.001 m^3).
      */
     public double valueOf(ASTSIUnitLiteral lit) {
         double number = decoder.getDouble(getNumber(lit));
@@ -48,7 +49,8 @@ public class SIUnitLiteralDecoder {
     }
 
     /**
-     * Calculates the value of a {@link de.monticore.lang.literals.siunitliterals._ast.ASTSignedSIUnitLiteral}, meaning valueOf(1 km) = 1000.
+     * Calculates the value of a {@link de.monticore.lang.literals.siunitliterals._ast.ASTSignedSIUnitLiteral} as Base Unit
+     * meaning valueOf(1 km) = 1000, valueOf(1 l) = 0.001 (1 l = 1 dm^3 = 0.001 m^3).
      */
     public double valueOf(ASTSignedSIUnitLiteral lit) {
         double number = decoder.getDouble(getNumber(lit));
@@ -58,7 +60,8 @@ public class SIUnitLiteralDecoder {
     }
 
     /**
-     * Calculates the value of a {@link de.monticore.lang.literals.siunitliterals._ast.ASTSIUnitLiteral}, meaning valueOf(1 km) = 1000.
+     * Calculates the value of a {@link de.monticore.lang.literals.siunitliterals._ast.ASTSIUnitLiteral}
+     * as the Unit given, meaning valueOf(1 km, m) = 1000, valueOf(1 km, mm) = 1000000.
      */
     public double valueOf(ASTSIUnitLiteral lit, Unit asUnit) {
         double number = decoder.getDouble(getNumber(lit));
@@ -68,13 +71,23 @@ public class SIUnitLiteralDecoder {
     }
 
     /**
-     * Calculates the value of a {@link de.monticore.lang.literals.siunitliterals._ast.ASTSignedSIUnitLiteral}, meaning valueOf(1 km) = 1000.
+     * Calculates the value of a {@link de.monticore.lang.literals.siunitliterals._ast.ASTSignedSIUnitLiteral}
+     * as the Unit given, meaning valueOf(1 km, m) = 1000, valueOf(1 km, mm) = 1000000.
      */
     public double valueOf(ASTSignedSIUnitLiteral lit, Unit asUnit) {
         double number = decoder.getDouble(getNumber(lit));
         Unit unit = UnitFactory.createUnit(lit.getSIUnit());
         UnitConverter converter = unit.getConverterTo(asUnit);
         return converter.convert(number);
+    }
+
+    /**
+     * Converts the double value given with the converter between two compatible units,
+     * meaning valueOf(1, m, km) = 0.001, valueOf(1, m^3, l) = 1000.
+     */
+    public double valueOf(double val, Unit fromUnit, Unit asUnit) {
+        UnitConverter converter = fromUnit.getConverterTo(asUnit);
+        return converter.convert(val);
     }
 
     /**

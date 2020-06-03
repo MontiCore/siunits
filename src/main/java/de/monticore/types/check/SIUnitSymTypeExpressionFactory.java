@@ -187,7 +187,7 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
      */
     public static SymTypeExpression createNumericWithSIUnitType(SymTypeExpression numericType, SymTypeExpression siunitType, ITypeSymbolsScope enclosingScope) {
         String siUnitPrint = siunitType instanceof SymTypeOfSIUnit ?
-                ((SymTypeOfSIUnit) siunitType).printRealType() :
+                ((SymTypeOfSIUnit) siunitType).printDeclaredType() :
                 siunitType.print();
         String name = "(" + numericType.print() + "," + siUnitPrint + ")";
         return createNumericWithSIUnitType(numericType, siunitType, new TypeSymbolLoader(name, enclosingScope));

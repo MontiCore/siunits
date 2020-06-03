@@ -10,7 +10,7 @@ package de.monticore.lang.types;
 TODO: klären: stimmt diese Aussage, wenn nicht: abweichung kurz erklären
 DONE: Stimmt bis auf alias für µ ist u, für Ω ist Ohm
  * The definitions are fully compliant to the definitions given in
- *  International Bureau of Weights and Measures (20 May 2019), 
+ *  International Bureau of Weights and Measures (20 May 2019),
  *  SI Brochure: The International System of Units (SI)
  *  (9th ed.) with exceptions for the aliasing of µ to u and Ω to
  *  Ohm
@@ -31,7 +31,8 @@ component grammar SIUnitTypes4Math extends
         de.monticore.types.MCBasicTypes  {
 
 // TODO: brauchen wir die <100>?
-// Done: Ja, weil es sonst vorkommt, dass ein MCType "km" falsch als qualifiedType geparsed wird
+// Done: Ja, weil es sonst vorkommt, dass ein MCType "km"#
+//     falsch als qualifiedType geparsed wird
      SIUnitType4Math implements MCObjectType <100> =
         SIUnit;
 }

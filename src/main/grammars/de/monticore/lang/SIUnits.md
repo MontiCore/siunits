@@ -19,10 +19,16 @@ For calculating with the units the [Unit](http://unitsofmeasurement.github.io/un
 class from the [javax.measure](http://unitsofmeasurement.github.io/unit-api/site/apidocs/javax/measure/package-summary.html) 
 package is used.
 ### Functionality
-The main classes to handle a ```javax.measure.Unit``` are the [UnitFactory](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/siunits/utility/UnitFactory.java)
-to create Units and the [UnitPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/siunits/utility/UnitPrettyPrinter.java)
-and are the only classes that should be used to create or print a ```javax.measure.Unit```.
-Those can be found in the package ```de.monticore.lang.siunits.utility```.
+The main classes that should always be used to handle a ```javax.measure.Unit``` are the ```UnitFactory``` and the 
+```UnitPrettyPrinter``` and can be found in the package ```de.monticore.lang.siunits.utility```.
+* [UnitFactory](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/siunits/utility/UnitFactory.java)
+    * Creates Units from an ```ASTSIUnit``` or a String
+    * Creates the BaseUnit from an ```ASTSIUnit```,a String or a ```javax.measure.Unit```
+    * Creates the StandardUnit from an ```ASTSIUnit```,a String or a ```javax.measure.Unit```, standard Units here
+    are: A, lm, C, Sv, F, H, J, K, mol, bit, lx, N, Pa, Gy, S, rad, T, V, W, kg, sr, kat, cd, Ohm, Wb, m, Bq, Hz, s
+* [UnitPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/siunits/utility/UnitPrettyPrinter.java)
+    Prints a Unit in a former and consistent way from an ```ASTSIUnit```,a String or a ```javax.measure.Unit```
+        as either BaseUnit, StandardUnit or asIs-Unit.
 ### Generators
 There are two PrettyPrinters, the [SIUnitsPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/siunits/prettyprint/SIUnitsPrettyPrinter.java)
 to prettyprint the SIUnits normally ( ```kg/m*s``` &rarr; ```kg/m*s``` ) and the [SIUnitsWithBracketsPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/siunits/prettyprint/SIUnitsWithBracketsPrettyPrinter.java)
@@ -51,7 +57,8 @@ Standard unitless literals are parsed as Literals as provided by the MCCommonLit
 ### Functionality
 The [SIUnitLiteralDecoder](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/literals/siunitliterals/utility/SIUnitLiteralDecoder.java)
 extracts the number of an SIUnitLiteral as either a java ```double``` or a java ```java.lang.Number``` and calculates the value of
-a SIUnitLiteral (```valueOf(3 km)) = 3000```). For this it uses the [NumberDecoder](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/literals/siunitliterals/utility/NumberDecoder.java)
+a SIUnitLiteral (```valueOf(3 km)) = 3000``` or ```valueOf(3 km, mm)) = 3000000```). 
+For this it uses the [NumberDecoder](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/literals/siunitliterals/utility/NumberDecoder.java)
 which extracts the number of a NumericLiteral or SignedNumericLiteral as either a java ```double``` or a java ```java.lang.Number```.
 
 ### Generators
@@ -91,19 +98,33 @@ The classes for the TypeCheck mechanic can be found in the package ```de.montico
 synthesized from a SIUnitType and a SIUnitType4Computing and can be derived from SIUnitLiterals or Expressions.
 The classes for deriving from AssignmentExpressions and CommonExpressions were extended, in order to work with SIUnits and
 SIUnitLiterals as well. E.g. ```3m + 2s``` should not be possible, while the type of ```3m / 2.2s``` is ```(double,m/s)```.
-The basic classes here are:
+Note that the type of a dimensionless Unit other than the pre defines is invalid. E.g. ```3 km/m``` can not be typechecked.
+The TypeCheck classes here are:
 * [SymTypeOfSIUnitBasic](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/SymTypeOfSIUnitBasic.java)
     which defines the SymType of a SIUnit basis, e.g. ```m``` or ```kg``` without any other prefixes.
 * [DefsSIUnitType](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/DefsSIUnitType.java)
     which contains the list with all SIUnit basic types.
 * [SymTypeOfSIUnit](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/SymTypeOfSIUnit.java)
-    which contains a numerator and denominator list of SymTypeOfSIUnitBasic.
+    which contains a numerator and denominator list of SymTypeOfSIUnitBasic. It also provides the declared Unit
+    as ```javax.measure.Unit```.
 * [SymTypeOfNumericWithSIUnit](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/SymTypeOfNumericWithSIUnit.java)
-    which contains a numeric type (SymTypeConstant) and a SymTypeOfSIUnit.
+    which contains a numeric type (SymTypeConstant) and a SymTypeOfSIUnit. It also provides the declared Unit
+    as ```javax.measure.Unit```.
 * [SIUnitSymTypeExpressionFactory](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/SIUnitSymTypeExpressionFactory.java)
     which is the only class to create SymTypeOfSIUnitBasic, SymTypeOfSIUnit and SymTypeOfNumericWithSIUnit.
-* and their synthesize and derive classes in the package ```de.monticore.types.check```
-
+* [SynthesizeSymTypeFromSIUnitTypes4Math](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/SynthesizeSymTypeFromSIUnitTypes4Math.java)
+    which synthesizes a ```SymTypeOfSIUnit``` from a ```SIUnitType4Math```.
+* [SynthesizeSymTypeFromSIUnitTypes4Computing](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/SynthesizeSymTypeFromSIUnitTypes4Computing.java)
+    which synthesizes a ```SymTypeOfNumericWithSIUnit``` from a ```SIUnitType4Computing```. If one defined your own
+    custom ```SIUnitType4Computing```, the class needs to be extended and the 
+    ```traverseSIUnitType4Computing()``` can be called. This is exemplary done in 
+    [SynthesizeSymTypeFromCustomSIUnitTypes4Computing](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/types/check/SynthesizeSymTypeFromCustomSIUnitTypes4Computing.java).
+* [DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes.java)
+    which extends the [DeriveSymTypeOfAssignmentExpressions](https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/java/de/monticore/types/check/DeriveSymTypeOfAssignmentExpressions.java)
+    class in order to work with SIUnitTypes as well. 
+* [DeriveSymTypeOfCommonExpressionsWithSIUnitTypes](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/DeriveSymTypeOfCommonExpressionsWithSIUnitTypes.java)
+    which extends the [DeriveSymTypeOfCommonExpressions](https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/java/de/monticore/types/check/DeriveSymTypeOfCommonExpressions.java)
+    class in order to work with SIUnitTypes as well.
 (For more info see [TypeCheck](https://git.rwth-aachen.de/monticore/monticore/-/tree/master/monticore-grammar/src/main/java/de/monticore/types/check))
 
 To get the TypeCheck mechanic work with your DSL, the language needs to extend the [de.monticore.types.TypeSymbols.mc4](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/types/TypeSymbols.mc4)

@@ -11,6 +11,7 @@ package de.monticore.lang.types;
 
 // TODO: umbenennung in SIUnitTypes4Computing ?
 // Und Positionierung als Alternative (die nicht auf SIUnitTypes4Math basiert)
+// Done: Umbenennung fertig
 
 component grammar SIUnitTypes4Computing extends
         de.monticore.types.MCBasicTypes, 
@@ -30,5 +31,7 @@ component grammar SIUnitTypes4Computing extends
 
 //     SIUnitFloatType implements MCObjectType =
 //        SIUnit  ;
+//     Diese Regel ist bereits in SIUnitTypes4Math
+//        umgesetzt als SIUnitType4Math
 
 }

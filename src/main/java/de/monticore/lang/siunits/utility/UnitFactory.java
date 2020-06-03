@@ -181,6 +181,8 @@ public class UnitFactory {
      * Initiation of the UnitFactory, adding labels and prefixes
      */
     private void init() {
+        //TODO: Label standard Units
+
         Unit<Length> AU = SI.METRE.times(1495978707).times(100);
         Unit<Dimensionless> NEPER = Unit.ONE.transform((new LogConverter(2.718281828459045D)));
         Unit<Dimensionless> BEL = Unit.ONE.transform((new LogConverter(10.0D)));
@@ -268,6 +270,7 @@ public class UnitFactory {
     }
 
     private class Compound extends UnitConverter {
+        // TODO: Create hash from unique id that is given as well.
         private final UnitConverter _first;
         private final UnitConverter _second;
         private static final long serialVersionUID = 1L;

@@ -2,8 +2,10 @@
 package de.monticore.lang.testsijava;
 
 /**
- * This grammar is an example on how one could combine expressions with SIUnits and SIUnitLiterals.
- * It is a very simple version of java with siunits and custom types that can be siunit types.
+ * This grammar is an example on how one could combine
+ * expressions with SIUnits and SIUnitLiterals.
+ * It is a very simple version of java with siunits and
+ * custom types that can be siunit types.
 */
 
 grammar TestSIJava extends de.monticore.lang.literals.SIUnitLiterals,
@@ -28,7 +30,7 @@ grammar TestSIJava extends de.monticore.lang.literals.SIUnitLiterals,
         "si" Name "=" (SIUnitType4Math | Expression) ";";
 
     MethodDeclaration implements Method, SIJavaClassStatement =
-        "metod" returnType:MCReturnType Name "(" (SIJavaParameter||",")* ")" "{"
+        "method" returnType:MCReturnType Name "(" (SIJavaParameter||",")* ")" "{"
             statement:SIJavaMethodStatement*
         "}";
 

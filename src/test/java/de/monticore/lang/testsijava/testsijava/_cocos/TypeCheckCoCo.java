@@ -56,7 +56,7 @@ public class TypeCheckCoCo implements TestSIJavaASTSIJavaClassCoCo {
                 try {
                     // should throw an exception if there are incompatible types in the assignment expression
                     //  e.g. [m var = 3m + 3s
-                    if (!tc.isOfTypeForAssign(varType, node.getAssignment())) {
+                    if (!tc.isOfTypeForAssign(tc.symTypeFromAST(astType), node.getAssignment())) {
                         SymTypeExpression assignmentType = tc.typeOf(node.getAssignment());
                         logError_notCompatible(node, varType.print(), assignmentType.print());
                     }

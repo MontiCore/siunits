@@ -183,7 +183,7 @@ public class DeriveSymTypeOfExpressionTest {
         if (symType instanceof SymTypeOfNumericWithSIUnit)
             return ((SymTypeOfNumericWithSIUnit) symType).printRealType();
         if (symType instanceof SymTypeOfSIUnit)
-            return ((SymTypeOfSIUnit) symType).printRealType();
+            return ((SymTypeOfSIUnit) symType).printDeclaredType();
         return symType.print();
     }
 

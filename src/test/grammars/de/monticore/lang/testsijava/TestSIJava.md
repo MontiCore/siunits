@@ -18,28 +18,28 @@ example model see [MyClass.sijava](https://git.rwth-aachen.de/monticore/language
 A main goal of this language was to introduce the TypeCheck mechanic to a language which also uses SIUnits. So there are
 a few classes which allows for this usage. (For more info on TypeChecking see [TypeCheck](https://git.rwth-aachen.de/monticore/monticore/-/tree/master/monticore-grammar/src/main/java/de/monticore/types/check))
 * [TypeCheckCoCo.java](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/lang/testsijava/testsijava/_cocos/TypeCheckCoCo.java)
-checks for each field assignment whether the initialized value (can be an expression) is compatible to the declared type. 
-It also checks for each expression inside a method whether all assignments are valid (types are compatible). The 
-[TypeCheck](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/java/de/monticore/types/check/TypeCheck.java) 
-class is used for that purpose. It is initialized with the custom SynthesizeSymTypeFromTestSIJava.java and 
-DeriveSymTypeOfTestSIJava.java.
+    checks for each field assignment whether the initialized value (can be an expression) is compatible to the declared type. 
+    It also checks for each expression inside a method whether all assignments are valid (types are compatible). The 
+    [TypeCheck](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/java/de/monticore/types/check/TypeCheck.java) 
+    class is used for that purpose. It is initialized with the custom ```SynthesizeSymTypeFromTestSIJava.java``` and 
+    ```DeriveSymTypeOfTestSIJava.java``` (see below).
 * [TestSIJavaScope.java](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/lang/testsijava/testsijava/_symboltable/TestSIJavaScope.java)
-allows for the correct resolving of methods, types, and fields.
+    allows for the correct resolving of methods, types, and fields.
 * [TestSIJavaSymbolTableCreator.java](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/lang/testsijava/testsijava/_symboltable/TestSIJavaSymbolTableCreator.java) 
-sets the SymType for each FieldSymbol and MethodSymbol. This must be done while building the symbol table, otherwise the 
-derive classes cannot know the type of a field. It also sets the enclosing scope of each node in the ast. This is 
-mandatory in order for TypeChecking. In order to do so it uses the [TestSIJavaFlatExpressionScopeSetter.java](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/lang/testsijava/testsijava/_symboltable/TestSIJavaFlatExpressionScopeSetter.java)
-which extends the [FlatExpressionScopeSetterAbs.java](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/types/check/FlatExpressionScopeSetterAbs.java)
+    sets the SymType for each FieldSymbol and MethodSymbol. This must be done while building the symbol table, otherwise the 
+    derive classes cannot know the type of a field. It also sets the enclosing scope of each node in the ast. This is 
+    mandatory in order for TypeChecking. In order to do so it uses the [TestSIJavaFlatExpressionScopeSetter.java](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/lang/testsijava/testsijava/_symboltable/TestSIJavaFlatExpressionScopeSetter.java)
+    which extends the [FlatExpressionScopeSetterAbs.java](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/types/check/FlatExpressionScopeSetterAbs.java)
 * [SynthesizeSymTypeFromTestSIJava.java](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/types/check/SynthesizeSymTypeFromTestSIJava.java) 
-is the custom synthesize class to synthesize the SymType of a node which extends the MCType interface. It uses the
-DelegatorVisitorPattern to utilize the existing synthesize classes. It sets the same [TypeCheckResult](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/java/de/monticore/types/check/TypeCheckResult.java) 
-object to each of the underlying synthesize class, so they can share their results. It is mainly used in the SymbolTable
-creation process to set the SymType for each declared FieldSymbol or MethodSymbol.
+    is the custom synthesize class to synthesize the SymType of a node which extends the MCType interface. It uses the
+    DelegatorVisitorPattern to utilize the existing synthesize classes. It sets the same [TypeCheckResult](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/java/de/monticore/types/check/TypeCheckResult.java) 
+    object to each of the underlying synthesize class, so they can share their results. It is mainly used in the SymbolTable
+    creation process to set the SymType for each declared FieldSymbol or MethodSymbol.
 * [DeriveSymTypeOfTestSIJava.java](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/types/check/DeriveSymTypeOfTestSIJava.java) 
-is the custom derive class to derive the SymType of an expression or a Literal (SignedLiteral). It uses the
-DelegatorVisitorPattern to utilize the existing derive classes. It sets the same [TypeCheckResult](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/java/de/monticore/types/check/TypeCheckResult.java) 
-object to each of the underlying derive class, so they can share their results. It is mainly used in the TypeCheckCoco 
-but also in the SymbolTable creation process to calculate the SymType of an SIVariable Declaration of the form ```si var = var_M/var_S```.
+    is the custom derive class to derive the SymType of an expression or a Literal (SignedLiteral). It uses the
+    DelegatorVisitorPattern to utilize the existing derive classes. It sets the same [TypeCheckResult](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/java/de/monticore/types/check/TypeCheckResult.java) 
+    object to each of the underlying derive class, so they can share their results. It is mainly used in the TypeCheckCoco 
+    but also in the SymbolTable creation process to calculate the SymType of an SIVariable Declaration of the form ```si var = var_M/var_S```.
 
 ### Symbol Table
 Each SIJavaClass spans a symbol scope. In this scope there can be the Symbols ```FieldDeclaration```, ```SIFieldDeclaration```

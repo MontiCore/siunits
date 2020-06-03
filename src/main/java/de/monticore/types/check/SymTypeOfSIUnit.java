@@ -3,7 +3,6 @@ package de.monticore.types.check;
 
 import de.monticore.lang.siunits.utility.UnitFactory;
 import de.monticore.lang.siunits.utility.UnitPrettyPrinter;
-import de.monticore.symboltable.serialization.JsonConstants;
 import de.monticore.symboltable.serialization.JsonDeSers;
 import de.monticore.symboltable.serialization.JsonPrinter;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolLoader;
@@ -51,20 +50,24 @@ public class SymTypeOfSIUnit extends SymTypeExpression {
         return UnitFactory.createUnit(print());
     }
 
+    public Unit getDeclaredUnit() {
+        return UnitFactory.createUnit(printDeclaredType());
+    }
+
     /**
      * print: Umwandlung in einen kompakten String
      */
     @Override
     public String print() {
-        return UnitPrettyPrinter.printBaseUnit(printRealType());
+        return UnitPrettyPrinter.printBaseUnit(printDeclaredType());
     }
 
     @Override
     public String toString() {
-        return printRealType();
+        return printDeclaredType();
     }
 
-    public String printRealType() {
+    public String printDeclaredType() {
         List<String> numerators = getNumeratorList().stream().map(SymTypeOfSIUnitBasic::print).collect(Collectors.toList());
         if (getNumeratorList().isEmpty())
             numerators.add("1");

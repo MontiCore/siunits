@@ -1,6 +1,5 @@
 package de.monticore.types.check;
 
-import de.monticore.symboltable.serialization.JsonConstants;
 import de.monticore.symboltable.serialization.JsonDeSers;
 import de.monticore.symboltable.serialization.JsonPrinter;
 import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
@@ -40,7 +39,7 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
 
     public String printRealType() {
         String siUnitPrint = siunitType instanceof SymTypeOfSIUnit ?
-                ((SymTypeOfSIUnit) siunitType).printRealType() :
+                ((SymTypeOfSIUnit) siunitType).printDeclaredType() :
                 siunitType.print();
         return "(" + numericType.print() + "," + siUnitPrint + ")";
     }
