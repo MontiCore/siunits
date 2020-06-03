@@ -2,9 +2,9 @@
 package de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable;
 
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._visitor.TestSIJavaWithCustomTypesVisitor;
-import de.monticore.lang.types.customprimitivewithsiunittypes._ast.ASTCustomPrimitiveWithSIUnitType;
-import de.monticore.lang.types.primitivewithsiunittypes._ast.ASTPrimitiveWithSIUnitType;
-import de.monticore.lang.types.siunittypes._ast.ASTSIUnitType;
+import de.monticore.lang.types.customsiunittypes4computing._ast.ASTCustomSIUnitType4Computing;
+import de.monticore.lang.types.siunittypes4computing._ast.ASTSIUnitType4Computing;
+import de.monticore.lang.types.siunittypes4math._ast.ASTSIUnitType4Math;
 import de.monticore.types.check.FlatExpressionScopeSetterAbs;
 import de.monticore.types.mcbasictypes._ast.ASTMCPrimitiveType;
 
@@ -32,17 +32,17 @@ public class TestSIJavaWithCustomTypesScopeSetter extends FlatExpressionScopeSet
     }
 
     @Override
-    public void visit(ASTPrimitiveWithSIUnitType node) {
+    public void visit(ASTSIUnitType4Computing node) {
         node.setEnclosingScope(getScope());
     }
 
     @Override
-    public void visit(ASTCustomPrimitiveWithSIUnitType node) {
+    public void visit(ASTCustomSIUnitType4Computing node) {
         node.setEnclosingScope(getScope());
     }
 
     @Override
-    public void visit(ASTSIUnitType node) {
+    public void visit(ASTSIUnitType4Math node) {
         node.setEnclosingScope(getScope());
     }
 

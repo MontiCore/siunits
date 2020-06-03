@@ -1,8 +1,8 @@
 package de.monticore.lang.testsijava.testsijava._symboltable;
 
 import de.monticore.lang.testsijava.testsijava._ast.*;
-import de.monticore.lang.types.primitivewithsiunittypes._ast.ASTPrimitiveWithSIUnitType;
-import de.monticore.lang.types.siunittypes._ast.ASTSIUnitType;
+import de.monticore.lang.types.siunittypes4computing._ast.ASTSIUnitType4Computing;
+import de.monticore.lang.types.siunittypes4math._ast.ASTSIUnitType4Math;
 import de.monticore.types.check.*;
 import de.monticore.types.mcbasictypes._ast.ASTMCPrimitiveType;
 import de.monticore.types.mcbasictypes._ast.ASTMCQualifiedType;
@@ -53,8 +53,8 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
         super.endVisit(node);
         // Add type in the symbol table creation process
         SymTypeExpression symTypeExpression;
-        if (node.isPresentSIUnitType()) {
-            ASTSIUnitType astType = node.getSIUnitType();
+        if (node.isPresentSIUnitType4Math()) {
+            ASTSIUnitType4Math astType = node.getSIUnitType4Math();
             symTypeExpression = tc.symTypeFromAST(astType);
         } else {
             symTypeExpression = tc.typeOf(node.getExpression());
@@ -78,6 +78,8 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
         ASTMCType astType = node.getMCType();
         SymTypeExpression symTypeExpression = tc.symTypeFromAST(astType);
         node.getSymbol().setType(symTypeExpression);
+
+        node.getSymbol().setIsParameter(true);
     }
 
     // ************************* Set enclosing scope ***********************
@@ -105,13 +107,13 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
     }
 
     @Override
-    public void visit(ASTPrimitiveWithSIUnitType node) {
+    public void visit(ASTSIUnitType4Computing node) {
         super.visit(node);
         node.setEnclosingScope(scopeStack.getLast());
     }
 
     @Override
-    public void visit(ASTSIUnitType node) {
+    public void visit(ASTSIUnitType4Math node) {
         super.visit(node);
         node.setEnclosingScope(scopeStack.getLast());
     }

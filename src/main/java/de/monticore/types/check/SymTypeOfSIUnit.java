@@ -2,7 +2,9 @@
 package de.monticore.types.check;
 
 import de.monticore.lang.siunits.utility.UnitFactory;
+import de.monticore.lang.siunits.utility.UnitPrettyPrinter;
 import de.monticore.symboltable.serialization.JsonConstants;
+import de.monticore.symboltable.serialization.JsonDeSers;
 import de.monticore.symboltable.serialization.JsonPrinter;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolLoader;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolsScope;
@@ -54,8 +56,17 @@ public class SymTypeOfSIUnit extends SymTypeExpression {
      */
     @Override
     public String print() {
+        return UnitPrettyPrinter.printBaseUnit(printRealType());
+    }
+
+    @Override
+    public String toString() {
+        return printRealType();
+    }
+
+    public String printRealType() {
         List<String> numerators = getNumeratorList().stream().map(SymTypeOfSIUnitBasic::print).collect(Collectors.toList());
-        if (getNumeratorList().size() == 0)
+        if (getNumeratorList().isEmpty())
             numerators.add("1");
         List<String> denominators = getDenominatorList().stream().map(SymTypeOfSIUnitBasic::print).collect(Collectors.toList());
         if (denominators.size() == 0)
@@ -66,10 +77,6 @@ public class SymTypeOfSIUnit extends SymTypeExpression {
             return String.join("*", numerators) + "/(" + String.join("*", denominators) + ")";
     }
 
-    public String toString() {
-        return print();
-    }
-
     /**
      * printAsJson: Umwandlung in einen kompakten Json String
      */
@@ -77,7 +84,7 @@ public class SymTypeOfSIUnit extends SymTypeExpression {
         JsonPrinter jp = new JsonPrinter();
         jp.beginObject();
         // Care: the following String needs to be adapted if the package was renamed
-        jp.member(JsonConstants.KIND, "de.monticore.types.check.SymTypeOfSIUnit");
+        jp.member(JsonDeSers.KIND, "de.monticore.types.check.SymTypeOfSIUnit");
         jp.beginArray("numerator");
         for (SymTypeOfSIUnitBasic exp : getNumeratorList()) {
             jp.valueJson(exp.printAsJson());

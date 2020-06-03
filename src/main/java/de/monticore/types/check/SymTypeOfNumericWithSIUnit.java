@@ -1,6 +1,7 @@
 package de.monticore.types.check;
 
 import de.monticore.symboltable.serialization.JsonConstants;
+import de.monticore.symboltable.serialization.JsonDeSers;
 import de.monticore.symboltable.serialization.JsonPrinter;
 import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolLoader;
@@ -37,8 +38,16 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
         return "(" + numericType.print() + "," + siunitType.print() + ")";
     }
 
+    public String printRealType() {
+        String siUnitPrint = siunitType instanceof SymTypeOfSIUnit ?
+                ((SymTypeOfSIUnit) siunitType).printRealType() :
+                siunitType.print();
+        return "(" + numericType.print() + "," + siUnitPrint + ")";
+    }
+
+    @Override
     public String toString() {
-        return print();
+        return printRealType();
     }
 
     /**
@@ -48,7 +57,7 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
         JsonPrinter jp = new JsonPrinter();
         jp.beginObject();
         // Care: the following String needs to be adapted if the package was renamed
-        jp.member(JsonConstants.KIND, "de.monticore.types.check.SymTypeOfNumericWithSIUnit");
+        jp.member(JsonDeSers.KIND, "de.monticore.types.check.SymTypeOfNumericWithSIUnit");
         jp.member("numericType", numericType.printAsJson());
         jp.member("siunitType", siunitType.printAsJson());
         jp.endObject();

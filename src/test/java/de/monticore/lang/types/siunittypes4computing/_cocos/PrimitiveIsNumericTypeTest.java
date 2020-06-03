@@ -1,8 +1,8 @@
-package de.monticore.lang.types.primitivewithsiunittypes._cocos;
+package de.monticore.lang.types.siunittypes4computing._cocos;
 
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
-import de.monticore.lang.types.primitivewithsiunittypes._ast.ASTPrimitiveWithSIUnitType;
-import de.monticore.lang.types.primitivewithsiunittypes._ast.ASTPrimitiveWithSIUnitTypesNode;
+import de.monticore.lang.types.siunittypes4computing._ast.ASTSIUnitType4Computing;
+import de.monticore.lang.types.siunittypes4computing._ast.ASTSIUnitTypes4ComputingNode;
 import de.se_rwth.commons.logging.Log;
 import de.se_rwth.commons.logging.LogStub;
 import org.junit.Before;
@@ -41,10 +41,10 @@ public class PrimitiveIsNumericTypeTest {
     }
 
     private void test(String s, boolean errorExpected) throws IOException {
-        ASTPrimitiveWithSIUnitType ast = parse(s);
-        PrimitiveWithSIUnitTypesCoCoChecker checker = new PrimitiveWithSIUnitTypesCoCoChecker();
+        ASTSIUnitType4Computing ast = parse(s);
+        SIUnitTypes4ComputingCoCoChecker checker = new SIUnitTypes4ComputingCoCoChecker();
         checker.addCoCo(new PrimitiveIsNumericType());
-        checker.checkAll((ASTPrimitiveWithSIUnitTypesNode) ast);
+        checker.checkAll((ASTSIUnitTypes4ComputingNode) ast);
 
         if (errorExpected)
             assert (Log.getFindings().size() > 0);
@@ -52,9 +52,9 @@ public class PrimitiveIsNumericTypeTest {
             assert (Log.getFindings().size() == 0);
     }
 
-    private ASTPrimitiveWithSIUnitType parse(String s) throws IOException {
+    private ASTSIUnitType4Computing parse(String s) throws IOException {
         TestSIJavaParser parser = new TestSIJavaParser();
-        Optional<ASTPrimitiveWithSIUnitType> ast = parser.parsePrimitiveWithSIUnitType(new StringReader(s));
+        Optional<ASTSIUnitType4Computing> ast = parser.parseSIUnitType4Computing(new StringReader(s));
         assert (ast.isPresent());
         return ast.get();
     }

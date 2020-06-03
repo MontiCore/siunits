@@ -9,9 +9,9 @@ public class SynthesizeSymTypeOfCombinedTypes extends CombineExpressionsWithLite
 
     private SynthesizeSymTypeFromMCSimpleGenericTypes symTypeFromMCSimpleGenericTypes;
 
-    private SynthesizeSymTypeFromPrimitiveWithSIUnitTypes symTypeFromPrimitiveWithSIUnitTypes;
+    private SynthesizeSymTypeFromSIUnitTypes4Computing symTypeFromSIUnitTypes4Computing;
 
-    private SynthesizeSymTypeFromSIUnitTypes symTypeFromSIUnitTypes;
+    private SynthesizeSymTypeFromSIUnitTypes4Math symTypeFromSIUnitTypes4Math;
 
     private CombineExpressionsWithLiteralsDelegatorVisitor realThis = this;
 
@@ -25,18 +25,19 @@ public class SynthesizeSymTypeOfCombinedTypes extends CombineExpressionsWithLite
     @Override
     public void init() {
         symTypeFromMCSimpleGenericTypes = new SynthesizeSymTypeFromMCSimpleGenericTypes();
-        symTypeFromPrimitiveWithSIUnitTypes = new SynthesizeSymTypeFromPrimitiveWithSIUnitTypes();
-        symTypeFromSIUnitTypes = new SynthesizeSymTypeFromSIUnitTypes();
+        symTypeFromSIUnitTypes4Computing = new SynthesizeSymTypeFromSIUnitTypes4Computing();
+        symTypeFromSIUnitTypes4Math = new SynthesizeSymTypeFromSIUnitTypes4Math();
 
         setMCSimpleGenericTypesVisitor(symTypeFromMCSimpleGenericTypes);
         setMCCollectionTypesVisitor(symTypeFromMCSimpleGenericTypes);
         setMCBasicTypesVisitor(symTypeFromMCSimpleGenericTypes);
-        setPrimitiveWithSIUnitTypesVisitor(symTypeFromPrimitiveWithSIUnitTypes);
-        setSIUnitTypesVisitor(symTypeFromSIUnitTypes);
+        setSIUnitTypes4ComputingVisitor(symTypeFromSIUnitTypes4Computing);
+        setSIUnitTypes4MathVisitor(symTypeFromSIUnitTypes4Math);
 
         typeCheckResult = new TypeCheckResult();
         symTypeFromMCSimpleGenericTypes.setTypeCheckResult(typeCheckResult);
-        symTypeFromPrimitiveWithSIUnitTypes.setTypeCheckResult(typeCheckResult);
+        symTypeFromSIUnitTypes4Computing.setTypeCheckResult(typeCheckResult);
+        symTypeFromSIUnitTypes4Math.setTypeCheckResult(typeCheckResult);
     }
 
     @Override

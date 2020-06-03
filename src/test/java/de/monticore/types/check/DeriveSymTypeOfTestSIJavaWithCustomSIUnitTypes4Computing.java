@@ -8,7 +8,7 @@ import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
 
 import java.util.Optional;
 
-public class DeriveSymTypeOfTestSIJavaWithCustomPrimitiveWithSIUnitTypes extends TestSIJavaWithCustomTypesDelegatorVisitor
+public class DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing extends TestSIJavaWithCustomTypesDelegatorVisitor
         implements ITypesCalculator {
 
     private TestSIJavaWithCustomTypesDelegatorVisitor realThis;
@@ -28,7 +28,7 @@ public class DeriveSymTypeOfTestSIJavaWithCustomPrimitiveWithSIUnitTypes extends
     private TypeCheckResult typeCheckResult = new TypeCheckResult();
 
 
-    public DeriveSymTypeOfTestSIJavaWithCustomPrimitiveWithSIUnitTypes() {
+    public DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing() {
         this.realThis = this;
         init();
     }

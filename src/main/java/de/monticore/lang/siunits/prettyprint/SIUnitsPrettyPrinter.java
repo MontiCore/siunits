@@ -100,7 +100,7 @@ public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
      * @param node SiUnitDimensionless
      */
     @Override
-    public void visit(ASTSiUnitDimensionless node) {
+    public void visit(ASTSIUnitDimensionless node) {
         if (node.isPresentUnit())
             printer.print(node.getUnit());
         else

@@ -1,5 +1,6 @@
 package de.monticore.types.check;
 
+import de.monticore.lang.siunits.utility.SIUnitConstants;
 import de.monticore.types.typesymbols._symboltable.TypeSymbol;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolLoader;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolsScope;
@@ -27,24 +28,19 @@ public class DefsSIUnitType extends DefsTypeBasic {
     private static void setup_SIUnitTypes() {
         sIUnitBasicTypes = new HashMap<>();
 
-        List<String> officallyAcceptedUnits = Arrays.asList
-                ("min", "h", "day", "ha", "t", "Au", "Np", "B", "dB", "eV", "u");
-        List<String> siUnitDimensionlesses = Arrays.asList
-                ("deg", "rad", "sr");
-        List<String> unitBases = Arrays.asList
-                ("m", "kg", "s", "A", "K", "mol", "cd", "Hz", "N", "Pa", "J", "W", "C", "V", "F", "Ohm", "S", "Wb", "T", "H", "lm", "lx", "Bq", "Gy", "Sv", "kat");
-        List<String> celsiusFahrenheit = Arrays.asList
-                ("°C", "°F");
+//        List<String> baseUnits = Arrays.asList
+//                ("A", "lm", "C", "Sv", "F", "H", "J", "K",
+//                        "mol", "bit", "lx", "N", "Pa", "Gy", "S",
+//                        "rad", "T", "V", "W", "kg", "sr", "kat",
+//                        "cd", "Ohm", "Wb", "m", "Bq", "Hz", "s");
+
+//        List<String> baseUnits = Arrays.asList
+//                ("s", "m", "kg", "A", "K", "mol", "cd");
+
+        List<String> baseUnits = SIUnitConstants.getAllUnits();
 
         TypeSymbolsScope scope = new TypeSymbolsScope();
-
-        for (String currentType : siUnitDimensionlesses)
-            createSIUnitBasicTypeAndAddToScope(currentType, scope);
-        for (String currentType : officallyAcceptedUnits)
-            createSIUnitBasicTypeAndAddToScope(currentType, scope);
-        for (String unitBase : unitBases)
-            createSIUnitBasicTypeAndAddToScope(unitBase, scope);
-        for (String currentType : celsiusFahrenheit)
+        for (String currentType : baseUnits)
             createSIUnitBasicTypeAndAddToScope(currentType, scope);
         createSIUnitBasicTypeAndAddToScope("°", scope);
         createSIUnitBasicTypeAndAddToScope("1", scope);

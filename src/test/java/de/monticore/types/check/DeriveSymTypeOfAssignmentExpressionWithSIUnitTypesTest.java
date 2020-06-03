@@ -53,7 +53,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         String s = "4km++";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", tc.typeOf(astex).print());
+        assertEquals("(int,km)", printType(tc.typeOf(astex)));
     }
 
     @Test
@@ -79,7 +79,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         String s = "4.2km--";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,m)", tc.typeOf(astex).print());
+        assertEquals("(double,km)", printType(tc.typeOf(astex)));
     }
 
     @Test
@@ -105,7 +105,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         String s = "++4km";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", tc.typeOf(astex).print());
+        assertEquals("(int,km)", printType(tc.typeOf(astex)));
     }
 
     @Test
@@ -131,7 +131,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         String s = "--4.1km";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,m)", tc.typeOf(astex).print());
+        assertEquals("(double,km)", printType(tc.typeOf(astex)));
     }
 
     @Test
@@ -157,7 +157,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         String s = "-4.3km";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,m)", tc.typeOf(astex).print());
+        assertEquals("(double,km)", printType(tc.typeOf(astex)));
     }
 
     @Test
@@ -183,7 +183,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         String s = "+4km";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", tc.typeOf(astex).print());
+        assertEquals("(int,km)", printType(tc.typeOf(astex)));
     }
 
     @Test
@@ -209,19 +209,19 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         String s = "varD_M+=4km";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,m)", tc.typeOf(astex).print());
+        assertEquals("(double,m)", printType(tc.typeOf(astex)));
 
         //example with int m += double m
         s = "varI_M+=4.2km";
         astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", tc.typeOf(astex).print());
+        assertEquals("(int,m)", printType(tc.typeOf(astex)));
 
         //example with double m += int m
         s = "varI_M+=4km";
         astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", tc.typeOf(astex).print());
+        assertEquals("(int,m)", printType(tc.typeOf(astex)));
     }
 
 
@@ -262,7 +262,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         String s = "varL_KMe2perH-=4m^2/s";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(long,m^2/s)", tc.typeOf(astex).print());
+        assertEquals("(long,km^2/h)", printType(tc.typeOf(astex)));
     }
 
     @Test
@@ -302,19 +302,19 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         String s = "varI_M*=5.3";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", tc.typeOf(astex).print());
+        assertEquals("(int,m)", printType(tc.typeOf(astex)));
 
         //example with siunit literal double m * double
         s = "varD_M*=5.3";
         astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,m)", tc.typeOf(astex).print());
+        assertEquals("(double,m)", printType(tc.typeOf(astex)));
 
         //example with siunit literal double m * int
         s = "varD_M*=5";
         astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,m)", tc.typeOf(astex).print());
+        assertEquals("(double,m)", printType(tc.typeOf(astex)));
     }
 
     @Test
@@ -368,19 +368,19 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         String s = "varI_M/=5";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", tc.typeOf(astex).print());
+        assertEquals("(int,m)", printType(tc.typeOf(astex)));
 
         //example with siunit literal int m / double
         s = "varI_M/=5.2";
         astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", tc.typeOf(astex).print());
+        assertEquals("(int,m)", printType(tc.typeOf(astex)));
 
         //example with siunit literal double m / int
         s = "varD_M/=5";
         astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,m)", tc.typeOf(astex).print());
+        assertEquals("(double,m)", printType(tc.typeOf(astex)));
     }
 
     @Test
@@ -434,13 +434,13 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         String s = "varI_M%=9.2 m";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", tc.typeOf(astex).print());
+        assertEquals("(int,m)", printType(tc.typeOf(astex)));
 
         //example with siunit literal double m %= int m
         s = "varD_M%=9 m";
         astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,m)", tc.typeOf(astex).print());
+        assertEquals("(double,m)", printType(tc.typeOf(astex)));
     }
 
     @Test
@@ -491,12 +491,12 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         String s = "varI_M&=9";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", tc.typeOf(astex).print());
+        assertEquals("(int,m)", printType(tc.typeOf(astex)));
         //example with long m &= int
         s = "varL_KMe2perH&=9";
         astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(long,m^2/s)", tc.typeOf(astex).print());
+        assertEquals("(long,km^2/h)", printType(tc.typeOf(astex)));
     }
 
     @Test
@@ -533,12 +533,12 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         String s = "varI_M|=9";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", tc.typeOf(astex).print());
+        assertEquals("(int,m)", printType(tc.typeOf(astex)));
         //example with long m &= int
         s = "varL_KMe2perH|=9";
         astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(long,m^2/s)", tc.typeOf(astex).print());
+        assertEquals("(long,km^2/h)", printType(tc.typeOf(astex)));
     }
 
 
@@ -577,12 +577,12 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         String s = "varI_M^=9";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", tc.typeOf(astex).print());
+        assertEquals("(int,m)", printType(tc.typeOf(astex)));
         //example with long m &= int
         s = "varL_KMe2perH^=9";
         astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(long,m^2/s)", tc.typeOf(astex).print());
+        assertEquals("(long,km^2/h)", printType(tc.typeOf(astex)));
     }
 
     @Test
@@ -619,12 +619,12 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         String s = "varI_M<<=9";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", tc.typeOf(astex).print());
+        assertEquals("(int,m)", printType(tc.typeOf(astex)));
         //example with int m - char
         s = "varI_M<<=\'c\'";
         astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", tc.typeOf(astex).print());
+        assertEquals("(int,m)", printType(tc.typeOf(astex)));
     }
 
     @Test
@@ -664,12 +664,12 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         String s = "varI_M>>=9";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", tc.typeOf(astex).print());
+        assertEquals("(int,m)", printType(tc.typeOf(astex)));
         //example with int m - char
         s = "varI_M>>=\'c\'";
         astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", tc.typeOf(astex).print());
+        assertEquals("(int,m)", printType(tc.typeOf(astex)));
     }
 
     @Test
@@ -709,12 +709,12 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         String s = "varI_M>>>=9";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", tc.typeOf(astex).print());
+        assertEquals("(int,m)", printType(tc.typeOf(astex)));
         //example with char - char
         s = "varI_M>>>=\'3\'";
         astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", tc.typeOf(astex).print());
+        assertEquals("(int,m)", printType(tc.typeOf(astex)));
     }
 
     @Test
@@ -754,14 +754,14 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         String s = "varD_KMe2perHmSe4 = 3 mm^2/(h^2*ks^3)";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,m^2/s^5)", tc.typeOf(astex).print());
+        assertEquals("(double,km^2/(h*ms^4))", printType(tc.typeOf(astex)));
 
 
         //example with m^2/s
         s = "varKMe2perH = varM*varM/varS";
         astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("m^2/s", tc.typeOf(astex).print());
+        assertEquals("km^2/h", printType(tc.typeOf(astex)));
     }
 
 

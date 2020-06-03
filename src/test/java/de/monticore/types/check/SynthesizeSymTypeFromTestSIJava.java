@@ -10,23 +10,23 @@ public class SynthesizeSymTypeFromTestSIJava extends TestSIJavaDelegatorVisitor
         implements ISynthesize {
 
     private SynthesizeSymTypeFromMCBasicTypes symTypeFromMCBasicTypes;
-    private SynthesizeSymTypeFromSIUnitTypes symTypeFromSIUnitTypes;
-    private SynthesizeSymTypeFromPrimitiveWithSIUnitTypes symTypeFromPrimitiveWithSIUnitTypes;
+    private SynthesizeSymTypeFromSIUnitTypes4Math symTypeFromSIUnitTypes4Math;
+    private SynthesizeSymTypeFromSIUnitTypes4Computing symTypeFromSIUnitTypes4Computing;
 
     public void init() {
         typeCheckResult = new TypeCheckResult();
 
         symTypeFromMCBasicTypes = new SynthesizeSymTypeFromMCBasicTypes();
-        symTypeFromSIUnitTypes = new SynthesizeSymTypeFromSIUnitTypes();
-        symTypeFromPrimitiveWithSIUnitTypes = new SynthesizeSymTypeFromPrimitiveWithSIUnitTypes();
+        symTypeFromSIUnitTypes4Math = new SynthesizeSymTypeFromSIUnitTypes4Math();
+        symTypeFromSIUnitTypes4Computing = new SynthesizeSymTypeFromSIUnitTypes4Computing();
 
         symTypeFromMCBasicTypes.setTypeCheckResult(typeCheckResult);
-        symTypeFromSIUnitTypes.setTypeCheckResult(typeCheckResult);
-        symTypeFromPrimitiveWithSIUnitTypes.setTypeCheckResult(typeCheckResult);
+        symTypeFromSIUnitTypes4Math.setTypeCheckResult(typeCheckResult);
+        symTypeFromSIUnitTypes4Computing.setTypeCheckResult(typeCheckResult);
 
         setMCBasicTypesVisitor(symTypeFromMCBasicTypes);
-        setSIUnitTypesVisitor(symTypeFromSIUnitTypes);
-        setPrimitiveWithSIUnitTypesVisitor(symTypeFromPrimitiveWithSIUnitTypes);
+        setSIUnitTypes4MathVisitor(symTypeFromSIUnitTypes4Math);
+        setSIUnitTypes4ComputingVisitor(symTypeFromSIUnitTypes4Computing);
         setTestSIJavaVisitor(new TestSIJavaBasicVisitor());
 
         setTypeCheckResult(new TypeCheckResult());
@@ -63,7 +63,7 @@ public class SynthesizeSymTypeFromTestSIJava extends TestSIJavaDelegatorVisitor
     public void setTypeCheckResult(TypeCheckResult typeCheckResult){
         this.typeCheckResult = typeCheckResult;
         this.symTypeFromMCBasicTypes.setTypeCheckResult(typeCheckResult);
-        this.symTypeFromSIUnitTypes.setTypeCheckResult(typeCheckResult);
-        this.symTypeFromPrimitiveWithSIUnitTypes.setTypeCheckResult(typeCheckResult);
+        this.symTypeFromSIUnitTypes4Math.setTypeCheckResult(typeCheckResult);
+        this.symTypeFromSIUnitTypes4Computing.setTypeCheckResult(typeCheckResult);
     }
 }

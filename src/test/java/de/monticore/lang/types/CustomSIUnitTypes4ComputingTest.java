@@ -1,8 +1,8 @@
 package de.monticore.lang.types;
 
-import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
-import de.monticore.lang.types.prettyprint.PrimitiveWithSIUnitTypesPrettyPrinter;
-import de.monticore.lang.types.primitivewithsiunittypes._ast.ASTPrimitiveWithSIUnitType;
+import de.monticore.lang.testsijava.testsijavawithcustomtypes._parser.TestSIJavaWithCustomTypesParser;
+import de.monticore.lang.types.customsiunittypes4computing._ast.ASTCustomSIUnitType4Computing;
+import de.monticore.lang.types.prettyprint.CustomSIUnitTypes4ComputingPrettyPrinter;
 import de.monticore.prettyprint.IndentPrinter;
 import de.se_rwth.commons.logging.Log;
 import de.se_rwth.commons.logging.LogStub;
@@ -15,10 +15,10 @@ import java.util.Optional;
 
 import static org.junit.Assert.*;
 
-public class PrimitiveWithSIUnitTypesTest {
+public class CustomSIUnitTypes4ComputingTest {
 
-    TestSIJavaParser parser = new TestSIJavaParser();
-    PrimitiveWithSIUnitTypesPrettyPrinter prettyPrinter;
+    TestSIJavaWithCustomTypesParser parser = new TestSIJavaWithCustomTypesParser();
+    CustomSIUnitTypes4ComputingPrettyPrinter prettyPrinter;
 
     @Before
     public void init() {
@@ -28,18 +28,18 @@ public class PrimitiveWithSIUnitTypesTest {
 
     @Test
     public void test() {
-        test("double in km/h", "double in  km/h", false);
-        test("long in km/h", "long  in km/h", false);
-        test("int in h/km", "int in h/km", false);
-        test("void in km", "void in km", true);
-        test("km in int", "km in int", true);
+        test("double <km/h>", "double  <km/h>", false);
+        test("long <km/h>", "long   <km/h>", false);
+        test("int <h/km>", "int <h/km>", false);
+        test("void <km>", "void <km>", true);
+        test("km <int>", "km <int>", true);
     }
 
     private void test(String control, String s, boolean expectedParseError) {
-        Optional<ASTPrimitiveWithSIUnitType> astOpt = Optional.empty();
-        prettyPrinter = new PrimitiveWithSIUnitTypesPrettyPrinter(new IndentPrinter());
+        Optional<ASTCustomSIUnitType4Computing> astOpt = Optional.empty();
+        prettyPrinter = new CustomSIUnitTypes4ComputingPrettyPrinter(new IndentPrinter());
         try {
-            astOpt = parser.parsePrimitiveWithSIUnitType(new StringReader(s));
+            astOpt = parser.parseCustomSIUnitType4Computing(new StringReader(s));
         } catch (IOException e) {
             e.printStackTrace();
         }

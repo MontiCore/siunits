@@ -10,7 +10,7 @@ grammar TestSIJava extends de.monticore.lang.literals.SIUnitLiterals,
                             de.monticore.expressions.CommonExpressions,
                             de.monticore.expressions.AssignmentExpressions,
                             de.monticore.statements.MCCommonStatements,
-                            de.monticore.lang.types.PrimitiveWithSIUnitTypes,
+                            de.monticore.lang.types.SIUnitTypes4Computing,
                             de.monticore.types.TypeSymbols {
 
     symbol scope SIJavaClass =
@@ -25,7 +25,7 @@ grammar TestSIJava extends de.monticore.lang.literals.SIUnitLiterals,
         MCType Name ("=" assignment:Expression)? ";";
 
     SIFieldDeclaration implements Field, SIJavaClassStatement, SIJavaMethodStatement =
-        "si" Name "=" (SIUnitType | Expression) ";";
+        "si" Name "=" (SIUnitType4Math | Expression) ";";
 
     MethodDeclaration implements Method, SIJavaClassStatement =
         "metod" returnType:MCReturnType Name "(" (SIJavaParameter||",")* ")" "{"

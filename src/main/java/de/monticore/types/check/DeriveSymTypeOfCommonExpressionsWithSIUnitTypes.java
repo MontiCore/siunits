@@ -35,7 +35,7 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
     protected Optional<SymTypeExpression> calculateMultDivideExpression(ASTInfixExpression expr, String operator, SymTypeExpression leftResult, SymTypeExpression rightResult) {
         if (isSIUnitType(leftResult) && isSIUnitType(rightResult)) {
             // if both are SI unit types the result the result has to be calculated depending on the operator
-            String newUnitName = leftResult.print() + operator + "(" + rightResult.print() + ")";
+            String newUnitName = printType(leftResult) + operator + "(" + printType(rightResult) + ")";
             return Optional.of(SIUnitSymTypeExpressionFactory.createSIUnit(newUnitName, getScope(expr.getEnclosingScope())));
         } else if (isSIUnitType(leftResult) && isNumericType(rightResult)) {
             return Optional.of(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(rightResult, leftResult, getScope(expr.getEnclosingScope())));
@@ -44,11 +44,11 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
             if ("*".equals(operator))
                 siUnitType = rightResult;
             else {
-                siUnitType = SIUnitSymTypeExpressionFactory.createSIUnit("(" + rightResult.print() + ")^-1", getScope(expr.getEnclosingScope()));
+                siUnitType = SIUnitSymTypeExpressionFactory.createSIUnit("(" + printType(rightResult) + ")^-1", getScope(expr.getEnclosingScope()));
             }
             return Optional.of(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(leftResult, siUnitType, getScope(expr.getEnclosingScope())));
         } else if (isNumericWithSIUnitType(leftResult) || isNumericWithSIUnitType(rightResult)) {
-            // The result is again a PrimitiveWithSIUnitType
+            // The result is again a SIUnitType4Computing
             Optional<SymTypeExpression> numericType = getBinaryNumericPromotionOfNumeric(leftResult, rightResult);
             if (numericType.isPresent() && isNumericType(numericType.get())) {
                 Optional<SymTypeExpression> leftSIUnitType = getSIUnit(leftResult);
@@ -179,5 +179,13 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
             return Optional.of(type);
         }
         return Optional.empty();
+    }
+
+    protected String printType(SymTypeExpression symType) {
+        if (symType instanceof SymTypeOfNumericWithSIUnit)
+            return ((SymTypeOfNumericWithSIUnit) symType).printRealType();
+        if (symType instanceof SymTypeOfSIUnit)
+            return ((SymTypeOfSIUnit) symType).printRealType();
+        return symType.print();
     }
 }

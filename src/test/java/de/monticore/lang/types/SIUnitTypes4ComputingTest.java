@@ -1,8 +1,8 @@
 package de.monticore.lang.types;
 
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
-import de.monticore.lang.types.siunittypes4computing.prettyprint.SIUnitTypes4MathPrettyPrinter;
-import de.monticore.lang.types.siunittypes4math._ast.ASTSIUnitType4Math;
+import de.monticore.lang.types.siunittypes4computing._ast.ASTSIUnitType4Computing;
+import de.monticore.lang.types.siunittypes4math.prettyprint.SIUnitTypes4ComputingPrettyPrinter;
 import de.monticore.prettyprint.IndentPrinter;
 import de.se_rwth.commons.logging.Log;
 import de.se_rwth.commons.logging.LogStub;
@@ -15,10 +15,10 @@ import java.util.Optional;
 
 import static org.junit.Assert.*;
 
-public class SIUnitTypesTest {
+public class SIUnitTypes4ComputingTest {
 
     TestSIJavaParser parser = new TestSIJavaParser();
-    SIUnitTypes4MathPrettyPrinter prettyPrinter = new SIUnitTypes4MathPrettyPrinter(new IndentPrinter());
+    SIUnitTypes4ComputingPrettyPrinter prettyPrinter;
 
     @Before
     public void init() {
@@ -28,16 +28,18 @@ public class SIUnitTypesTest {
 
     @Test
     public void test() {
-        test("km/h", "km/h", false);
-        test("km/int", "km/int", true);
-        test("int", "int", true);
+        test("double in km/h", "double in  km/h", false);
+        test("long in km/h", "long  in km/h", false);
+        test("int in h/km", "int in h/km", false);
+        test("void in km", "void in km", true);
+        test("km in int", "km in int", true);
     }
 
     private void test(String control, String s, boolean expectedParseError) {
-        Optional<ASTSIUnitType4Math> astOpt = Optional.empty();
-        prettyPrinter = new SIUnitTypes4MathPrettyPrinter(new IndentPrinter());
+        Optional<ASTSIUnitType4Computing> astOpt = Optional.empty();
+        prettyPrinter = new SIUnitTypes4ComputingPrettyPrinter(new IndentPrinter());
         try {
-            astOpt = parser.parseSIUnitType4Math(new StringReader(s));
+            astOpt = parser.parseSIUnitType4Computing(new StringReader(s));
         } catch (IOException e) {
             e.printStackTrace();
         }

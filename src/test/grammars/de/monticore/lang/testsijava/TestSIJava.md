@@ -1,13 +1,13 @@
 # TestSIJava
 The TestSIJava language serves as an example on how to integrate SIUnits, SIUnitLiterals, SIUnitTypes and 
-PrimitiveWithSIUnitTypes (see [SIUnits language](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/SIUnits.md)) 
+SIUnitTypes4Computing (see [SIUnits language](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/SIUnits.md)) 
 in a Java-like language. TypeCheck classes are setup for this language and can be used to check
 whether a field declaration is initialized with a compatible type or expression. 
 
 ## [TestSIJava.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/lang/testsijava/TestSIJava.mc4)
 ### Desciption
 TestSIJava is a very limited Java-like grammar which combines expressions with SIUnits and SIUnitLiterals and each Type 
-or ReturnType can be a SIUnitType or a PrimitiveWithSIUnitType. Accepted are  models with a 
+or ReturnType can be a SIUnitType or a SIUnitType4Computing. Accepted are  models with a 
 package, a classname and several Field- and Method declarations. A Method contains expressions which can be used to 
 assign new values to variables. In addition to "normal" variable declations of the form ```type name = assignment```,
 there are wildcard SI variable declarations of the form ```si name = assignment```, where the assignment is either itself
@@ -42,12 +42,29 @@ object to each of the underlying derive class, so they can share their results. 
 but also in the SymbolTable creation process to calculate the SymType of an SIVariable Declaration of the form ```si var = var_M/var_S```.
 
 ### Symbol Table
+Each SIJavaClass spans a symbol scope. In this scope there can be the Symbols ```FieldDeclaration```, ```SIFieldDeclaration```
+and ```MethodDeclaration```.
+The FieldDeclaration and SIFieldDeclaration both implement ```Field``` from the ```de.monticore.types.TypeSymbols``` grammar.
+The MethodDeclaration implements the ```Method``` from the ```de.monticore.types.TypeSymbols``` grammar.
+The ```MethodDeclaration``` symbol again spans a scope which can contain the Symbols ```FieldDeclaration``` 
+and ```SIFieldDeclaration```. It also contains the ```SIJavaParameter``` symbols which are given as the method's parameters.
+
+In the Symbol Table creation process the [TestSIJavaSymbolTableCreator]() 
+assigns each of those symbols a type as SymTypeExpression. For a ```FieldDeclaration```
+this type is synthesized from the given ```MCType``` (```de.monticore.MCBasics``` grammar). For a ```SIFieldDeclaration```
+it is derived from the given assignment expression or synthesized from the given assignment ```SIUnitType4Math```.
+For a ```MethodDeclaration``` it is synthesized from the given ```MCReturnType``` (```de.monticore.MCBasics``` grammar).
+For a ```SIJavaParameter``` it is synthesized from the given ```MCType```.
+
+In the Symbol Table creation process, the [TestSIJavaSymbolTableCreator]() 
+assigns each Node in the AST the enclosing Scope, which is the last Scope on the ScopeStack, i.e. for a ```SIJavaParameter```
+it is the method's scope, the ```SIJavaParameter``` is a parameter of.
 
 ### Models
 Valid models can be found [here](https://git.rwth-aachen.de/monticore/languages/siunits/-/tree/master/src/test/resources/de/monticore/lang/testsijava/testsijava).
 This package also contains models which can be parsed but do not fulfil the TypeCheckCoCo.
 
 ## [TestSIJavaWithCustomTypes.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/lang/testsijava/TestSIJavaWithCustomTypes.mc4) 
-This grammar has a similar purpose as the [TestSIJava](#testsijavamc4) grammar, but uses [CustomPrimitiveWithSIUnitTypes](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/lang/types/CustomPrimitiveWithSIUnitTypes.mc4) 
-instead of the given [PrimitiveWithSIUnitTypes](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/PrimitiveWithSIUnitTypes.mc4) 
+This grammar has a similar purpose as the [TestSIJava](#testsijavamc4) grammar, but uses [CustomSIUnitTypes4Computing](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/lang/types/CustomSIUnitTypes4Computing.mc4) 
+instead of the given [SIUnitTypes4Computing](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/SIUnitTypes4Computing.mc4) 
 which come with the SIUnit language.

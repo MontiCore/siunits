@@ -29,7 +29,7 @@ public class DeriveSymTypeOfExpressionWithSIUnitTypesTest extends DeriveSymTypeO
         String s = "varM";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("m", tc.typeOf(astex).print());
+        assertEquals("m", printType(tc.typeOf(astex)));
     }
 
     @Test
@@ -37,13 +37,13 @@ public class DeriveSymTypeOfExpressionWithSIUnitTypesTest extends DeriveSymTypeO
         String s = "varKM";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("m", tc.typeOf(astex).print());
+        assertEquals("km", printType(tc.typeOf(astex)));
     }
 
     @Test
     public void deriveTFromSIUnitLiteral() throws IOException {
         ASTExpression astex = p.parse_StringExpression("42.3 km").get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,m)", tc.typeOf(astex).print());
+        assertEquals("(double,km)", printType(tc.typeOf(astex)));
     }
 }

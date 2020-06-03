@@ -52,48 +52,56 @@ public class DeriveSymTypeOfSIUnitLiteralsTest {
     public void deriveTFromLiteralM() throws IOException {
         ASTLiteral lit = parser.parse(new StringReader("3.2 m")).get();
         lit.setEnclosingScope(scope);
-        assertEquals("(double,m)", tc.typeOf(lit).print());
+        assertEquals("(double,m)", printType(tc.typeOf(lit)));
     }
 
     @Test
     public void deriveTFromLiteralKM() throws IOException {
         ASTLiteral lit = parser.parse(new StringReader("3 km")).get();
         lit.setEnclosingScope(scope);
-        assertEquals("(int,m)", tc.typeOf(lit).print());
+        assertEquals("(int,km)", printType(tc.typeOf(lit)));
     }
 
     @Test
     public void deriveTFromLiteralS() throws IOException {
         ASTLiteral lit = parser.parse(new StringReader("3s")).get();
         lit.setEnclosingScope(scope);
-        assertEquals("(int,s)", tc.typeOf(lit).print());
+        assertEquals("(int,s)", printType(tc.typeOf(lit)));
     }
 
     @Test
     public void deriveTFromLiteralComplex1() throws IOException {
         ASTLiteral lit = parser.parse(new StringReader("3.2 km^2*s/h^2")).get();
         lit.setEnclosingScope(scope);
-        assertEquals("(double,m^2/s)", tc.typeOf(lit).print());
+        assertEquals("(double,km^2*s/h^2)", printType(tc.typeOf(lit)));
     }
 
     @Test
     public void deriveTFromLiteralComplex2() throws IOException {
-        ASTLiteral lit = parser.parse(new StringReader("3 (mm^2*m^3)/(km*s^2*kg)")).get();
+        ASTLiteral lit = parser.parse(new StringReader("3 (mm^2*mm^3)/(km*s^2*kg)")).get();
         lit.setEnclosingScope(scope);
-        assertEquals("(int,m^4/(s^2*kg))", tc.typeOf(lit).print());
+        assertEquals("(int,mm^5/(km*s^2*kg))", printType(tc.typeOf(lit)));
     }
 
     @Test
     public void deriveTFromDimensionless1() throws IOException {
         ASTLiteral lit = parser.parse(new StringReader("3.2 sr")).get();
         lit.setEnclosingScope(scope);
-        assertEquals("(double,sr)", tc.typeOf(lit).print());
+        assertEquals("(double,sr)", printType(tc.typeOf(lit)));
     }
 
     @Test
     public void deriveTFromDimensionless2() throws IOException {
         ASTLiteral lit = parser.parse(new StringReader("3.2 m/m")).get();
         lit.setEnclosingScope(scope);
-        assertEquals("double", tc.typeOf(lit).print());
+        assertEquals("double", printType(tc.typeOf(lit)));
+    }
+
+    protected String printType(SymTypeExpression symType) {
+        if (symType instanceof SymTypeOfNumericWithSIUnit)
+            return ((SymTypeOfNumericWithSIUnit) symType).printRealType();
+        if (symType instanceof SymTypeOfSIUnit)
+            return ((SymTypeOfSIUnit) symType).printRealType();
+        return symType.print();
     }
 }

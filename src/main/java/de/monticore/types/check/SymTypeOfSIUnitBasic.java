@@ -13,6 +13,7 @@
 package de.monticore.types.check;
 
 import de.monticore.symboltable.serialization.JsonConstants;
+import de.monticore.symboltable.serialization.JsonDeSers;
 import de.monticore.symboltable.serialization.JsonPrinter;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolLoader;
 
@@ -26,6 +27,7 @@ import java.util.Optional;
 public class SymTypeOfSIUnitBasic extends SymTypeExpression {
 
     protected Optional<Integer> exponent = Optional.of(Integer.valueOf(1));
+    protected Optional<String> prefix = Optional.of("");
 
     public SymTypeOfSIUnitBasic(TypeSymbolLoader typeSymbolLoader) {
         this.typeSymbolLoader = typeSymbolLoader;
@@ -61,7 +63,7 @@ public class SymTypeOfSIUnitBasic extends SymTypeExpression {
         JsonPrinter jp = new JsonPrinter();
         jp.beginObject();
         // Care: the following String needs to be adapted if the package was renamed
-        jp.member(JsonConstants.KIND, "de.monticore.types.check.SymTypeOfSIUnitBasic");
+        jp.member(JsonDeSers.KIND, "de.monticore.types.check.SymTypeOfSIUnitBasic");
         jp.member("constName", getName());
         jp.member("exponent", getExponent());
         jp.endObject();

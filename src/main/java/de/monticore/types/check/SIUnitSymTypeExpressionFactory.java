@@ -43,7 +43,21 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
      */
     public static SymTypeOfSIUnitBasic createSIUnitBasic(String nameWithPrefix, Integer exponent) {
         SymTypeOfSIUnitBasic symType = null;
-        String nameWithOutPrefix = UnitPrettyPrinter.printStandardUnit(nameWithPrefix);
+
+        if (nameWithPrefix.equals("kL")){
+            int a = 3;
+        }
+
+//        String nameWithOutPrefix = UnitPrettyPrinter.printBaseUnit(nameWithPrefix);
+        String nameWithOutPrefix = nameWithPrefix;
+
+        if (nameWithOutPrefix.contains("^")) {
+            String nameWithOutPrefixTemp = nameWithOutPrefix.split("\\^")[0];
+            Integer exponentTemp = Integer.parseInt(nameWithOutPrefixTemp.split("\\^")[1]);
+            exponent = exponentTemp * (exponent == null ? 1 : exponent);
+            nameWithOutPrefix = nameWithOutPrefixTemp;
+        }
+
         if (DefsSIUnitType.getSIUnitBasicTypes().containsKey(nameWithOutPrefix)) // Then there is no prefix
             symType = DefsSIUnitType.getSIUnitBasicTypes().get(nameWithOutPrefix);
         else
@@ -68,14 +82,14 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
      * @param enclosingScope The node's enclosing scope
      */
     public static SymTypeExpression createSIUnit(String name, ITypeSymbolsScope enclosingScope) {
-        String formattedStandard = UnitPrettyPrinter.printStandardUnit(name);
+        String formattedStandard = UnitPrettyPrinter.printUnit(name);
         String[] split = formattedStandard.split("\\/");
         List<String> numeratorStringList = Arrays.asList(split[0].split("\\*"));
         List<String> denominatorStringList = new ArrayList<>();
         if (split.length == 2)
             denominatorStringList = Arrays.asList(split[1].replace("(", "").replace(")", "")
                     .split("\\*"));
-        else if (split.length == 1 && split[0].equals("")) // dimensionless, will return int_type in the next function
+        else if (split.length == 1 && split[0].equals("1")) // dimensionless, will return int_type in the next function
             return createSIUnit(new TypeSymbolLoader("1", enclosingScope), new ArrayList<>(), new ArrayList<>());
         return createSIUnit(numeratorStringList, denominatorStringList, new TypeSymbolLoader(formattedStandard, enclosingScope));
     }
@@ -134,9 +148,9 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
 
         // Check if the symType is already in the scope and add it otherwise
         // Needed because there can be created new SIUnitType while computing, e.g. varM*varS
-        final String name = result.print();
+        final String name = typeSymbolLoader.getName();
         if (typeSymbolLoader.getEnclosingScope().getLocalTypeSymbols().stream().filter(x -> x.getName().equals(name)).collect(Collectors.toList()).size() == 0) {
-            TypeSymbol newSymbol = DefsSIUnitType.type(result.print());
+            TypeSymbol newSymbol = DefsSIUnitType.type(name);
             typeSymbolLoader.getEnclosingScope().add(newSymbol);
         }
 
@@ -157,9 +171,11 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
 
         // Check if the symType is already in the scope and add it otherwise
         // Needed because there can be created new SIUnitType while computing, e.g. varM*varS
-        final String name = result.print();
+        final String name = result instanceof SymTypeOfNumericWithSIUnit?
+                ((SymTypeOfNumericWithSIUnit) result).printRealType() :
+                result.print();
         if (typeSymbolLoader.getEnclosingScope().getLocalTypeSymbols().stream().filter(x -> x.getName().equals(name)).collect(Collectors.toList()).size() == 0) {
-            TypeSymbol newSymbol = DefsSIUnitType.type(result.print());
+            TypeSymbol newSymbol = DefsSIUnitType.type(name);
             typeSymbolLoader.getEnclosingScope().add(newSymbol);
         }
 
@@ -170,7 +186,10 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
      * creates a numeric with siunit type
      */
     public static SymTypeExpression createNumericWithSIUnitType(SymTypeExpression numericType, SymTypeExpression siunitType, ITypeSymbolsScope enclosingScope) {
-        String name = "(" + numericType.print() + "," + siunitType.print() + ")";
+        String siUnitPrint = siunitType instanceof SymTypeOfSIUnit ?
+                ((SymTypeOfSIUnit) siunitType).printRealType() :
+                siunitType.print();
+        String name = "(" + numericType.print() + "," + siUnitPrint + ")";
         return createNumericWithSIUnitType(numericType, siunitType, new TypeSymbolLoader(name, enclosingScope));
     }
 

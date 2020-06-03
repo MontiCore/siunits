@@ -8,10 +8,12 @@ package de.monticore.lang.types;
  * based on all the available SI unit definitions
  *
 TODO: klären: stimmt diese Aussage, wenn nicht: abweichung kurz erklären
+DONE: Stimmt bis auf alias für µ ist u, für Ω ist Ohm
  * The definitions are fully compliant to the definitions given in
  *  International Bureau of Weights and Measures (20 May 2019), 
  *  SI Brochure: The International System of Units (SI)
- *  (9th ed.)
+ *  (9th ed.) with exceptions for the aliasing of µ to u and Ω to
+ *  Ohm
  *
  * With this definition an SI Unit such as "kg/m" 
  * can also be used as type definition.
@@ -24,14 +26,12 @@ TODO: klären: stimmt diese Aussage, wenn nicht: abweichung kurz erklären
  * 
  */
 
-// TODO: umbenennung in SIUnitTypes4Math ?
-
-component grammar SIUnitTypes extends 
+component grammar SIUnitTypes4Math extends
         de.monticore.lang.SIUnits,
         de.monticore.types.MCBasicTypes  {
 
-// TODO: Umbenennung: SIUnitType4Math
 // TODO: brauchen wir die <100>?
-     SIUnitType implements MCObjectType <100> =
+// Done: Ja, weil es sonst vorkommt, dass ein MCType "km" falsch als qualifiedType geparsed wird
+     SIUnitType4Math implements MCObjectType <100> =
         SIUnit;
 }

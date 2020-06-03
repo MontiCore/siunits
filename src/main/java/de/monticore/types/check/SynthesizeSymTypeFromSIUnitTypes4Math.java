@@ -6,8 +6,8 @@
 package de.monticore.types.check;
 
 import de.monticore.lang.siunits.prettyprint.SIUnitsPrettyPrinter;
-import de.monticore.lang.types.siunittypes._ast.ASTSIUnitType;
-import de.monticore.lang.types.siunittypes._visitor.SIUnitTypesVisitor;
+import de.monticore.lang.types.siunittypes4math._ast.ASTSIUnitType4Math;
+import de.monticore.lang.types.siunittypes4math._visitor.SIUnitTypes4MathVisitor;
 import de.monticore.types.mcbasictypes._symboltable.IMCBasicTypesScope;
 import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
 import de.se_rwth.commons.logging.Log;
@@ -19,7 +19,7 @@ import java.util.Optional;
  * i.e. for
  * types/SIUnitTypes.mc4
  */
-public class SynthesizeSymTypeFromSIUnitTypes implements ISynthesize, SIUnitTypesVisitor {
+public class SynthesizeSymTypeFromSIUnitTypes4Math implements ISynthesize, SIUnitTypes4MathVisitor {
     /**
      * Using the visitor functionality to calculate the SymType Expression
      */
@@ -29,15 +29,15 @@ public class SynthesizeSymTypeFromSIUnitTypes implements ISynthesize, SIUnitType
     //
     // (the Vistors are then composed using theRealThis Pattern)
     //
-    SIUnitTypesVisitor realThis = this;
+    SIUnitTypes4MathVisitor realThis = this;
 
     @Override
-    public void setRealThis(SIUnitTypesVisitor realThis) {
+    public void setRealThis(SIUnitTypes4MathVisitor realThis) {
         this.realThis = realThis;
     }
 
     @Override
-    public SIUnitTypesVisitor getRealThis() {
+    public SIUnitTypes4MathVisitor getRealThis() {
         return realThis;
     }
 
@@ -62,7 +62,7 @@ public class SynthesizeSymTypeFromSIUnitTypes implements ISynthesize, SIUnitType
     }
 
     @Override
-    public void endVisit(ASTSIUnitType siunittype) {
+    public void endVisit(ASTSIUnitType4Math siunittype) {
         typeCheckResult.setLast(SIUnitSymTypeExpressionFactory.createSIUnit(
                 SIUnitsPrettyPrinter.prettyprint(siunittype.getSIUnit()), getScope(siunittype.getEnclosingScope())));
     }

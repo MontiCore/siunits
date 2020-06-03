@@ -12,17 +12,17 @@ package de.monticore.lang.types;
 // TODO: umbenennung in SIUnitTypes4Computing ?
 // Und Positionierung als Alternative (die nicht auf SIUnitTypes4Math basiert)
 
-component grammar PrimitiveWithSIUnitTypes extends 
+component grammar SIUnitTypes4Computing extends
         de.monticore.types.MCBasicTypes, 
-        de.monticore.lang.types.SIUnitTypes     {
+        de.monticore.lang.types.SIUnitTypes4Math     {
 
-    interface PrimitiveWithSIUnitTypeInt extends MCObjectType =
-        primitiveType:MCPrimitiveType siunitType:SIUnitType;
+    interface SIUnitType4ComputingInt extends MCObjectType =
+        MCPrimitiveType SIUnitType4Math;
 
 // TODO: wir sind uns hier ja syntaktisch noch nicht einig
 // bzw. überlegen noch? siehe unten?
-    PrimitiveWithSIUnitType implements PrimitiveWithSIUnitTypeInt =
-        primitiveType:MCPrimitiveType "in" siunitType:SIUnitType;
+    SIUnitType4Computing implements SIUnitType4ComputingInt =
+        MCPrimitiveType "in" SIUnitType4Math;
 
 // Vorschlag:
 //     SIUnitType implements MCObjectType =

@@ -6,8 +6,8 @@ this language provides functionality for unit compatibility and type checking.
 The grammar files are (see details below):
 * [SIUnits.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/SIUnits.mc4)
 * [SIUnitLiterals.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/literals/SIUnitLiterals.mc4)
-* [SIUnitTypes.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/SIUnitTypes.mc4)
-* [PrimitiveWithSIUnitTypes.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/PrimitiveWithSIUnitTypes.mc4)
+* [SIUnitTypes4Math.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/SIUnitTypes4Math.mc4)
+* [SIUnitTypes4Computing.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/SIUnitTypes4Computing.mc4)
 
 ## [SIUnits.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/SIUnits.mc4)
 ### Description
@@ -58,19 +58,19 @@ which extracts the number of a NumericLiteral or SignedNumericLiteral as either 
 The [SIUnitLiteralsPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/literals/siunitliterals/prettyprint/SIUnitLiteralsPrettyPrinter.java)
 prettyprints a SIUnitLiteral.
 
-## [SIUnitTypes.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/SIUnitTypes.mc4)
+## [SIUnitTypes4Math.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/SIUnitTypes4Math.mc4)
 ### Description
 The SIUnitTypes interprete the SIUnits as type. Therefore, the grammar extends [SIUnits.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/SIUnits.mc4) 
 and [de.monticore.types.MCBasicTypes.mc4](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/types/MCBasicTypes.mc4). 
 A SIUnitType implements the MCObjectType and can therefore be used as a MCType or MCReturnType.
 
 ### Generators
-The [SIUnitTypesPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/types/prettyprint/SIUnitTypesPrettyPrinter.java)
-prettyprints a SIUnitType and can be found in the package ```de.monticore.lang.types.prettyprint```.
+The [SIUnitTypes4MathPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/types/siunittypes4math/prettyprint/SIUnitTypes4MathPrettyPrinter.java)
+prettyprints a SIUnitType and can be found in the package ```de.monticore.lang.types.siunittypes4math.prettyprint```.
 
-## [PrimitiveWithSIUnitTypes.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/PrimitiveWithSIUnitTypes.mc4)
+## [SIUnitTypes4Computing.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/SIUnitTypes4Computing.mc4)
 ### Description
-A PrimitiveWithSIUnitType combines a MCPrimitiveType from the [MCBasicTypes](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/types/MCBasicTypes.mc4) 
+A SIUnitType4Computing combines a MCPrimitiveType from the [MCBasicTypes](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/types/MCBasicTypes.mc4) 
 grammar with a SIUnitType. It is mostly used to describe the type of a SIUnitLiteral but is also useful to derive the type
 of an expression with both SIUnits and an NumericLiteral. The primitive part should always be a numeric type (not boolean).
 
@@ -80,15 +80,15 @@ The grammar provides an exemplary syntax for primitive types combined with a uni
 
 A DSL developer should implement his own rule in order to use an alternative syntax.
 ### Functionality
-The [PrimitiveIsNumericType](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/types/primitivewithsiunittypes/_cocos/PrimitiveIsNumericType.java)
+The [PrimitiveIsNumericType](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/types/SIUnitTypes4Computing/_cocos/PrimitiveIsNumericType.java)
 CoCo checks whether the MCPrimitiveType part is a numeric type.
 ### Generators
-The [PrimitiveWithSIUnitTypesPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/types/prettyprint/PrimitiveWithSIUnitTypesPrettyPrinter.java)
-prettyprints a PrimitiveWithSIUnitType and can be found in the package ```de.monticore.lang.types.prettyprint```.
+The [SIUnitTypes4ComputingPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/types/siunittypes4computing/prettyprint/SIUnitTypes4ComputingPrettyPrinter.java)
+prettyprints a SIUnitType4Computing and can be found in the package ```de.monticore.lang.types.siunittypes4computing.prettyprint```.
 
 ## TypeCheck
 The classes for the TypeCheck mechanic can be found in the package ```de.monticore.types.check```. SymTypes can be
-synthesized from a SIUnitType and a PrimitiveWithSIUnitType and can be derived from SIUnitLiterals or Expressions.
+synthesized from a SIUnitType and a SIUnitType4Computing and can be derived from SIUnitLiterals or Expressions.
 The classes for deriving from AssignmentExpressions and CommonExpressions were extended, in order to work with SIUnits and
 SIUnitLiterals as well. E.g. ```3m + 2s``` should not be possible, while the type of ```3m / 2.2s``` is ```(double,m/s)```.
 The basic classes here are:
@@ -120,10 +120,10 @@ language. For further explanation, see the documentation for the [TestSIJava](ht
         * [UnitPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/siunits/utility/UnitPrettyPrinter.java)
         * [DefsSIUnitType](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/DefsSIUnitType.java)
 * An alternative syntax fot the definition of primitive types combined with SI units can be defined by implementing `MCObjectType` as it is done in
-[CustomPrimitiveWithSIUnitTypes](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/lang/types/CustomPrimitiveWithSIUnitTypes.mc4)
+[CustomSIUnitTypes4Computing](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/lang/types/CustomSIUnitTypes4Computing.mc4)
     * To include the new custom types to the TypeCheck mechanic, a DSL developer needs to implement a Synthesize-Class 
-    which extends the [SynthesizeSymTypeFromPrimitiveWithSIUnitTypes](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/SynthesizeSymTypeFromPrimitiveWithSIUnitTypes.java)
-    class and implements its visitor. For reference have a look on [SynthesizeSymTypeFromCustomPrimitiveWithSIUnitTypes.java](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/types/check/SynthesizeSymTypeFromCustomPrimitiveWithSIUnitTypes.java).
+    which extends the [SynthesizeSymTypeFromSIUnitTypes4Computing](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/SynthesizeSymTypeFromSIUnitTypes4Computing.java)
+    class and implements its visitor. For reference have a look on [SynthesizeSymTypeFromCustomSIUnitTypes4Computing.java](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/types/check/SynthesizeSymTypeFromCustomSIUnitTypes4Computing.java).
 
 ## Usage
 Usage of the SI Units package is shown using the [SI Java test language](https://git.rwth-aachen.de/monticore/languages/siunits/-/tree/master/src/test/grammars/de/monticore/lang/testsijava) and 

@@ -1,8 +1,8 @@
 package de.monticore.lang.siunits;
 
-import com.google.common.collect.Lists;
 import de.monticore.lang.literals.testsiunitliterals._parser.TestSIUnitLiteralsParser;
 import de.monticore.lang.siunits._ast.ASTSIUnit;
+import de.monticore.lang.siunits.utility.SIUnitConstants;
 import de.monticore.lang.siunits.utility.UnitPrettyPrinter;
 import de.se_rwth.commons.logging.Log;
 import org.junit.BeforeClass;
@@ -29,7 +29,7 @@ public class SIUnitTest {
     private void checkSIUnit(String s, String unitAsString, String standardUnitAsString) throws IOException {
         ASTSIUnit lit = parseSIUnit(s);
         String printFromLit = UnitPrettyPrinter.printUnit(lit);
-        String printStandardFromLit = UnitPrettyPrinter.printStandardUnit(lit);
+        String printStandardFromLit = UnitPrettyPrinter.printBaseUnit(lit);
         assertEquals(unitAsString, printFromLit);
         assertEquals(standardUnitAsString, printStandardFromLit);
     }
@@ -50,7 +50,7 @@ public class SIUnitTest {
             checkSIUnit("s^2/kg", "s^2/kg", "s^2/kg");
             checkSIUnit("s^2/min", "s^2/min", "s");
             checkSIUnit("s^2*kg/(min*m)", "s^2*kg/(min*m)", "s*kg/m");
-            checkSIUnit("deg", "deg", "rad");
+            checkSIUnit("deg", "deg", "1");
             checkSIUnit("s^-1", "1/s", "1/s");
             checkSIUnit("1/s", "1/s", "1/s");
             checkSIUnit("°C", "°C", "K");
@@ -63,28 +63,9 @@ public class SIUnitTest {
 
     @Test
     public void testAll() throws IOException {
-        String[] prefixes = {"Y","Z","E","P","T","G","M","k","h","da","d","c","m","n","p","f","a","z","y"};
-        String[] unitBases = {"m","g","s","A","K","mol","cd","Hz","N","Pa","J","W","C","V","F","Ohm","S","Wb","T","H","lm","lx","Bq","Gy","Sv","kat"};
-        String[] officallyAccepted = {"min","h","day","ha","t","Au","Np","B","dB","eV","u"};
-        String[] dimensionless = {"deg","rad","sr"};
-        String[] fahrenheitCelcius = {"°C", "°F"};
-
-
-        List<String> combined = new ArrayList<>();
-        combined.addAll(Lists.newArrayList(officallyAccepted));
-        combined.addAll(Lists.newArrayList(dimensionless));
-        combined.addAll(Lists.newArrayList(fahrenheitCelcius));
-
-        for (String unitBase: unitBases) {
-            combined.add(unitBase);
-            for (String prefix: prefixes) {
-                combined.add(prefix + unitBase);
-            }
-        }
-
         List<String> faultyUnits = new ArrayList<>();
 
-        for (String s: combined) {
+        for (String s: SIUnitConstants.getAllUnits()) {
             if(!isValid(s, s)) {
                 faultyUnits.add(s);
             }

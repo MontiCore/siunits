@@ -35,16 +35,16 @@ public class SIUnitLiteralsPrettyPrinter extends MCCommonLiteralsPrettyPrinter
      */
     @Override
     public void traverse(ASTSIUnitLiteral node) {
-        node.getNum().accept(getRealThis());
+        node.getNumericLiteral().accept(getRealThis());
         printer.print(" ");
-        node.getUn().accept(new SIUnitsPrettyPrinter(printer));
+        node.getSIUnit().accept(new SIUnitsPrettyPrinter(printer));
     }
 
     @Override
     public void traverse(ASTSignedSIUnitLiteral node) {
-        node.getNum().accept(getRealThis());
+        node.getSignedNumericLiteral().accept(getRealThis());
         printer.print(" ");
-        node.getUn().accept(new SIUnitsPrettyPrinter(printer));
+        node.getSIUnit().accept(new SIUnitsPrettyPrinter(printer));
     }
 
     /**

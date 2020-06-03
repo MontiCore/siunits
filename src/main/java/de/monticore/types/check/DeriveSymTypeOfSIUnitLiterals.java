@@ -29,14 +29,14 @@ public class DeriveSymTypeOfSIUnitLiterals extends DeriveSymTypeOfMCCommonLitera
 
     @Override
     public void traverse(ASTSIUnitLiteral node) {
-        node.getNum().accept(getRealThis());
-        traverseSIUnitLiteral(result.getLast(), node.getUn(), node.getEnclosingScope());
+        node.getNumericLiteral().accept(getRealThis());
+        traverseSIUnitLiteral(result.getLast(), node.getSIUnit(), node.getEnclosingScope());
     }
 
     @Override
     public void traverse(ASTSignedSIUnitLiteral node) {
-        node.getNum().accept(getRealThis());
-        traverseSIUnitLiteral(result.getLast(), node.getUn(), node.getEnclosingScope());
+        node.getSignedNumericLiteral().accept(getRealThis());
+        traverseSIUnitLiteral(result.getLast(), node.getSIUnit(), node.getEnclosingScope());
     }
 
     private void traverseSIUnitLiteral(SymTypeExpression literalType, ASTSIUnit astsiUnit, ISIUnitLiteralsScope enclosingScope) {

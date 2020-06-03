@@ -35,7 +35,23 @@ public class UnitPrettyPrinter {
     }
 
     private String _printStandardUnit(String unit) {
-        return _printStandardUnit(UnitFactory.createUnit(unit));
+        return _printUnit(UnitFactory.createStandardUnit(unit));
+    }
+
+    public static String printBaseUnit(String unit) {
+        return getInstance()._printBaseUnit(unit);
+    }
+
+    private String _printBaseUnit(String unit) {
+        return _printUnit(UnitFactory.createBaseUnit(unit));
+    }
+    
+    public static String printWithoutPrefixes(String unit) {
+        return getInstance()._printWithoutPrefixes(unit);
+    }
+
+    private String _printWithoutPrefixes(String unit) {
+        return _printUnit(UnitFactory.removePrefixes(UnitFactory.createUnit(unit)));
     }
 
     /**
@@ -48,7 +64,7 @@ public class UnitPrettyPrinter {
     }
 
     private String _printUnit(ASTSIUnit siunit) {
-        return _printUnit(SIUnitsWithBracketsPrettyPrinter.prettyprint(siunit));
+        return _printUnit(UnitFactory.createUnit(siunit));
     }
 
     /**
@@ -61,7 +77,23 @@ public class UnitPrettyPrinter {
     }
 
     private String _printStandardUnit(ASTSIUnit siunit) {
-        return _printStandardUnit(UnitFactory.createUnit(siunit));
+        return _printUnit(UnitFactory.createStandardUnit(siunit));
+    }
+
+    public static String printBaseUnit(ASTSIUnit siunit) {
+        return getInstance()._printBaseUnit(siunit);
+    }
+
+    private String _printBaseUnit(ASTSIUnit siunit) {
+        return _printUnit(UnitFactory.createBaseUnit(siunit));
+    }
+
+    public static String printWithoutPrefixes(ASTSIUnit unit) {
+        return getInstance()._printWithoutPrefixes(unit);
+    }
+
+    private String _printWithoutPrefixes(ASTSIUnit unit) {
+        return _printUnit(UnitFactory.removePrefixes(UnitFactory.createUnit(unit)));
     }
 
     /**
@@ -93,7 +125,23 @@ public class UnitPrettyPrinter {
     }
 
     private String _printStandardUnit(Unit unit) {
-        return _printUnit(unit.getStandardUnit());
+        return _printUnit(UnitFactory.createStandardUnit(unit));
+    }
+
+    public static String printBaseUnit(Unit unit) {
+        return getInstance()._printBaseUnit(unit);
+    }
+
+    private String _printBaseUnit(Unit unit) {
+        return _printUnit(UnitFactory.createBaseUnit(unit));
+    }
+
+    public static String printWithoutPrefixes(Unit unit) {
+        return getInstance()._printWithoutPrefixes(unit);
+    }
+
+    private String _printWithoutPrefixes(Unit unit) {
+        return _printUnit(UnitFactory.removePrefixes(unit));
     }
 
     private static UnitPrettyPrinter instance;

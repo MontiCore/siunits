@@ -9,10 +9,12 @@ package de.monticore.lang.literals;
  * '3 m', '2.5 km', '1 km^2' or '3.54l m*deg/(h^2*mg)'
  *
 TODO: klären: stimmt diese Aussage, wenn nicht: abweichung kurz erklären
+DONE: Stimmt bis auf alias für µ ist u, für Ω ist Ohm
  * The definitions are fully compliant to the definitions given in
  *  International Bureau of Weights and Measures (20 May 2019), 
  *  SI Brochure: The International System of Units (SI)
- *  (9th ed.)
+ *  (9th ed.) with exceptions for the aliasing of µ to u and Ω to
+ *  Ohm
  *
  * Caution:
  * Java long and float unfortunately conflict with SI Units "F" and "L".
@@ -21,7 +23,7 @@ TODO: klären: stimmt diese Aussage, wenn nicht: abweichung kurz erklären
  * be parsed as BasicLongLiteral "30L" or BasicFloatLiteral "30.2F"
  * Only if a space is inbetween: it becomes a Liter Literal "30 L" 
  * or Farad Literal "30.2 F".
- * Accordingly "30Lkg" is not parsable, but "30L kg" and "30 Lkg" are.
+ * Accordingly "30Lkg" is not parsable, but "30L kg" and "30 L*kg" are.
  * 
  * The grammar extends the MontiCore common literals, because it uses
  * natural numbers e.g. as exponent.
@@ -34,12 +36,10 @@ component grammar SIUnitLiterals extends
 
     // The unsigned SI unit literals
     SIUnitLiteral implements Literal <10> =
-    // TODO: delete "num:" "un:"
-        num:NumericLiteral un:SIUnit ;
+        NumericLiteral SIUnit ;
 
     // The signed SI unit literals
     SignedSIUnitLiteral implements SignedLiteral <10> =
-    // TODO: delete "num:" "un:"
-        num:SignedNumericLiteral un:SIUnit ;
+        SignedNumericLiteral SIUnit ;
         
 }
