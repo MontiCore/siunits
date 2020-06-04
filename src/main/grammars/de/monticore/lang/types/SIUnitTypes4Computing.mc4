@@ -18,12 +18,12 @@ component grammar SIUnitTypes4Computing extends
 
 // TODO: wir sind uns hier ja syntaktisch noch nicht einig
 // bzw. überlegen noch? siehe unten?
-    SIUnitType4Computing implements SIUnitType4ComputingInt =
-        MCPrimitiveType "in" SIUnitType4Math;
+// DONE (Beschluss vom 03.06.20):
+     SIUnitType implements MCObjectType =
+        SIUnit "<" MCPrimitiveType ">" ;
 
-// Vorschlag:
-//     SIUnitType implements MCObjectType =
-//        SIUnit "<" MCPrimitiveType ">" ;
+//    SIUnitType4Computing implements SIUnitType4ComputingInt =
+//        MCPrimitiveType "in" SIUnitType4Math;
 
 //     SIUnitFloatType implements MCObjectType =
 //        SIUnit  ;
