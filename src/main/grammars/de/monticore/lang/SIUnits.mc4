@@ -1,24 +1,22 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.lang;
 
-/* Alpha-version: This is intended to become a MontiCore stable grammar. */
+/* Beta-version: This is intended to become a MontiCore stable grammar. */
 
 /**
  * This grammar defines SI units and other derived units such as 
  * 'm', 'km', 'km^2' or 'm*deg/(h^2*mg)'
  *
-TODO: klären: stimmt diese Aussage, wenn nicht: abweichung kurz erklären
-DONE: Stimmt bis auf alias für µ ist u, für Ω ist Ohm
  * The definitions are fully compliant to the definitions given in
  *  International Bureau of Weights and Measures (20 May 2019), 
  *  SI Brochure: The International System of Units (SI)
- *  (9th ed.) with exceptions for the aliasing of µ to u and Ω to
- *  Ohm
+ *  (9th ed.) with exceptions for the aliasing of the non ASCII
+ *  characters 'µ' to u and 'Ω' to Ohm
  *
  * SI Units are declared as independent Nonterminal and can then
  * be used as part of a 
  * * value definition, such as "5kg", or
- * * type definition, such as "kg<int>" or "kg"
+ * * type definition, such as "km/h"
  * 
  * The grammar extends the MontiCore common literals, because it uses
  * natural numbers e.g. as exponent.

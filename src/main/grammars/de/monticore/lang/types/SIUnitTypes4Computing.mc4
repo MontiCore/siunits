@@ -9,10 +9,6 @@ package de.monticore.lang.types;
  * The primitive part should always be a numeric type.
  */
 
-// TODO: umbenennung in SIUnitTypes4Computing ?
-// Und Positionierung als Alternative (die nicht auf SIUnitTypes4Math basiert)
-// Done: Umbenennung fertig
-
 component grammar SIUnitTypes4Computing extends
         de.monticore.types.MCBasicTypes, 
         de.monticore.lang.types.SIUnitTypes4Math     {
