@@ -1,3 +1,5 @@
+/* (c) https://github.com/MontiCore/monticore */
+
 package de.monticore.lang.types.siunittypes4computing._cocos;
 
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;

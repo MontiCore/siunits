@@ -1,3 +1,5 @@
+/* (c) https://github.com/MontiCore/monticore */
+
 package de.monticore.types.check;
 
 import de.monticore.lang.types.customsiunittypes4computing._ast.ASTCustomSIUnitType4Computing;

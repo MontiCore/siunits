@@ -1,3 +1,5 @@
+/* (c) https://github.com/MontiCore/monticore */
+
 package de.monticore.lang.testsijava.testsijava._cocos;
 
 import de.monticore.ast.ASTNode;

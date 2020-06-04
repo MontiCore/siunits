@@ -1,3 +1,5 @@
+/* (c) https://github.com/MontiCore/monticore */
+
 package de.monticore.lang.testsijava;
 
 import de.monticore.io.paths.ModelPath;

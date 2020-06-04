@@ -1,3 +1,5 @@
+/* (c) https://github.com/MontiCore/monticore */
+
 package de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable;
 
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._ast.ASTFieldDeclaration;

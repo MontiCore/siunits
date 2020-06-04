@@ -1,3 +1,5 @@
+/* (c) https://github.com/MontiCore/monticore */
+
 package de.monticore.lang.siunits;
 
 import de.monticore.lang.literals.testsiunitliterals._parser.TestSIUnitLiteralsParser;

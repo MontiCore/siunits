@@ -1,3 +1,5 @@
+/* (c) https://github.com/MontiCore/monticore */
+
 package de.monticore.lang.types.siunittypes4computing.prettyprint;
 
 import de.monticore.lang.siunits.prettyprint.SIUnitsPrettyPrinter;
