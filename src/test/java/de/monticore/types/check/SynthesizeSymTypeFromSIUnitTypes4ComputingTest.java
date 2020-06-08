@@ -5,7 +5,7 @@ package de.monticore.types.check;
 import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
 import de.monticore.lang.testsijava.testsijava._symboltable.ITestSIJavaScope;
-import de.monticore.lang.types.siunittypes4math._ast.ASTSIUnitType4Math;
+import de.monticore.siunits.siunittypes4math._ast.ASTSIUnitType4Math;
 import de.se_rwth.commons.logging.Log;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -22,7 +22,7 @@ public class SynthesizeSymTypeFromSIUnitTypes4ComputingTest {
 
     private TestSIJavaParser parser = new TestSIJavaParser();
     // This is the TypeChecker under Test:
-    private TypeCheck tc = new TypeCheck(new SynthesizeSymTypeFromSIUnitTypes4Computing(), null);;
+    private TypeCheck tc = new TypeCheck(new SynthesizeSymTypeFromSIUnitTypes4Math(), null);;
 
     @BeforeClass
     public static void setup() {
@@ -65,7 +65,7 @@ public class SynthesizeSymTypeFromSIUnitTypes4ComputingTest {
 
     protected String printType(SymTypeExpression symType) {
         if (symType instanceof SymTypeOfNumericWithSIUnit)
-            return ((SymTypeOfNumericWithSIUnit) symType).printRealType();
+            return ((SymTypeOfNumericWithSIUnit) symType).printDeclaredType();
         if (symType instanceof SymTypeOfSIUnit)
             return ((SymTypeOfSIUnit) symType).printDeclaredType();
         return symType.print();

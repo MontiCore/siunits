@@ -3,8 +3,8 @@
 package de.monticore.lang.testsijava.testsijava._symboltable;
 
 import de.monticore.lang.testsijava.testsijava._ast.*;
-import de.monticore.lang.types.siunittypes4computing._ast.ASTSIUnitType4Computing;
-import de.monticore.lang.types.siunittypes4math._ast.ASTSIUnitType4Math;
+import de.monticore.siunits.siunittypes4computing._ast.ASTSIUnitType4Computing;
+import de.monticore.siunits.siunittypes4math._ast.ASTSIUnitType4Math;
 import de.monticore.types.check.*;
 import de.monticore.types.mcbasictypes._ast.ASTMCPrimitiveType;
 import de.monticore.types.mcbasictypes._ast.ASTMCQualifiedType;

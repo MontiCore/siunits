@@ -1,8 +1,8 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.types.check;
 
-import de.monticore.lang.siunits.utility.UnitFactory;
-import de.monticore.lang.siunits.utility.UnitPrettyPrinter;
+import de.monticore.siunits.siunits.utility.UnitFactory;
+import de.monticore.siunits.siunits.utility.UnitPrettyPrinter;
 import de.monticore.symboltable.serialization.JsonDeSers;
 import de.monticore.symboltable.serialization.JsonPrinter;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolLoader;
@@ -69,9 +69,11 @@ public class SymTypeOfSIUnit extends SymTypeExpression {
 
     public String printDeclaredType() {
         List<String> numerators = getNumeratorList().stream().map(SymTypeOfSIUnitBasic::print).collect(Collectors.toList());
+        numerators.sort(String::compareTo);
         if (getNumeratorList().isEmpty())
             numerators.add("1");
         List<String> denominators = getDenominatorList().stream().map(SymTypeOfSIUnitBasic::print).collect(Collectors.toList());
+        denominators.sort(String::compareTo);
         if (denominators.size() == 0)
             return String.join("*", numerators);
         else if (denominators.size() == 1)
@@ -111,6 +113,22 @@ public class SymTypeOfSIUnit extends SymTypeExpression {
     @Override
     public SymTypeOfSIUnit deepClone() {
         return new SymTypeOfSIUnit(new TypeSymbolLoader(typeSymbolLoader.getName(), typeSymbolLoader.getEnclosingScope()), getNumeratorList(), getDenominatorList());
+    }
+
+    @Override
+    public boolean deepEquals(SymTypeExpression sym) {
+        if (!(sym instanceof SymTypeOfSIUnit))
+            return false;
+        if(this.typeSymbolLoader== null ||sym.typeSymbolLoader==null){
+            return false;
+        }
+        if(!this.typeSymbolLoader.getEnclosingScope().equals(sym.typeSymbolLoader.getEnclosingScope())){
+            return false;
+        }
+        if (!this.getUnit().isCompatible(((SymTypeOfSIUnit) sym).getUnit())) {
+            return false;
+        }
+        return true;
     }
 
     public List<SymTypeOfSIUnitBasic> getNumeratorList() {

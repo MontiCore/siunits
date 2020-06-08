@@ -7,6 +7,8 @@ import de.monticore.symboltable.serialization.JsonPrinter;
 import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolLoader;
 
+import javax.measure.unit.Unit;
+
 /**
  * SymTypeOfNumericWithSIUnit stores any kind of Numerics combined with SIUnit applied
  * to Arguments, such as <int m>, <double m/s>, <short m/s^2>, <int s/m> ...
@@ -39,7 +41,7 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
         return "(" + numericType.print() + "," + siunitType.print() + ")";
     }
 
-    public String printRealType() {
+    public String printDeclaredType() {
         String siUnitPrint = siunitType instanceof SymTypeOfSIUnit ?
                 ((SymTypeOfSIUnit) siunitType).printDeclaredType() :
                 siunitType.print();
@@ -48,7 +50,7 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
 
     @Override
     public String toString() {
-        return printRealType();
+        return printDeclaredType();
     }
 
     /**
@@ -70,6 +72,31 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
         return new SymTypeOfNumericWithSIUnit(
                 new TypeSymbolLoader(this.typeSymbolLoader.getName(), this.typeSymbolLoader.getEnclosingScope()),
                 this.numericType.deepClone(), this.siunitType.deepClone());
+    }
+
+    @Override
+    public boolean deepEquals(SymTypeExpression sym) {
+        if (!(sym instanceof SymTypeOfNumericWithSIUnit))
+            return false;
+        if(this.typeSymbolLoader== null ||sym.typeSymbolLoader==null){
+            return false;
+        }
+        if(!this.typeSymbolLoader.getEnclosingScope().equals(sym.typeSymbolLoader.getEnclosingScope())){
+            return false;
+        }
+        if (!this.getUnit().isCompatible(((SymTypeOfNumericWithSIUnit) sym).getUnit())) {
+            return false;
+        }
+        return true;
+    }
+
+    public Unit getUnit() {
+        SymTypeExpression siunit = getSIUnit();
+        if (!(siunit instanceof SymTypeOfSIUnit))
+            return Unit.ONE;
+        else {
+            return ((SymTypeOfSIUnit) siunit).getUnit();
+        }
     }
 
     public SymTypeExpression getSIUnit() {

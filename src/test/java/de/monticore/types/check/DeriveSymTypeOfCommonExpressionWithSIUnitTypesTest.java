@@ -140,10 +140,10 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         s = "4.1km * 12.3";
         astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,m)", printType(tc.typeOf(astex)));
+        assertEquals("(double,km)", printType(tc.typeOf(astex)));
 
         // example with siunit
-        s = "4.1km * 12.3m^-1";
+        s = "4.1km * 12.3km^-1";
         astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
         assertEquals("double", printType(tc.typeOf(astex)));
@@ -197,11 +197,10 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         astex.accept(flatExpressionScopeSetter);
         assertEquals("(double,km)", printType(tc.typeOf(astex)));
 
-        // example with siunit
-        s = "4km / 12 m";
+        s = "4km / 12 m";;
         astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("int", printType(tc.typeOf(astex)));
+        assertEquals("(int,km/m)", printType(tc.typeOf(astex)));
 
         // example with siunit
         s = "varM / varM";
@@ -630,7 +629,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         String s = "(varS*3 s/(2*varM*varM-4 km^2))";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,s^2/m^2)", printType(tc.typeOf(astex)));
+        assertEquals("(int,s^2/km^2)", printType(tc.typeOf(astex)));
     }
 
     /**

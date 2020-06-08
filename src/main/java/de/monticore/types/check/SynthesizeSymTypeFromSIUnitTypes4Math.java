@@ -2,9 +2,9 @@
 
 package de.monticore.types.check;
 
-import de.monticore.lang.siunits.prettyprint.SIUnitsPrettyPrinter;
-import de.monticore.lang.types.siunittypes4math._ast.ASTSIUnitType4Math;
-import de.monticore.lang.types.siunittypes4math._visitor.SIUnitTypes4MathVisitor;
+import de.monticore.siunits.siunits.prettyprint.SIUnitsPrettyPrinter;
+import de.monticore.siunits.siunittypes4math._ast.ASTSIUnitType4Math;
+import de.monticore.siunits.siunittypes4math._visitor.SIUnitTypes4MathVisitor;
 import de.monticore.types.mcbasictypes._symboltable.IMCBasicTypesScope;
 import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
 import de.se_rwth.commons.logging.Log;

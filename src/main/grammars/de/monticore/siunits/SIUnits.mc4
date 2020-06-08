@@ -82,11 +82,21 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
      * See also functions available to handle the stored unit.
      */
     UnitBaseDimWithPrefix implements SIUnitBasic =
-        { _input.LT(1).getText().matches(
+        { cmpTokenRegEx(1,
             "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|n|p|f|a|z|y)?" +
             "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)")
-        }?
-        unit:Name;
+        }? unit:Name |
+        { cmpToken(2,
+            "m","g","s","A","K","mol","cd","Hz","N","Pa","J","W","C","V","F","Ohm","S","Wb","T","H","lm","lx","Bq","Gy","Sv","kat","l","L")
+            && noSpace(2)
+        }? prefixMu:"µ" unit:Name;
+
+    GreekOhm implements SIUnitBasic =
+        { next("Y","Z","E","P","T","G","M","k","h","da","d","c","m","u","n","p","f","a","z","y")
+            && noSpace(2)
+        }? prefix:Name "Ω" |
+        { noSpace(2) }? prefixMu:"µ" "Ω" |
+        "Ω";
 
     /**
      * OfficallyAcceptedUnit
@@ -96,10 +106,9 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
      * https://en.wikipedia.org/wiki/Non-SI_units_mentioned_in_the_SI
      */
     OfficallyAcceptedUnit implements SIUnitBasic =
-        { _input.LT(1).getText().matches(
-          "min|h|d|ha|t|au|Np|B|dB|eV|Da|u")
-        }?
-        unit:Name;
+        { next(
+          "min","h","d","ha","t","au","Np","B","dB","eV","Da","u")
+        }? unit:Name;
 
     /**
      * CelsiusFahrenheit matches "°C" and "°F"
@@ -107,7 +116,7 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
      * Lookahead needed at the beginning to distinguish with other alternatives
      */
     CelsiusFahrenheit implements SIUnitBasic =
-        { _input.LT(2).getText().matches("F|C") }? "°" unit:Name;
+        { cmpToken(2,"F","C") && noSpace(2) }? "°" unit:Name;
 
 
     /**
@@ -116,6 +125,6 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
      */
     SIUnitDimensionless implements SIUnitBasic =
         "°" |
-        { _input.LT(1).getText().matches("deg|rad|sr") }? unit:Name;
+        { next("deg","rad","sr") }? unit:Name;
         
 }

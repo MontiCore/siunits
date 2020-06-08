@@ -2,8 +2,8 @@
 
 package de.monticore.types.check;
 
-import de.monticore.lang.types.customsiunittypes4computing._ast.ASTCustomSIUnitType4Computing;
-import de.monticore.lang.types.customsiunittypes4computing._visitor.CustomSIUnitTypes4ComputingVisitor;
+import de.monticore.siunits.customsiunittypes4computing._ast.ASTCustomSIUnitType4Computing;
+import de.monticore.siunits.customsiunittypes4computing._visitor.CustomSIUnitTypes4ComputingVisitor;
 
 /**
  * Visitor for Derivation of SymType from SIUnitTypes4Computing

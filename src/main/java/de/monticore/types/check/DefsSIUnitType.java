@@ -2,12 +2,11 @@
 
 package de.monticore.types.check;
 
-import de.monticore.lang.siunits.utility.SIUnitConstants;
+import de.monticore.siunits.siunits.utility.SIUnitConstants;
 import de.monticore.types.typesymbols._symboltable.TypeSymbol;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolLoader;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolsScope;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

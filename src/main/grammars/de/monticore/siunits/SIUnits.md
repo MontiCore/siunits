@@ -20,7 +20,7 @@ class from the [javax.measure](http://unitsofmeasurement.github.io/unit-api/site
 package is used.
 ### Functionality
 The main classes that should always be used to handle a ```javax.measure.Unit``` are the ```UnitFactory``` and the 
-```UnitPrettyPrinter``` and can be found in the package ```de.monticore.lang.siunits.utility```.
+```UnitPrettyPrinter``` and can be found in the package ```de.monticore.siunits.siunits.utility```.
 * [UnitFactory](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/siunits/utility/UnitFactory.java)
     * Creates Units from an ```ASTSIUnit``` or a String
     * Creates the BaseUnit from an ```ASTSIUnit```,a String or a ```javax.measure.Unit```
@@ -33,7 +33,7 @@ The main classes that should always be used to handle a ```javax.measure.Unit```
 There are two PrettyPrinters, the [SIUnitsPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/siunits/prettyprint/SIUnitsPrettyPrinter.java)
 to prettyprint the SIUnits normally ( ```kg/m*s``` &rarr; ```kg/m*s``` ) and the [SIUnitsWithBracketsPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/siunits/prettyprint/SIUnitsWithBracketsPrettyPrinter.java)
 to prettyprint the SIUnits with brackets around each expression ( ```kg/m*s``` &rarr; ```((kg/m)*s)``` ). Those can be 
-found in the package ```de.monticore.lang.siunits.prettyprint```.
+found in the package ```de.monticore.siunits.siunits.prettyprint```.
 
 ## [SIUnitLiterals.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/literals/SIUnitLiterals.mc4)
 ### Description
@@ -73,7 +73,7 @@ A SIUnitType implements the MCObjectType and can therefore be used as a MCType o
 
 ### Generators
 The [SIUnitTypes4MathPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/types/siunittypes4math/prettyprint/SIUnitTypes4MathPrettyPrinter.java)
-prettyprints a SIUnitType and can be found in the package ```de.monticore.lang.types.siunittypes4math.prettyprint```.
+prettyprints a SIUnitType and can be found in the package ```de.monticore.siunits.siunittypes4math.prettyprint```.
 
 ## [SIUnitTypes4Computing.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/SIUnitTypes4Computing.mc4)
 ### Description
@@ -91,7 +91,7 @@ The [PrimitiveIsNumericType](https://git.rwth-aachen.de/monticore/languages/siun
 CoCo checks whether the MCPrimitiveType part is a numeric type.
 ### Generators
 The [SIUnitTypes4ComputingPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/types/siunittypes4computing/prettyprint/SIUnitTypes4ComputingPrettyPrinter.java)
-prettyprints a SIUnitType4Computing and can be found in the package ```de.monticore.lang.types.siunittypes4computing.prettyprint```.
+prettyprints a SIUnitType4Computing and can be found in the package ```de.monticore.siunits.siunittypes4computing.prettyprint```.
 
 ## TypeCheck
 The classes for the TypeCheck mechanic can be found in the package ```de.monticore.types.check```. SymTypes can be

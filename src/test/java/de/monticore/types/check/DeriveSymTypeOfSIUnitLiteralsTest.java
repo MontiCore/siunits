@@ -2,9 +2,9 @@
 
 package de.monticore.types.check;
 
-import de.monticore.lang.literals.testsiunitliterals.TestSIUnitLiteralsMill;
-import de.monticore.lang.literals.testsiunitliterals._parser.TestSIUnitLiteralsParser;
-import de.monticore.lang.literals.testsiunitliterals._symboltable.ITestSIUnitLiteralsScope;
+import de.monticore.siunits.testsiunitliterals.TestSIUnitLiteralsMill;
+import de.monticore.siunits.testsiunitliterals._parser.TestSIUnitLiteralsParser;
+import de.monticore.siunits.testsiunitliterals._symboltable.ITestSIUnitLiteralsScope;
 import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
 import de.se_rwth.commons.logging.Log;
 import org.junit.Before;
@@ -82,7 +82,7 @@ public class DeriveSymTypeOfSIUnitLiteralsTest {
     public void deriveTFromLiteralComplex2() throws IOException {
         ASTLiteral lit = parser.parse(new StringReader("3 (mm^2*mm^3)/(km*s^2*kg)")).get();
         lit.setEnclosingScope(scope);
-        assertEquals("(int,mm^5/(km*s^2*kg))", printType(tc.typeOf(lit)));
+        assertEquals("(int,mm^5/(kg*km*s^2))", printType(tc.typeOf(lit)));
     }
 
     @Test
@@ -101,7 +101,7 @@ public class DeriveSymTypeOfSIUnitLiteralsTest {
 
     protected String printType(SymTypeExpression symType) {
         if (symType instanceof SymTypeOfNumericWithSIUnit)
-            return ((SymTypeOfNumericWithSIUnit) symType).printRealType();
+            return ((SymTypeOfNumericWithSIUnit) symType).printDeclaredType();
         if (symType instanceof SymTypeOfSIUnit)
             return ((SymTypeOfSIUnit) symType).printDeclaredType();
         return symType.print();

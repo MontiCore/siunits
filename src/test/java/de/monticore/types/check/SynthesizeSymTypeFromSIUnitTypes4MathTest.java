@@ -1,12 +1,12 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.types.check;
 
-import de.monticore.lang.siunits.utility.SIUnitConstants;
-import de.monticore.lang.siunits.utility.UnitPrettyPrinter;
+import de.monticore.siunits.siunits.utility.SIUnitConstants;
+import de.monticore.siunits.siunits.utility.UnitPrettyPrinter;
 import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
 import de.monticore.lang.testsijava.testsijava._symboltable.ITestSIJavaScope;
-import de.monticore.lang.types.siunittypes4math._ast.ASTSIUnitType4Math;
+import de.monticore.siunits.siunittypes4math._ast.ASTSIUnitType4Math;
 import de.se_rwth.commons.logging.Log;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -49,33 +49,39 @@ public class SynthesizeSymTypeFromSIUnitTypes4MathTest {
         return res.get();
     }
 
-    private void check(String control, String s) throws IOException {
+    private void check(String s) throws IOException {
+        String controlBase = UnitPrettyPrinter.printBaseUnit(s);
+        if (controlBase.equals("rd")) {
+            s.toString();
+        }
+        if (UnitPrettyPrinter.printUnit(s).equals("rd")) {
+            s.toString();
+        }
         ASTSIUnitType4Math asttype = parseSIUnitType4Math(s);
         asttype.setEnclosingScope(scope);
         SymTypeExpression type = tc.symTypeFromAST(asttype);
-        assertEquals(control, printType(type));
+        assertEquals(controlBase, type.print());
+        assertEquals(UnitPrettyPrinter.printUnit(s), printBaseType(type));
     }
 
     @Test
     public void symTypeFromAST_Test1() throws IOException {
-        check("m", "m");
-        check("km", "km");
-        check("m*s^2/km", "m*s^2/km");
-        check("m*s^2/km^3", "m*s^2/km^3");
+        check("m");
+        check("km");
+        check("m*s^2/km");
+        check("m*s^2/km^3");
     }
 
     @Test
     public void testAll() throws IOException {
         for (String s: SIUnitConstants.getAllUnits()) {
-            String control = UnitPrettyPrinter.printBaseUnit(s);
-            if ("1".equals(control)) control = "int";
-            check(control, s);
+            check(s);
         }
     }
 
-    protected String printType(SymTypeExpression symType) {
+    protected String printBaseType(SymTypeExpression symType) {
         if (symType instanceof SymTypeOfNumericWithSIUnit)
-            return ((SymTypeOfNumericWithSIUnit) symType).printRealType();
+            return ((SymTypeOfNumericWithSIUnit) symType).printDeclaredType();
         if (symType instanceof SymTypeOfSIUnit)
             return ((SymTypeOfSIUnit) symType).printDeclaredType();
         return symType.print();

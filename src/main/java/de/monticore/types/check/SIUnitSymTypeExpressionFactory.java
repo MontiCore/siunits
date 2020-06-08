@@ -2,7 +2,7 @@
 
 package de.monticore.types.check;
 
-import de.monticore.lang.siunits.utility.UnitPrettyPrinter;
+import de.monticore.siunits.siunits.utility.UnitPrettyPrinter;
 import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
 import de.monticore.types.typesymbols._symboltable.TypeSymbol;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolLoader;
@@ -174,7 +174,7 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
         // Check if the symType is already in the scope and add it otherwise
         // Needed because there can be created new SIUnitType while computing, e.g. varM*varS
         final String name = result instanceof SymTypeOfNumericWithSIUnit?
-                ((SymTypeOfNumericWithSIUnit) result).printRealType() :
+                ((SymTypeOfNumericWithSIUnit) result).printDeclaredType() :
                 result.print();
         if (typeSymbolLoader.getEnclosingScope().getLocalTypeSymbols().stream().filter(x -> x.getName().equals(name)).collect(Collectors.toList()).size() == 0) {
             TypeSymbol newSymbol = DefsSIUnitType.type(name);

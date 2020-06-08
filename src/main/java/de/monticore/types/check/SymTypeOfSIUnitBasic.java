@@ -14,11 +14,12 @@
 //}
 package de.monticore.types.check;
 
-import de.monticore.symboltable.serialization.JsonConstants;
+import de.monticore.siunits.siunits.utility.UnitFactory;
 import de.monticore.symboltable.serialization.JsonDeSers;
 import de.monticore.symboltable.serialization.JsonPrinter;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolLoader;
 
+import javax.measure.unit.Unit;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -81,6 +82,26 @@ public class SymTypeOfSIUnitBasic extends SymTypeExpression {
         else
             clone = new SymTypeOfSIUnitBasic(newTypeSymbolLoader, exponent.get());
         return clone;
+    }
+
+    @Override
+    public boolean deepEquals(SymTypeExpression sym) {
+        if (!(sym instanceof SymTypeOfSIUnitBasic))
+            return false;
+        if(this.typeSymbolLoader== null ||sym.typeSymbolLoader==null){
+            return false;
+        }
+        if(!this.typeSymbolLoader.getEnclosingScope().equals(sym.typeSymbolLoader.getEnclosingScope())){
+            return false;
+        }
+        if (!this.getUnit().isCompatible(((SymTypeOfSIUnitBasic) sym).getUnit())) {
+            return false;
+        }
+        return true;
+    }
+
+    public Unit getUnit() {
+        return UnitFactory.createUnit(print());
     }
 
     public boolean isExponentPresent() {

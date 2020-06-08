@@ -2,11 +2,15 @@
 
 package de.monticore.types.check;
 
-import de.monticore.lang.siunits.utility.UnitPrettyPrinter;
-import de.monticore.lang.types.siunittypes4computing._ast.ASTSIUnitType4Computing;
-import de.monticore.lang.types.siunittypes4computing._ast.ASTSIUnitType4ComputingInt;
-import de.monticore.lang.types.siunittypes4computing._visitor.SIUnitTypes4ComputingVisitor;
-import de.monticore.lang.types.siunittypes4math._ast.ASTSIUnitType4Math;
+import de.monticore.siunits.siunits._ast.ASTSIUnit;
+import de.monticore.siunits.siunits._symboltable.ISIUnitsScope;
+import de.monticore.siunits.siunits.utility.UnitPrettyPrinter;
+import de.monticore.siunits.siunittypes4computing._ast.ASTSIUnitType4Computing;
+import de.monticore.siunits.siunittypes4computing._ast.ASTSIUnitType4ComputingInt;
+import de.monticore.siunits.siunittypes4computing._symboltable.ISIUnitTypes4ComputingScope;
+import de.monticore.siunits.siunittypes4computing._visitor.SIUnitTypes4ComputingVisitor;
+import de.monticore.siunits.siunittypes4math._ast.ASTSIUnitType4Math;
+import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
 import de.se_rwth.commons.logging.Log;
 
 import static de.monticore.types.check.TypeCheck.*;
@@ -39,9 +43,21 @@ public class SynthesizeSymTypeFromSIUnitTypes4Computing extends SynthesizeSymTyp
         return realThis;
     }
 
+
+
     @Override
     public void endVisit(ASTSIUnitType4Math node) {
         typeCheckResult.setLast(SIUnitSymTypeExpressionFactory.createSIUnit(UnitPrettyPrinter.printUnit(node.getSIUnit()), getScope(node.getEnclosingScope())));
+    }
+
+    private ITypeSymbolsScope getScope(ISIUnitTypes4ComputingScope enclosingScope) {
+        // is accepted only here, decided on 07.04.2020
+        if(!(enclosingScope instanceof ITypeSymbolsScope)){
+            Log.error("0xA0308 the enclosing scope of the type does not implement the interface ITypeSymbolsScope");
+            // TODO: errorCode
+        }
+        // is accepted only here, decided on 07.04.2020
+        return (ITypeSymbolsScope) enclosingScope;
     }
 
     @Override

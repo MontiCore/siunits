@@ -1846,7 +1846,7 @@ public class DeriveSymTypeOfCommonExpressionTest {
 
     protected String printType(SymTypeExpression symType) {
         if (symType instanceof SymTypeOfNumericWithSIUnit)
-            return ((SymTypeOfNumericWithSIUnit) symType).printRealType();
+            return ((SymTypeOfNumericWithSIUnit) symType).printDeclaredType();
         if (symType instanceof SymTypeOfSIUnit)
             return ((SymTypeOfSIUnit) symType).printDeclaredType();
         return symType.print();

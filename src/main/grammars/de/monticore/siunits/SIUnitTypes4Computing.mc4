@@ -10,8 +10,8 @@ package de.monticore.siunits;
  */
 
 component grammar SIUnitTypes4Computing extends
-        de.monticore.types.MCBasicTypes, 
-        de.monticore.siunits.SIUnitTypes4Math     {
+        de.monticore.types.MCBasicTypes,
+         de.monticore.siunits.SIUnitTypes4Math {
 
     interface SIUnitType4ComputingInt extends MCObjectType =
         MCPrimitiveType SIUnitType4Math;
@@ -19,8 +19,8 @@ component grammar SIUnitTypes4Computing extends
 // TODO: wir sind uns hier ja syntaktisch noch nicht einig
 // bzw. überlegen noch? siehe unten?
 // DONE (Beschluss vom 03.06.20):
-     SIUnitType4Computing implements MCObjectType =
-        SIUnit "<" MCPrimitiveType ">" ;
+     SIUnitType4Computing implements SIUnitType4ComputingInt =
+        SIUnitType4Math "<" MCPrimitiveType ">" ;
 
 //    further ideas:
 //    SIUnitType4Computing implements SIUnitType4ComputingInt =
