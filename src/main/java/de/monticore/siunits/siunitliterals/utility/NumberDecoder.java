@@ -68,7 +68,7 @@ public class NumberDecoder {
             try {
                 res = Double.valueOf(numberAsString);
             } catch (NumberFormatException e) {
-                Log.error("0x PrettyPrinter misconfigured, provide a custom prettyprinter for your own NumericalLiteral"); // TODO
+                Log.error("0x104 PrettyPrinter misconfigured, provide a custom prettyprinter for your own NumericalLiteral");
             }
             return res;
         }
@@ -93,7 +93,7 @@ public class NumberDecoder {
             try {
                 res = Double.valueOf(numberAsString);
             } catch (NumberFormatException e) {
-                Log.error("0x PrettyPrinter misconfigured, provide a custom prettyprinter for your own NumericalLiteral"); // TODO
+                Log.error("0xAE103 PrettyPrinter misconfigured, provide a custom prettyprinter for your own NumericalLiteral");
             }
             return res;
         }
