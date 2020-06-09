@@ -11,8 +11,6 @@ import javax.measure.converter.LogConverter;
 import javax.measure.converter.MultiplyConverter;
 import javax.measure.converter.RationalConverter;
 import javax.measure.converter.UnitConverter;
-import javax.measure.quantity.Dimensionless;
-import javax.measure.quantity.Length;
 import javax.measure.unit.*;
 import java.io.IOException;
 import java.io.StringReader;
@@ -167,66 +165,51 @@ public class UnitFactory {
             instance.init();
         }
 
-        List<String> baseUnits = new LinkedList<>();
-        for (Unit unit : SI.getInstance().getUnits()) {
-            if (unit instanceof BaseUnit) {
-                baseUnits.add(((BaseUnit) unit).getSymbol());
-            } else if (unit instanceof AlternateUnit) {
-                baseUnits.add(((AlternateUnit) unit).getSymbol());
-            }
-        }
-
         return instance;
     }
 
     /**
-     * Initiation of the UnitFactory, adding labels and prefixes
+     * Initiation of the UnitFactory, adding labels and converters
      */
     private void init() {
-        //TODO: Label standard Units
+        addUnit("au", SI.METRE, new RationalConverter(149597870700L, 1L));
+        addUnit("Np", Unit.ONE, new LogConverter(2.718281828459045D));
+        addUnit("B", Unit.ONE, new LogConverter(10.0D));
+        addUnit("deg", NonSI.REVOLUTION, new RationalConverter(1L,360L));
+        addUnit("Da", SI.KILOGRAM, new MultiplyConverter(1.66053906660E-27D));
+        // MBq would be Rd otherwise
+        // cGy, cSv would be wrong otherwise
+        addUnit("MBq", SI.BECQUEREL, new RationalConverter(1000000L, 1L));
+        addUnit("cGy", SI.GRAY, new RationalConverter(1L, 100L));
+        addUnit("cSv", SI.SIEVERT, new RationalConverter(1L, 100L));
 
-        Unit<Length> AU = SI.METRE.times(1495978707).times(100);
-        Unit<Dimensionless> NEPER = Unit.ONE.transform((new LogConverter(2.718281828459045D)));
-        Unit<Dimensionless> BEL = Unit.ONE.transform((new LogConverter(10.0D)));
-        Unit DEG = NonSI.REVOLUTION.transform(new UniqueConverter(new RationalConverter(1,360), 3));
-        Unit OHM = SI.OHM.transform(new UniqueConverter(new Identity(), 1));
-        Unit DAY = NonSI.DAY;
-        Unit DALTON = SI.KILOGRAM.transform(new MultiplyConverter(1.66053906660E-27D));
-        // CustomConverter has a different hash code and therefore LITER != Liter and both have to be possible
-        // And more important later kL != m^3
-        Unit LITER = SI.CUBIC_METRE.transform(new UniqueConverter(new MultiplyConverter(0.001), 3));
-        Unit Liter = SI.CUBIC_METRE.transform(new UniqueConverter(new MultiplyConverter(0.001), 5));
-        Unit Rd = SI.BECQUEREL.transform(new MultiplyConverter(1000000L));
-        Unit RAD = SI.GRAY.divide(100L);
-        Unit REM = SI.SIEVERT.divide(100L);
+        Unit Ohm = addUnit("Ohm", SI.OHM, UnitConverter.IDENTITY);
+        Unit LITER = addUnit("L", SI.CUBIC_METRE, new RationalConverter(1L,1000L));
+        Unit Liter = addUnit("l", SI.CUBIC_METRE, new RationalConverter(1L,1000L));
 
-
-
-        UnitFormat.getInstance().label(AU, "au");
-        UnitFormat.getInstance().label(NEPER, "Np");
-        UnitFormat.getInstance().label(BEL, "B");
-        UnitFormat.getInstance().label(DEG, "deg");
-        UnitFormat.getInstance().label(DAY, "d");
-        UnitFormat.getInstance().label(DALTON, "Da");
-        UnitFormat.getInstance().label(OHM, "Ohm");
-        UnitFormat.getInstance().label(Liter, "l");
-        UnitFormat.getInstance().label(LITER, "L");
-        UnitFormat.getInstance().label(Rd, "MBq");
-        UnitFormat.getInstance().label(RAD, "cGy");
-        UnitFormat.getInstance().label(REM, "cSv");
-
+        // relabel
+        UnitFormat.getInstance().label(NonSI.DAY, "d");
 
         initPrefixes();
         addPrefixesToUnit(Liter, "l");
         addPrefixesToUnit(LITER, "L");
-        addPrefixesToUnit(OHM, "Ohm");
-        addPrefix("u", new UniqueConverter(prefixes.get("micro"), 1));
-        addPrefix("µ", new UniqueConverter(prefixes.get("micro"), 2));
+        addPrefixesToUnit(Ohm, "Ohm");
+        addPrefix("u", converters.get("micro"));
+        addPrefix("µ", converters.get("micro"));
+    }
+
+    private int uniqueId = 1;
+
+    private Unit addUnit(String label, Unit baseUnit, UnitConverter converter) {
+        UnitConverter uniqueConverter = new UniqueConverter(converter, uniqueId++);
+        Unit newUnit = baseUnit.transform(uniqueConverter);
+        UnitFormat.getInstance().label(newUnit, label);
+        return newUnit;
     }
 
     private void addPrefixesToUnit(Unit unit, String label) {
-        for (String prefix : prefixes.keySet()) {
-            Unit prefixUnit = unit.transform(prefixes.get(prefix));
+        for (String prefix : converters.keySet()) {
+            Unit prefixUnit = unit.transform(converters.get(prefix));
             String prefixName = prefix + label;
             UnitFormat.getInstance().label(prefixUnit, prefixName);
         }
@@ -234,10 +217,11 @@ public class UnitFactory {
     }
 
     private void addPrefix(String pre, UnitConverter converter) {
-        prefixes.put(pre, converter);
+        UnitConverter newConverter = new UniqueConverter(converter, uniqueId++);
+        converters.put(pre, newConverter);
         for (String unitName : unitsWithPrefixes.keySet()) {
             Unit unit = unitsWithPrefixes.get(unitName);
-            Unit prefixUnit = unit.transform(converter);
+            Unit prefixUnit = unit.transform(newConverter);
             if ("kg".equals(unitName)) {
                 unitName = "g";
                 prefixUnit = prefixUnit.transform(new RationalConverter(1L, 1000L));
@@ -247,7 +231,7 @@ public class UnitFactory {
         }
     }
 
-    private Map<String, UnitConverter> prefixes = new HashMap();
+    private Map<String, UnitConverter> converters = new HashMap();
     private Map<String, Unit> unitsWithPrefixes = new HashMap<>();
 
     private void initPrefixes() {
@@ -263,7 +247,7 @@ public class UnitFactory {
                 converter = new Compound(new RationalConverter((long) 1.0E18D, 1L), new RationalConverter((long) 1.0E6D, 1L));
             else
                 converter = new UniqueConverter(new RationalConverter((long) convertersPos[i], 1L), 1);
-            prefixes.put(prefixNamesPos[i], converter);
+            converters.put(prefixNamesPos[i], converter);
         }
         for (int i = 0; i < prefixNamesNeg.length; i++) {
             UnitConverter converter;
@@ -273,7 +257,7 @@ public class UnitFactory {
                 converter = new Compound(new RationalConverter(1L, (long) 1.0E18D), new RationalConverter(1L, (long) 1.0E6D));
             else
                 converter = new UniqueConverter(new RationalConverter(1L, (long) convertersNeg[i]),1);
-            prefixes.put(prefixNamesNeg[i], converter);
+            converters.put(prefixNamesNeg[i], converter);
         }
 
         Unit[] unitsWithPrefixes = {SI.AMPERE, SI.BECQUEREL, SI.CANDELA, SI.COULOMB, SI.FARAD, SI.GRAY, SI.HENRY, SI.HERTZ, SI.JOULE, SI.KATAL, SI.KELVIN, SI.KILOGRAM, SI.LUMEN, SI.LUX, SI.METRE, SI.MOLE, SI.NEWTON, SI.OHM, SI.PASCAL, SI.RADIAN, SI.SECOND, SI.SIEMENS, SI.SIEVERT, SI.STERADIAN, SI.TESLA, SI.VOLT, SI.WATT, SI.WEBER};
@@ -282,6 +266,7 @@ public class UnitFactory {
     }
 
     private class UniqueConverter extends UnitConverter {
+        // Generates a different hash, this is important to differ between two equal units, e.g. l, L, dm^3
         private final UnitConverter converter;
         private final int id;
 
@@ -290,18 +275,22 @@ public class UnitFactory {
             this.id = id;
         }
 
+        @Override
         public UnitConverter inverse() {
             return new UniqueConverter(this.converter.inverse(), id);
         }
 
+        @Override
         public double convert(double x) {
             return this.converter.convert(x);
         }
 
+        @Override
         public boolean isLinear() {
             return converter.isLinear();
         }
 
+        @Override
         public int hashCode() {
             return converter.hashCode() * 10000 + id * 10 + 3;
         }
@@ -316,41 +305,24 @@ public class UnitFactory {
             this._second = second;
         }
 
+        @Override
         public UnitConverter inverse() {
             return new Compound(this._second.inverse(), this._first.inverse());
         }
 
+        @Override
         public double convert(double x) {
             return this._second.convert(this._first.convert(x));
         }
 
+        @Override
         public boolean isLinear() {
             return this._first.isLinear() && this._second.isLinear();
         }
 
+        @Override
         public int hashCode() {
             return _first.hashCode() * 100 + _second.hashCode() * 10 + 5;
-        }
-    }
-
-    private class Identity extends UnitConverter {
-        private Identity() {
-        }
-
-        public UnitConverter inverse() {
-            return this;
-        }
-
-        public double convert(double x) {
-            return x;
-        }
-
-        public boolean isLinear() {
-            return true;
-        }
-
-        public UnitConverter concatenate(UnitConverter converter) {
-            return converter;
         }
     }
 }
