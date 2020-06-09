@@ -26,7 +26,7 @@ package de.monticore;
  */
 
 component grammar SIUnitTypes4Math extends
-        de.monticore.siunits.SIUnits,
+        de.monticore.SIUnits,
         de.monticore.types.MCBasicTypes  {
 
      SIUnitType4Math implements MCObjectType <100> =

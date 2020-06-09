@@ -1,11 +1,10 @@
 /* (c) https://github.com/MontiCore/monticore */
 
-package de.monticore.siunittypes4math.prettyprint;
+package de.monticore.siunittypes4computing.prettyprint;
 
 import de.monticore.siunits.prettyprint.SIUnitsPrettyPrinter;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitTypes4ComputingNode;
 import de.monticore.siunittypes4computing._visitor.SIUnitTypes4ComputingVisitor;
-import de.monticore.siunittypes4computing.prettyprint.SIUnitTypes4MathPrettyPrinter;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
 import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.types.prettyprint.MCBasicTypesPrettyPrinter;

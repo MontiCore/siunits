@@ -1,10 +1,10 @@
 /* (c) https://github.com/MontiCore/monticore */
 
-package de.monticore.siunits.siunittypes4computing._cocos;
+package de.monticore.siunittypes4computing._cocos;
 
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
-import de.monticore.siunits.siunittypes4computing._ast.ASTSIUnitType4Computing;
-import de.monticore.siunits.siunittypes4computing._ast.ASTSIUnitTypes4ComputingNode;
+import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
+import de.monticore.siunittypes4computing._ast.ASTSIUnitTypes4ComputingNode;
 import de.se_rwth.commons.logging.Log;
 import de.se_rwth.commons.logging.LogStub;
 import org.junit.Before;

@@ -6,12 +6,12 @@ grammar CombineExpressionsWithLiterals extends
           de.monticore.expressions.AssignmentExpressions,
 	        de.monticore.expressions.CommonExpressions,
 	          de.monticore.expressions.BitExpressions,
-		        de.monticore.siunits.SIUnitLiterals,
+		        de.monticore.SIUnitLiterals,
 		         de.monticore.expressions.JavaClassExpressions,
 		           de.monticore.expressions.SetExpressions,
 		            de.monticore.types.MCSimpleGenericTypes,
-		             de.monticore.siunits.SIUnitTypes4Computing,
-		              de.monticore.siunits.SIUnitTypes4Math,
+		             de.monticore.SIUnitTypes4Computing,
+		              de.monticore.SIUnitTypes4Math,
 		               de.monticore.types.TypeSymbols {
 
     Foo="bar" Expression;

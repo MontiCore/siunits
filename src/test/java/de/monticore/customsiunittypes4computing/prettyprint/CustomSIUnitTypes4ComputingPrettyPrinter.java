@@ -2,11 +2,10 @@
 
 package de.monticore.customsiunittypes4computing.prettyprint;
 
-import de.monticore.siunits.customsiunittypes4computing._ast.ASTCustomSIUnitType4Computing;
-import de.monticore.siunits.customsiunittypes4computing._ast.ASTCustomSIUnitTypes4ComputingNode;
-import de.monticore.siunits.customsiunittypes4computing._visitor.CustomSIUnitTypes4ComputingVisitor;
-import de.monticore.siunits.siunits.prettyprint.SIUnitsPrettyPrinter;
-import de.monticore.siunits.siunittypes4computing.prettyprint.SIUnitTypes4MathPrettyPrinter;
+import de.monticore.customsiunittypes4computing._ast.ASTCustomSIUnitType4Computing;
+import de.monticore.customsiunittypes4computing._ast.ASTCustomSIUnitTypes4ComputingNode;
+import de.monticore.customsiunittypes4computing._visitor.CustomSIUnitTypes4ComputingVisitor;
+import de.monticore.siunits.prettyprint.SIUnitsPrettyPrinter;
 import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.types.prettyprint.MCBasicTypesPrettyPrinter;
 

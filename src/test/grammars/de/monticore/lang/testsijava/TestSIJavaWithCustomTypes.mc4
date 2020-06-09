@@ -5,11 +5,11 @@ package de.monticore.lang.testsijava;
  * This grammar extends the TestSIJava grammar with some CustomSIUnitType4Computing
 */
 
-grammar TestSIJavaWithCustomTypes extends de.monticore.siunits.SIUnitLiterals,
+grammar TestSIJavaWithCustomTypes extends de.monticore.SIUnitLiterals,
                             de.monticore.expressions.CommonExpressions,
                             de.monticore.expressions.AssignmentExpressions,
                             de.monticore.statements.MCCommonStatements,
-                            de.monticore.siunits.CustomSIUnitTypes4Computing,
+                            de.monticore.CustomSIUnitTypes4Computing,
                             de.monticore.types.TypeSymbols {
 
     symbol scope SIJavaClass =

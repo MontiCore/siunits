@@ -3,7 +3,7 @@
 package de.monticore.types.check;
 
 import de.monticore.siunits._ast.ASTSIUnit;
-import de.monticore.siunits.siunits.utility.UnitPrettyPrinter;
+import de.monticore.siunits.utility.UnitPrettyPrinter;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4ComputingInt;
 import de.monticore.siunittypes4computing._symboltable.ISIUnitTypes4ComputingScope;

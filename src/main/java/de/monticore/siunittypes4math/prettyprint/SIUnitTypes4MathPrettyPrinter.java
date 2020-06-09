@@ -1,6 +1,6 @@
 /* (c) https://github.com/MontiCore/monticore */
 
-package de.monticore.siunittypes4computing.prettyprint;
+package de.monticore.siunittypes4math.prettyprint;
 
 import de.monticore.siunits.prettyprint.SIUnitsPrettyPrinter;
 import de.monticore.siunittypes4math._ast.ASTSIUnitTypes4MathNode;

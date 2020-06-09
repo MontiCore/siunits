@@ -2,10 +2,10 @@
 package de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable;
 
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._visitor.TestSIJavaWithCustomTypesVisitor;
-import de.monticore.siunits.customsiunittypes4computing._ast.ASTCustomSIUnitType4Computing;
-import de.monticore.siunits.siunits._ast.ASTSIUnit;
-import de.monticore.siunits.siunittypes4computing._ast.ASTSIUnitType4Computing;
-import de.monticore.siunits.siunittypes4math._ast.ASTSIUnitType4Math;
+import de.monticore.customsiunittypes4computing._ast.ASTCustomSIUnitType4Computing;
+import de.monticore.siunits._ast.ASTSIUnit;
+import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
+import de.monticore.siunittypes4math._ast.ASTSIUnitType4Math;
 import de.monticore.types.check.FlatExpressionScopeSetterAbs;
 import de.monticore.types.mcbasictypes._ast.ASTMCPrimitiveType;
 

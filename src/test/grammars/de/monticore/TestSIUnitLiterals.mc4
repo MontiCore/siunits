@@ -1,8 +1,8 @@
 /* (c) https://github.com/MontiCore/monticore */
 
-package de.monticore.siunits;
+package de.monticore;
 
-grammar TestSIUnitLiterals extends de.monticore.siunits.SIUnitLiterals,
+grammar TestSIUnitLiterals extends de.monticore.SIUnitLiterals,
                                     de.monticore.types.TypeSymbols {
 
 }

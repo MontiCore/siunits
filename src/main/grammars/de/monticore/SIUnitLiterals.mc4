@@ -31,7 +31,7 @@ DONE: Stimmt bis auf alias für µ ist u, für Ω ist Ohm
  */
  
 component grammar SIUnitLiterals extends 
-                  de.monticore.siunits.SIUnits,
+                  de.monticore.SIUnits,
                   de.monticore.literals.MCCommonLiterals  {
 
     // The unsigned SI unit literals

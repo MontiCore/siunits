@@ -1,6 +1,6 @@
 /* (c) https://github.com/MontiCore/monticore */
 
-package de.monticore.siunits.siunits.utility;
+package de.monticore.siunits.utility;
 
 import de.monticore.siunits._ast.ASTSIUnit;
 import de.monticore.siunits._parser.SIUnitsParser;

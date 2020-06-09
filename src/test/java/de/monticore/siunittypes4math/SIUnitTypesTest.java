@@ -1,9 +1,9 @@
 /* (c) https://github.com/MontiCore/monticore */
 
-package de.monticore.siunits.siunittypes4math;
+package de.monticore.siunittypes4math;
 
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
-import de.monticore.siunittypes4computing.prettyprint.SIUnitTypes4MathPrettyPrinter;
+import de.monticore.siunittypes4math.prettyprint.SIUnitTypes4MathPrettyPrinter;
 import de.monticore.siunittypes4math._ast.ASTSIUnitType4Math;
 import de.monticore.prettyprint.IndentPrinter;
 import de.se_rwth.commons.logging.Log;

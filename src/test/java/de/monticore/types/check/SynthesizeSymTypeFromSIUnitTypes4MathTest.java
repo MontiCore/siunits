@@ -6,7 +6,7 @@ import de.monticore.siunits.utility.UnitPrettyPrinter;
 import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
 import de.monticore.lang.testsijava.testsijava._symboltable.ITestSIJavaScope;
-import de.monticore.siunits.siunittypes4math._ast.ASTSIUnitType4Math;
+import de.monticore.siunittypes4math._ast.ASTSIUnitType4Math;
 import de.se_rwth.commons.logging.Log;
 import org.junit.Before;
 import org.junit.BeforeClass;

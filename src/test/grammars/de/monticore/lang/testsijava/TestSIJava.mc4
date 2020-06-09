@@ -8,12 +8,12 @@ package de.monticore.lang.testsijava;
  * custom types that can be siunit types.
 */
 
-grammar TestSIJava extends de.monticore.siunits.SIUnitLiterals,
+grammar TestSIJava extends de.monticore.SIUnitLiterals,
                             de.monticore.expressions.CommonExpressions,
                             de.monticore.expressions.AssignmentExpressions,
                             de.monticore.statements.MCCommonStatements,
-                            de.monticore.siunits.SIUnitTypes4Computing,
-                            de.monticore.siunits.SIUnitTypes4Math,
+                            de.monticore.SIUnitTypes4Computing,
+                            de.monticore.SIUnitTypes4Math,
                             de.monticore.types.TypeSymbols {
 
     symbol scope SIJavaClass =
