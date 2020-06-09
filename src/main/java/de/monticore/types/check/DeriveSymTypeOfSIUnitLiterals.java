@@ -2,12 +2,12 @@
 
 package de.monticore.types.check;
 
-import de.monticore.siunits.siunitliterals._ast.ASTSIUnitLiteral;
-import de.monticore.siunits.siunitliterals._ast.ASTSignedSIUnitLiteral;
-import de.monticore.siunits.siunitliterals._symboltable.ISIUnitLiteralsScope;
-import de.monticore.siunits.siunitliterals._visitor.SIUnitLiteralsVisitor;
-import de.monticore.siunits.siunits._ast.ASTSIUnit;
-import de.monticore.siunits.siunits.prettyprint.SIUnitsPrettyPrinter;
+import de.monticore.siunitliterals._ast.ASTSIUnitLiteral;
+import de.monticore.siunitliterals._ast.ASTSignedSIUnitLiteral;
+import de.monticore.siunitliterals._symboltable.ISIUnitLiteralsScope;
+import de.monticore.siunitliterals._visitor.SIUnitLiteralsVisitor;
+import de.monticore.siunits._ast.ASTSIUnit;
+import de.monticore.siunits.prettyprint.SIUnitsPrettyPrinter;
 
 /**
  * This class is used to derive the type of an SIUnitLiteral
