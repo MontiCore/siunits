@@ -1,5 +1,5 @@
 /* (c) https://github.com/MontiCore/monticore */
-package de.monticore.siunits.siunitliterals.utility;
+package de.monticore.siunitliterals.utility;
 
 import de.monticore.MCCommonLiteralsPrettyPrinter;
 import de.monticore.literals.mccommonliterals._ast.*;

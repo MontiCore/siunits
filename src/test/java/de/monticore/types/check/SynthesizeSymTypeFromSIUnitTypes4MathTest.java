@@ -1,8 +1,8 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.types.check;
 
-import de.monticore.siunits.siunits.utility.SIUnitConstants;
-import de.monticore.siunits.siunits.utility.UnitPrettyPrinter;
+import de.monticore.siunits.utility.SIUnitConstants;
+import de.monticore.siunits.utility.UnitPrettyPrinter;
 import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
 import de.monticore.lang.testsijava.testsijava._symboltable.ITestSIJavaScope;

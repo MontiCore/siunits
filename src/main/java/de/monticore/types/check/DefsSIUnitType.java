@@ -2,7 +2,7 @@
 
 package de.monticore.types.check;
 
-import de.monticore.siunits.siunits.utility.SIUnitConstants;
+import de.monticore.siunits.utility.SIUnitConstants;
 import de.monticore.types.typesymbols._symboltable.TypeSymbol;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolLoader;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolsScope;

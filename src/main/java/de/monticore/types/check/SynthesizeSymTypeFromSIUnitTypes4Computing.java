@@ -2,14 +2,13 @@
 
 package de.monticore.types.check;
 
-import de.monticore.siunits.siunits._ast.ASTSIUnit;
-import de.monticore.siunits.siunits._symboltable.ISIUnitsScope;
+import de.monticore.siunits._ast.ASTSIUnit;
 import de.monticore.siunits.siunits.utility.UnitPrettyPrinter;
-import de.monticore.siunits.siunittypes4computing._ast.ASTSIUnitType4Computing;
-import de.monticore.siunits.siunittypes4computing._ast.ASTSIUnitType4ComputingInt;
-import de.monticore.siunits.siunittypes4computing._symboltable.ISIUnitTypes4ComputingScope;
-import de.monticore.siunits.siunittypes4computing._visitor.SIUnitTypes4ComputingVisitor;
-import de.monticore.siunits.siunittypes4math._ast.ASTSIUnitType4Math;
+import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
+import de.monticore.siunittypes4computing._ast.ASTSIUnitType4ComputingInt;
+import de.monticore.siunittypes4computing._symboltable.ISIUnitTypes4ComputingScope;
+import de.monticore.siunittypes4computing._visitor.SIUnitTypes4ComputingVisitor;
+import de.monticore.siunittypes4math._ast.ASTSIUnitType4Math;
 import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
 import de.se_rwth.commons.logging.Log;
 

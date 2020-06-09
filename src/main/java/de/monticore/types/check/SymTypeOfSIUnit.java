@@ -1,8 +1,8 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.types.check;
 
-import de.monticore.siunits.siunits.utility.UnitFactory;
-import de.monticore.siunits.siunits.utility.UnitPrettyPrinter;
+import de.monticore.siunits.utility.UnitFactory;
+import de.monticore.siunits.utility.UnitPrettyPrinter;
 import de.monticore.symboltable.serialization.JsonDeSers;
 import de.monticore.symboltable.serialization.JsonPrinter;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolLoader;
