@@ -141,7 +141,7 @@ language. For further explanation, see the documentation for the [TestSIJava](ht
         * [UnitPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunits/utility/UnitPrettyPrinter.java)
         * [DefsSIUnitType](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/DefsSIUnitType.java)
 * An alternative syntax fot the definition of primitive types combined with SI units can be defined by implementing `MCObjectType` as it is done in
-[CustomSIUnitTypes4Computing](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/types/CustomSIUnitTypes4Computing.mc4)
+[CustomSIUnitTypes4Computing](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/CustomSIUnitTypes4Computing.mc4)
     * To include the new custom types to the TypeCheck mechanic, a DSL developer needs to implement a Synthesize-Class 
     which extends the [SynthesizeSymTypeFromSIUnitTypes4Computing](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/SynthesizeSymTypeFromSIUnitTypes4Computing.java)
     class and implements its visitor. For reference have a look on [SynthesizeSymTypeFromCustomSIUnitTypes4Computing.java](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/types/check/SynthesizeSymTypeFromCustomSIUnitTypes4Computing.java).
