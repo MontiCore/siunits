@@ -4,12 +4,12 @@
 This language introduces SI units and allows language developers to integrate literals enriched with an SI unit to their language. Furthermore,
 this language provides functionality for unit compatibility and type checking.
 The grammar files are (see details below):
-* [SIUnits.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/SIUnits.mc4)
-* [SIUnitLiterals.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/literals/SIUnitLiterals.mc4)
-* [SIUnitTypes4Math.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/SIUnitTypes4Math.mc4)
-* [SIUnitTypes4Computing.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/SIUnitTypes4Computing.mc4)
+* [SIUnits.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnits.mc4)
+* [SIUnitLiterals.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnitLiterals.mc4)
+* [SIUnitTypes4Math.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/types/SIUnitTypes4Math.mc4)
+* [SIUnitTypes4Computing.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/types/SIUnitTypes4Computing.mc4)
 
-## [SIUnits.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/SIUnits.mc4)
+## [SIUnits.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnits.mc4)
 ### Description
 This is the base grammar of the SIUnits language. It introduces SI units and other units that can be derived from them.
 This grammar defines SI units as well as unit prefixes and SI unit expressions allowing us to parse simple and derived units 
@@ -21,16 +21,16 @@ package is used.
 ### Functionality
 The main classes that should always be used to handle a ```javax.measure.Unit``` are the ```UnitFactory``` and the 
 ```UnitPrettyPrinter``` and can be found in the package ```de.monticore.siunits.utility```.
-* [UnitFactory](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/siunits/utility/UnitFactory.java)
+* [UnitFactory](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/utility/UnitFactory.java)
     * Creates Units from an ```ASTSIUnit``` or a String
     * Creates the BaseUnit from an ```ASTSIUnit```,a String or a ```javax.measure.Unit```
     * Creates the StandardUnit from an ```ASTSIUnit```,a String or a ```javax.measure.Unit```, standard Units here
     are: A, lm, C, Sv, F, H, J, K, mol, bit, lx, N, Pa, Gy, S, rad, T, V, W, kg, sr, kat, cd, Ohm, Wb, m, Bq, Hz, s
-* [UnitPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/siunits/utility/UnitPrettyPrinter.java)
+* [UnitPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunits/utility/UnitPrettyPrinter.java)
     Prints a Unit in a former and consistent way from an ```ASTSIUnit```,a String or a ```javax.measure.Unit```
         as either BaseUnit, StandardUnit or asIs-Unit.
 ### Generators
-There are two PrettyPrinters, the [SIUnitsPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/siunits/prettyprint/SIUnitsPrettyPrinter.java)
+There are two PrettyPrinters, the [SIUnitsPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunits/prettyprint/SIUnitsPrettyPrinter.java)
 to prettyprint the SIUnits normally ( ```kg/m*s``` &rarr; ```kg/m*s``` ) and the [SIUnitsWithBracketsPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/siunits/prettyprint/SIUnitsWithBracketsPrettyPrinter.java)
 to prettyprint the SIUnits with brackets around each expression ( ```kg/m*s``` &rarr; ```((kg/m)*s)``` ). Those can be 
 found in the package ```de.monticore.siunits.prettyprint```.
@@ -55,19 +55,19 @@ Standard unitless literals are parsed as Literals as provided by the MCCommonLit
 * Unitless float (explicit): `5.0f` or `5.0F`
 
 ### Functionality
-The [SIUnitLiteralDecoder](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/literals/siunitliterals/utility/SIUnitLiteralDecoder.java)
+The [SIUnitLiteralDecoder](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunitliterals/utility/SIUnitLiteralDecoder.java)
 extracts the number of an SIUnitLiteral as either a java ```double``` or a java ```java.lang.Number``` and calculates the value of
 a SIUnitLiteral (```valueOf(3 km)) = 3000``` or ```valueOf(3 km, mm)) = 3000000```). 
-For this it uses the [NumberDecoder](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/literals/siunitliterals/utility/NumberDecoder.java)
+For this it uses the [NumberDecoder](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunitliterals/utility/NumberDecoder.java)
 which extracts the number of a NumericLiteral or SignedNumericLiteral as either a java ```double``` or a java ```java.lang.Number```.
 
 ### Generators
-The [SIUnitLiteralsPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/literals/siunitliterals/prettyprint/SIUnitLiteralsPrettyPrinter.java)
+The [SIUnitLiteralsPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunitliterals/prettyprint/SIUnitLiteralsPrettyPrinter.java)
 prettyprints a SIUnitLiteral.
 
-## [SIUnitTypes4Math.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/SIUnitTypes4Math.mc4)
+## [SIUnitTypes4Math.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/types/SIUnitTypes4Math.mc4)
 ### Description
-The SIUnitTypes interprete the SIUnits as type. Therefore, the grammar extends [SIUnits.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/SIUnits.mc4) 
+The SIUnitTypes interprete the SIUnits as type. Therefore, the grammar extends [SIUnits.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnits.mc4) 
 and [de.monticore.types.MCBasicTypes.mc4](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/types/MCBasicTypes.mc4). 
 A SIUnitType implements the MCObjectType and can therefore be used as a MCType or MCReturnType.
 
@@ -75,7 +75,7 @@ A SIUnitType implements the MCObjectType and can therefore be used as a MCType o
 The [SIUnitTypes4MathPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/types/siunittypes4math/prettyprint/SIUnitTypes4MathPrettyPrinter.java)
 prettyprints a SIUnitType and can be found in the package ```de.monticore.siunittypes4math.prettyprint```.
 
-## [SIUnitTypes4Computing.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/SIUnitTypes4Computing.mc4)
+## [SIUnitTypes4Computing.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/types/SIUnitTypes4Computing.mc4)
 ### Description
 A SIUnitType4Computing combines a MCPrimitiveType from the [MCBasicTypes](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/types/MCBasicTypes.mc4) 
 grammar with a SIUnitType. It is mostly used to describe the type of a SIUnitLiteral but is also useful to derive the type
@@ -83,7 +83,7 @@ of an expression with both SIUnits and an NumericLiteral. The primitive part sho
 
 The grammar provides an exemplary syntax for primitive types combined with a unit, e.g.
 `int in km/s^2`, where `int` is a primitive type from [MCBasicTypes](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/types/MCBasicTypes.mc4),
-`in` is the concrete syntax introduced by the grammar and the unit expression is an SI unit type from [SIUnitTypes.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/SIUnitTypes.mc4)
+`in` is the concrete syntax introduced by the grammar and the unit expression is an SI unit type from [SIUnitTypes.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/types/SIUnitTypes4Computing.mc4)
 
 A DSL developer should implement his own rule in order to use an alternative syntax.
 ### Functionality
@@ -135,7 +135,7 @@ MCReturnType need to have an enclosing scope. Exemplary, this is all done for th
 language. For further explanation, see the documentation for the [TestSIJava](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/lang/testsijava/TestSIJava.md) language.
 
 ## Extensibility
-* New units can be added directly in the grammar [SIUnits.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/SIUnits.mc4)
+* New units can be added directly in the grammar [SIUnits.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnits.mc4)
     * There might be changes necessary in the classes
         * [UnitFactory](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/siunits/utility/UnitFactory.java)
         * [UnitPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/siunits/utility/UnitPrettyPrinter.java)
