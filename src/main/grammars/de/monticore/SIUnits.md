@@ -35,7 +35,7 @@ to prettyprint the SIUnits normally ( ```kg/m*s``` &rarr; ```kg/m*s``` ) and the
 to prettyprint the SIUnits with brackets around each expression ( ```kg/m*s``` &rarr; ```((kg/m)*s)``` ). Those can be 
 found in the package ```de.monticore.siunits.prettyprint```.
 
-## [SIUnitLiterals.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/literals/SIUnitLiterals.mc4)
+## [SIUnitLiterals.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnitLiterals.mc4)
 ### Description
 The SIUnitLiterals combine a NumericalLiteral or a SignedNumericalLiteral from the [MCCommonLiterals.mc4](https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/grammars/de/monticore/literals/MCCommonLiterals.mc4) 
 grammar with a SIUnit from the [SIUnits](#siunitsmc4) grammar. A SIUnitLiteral can be used in an expression as a 
@@ -65,17 +65,17 @@ which extracts the number of a NumericLiteral or SignedNumericLiteral as either 
 The [SIUnitLiteralsPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunitliterals/prettyprint/SIUnitLiteralsPrettyPrinter.java)
 prettyprints a SIUnitLiteral.
 
-## [SIUnitTypes4Math.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/types/SIUnitTypes4Math.mc4)
+## [SIUnitTypes4Math.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnitTypes4Math.mc4)
 ### Description
 The SIUnitTypes interprete the SIUnits as type. Therefore, the grammar extends [SIUnits.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnits.mc4) 
 and [de.monticore.types.MCBasicTypes.mc4](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/types/MCBasicTypes.mc4). 
 A SIUnitType implements the MCObjectType and can therefore be used as a MCType or MCReturnType.
 
 ### Generators
-The [SIUnitTypes4MathPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/types/siunittypes4math/prettyprint/SIUnitTypes4MathPrettyPrinter.java)
+The [SIUnitTypes4MathPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunittypes4math/prettyprint/SIUnitTypes4MathPrettyPrinter.java)
 prettyprints a SIUnitType and can be found in the package ```de.monticore.siunittypes4math.prettyprint```.
 
-## [SIUnitTypes4Computing.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/types/SIUnitTypes4Computing.mc4)
+## [SIUnitTypes4Computing.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnitTypes4Computing.mc4)
 ### Description
 A SIUnitType4Computing combines a MCPrimitiveType from the [MCBasicTypes](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/types/MCBasicTypes.mc4) 
 grammar with a SIUnitType. It is mostly used to describe the type of a SIUnitLiteral but is also useful to derive the type
@@ -87,10 +87,10 @@ The grammar provides an exemplary syntax for primitive types combined with a uni
 
 A DSL developer should implement his own rule in order to use an alternative syntax.
 ### Functionality
-The [PrimitiveIsNumericType](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/types/SIUnitTypes4Computing/_cocos/PrimitiveIsNumericType.java)
+The [PrimitiveIsNumericType](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/SIUnitTypes4Computing/_cocos/PrimitiveIsNumericType.java)
 CoCo checks whether the MCPrimitiveType part is a numeric type.
 ### Generators
-The [SIUnitTypes4ComputingPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/types/siunittypes4computing/prettyprint/SIUnitTypes4ComputingPrettyPrinter.java)
+The [SIUnitTypes4ComputingPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunittypes4computing/prettyprint/SIUnitTypes4ComputingPrettyPrinter.java)
 prettyprints a SIUnitType4Computing and can be found in the package ```de.monticore.siunittypes4computing.prettyprint```.
 
 ## TypeCheck
