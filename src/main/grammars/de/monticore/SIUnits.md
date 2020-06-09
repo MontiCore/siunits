@@ -31,7 +31,7 @@ The main classes that should always be used to handle a ```javax.measure.Unit```
         as either BaseUnit, StandardUnit or asIs-Unit.
 ### Generators
 There are two PrettyPrinters, the [SIUnitsPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunits/prettyprint/SIUnitsPrettyPrinter.java)
-to prettyprint the SIUnits normally ( ```kg/m*s``` &rarr; ```kg/m*s``` ) and the [SIUnitsWithBracketsPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/lang/siunits/prettyprint/SIUnitsWithBracketsPrettyPrinter.java)
+to prettyprint the SIUnits normally ( ```kg/m*s``` &rarr; ```kg/m*s``` ) and the [SIUnitsWithBracketsPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunits/prettyprint/SIUnitsWithBracketsPrettyPrinter.java)
 to prettyprint the SIUnits with brackets around each expression ( ```kg/m*s``` &rarr; ```((kg/m)*s)``` ). Those can be 
 found in the package ```de.monticore.siunits.prettyprint```.
 
