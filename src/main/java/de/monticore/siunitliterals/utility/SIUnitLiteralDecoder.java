@@ -11,9 +11,9 @@ import javax.measure.unit.Unit;
 
 /**
  * This class is intended to decode the {@link java.lang.Number} and double value
- * from a {@link de.monticore.siunits.siunitliterals._ast.ASTSIUnitLiteral} or
- * a {@link de.monticore.siunits.siunitliterals._ast.ASTSignedSIUnitLiteral}
- * from the de.monticore.siunits.SIUnitLiterals grammar. It is also meant to
+ * from a {@link de.monticore.siunitliterals._ast.ASTSIUnitLiteral} or
+ * a {@link de.monticore.siunitliterals._ast.ASTSignedSIUnitLiteral}
+ * from the de.monticore.SIUnitLiterals grammar. It is also meant to
  * calculate the value of a SIUnitLiteral, meaning valueOf(1 km) = 1000.
  * This class can be initialized with a {@link de.monticore.MCCommonLiteralsPrettyPrinter} to prettyprint
  * your own custom {@link de.monticore.literals.mccommonliterals._ast.ASTNumericLiteral} or
@@ -38,7 +38,7 @@ public class SIUnitLiteralDecoder {
     }
 
     /**
-     * Calculates the value of a {@link de.monticore.siunits.siunitliterals._ast.ASTSIUnitLiteral} as Base Unit
+     * Calculates the value of a {@link de.monticore.siunitliterals._ast.ASTSIUnitLiteral} as Base Unit
      * meaning valueOf(1 km) = 1000, valueOf(1 l) = 0.001 (1 l = 1 dm^3 = 0.001 m^3).
      */
     public double valueOf(ASTSIUnitLiteral lit) {
@@ -49,7 +49,7 @@ public class SIUnitLiteralDecoder {
     }
 
     /**
-     * Calculates the value of a {@link de.monticore.siunits.siunitliterals._ast.ASTSignedSIUnitLiteral} as Base Unit
+     * Calculates the value of a {@link de.monticore.siunitliterals._ast.ASTSignedSIUnitLiteral} as Base Unit
      * meaning valueOf(1 km) = 1000, valueOf(1 l) = 0.001 (1 l = 1 dm^3 = 0.001 m^3).
      */
     public double valueOf(ASTSignedSIUnitLiteral lit) {
@@ -60,7 +60,7 @@ public class SIUnitLiteralDecoder {
     }
 
     /**
-     * Calculates the value of a {@link de.monticore.siunits.siunitliterals._ast.ASTSIUnitLiteral}
+     * Calculates the value of a {@link de.monticore.siunitliterals._ast.ASTSIUnitLiteral}
      * as the Unit given, meaning valueOf(1 km, m) = 1000, valueOf(1 km, mm) = 1000000.
      */
     public double valueOf(ASTSIUnitLiteral lit, Unit asUnit) {
@@ -71,7 +71,7 @@ public class SIUnitLiteralDecoder {
     }
 
     /**
-     * Calculates the value of a {@link de.monticore.siunits.siunitliterals._ast.ASTSignedSIUnitLiteral}
+     * Calculates the value of a {@link de.monticore.siunitliterals._ast.ASTSignedSIUnitLiteral}
      * as the Unit given, meaning valueOf(1 km, m) = 1000, valueOf(1 km, mm) = 1000000.
      */
     public double valueOf(ASTSignedSIUnitLiteral lit, Unit asUnit) {
@@ -91,7 +91,7 @@ public class SIUnitLiteralDecoder {
     }
 
     /**
-     * Returns the number of a {@link de.monticore.siunits.siunitliterals._ast.ASTSIUnitLiteral} as double,
+     * Returns the number of a {@link de.monticore.siunitliterals._ast.ASTSIUnitLiteral} as double,
      * meaning getDouble(3 km) = 3.
      */
     public double getDouble(ASTSIUnitLiteral lit) {
@@ -99,7 +99,7 @@ public class SIUnitLiteralDecoder {
     }
 
     /**
-     * Returns the number of a {@link de.monticore.siunits.siunitliterals._ast.ASTSignedSIUnitLiteral} as double,
+     * Returns the number of a {@link de.monticore.siunitliterals._ast.ASTSignedSIUnitLiteral} as double,
      * meaning getDouble(3 km) = 3.
      */
     public double getDouble(ASTSignedSIUnitLiteral lit) {
@@ -107,7 +107,7 @@ public class SIUnitLiteralDecoder {
     }
 
     /**
-     * Returns the number of a {@link de.monticore.siunits.siunitliterals._ast.ASTSIUnitLiteral} as a {@link java.lang.Number},
+     * Returns the number of a {@link de.monticore.siunitliterals._ast.ASTSIUnitLiteral} as a {@link java.lang.Number},
      * meaning getDouble(3 km) = 3.
      */
     public Number getNumber(ASTSIUnitLiteral lit) {
@@ -115,7 +115,7 @@ public class SIUnitLiteralDecoder {
     }
 
     /**
-     * Returns the number of a {@link de.monticore.siunits.siunitliterals._ast.ASTSignedSIUnitLiteral} as a {@link java.lang.Number},
+     * Returns the number of a {@link de.monticore.siunitliterals._ast.ASTSignedSIUnitLiteral} as a {@link java.lang.Number},
      * meaning getDouble(3 km) = 3.
      */
     public Number getNumber(ASTSignedSIUnitLiteral lit) {
