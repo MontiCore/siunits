@@ -87,10 +87,10 @@ The grammar provides an exemplary syntax for primitive types combined with a uni
 
 A DSL developer should implement his own rule in order to use an alternative syntax.
 ### Functionality
-The [PrimitiveIsNumericType](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/SIUnitTypes4Computing/_cocos/PrimitiveIsNumericType.java)
+The [PrimitiveIsNumericType](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunittypes4computing/_cocos/PrimitiveIsNumericType.java)
 CoCo checks whether the MCPrimitiveType part is a numeric type.
 ### Generators
-The [SIUnitTypes4ComputingPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunittypes4computing/prettyprint/SIUnitTypes4ComputingPrettyPrinter.java)
+The [SIUnitTypes4ComputingPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunittypes4computing/prettyprint/SIUnitTypes4MathPrettyPrinter.java)
 prettyprints a SIUnitType4Computing and can be found in the package ```de.monticore.siunittypes4computing.prettyprint```.
 
 ## TypeCheck
