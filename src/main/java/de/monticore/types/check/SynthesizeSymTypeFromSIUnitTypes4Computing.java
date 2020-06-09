@@ -52,8 +52,7 @@ public class SynthesizeSymTypeFromSIUnitTypes4Computing extends SynthesizeSymTyp
     private ITypeSymbolsScope getScope(ISIUnitTypes4ComputingScope enclosingScope) {
         // is accepted only here, decided on 07.04.2020
         if(!(enclosingScope instanceof ITypeSymbolsScope)){
-            Log.error("0xA0308 the enclosing scope of the type does not implement the interface ITypeSymbolsScope");
-            // TODO: errorCode
+            Log.error("0xAE106 the enclosing scope of the type does not implement the interface ITypeSymbolsScope");
         }
         // is accepted only here, decided on 07.04.2020
         return (ITypeSymbolsScope) enclosingScope;
