@@ -104,17 +104,19 @@ public class SIUnitsWithBracketsPrettyPrinter implements SIUnitsVisitor {
      */
     @Override
     public void visit(ASTUnitBaseDimWithPrefix node) {
-        if (node.isPresentPrefixMu())
-            printer.print("µ" + node.getUnit());
-        else
-            printer.print(node.getUnit());
+        printer.print(node.getUnit());
+    }
+
+    @Override
+    public void visit(ASTGreekMicro node) {
+        printer.print("µ" + node.getUnit());
     }
 
     @Override
     public void visit(ASTGreekOhm node) {
         if (node.isPresentPrefix())
             printer.print(node.getPrefix() + "Ω");
-        else if (node.isPresentPrefixMu())
+        else if (node.isPresentMicro())
             printer.print("µΩ");
         else
             printer.print("Ω");
