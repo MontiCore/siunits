@@ -81,23 +81,31 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
      * variable names in other places anymore.
      * See also functions available to handle the stored unit.
      */
-    UnitBaseDimWithPrefix implements SIUnitBasic =
+//    UnitBaseDimWithPrefix implements SIUnitBasic <10> =
+//        { cmpTokenRegEx(1,
+//            "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|µ|n|p|f|a|z|y)?" +
+//            "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)")
+//        }?
+//        (unit:Name | UnitWithPrefix);
+//
+//    token UnitWithPrefix =
+//        ("Y"|"Z"|"E"|"P"|"T"|"G"|"M"|"k"|"h"|"da"|"d"|"c"|"m"|"u"|"µ"|"n"|"p"|"f"|"a"|"z"|"y")?
+//        ("m"|"g"|"s"|"A"|"K"|"mol"|"cd"|"Hz"|"N"|"Pa"|"J"|"W"|"C"|"V"|"F"|"Ohm"|"Ω"|"S"|"Wb"|"T"|"H"|"lm"|"lx"|"Bq"|"Gy"|"Sv"|"kat"|"l"|"L");
+
+    UnitBaseDimWithPrefix implements SIUnitBasic <10> =
         { cmpTokenRegEx(1,
-            "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|n|p|f|a|z|y)?" +
-            "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)")
-        }? unit:Name;
+            "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|µ|n|p|f|a|z|y)?" +
+            "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)") ||
+          noSpace(2) && cmpTokenRegEx(2,
+            "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)") ||
+          cmpTokenRegEx(1,
+            "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|µ|n|p|f|a|z|y)") && cmpToken(2, "Ω") && noSpace(2)
+        }?
+        UnitWithPrefix;
 
-    GreekMicro implements SIUnitBasic =
-        { cmpToken(2,
-            "m","g","s","A","K","mol","cd","Hz","N","Pa","J","W","C","V","F","Ohm","S","Wb","T","H","lm","lx","Bq","Gy","Sv","kat","l","L")
-            && noSpace(2)
-        }? "µ" unit:Name;
+    UnitWithPrefix =
+        unitWithPrefix:Name | "µ" microUnit:Name | prefixForOhm:Name "Ω" | onlyOhm:"Ω" | microOhm:"µΩ";
 
-    GreekOhm implements SIUnitBasic =
-        { next("Y","Z","E","P","T","G","M","k","h","da","d","c","m","u","µ","n","p","f","a","z","y")
-            && noSpace(2)
-        }? (prefix:Name | micro:"µ") "Ω" |
-        "Ω";
 
     /**
      * OfficallyAcceptedUnit

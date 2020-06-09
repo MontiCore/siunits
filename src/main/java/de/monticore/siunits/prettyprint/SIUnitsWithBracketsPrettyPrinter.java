@@ -7,7 +7,7 @@ import de.monticore.siunits._visitor.SIUnitsVisitor;
 import de.monticore.prettyprint.IndentPrinter;
 
 /**
- * Prettyprints a {@link de.monticore.siunits.siunits._ast.ASTSIUnit} from the
+ * Prettyprints a {@link de.monticore.siunits._ast.ASTSIUnit} from the
  * de.monticore.siunits.SIUnits grammar with brackets around each SIUnitExpression.
  * E.g. km/s*kg -> ((km/s)*kg).
  */
@@ -104,27 +104,36 @@ public class SIUnitsWithBracketsPrettyPrinter implements SIUnitsVisitor {
      */
     @Override
     public void visit(ASTUnitBaseDimWithPrefix node) {
-        printer.print(node.getUnit());
-    }
-
-    @Override
-    public void visit(ASTGreekMicro node) {
-        printer.print("µ" + node.getUnit());
-    }
-
-    @Override
-    public void visit(ASTGreekOhm node) {
-        if (node.isPresentPrefix())
-            printer.print(node.getPrefix() + "Ω");
-        else if (node.isPresentMicro())
+        if (node.getUnitWithPrefix().isPresentUnitWithPrefix())
+            printer.print(node.getUnitWithPrefix().getUnitWithPrefix());
+        else if(node.getUnitWithPrefix().isPresentPrefixForOhm())
+            printer.print(node.getUnitWithPrefix().getPrefixForOhm() + "Ω");
+        else if(node.getUnitWithPrefix().isPresentMicroUnit())
+            printer.print("µ" + node.getUnitWithPrefix().getMicroUnit());
+        else if (node.getUnitWithPrefix().isPresentMicroOhm())
             printer.print("µΩ");
         else
             printer.print("Ω");
     }
-    /**
-     * Prints a OfficallyAcceptedUnit
-     * @param node OfficallyAcceptedUnit
-     */
+
+//    @Override
+//    public void visit(ASTGreekMicro node) {
+//        printer.print("µ" + node.getUnit());
+//    }
+//
+//    @Override
+//    public void visit(ASTGreekOhm node) {
+//        if (node.isPresentPrefix())
+//            printer.print(node.getPrefix() + "Ω");
+//        else if (node.isPresentMicro())
+//            printer.print("µΩ");
+//        else
+//            printer.print("Ω");
+//    }
+//    /**
+//     * Prints a OfficallyAcceptedUnit
+//     * @param node OfficallyAcceptedUnit
+//     */
     @Override
     public void visit(ASTOfficallyAcceptedUnit node) {
         printer.print(node.getUnit());
