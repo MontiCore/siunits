@@ -83,7 +83,7 @@ of an expression with both SIUnits and an NumericLiteral. The primitive part sho
 
 The grammar provides an exemplary syntax for primitive types combined with a unit, e.g.
 `int in km/s^2`, where `int` is a primitive type from [MCBasicTypes](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/types/MCBasicTypes.mc4),
-`in` is the concrete syntax introduced by the grammar and the unit expression is an SI unit type from [SIUnitTypes.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/types/SIUnitTypes4Computing.mc4)
+`in` is the concrete syntax introduced by the grammar and the unit expression is an SI unit type from [SIUnitTypes.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnitTypes4Computing.mc4)
 
 A DSL developer should implement his own rule in order to use an alternative syntax.
 ### Functionality
