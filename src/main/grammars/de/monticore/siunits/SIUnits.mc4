@@ -85,17 +85,18 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
         { cmpTokenRegEx(1,
             "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|n|p|f|a|z|y)?" +
             "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)")
-        }? unit:Name |
+        }? unit:Name;
+
+    GreekMicro implements SIUnitBasic =
         { cmpToken(2,
             "m","g","s","A","K","mol","cd","Hz","N","Pa","J","W","C","V","F","Ohm","S","Wb","T","H","lm","lx","Bq","Gy","Sv","kat","l","L")
             && noSpace(2)
-        }? prefixMu:"µ" unit:Name;
+        }? "µ" unit:Name;
 
     GreekOhm implements SIUnitBasic =
-        { next("Y","Z","E","P","T","G","M","k","h","da","d","c","m","u","n","p","f","a","z","y")
+        { next("Y","Z","E","P","T","G","M","k","h","da","d","c","m","u","µ","n","p","f","a","z","y")
             && noSpace(2)
-        }? prefix:Name "Ω" |
-        { noSpace(2) }? prefixMu:"µ" "Ω" |
+        }? (prefix:Name | micro:"µ") "Ω" |
         "Ω";
 
     /**
