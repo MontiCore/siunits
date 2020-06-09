@@ -21,7 +21,7 @@ package is used.
 ### Functionality
 The main classes that should always be used to handle a ```javax.measure.Unit``` are the ```UnitFactory``` and the 
 ```UnitPrettyPrinter``` and can be found in the package ```de.monticore.siunits.utility```.
-* [UnitFactory](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/utility/UnitFactory.java)
+* [UnitFactory](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunits/utility/UnitFactory.java)
     * Creates Units from an ```ASTSIUnit``` or a String
     * Creates the BaseUnit from an ```ASTSIUnit```,a String or a ```javax.measure.Unit```
     * Creates the StandardUnit from an ```ASTSIUnit```,a String or a ```javax.measure.Unit```, standard Units here
