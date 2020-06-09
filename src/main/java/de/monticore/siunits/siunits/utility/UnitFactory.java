@@ -60,7 +60,7 @@ public class UnitFactory {
         try {
             ast = parser.parse(new StringReader(siunit));
         } catch (IOException e) {
-            Log.error("0x"); //TODO
+            Log.error("0xAE100 SIUnit " + siunit + " could not be parsed.");
         }
         return _createUnit(ast.get());
     }
@@ -76,7 +76,7 @@ public class UnitFactory {
         } else if (systemUnit instanceof AlternateUnit) {
             return _createBaseUnit(((AlternateUnit) systemUnit).getParent());
         } else if (!(systemUnit instanceof ProductUnit)) {
-            Log.error("0x System Unit cannot be an instance of " + unit.getClass()); // TODO
+            Log.error("0xAE101 System Unit cannot be an instance of " + unit.getClass());
             return null;
         } else {
             ProductUnit<?> productUnit = (ProductUnit) systemUnit;
