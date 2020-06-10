@@ -29,6 +29,6 @@ component grammar SIUnitTypes4Math extends
         de.monticore.SIUnits,
         de.monticore.types.MCBasicTypes  {
 
-     SIUnitType4Math implements MCObjectType <100> =
-        SIUnit;
+  SIUnitType4Math implements MCObjectType <100> =
+    SIUnit;
 }

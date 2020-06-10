@@ -5,14 +5,13 @@ package de.monticore;
 
 /**
  * This grammar defines SI units and other derived units such as 
- * 'm', 'km', 'km^2' or 'm*deg/(h^2*mg)'
+ * 'm', 'km', 'km^2' or 'm*deg/(h^2*mg)'.
  *
  * The definitions are fully compliant to the definitions given in
- *   International Bureau of Weights and Measures (20 May 2019),
- *   SI Brochure: The International System of Units (SI)
- *   (9th ed.)
- * with exceptions for the aliasing of the non ASCII
- * characters 'µ' to u and 'Ω' to Ohm
+ * International Bureau of Weights and Measures (20 May 2019),
+ * SI Brochure: The International System of Units (SI) (9th ed.)
+ * with exceptions for the aliasing of the non ASCII characters
+ * 'µ' to u and 'Ω' to Ohm.
  *
  * SI Units are declared as independent Nonterminal and can then
  * be used as part of a 
@@ -21,7 +20,6 @@ package de.monticore;
  * 
  * The grammar extends the MontiCore common literals, because it uses
  * natural numbers e.g. as exponent.
- * 
  */
 
 grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
