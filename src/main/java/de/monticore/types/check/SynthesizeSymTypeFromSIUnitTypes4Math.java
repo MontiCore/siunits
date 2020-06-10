@@ -67,7 +67,7 @@ public class SynthesizeSymTypeFromSIUnitTypes4Math implements ISynthesize, SIUni
     public ITypeSymbolsScope getScope (IMCBasicTypesScope mcBasicTypesScope){
         // is accepted only here, decided on 07.04.2020
         if(!(mcBasicTypesScope instanceof ITypeSymbolsScope)){
-            Log.error("0xA0481 the enclosing scope of the type does not implement the interface ITypeSymbolsScope");
+            Log.error("0xAE107 the enclosing scope of the type does not implement the interface ITypeSymbolsScope");
         }
         // is accepted only here, decided on 07.04.2020
         return (ITypeSymbolsScope) mcBasicTypesScope;

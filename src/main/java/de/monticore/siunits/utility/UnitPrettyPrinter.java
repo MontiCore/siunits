@@ -58,9 +58,9 @@ public class UnitPrettyPrinter {
     }
 
     /**
-     * Prints a {@link de.monticore.siunits.siunits._ast.ASTSIUnit} in a former way, e.g. m*km^-1/g -> 1/kg
+     * Prints a {@link de.monticore.siunits._ast.ASTSIUnit} in a former way, e.g. m*km^-1/g -> 1/kg
      *
-     * @param siunit the {@link de.monticore.siunits.siunits._ast.ASTSIUnit} to print
+     * @param siunit the {@link de.monticore.siunits._ast.ASTSIUnit} to print
      * @return the String representation of the unit
      */
     public static String printUnit(ASTSIUnit siunit) {
@@ -72,9 +72,9 @@ public class UnitPrettyPrinter {
     }
 
     /**
-     * Prints a the standard unit of a {@link de.monticore.siunits.siunits._ast.ASTSIUnit} in a former way, e.g. km*kg/g -> m
+     * Prints a the standard unit of a {@link de.monticore.siunits._ast.ASTSIUnit} in a former way, e.g. km*kg/g -> m
      *
-     * @param siunit the {@link de.monticore.siunits.siunits._ast.ASTSIUnit} to print
+     * @param siunit the {@link de.monticore.siunits._ast.ASTSIUnit} to print
      * @return the String representation of the unit's standard unit
      */
     public static String printStandardUnit(ASTSIUnit siunit) {

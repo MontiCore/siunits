@@ -43,7 +43,7 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
         left:SIUnitExpression "*" right:SIUnitExpression;
 
     SIUnitOneDivExpression implements SIUnitExpression <20> =
-        "1" "/" right:SIUnitExpression;
+        "1/" right:SIUnitExpression;
 
     SIUnitDivExpression implements SIUnitExpression <30> =
         left:SIUnitExpression "/" right:SIUnitExpression;

@@ -8,7 +8,7 @@ import de.monticore.prettyprint.IndentPrinter;
 
 /**
  * Prettyprints a {@link de.monticore.siunits._ast.ASTSIUnit} from the
- * de.monticore.siunits.SIUnits grammar with brackets around each SIUnitExpression.
+ * de.monticore.SIUnits grammar with brackets around each SIUnitExpression.
  * E.g. km/s*kg -> ((km/s)*kg).
  */
 public class SIUnitsWithBracketsPrettyPrinter implements SIUnitsVisitor {
