@@ -158,7 +158,7 @@ is explained in [this tutorial](https://git.rwth-aachen.de/monticore/languages/s
 | BaseUnit von SILiteral | `[5km]B` | `UnitFactory.createBaseUnit(u)` | m
 | Literal von SILiteral | `{5km}` | `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); d.NumberOf(ASTSILiteral)` oder `d.DoubleOf(ASTSILiteral)` | 5
 | Literal von SILiteral umgerechnet auf Basisunits | `{5km}B` | `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); d.ValueOf(ASTSILiteral)` | 5000
-| SILiteral zu TargetSILiteral | `[5km][cm]` | `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); double res=d.ValueOf(ASTSILiteral, javax.measure.Unit); ...` | 500.000 cm 
+| SILiteral zu TargetSILiteral | `5km==>cm` | `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); double res=d.ValueOf(ASTSILiteral, javax.measure.Unit); ...` | 500.000 cm 
 
 
 # Library Functions
