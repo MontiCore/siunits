@@ -154,10 +154,18 @@ is explained in [this tutorial](https://git.rwth-aachen.de/monticore/languages/s
 {|
 |-
 | Beschreibung || DSL-Syntax || Java-Syntax || Returnwert
-| Unit von SILiteral || `[5km]` || literal. || km
+| Unit von SILiteral || `[5km]` || `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); d.UnitOf(ASTSILiteral)` || km
 | BaseUnit von SILiteral || `[5km]B` || literal. || m
-[//]:| StandardUnit von SILiteral || `[5l]S` || literal. || m^3
-| Literal von SILiteral || `{5km}` || l || 5
-| Literal von SILiteral umgerechnet auf Basisunits || `5km` || l || 5000
-| zu StandardUnit (Definition ausstehend)|| [] || ||
+| Literal von SILiteral || `{5km}` || `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); d.NumberOf/d.DoubleOf(ASTSILiteral)` || 5
+| Literal von SILiteral umgerechnet auf Basisunits || `{5km}B` || `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); d.ValueOf(ASTSILiteral)` || 5000
+| SILiteral zu TargetSILiteral || `[5km][cm]` || `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); d.ValueOf(ASTSILiteral, javax.measure.Unit)` || 500.000 cm 
+|}
+
+# Library Functions
+{|
+|-
+| Beschreibung || Java-Syntax || Returnwert
+| Convert Units || `c=getConverter(srcUnit/*km*/, targetUnit/*m*/); c.convert(5.2);`  || 5200 
+| Convert to Base Units || `c=getConverter(srcUnit/*km*/); c.convert(5.2);`  || 5200 
+| Create Unit || `UnitFactory.createUnit("km/s")` || `javax.measure.Unit`
 |}
