@@ -168,4 +168,4 @@ is explained in [this tutorial](https://git.rwth-aachen.de/monticore/languages/s
 | Convert Units | `c=getConverter(srcUnit/*km*/, targetUnit/*m*/); c.convert(5.2);`  | 5200 | 
 | Convert to Base Units | `c=getConverter(srcUnit/*km*/); c.convert(5.2);`  | 5200 |
 | Create Unit | `UnitFactory.createUnit("km/s")` | `javax.measure.Unit` |
-| Print javax.measure.Unit | UnitPrettyPrinter.print(Base)Unit(javax.measure.Unit / String / SIUnit) | String |
+| Print javax.measure.Unit | `UnitPrettyPrinter.print(Base)Unit(javax.measure.Unit / String / SIUnit)` | String |
