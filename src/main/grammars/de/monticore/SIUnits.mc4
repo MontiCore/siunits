@@ -96,8 +96,8 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
             "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)") ||
           noSpace(2) && cmpTokenRegEx(2,
             "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)") ||
-          cmpTokenRegEx(1,
-            "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|µ|n|p|f|a|z|y)") && cmpToken(2, "Ω") && noSpace(2)
+          noSpace(2) && cmpToken(2, "Ω") && cmpTokenRegEx(1,
+            "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|µ|n|p|f|a|z|y)")
         }?
         NameWithMicroOmega;
 
