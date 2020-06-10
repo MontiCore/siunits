@@ -151,15 +151,15 @@ Usage of the SI Units package is shown using the [SI Java test language](https:/
 is explained in [this tutorial](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/lang/testsijava/TestSIJava.md)
 
 # Further Functions
-{|
-|-
-| Beschreibung || DSL-Syntax || Java-Syntax || Returnwert
-| Unit von SILiteral || `[5km]` || `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); d.UnitOf(ASTSILiteral)` || km
-| BaseUnit von SILiteral || `[5km]B` || literal. || m
-| Literal von SILiteral || `{5km}` || `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); d.NumberOf/d.DoubleOf(ASTSILiteral)` || 5
-| Literal von SILiteral umgerechnet auf Basisunits || `{5km}B` || `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); d.ValueOf(ASTSILiteral)` || 5000
-| SILiteral zu TargetSILiteral || `[5km][cm]` || `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); d.ValueOf(ASTSILiteral, javax.measure.Unit)` || 500.000 cm 
-|}
+
+| Beschreibung | DSL-Syntax | Java-Syntax | Returnwert |
+| ------ | ------ | ------ |
+| Unit von SILiteral | `[5km]` | `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); javax.measure.Unit u=d.UnitOf(ASTSILiteral)` | km
+| BaseUnit von SILiteral | `[5km]B` | `UnitFactory.createBaseUnit(u)` | m
+| Literal von SILiteral | `{5km}` | `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); d.NumberOf/d.DoubleOf(ASTSILiteral)` | 5
+| Literal von SILiteral umgerechnet auf Basisunits | `{5km}B` | `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); d.ValueOf(ASTSILiteral)` | 5000
+| SILiteral zu TargetSILiteral | `[5km][cm]` | `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); double res=d.ValueOf(ASTSILiteral, javax.measure.Unit); ...` | 500.000 cm 
+
 
 # Library Functions
 {|
@@ -168,4 +168,5 @@ is explained in [this tutorial](https://git.rwth-aachen.de/monticore/languages/s
 | Convert Units || `c=getConverter(srcUnit/*km*/, targetUnit/*m*/); c.convert(5.2);`  || 5200 
 | Convert to Base Units || `c=getConverter(srcUnit/*km*/); c.convert(5.2);`  || 5200 
 | Create Unit || `UnitFactory.createUnit("km/s")` || `javax.measure.Unit`
+| Print javax.measure.Unit | UnitPrettyPrinter.print(Base)Unit(javax.measure.Unit / String / SIUnit) | String
 |}
