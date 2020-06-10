@@ -1,12 +1,32 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore;
 
-/* Alpha-version: This is intended to become a MontiCore stable grammar. */
+/* Beta-version: This is intended to become a MontiCore stable grammar. */
 
 /**
- * This grammar is one way to represent the type of a primitive 
- * combined with a SI unit type.
- * The primitive part should always be a numeric type.
+ * This grammar declares SI unit also as generic types 
+ * based on all the available SI unit definitions.
+ * The type parameter can be a numeric type, describing the 
+ * range of possible values (such as int, long, float, double).
+ * 
+ * The definitions of the SI Unit type themselves (without type parameter)
+ * are fully compliant to the definitions given in
+ *   International Bureau of Weights and Measures (20 May 2019),
+ *   SI Brochure: The International System of Units (SI)
+ *   (9th ed.)
+ * with exceptions for the aliasing of the non ASCII
+ * characters 'µ' to u and 'Ω' to Ohm
+ *
+ * With this definition an SI Unit such as "kg/m<float>" 
+ * can also be used as type definition.
+ *
+ * An extension of the typecheck algorithms is available.
+ * The typecheck ensures correct typing of mathematical expressions. 
+ *
+ * As a shortcut the type parameter may be omitted asumming double as
+ * default, i.e.
+ * "km" is identical to "km<double>"  
+ * (quite like "List" is identical to "List<Object> in Java)"
  */
 
 component grammar SIUnitTypes4Computing extends
@@ -16,24 +36,7 @@ component grammar SIUnitTypes4Computing extends
   interface SIUnitType4ComputingInt extends MCObjectType =
     MCPrimitiveType SIUnitType4Math;
 
-// TODO: wir sind uns hier ja syntaktisch noch nicht einig
-// bzw. überlegen noch? siehe unten?
-// DONE (Beschluss vom 03.06.20):
    SIUnitType4Computing implements SIUnitType4ComputingInt =
      SIUnitType4Math "<" MCPrimitiveType ">" ;
-
-//    further ideas:
-//    SIUnitType4Computing implements SIUnitType4ComputingInt =
-//        MCPrimitiveType "in" SIUnitType4Math;
-//    SIUnitType4Computing implements SIUnitType4ComputingInt =
-//        SIUnitType4Math "<" MCPrimitiveType ">";
-//    SIUnitType4Computing implements SIUnitType4ComputingInt =
-//        MCPrimitiveType ":" SIUnitType4Math ;
-
-
-//     SIUnitFloatType implements MCObjectType =
-//        SIUnit  ;
-//     Diese Regel ist bereits in SIUnitTypes4Math
-//        umgesetzt als SIUnitType4Math
 
 }
