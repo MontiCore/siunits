@@ -150,4 +150,14 @@ language. For further explanation, see the documentation for the [TestSIJava](ht
 Usage of the SI Units package is shown using the [SI Java test language](https://git.rwth-aachen.de/monticore/languages/siunits/-/tree/master/src/test/grammars/de/monticore/lang/testsijava) and 
 is explained in [this tutorial](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/lang/testsijava/TestSIJava.md)
 
-    
+# Further Functions
+{|
+|-
+| Beschreibung || DSL-Syntax || Java-Syntax || Returnwert
+| Unit von SILiteral || `[5km]` || literal. || km
+| BaseUnit von SILiteral || `[5km]B` || literal. || m
+[//]:| StandardUnit von SILiteral || `[5l]S` || literal. || m^3
+| Literal von SILiteral || `{5km}` || l || 5
+| Literal von SILiteral umgerechnet auf Basisunits || `5km` || l || 5000
+| zu StandardUnit (Definition ausstehend)|| [] || ||
+|}
