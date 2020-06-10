@@ -84,23 +84,32 @@ public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
      */
     @Override
     public void visit(ASTUnitBaseDimWithPrefix node) {
-        printer.print(node.getUnit());
-    }
-
-    @Override
-    public void visit(ASTGreekMicro node) {
-        printer.print("µ" + node.getUnit());
-    }
-
-    @Override
-    public void visit(ASTGreekOhm node) {
-        if (node.isPresentPrefix())
-            printer.print(node.getPrefix() + "Ω");
-        else if (node.isPresentMicro())
+        if (node.getUnitWithPrefix().isPresentUnitWithPrefix())
+            printer.print(node.getUnitWithPrefix().getUnitWithPrefix());
+        else if(node.getUnitWithPrefix().isPresentPrefixForOhm())
+            printer.print(node.getUnitWithPrefix().getPrefixForOhm() + "Ω");
+        else if(node.getUnitWithPrefix().isPresentMicroUnit())
+            printer.print("µ" + node.getUnitWithPrefix().getMicroUnit());
+        else if (node.getUnitWithPrefix().isPresentMicroOhm())
             printer.print("µΩ");
         else
             printer.print("Ω");
     }
+
+//    @Override
+//    public void visit(ASTGreekMicro node) {
+//        printer.print("µ" + node.getUnit());
+//    }
+//
+//    @Override
+//    public void visit(ASTGreekOhm node) {
+//        if (node.isPresentPrefix())
+//            printer.print(node.getPrefix() + "Ω");
+//        else if (node.isPresentMicro())
+//            printer.print("µΩ");
+//        else
+//            printer.print("Ω");
+//    }
 
     /**
      * Prints a OfficallyAcceptedUnit

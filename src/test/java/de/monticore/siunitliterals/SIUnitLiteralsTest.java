@@ -1,6 +1,6 @@
 /* (c) https://github.com/MontiCore/monticore */
 
-package de.monticore.siunits.siunitliterals;
+package de.monticore.siunitliterals;
 
 import de.monticore.siunitliterals._ast.ASTSIUnitLiteral;
 import de.monticore.siunitliterals.utility.SIUnitLiteralDecoder;

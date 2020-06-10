@@ -1,6 +1,6 @@
 /* (c) https://github.com/MontiCore/monticore */
 
-package de.monticore.siunits.siunits;
+package de.monticore.siunits;
 
 import de.monticore.testsiunitliterals._parser.TestSIUnitLiteralsParser;
 import de.monticore.siunits._ast.ASTSIUnit;
@@ -25,7 +25,7 @@ public class SIUnitTest {
 
     @BeforeClass
     public static void init() {
-        LogStub.init();
+        Log.init();
         Log.enableFailQuick(false);
     }
 
@@ -73,8 +73,8 @@ public class SIUnitTest {
     public void testOhmAndMu() throws IOException {
         checkSIUnit("Ω", "Ω", "kg*m^2/(A^2*s^3)");
         checkSIUnit("kΩ", "kΩ", "kg*m^2/(A^2*s^3)");
-        checkSIUnit("µΩ", "µΩ", "kg*m^2/(A^2*s^3)");
         checkSIUnit("µg", "µg", "kg");
+        checkSIUnit("µΩ", "µΩ", "kg*m^2/(A^2*s^3)");
 
         checkInvalid("k Ω");
         checkInvalid("µ g");
