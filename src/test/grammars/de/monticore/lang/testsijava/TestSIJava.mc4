@@ -24,17 +24,30 @@ grammar TestSIJava extends de.monticore.SIUnitLiterals,
 
     interface SIJavaClassStatement;
 
+// TODO: streiche assignment
     FieldDeclaration implements Field, SIJavaClassStatement, SIJavaMethodStatement =
         MCType Name ("=" assignment:Expression)? ";";
 
+// TODO: solche extra "fields" braucht es nicht, das macht aus meiner
+// Sicht keinen Sinn. Hab mir die Beispiele angesehen (Die modelle sehen an sich gut aus)
+/* Aber das ist in seiner Allgemeinheit nicht zur Compilezeit typsicher berechenbar:
+           si varM = m;
+        si varS = s;
+        si varSomething = varM * varS;
+        m*s<int> varI_MS = varSomething * 3;
+    Bleibt dabei: Typen sind keine Werte in unseren Sprachen.
+*/
     SIFieldDeclaration implements Field, SIJavaClassStatement, SIJavaMethodStatement =
         "si" Name "=" (SIUnitType4Math | Expression) ";";
 
+// TODO: da kann man "method" auch weglassen?
+// TODO: Function statt Method? (ganz neu rausgekommen)
     MethodDeclaration implements Method, SIJavaClassStatement =
         "method" returnType:MCReturnType Name "(" (SIJavaParameter||",")* ")" "{"
             statement:SIJavaMethodStatement*
         "}";
 
+// TODO: Variable statt Field? (ganz neu rausgekommen)
     SIJavaParameter implements Field =
         MCType Name;
 
