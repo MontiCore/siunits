@@ -23,7 +23,7 @@ The grammar files are (see details below):
 * [SIUnitTypes4Math.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnitTypes4Math.mc4)
 * [SIUnitTypes4Computing.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnitTypes4Computing.mc4)
 
-[_TOC_]
+[[_TOC_]]
 
 ## [SIUnits.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnits.mc4)
 
