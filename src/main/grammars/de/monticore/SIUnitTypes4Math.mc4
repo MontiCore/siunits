@@ -29,6 +29,8 @@ component grammar SIUnitTypes4Math extends
         de.monticore.SIUnits,
         de.monticore.types.MCBasicTypes  {
 
+// TODO: Umbenennung: NT kann verkürzt werden zu SIUnitType (weil in 4Comp auch so verwendet)
+
   SIUnitType4Math implements MCObjectType <100> =
     SIUnit;
 }

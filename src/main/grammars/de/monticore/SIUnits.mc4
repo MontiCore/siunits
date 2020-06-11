@@ -40,7 +40,12 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
 //    SIUnitExpression  -->  SIType
 //    SIUnitExpression  -->  SIUnitCompound
 //    SIUnitExpression  -->  SIUnitComplex
-
+/* Was nehmen wir?
+   Man könnte "SIUnitExpression stehen lassen (ähnlich wie TypeExpression
+   die sind auch keine Expressions), allerdings müsste es dann
+    MultSIUnitExpression  statt SIUnitMultExpression
+   heissen.
+*/ 
 
     /**
      * The SIUnitExpression describes an expression containing 
@@ -137,7 +142,7 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
          '1/' UnitPrefix? UnitKindGroup
        | UnitKindGroup '/' UnitKindGroup
        | UnitKindGroup 'Ω' UnitExponent? UnitKindGroup
-
+        
     fragment token UnitKindGroup = UnitPrefix? ( UnitKind  UnitExponent? )+
 
     fragment token UnitExponent = '^' '-'? [2-9]
@@ -157,6 +162,10 @@ Eine solche Definition hätte natürlich ein Risiko:
 -------------
 Man könnte natürlich "VAh/km" immer noch als drei Token parsen,
 und da dann noSpace nutzen.
+
+    (( Anmerkung: ich war davon ausgegangen, dss "/" nur einmal auftritt. Das scheint nicht der Fall zu sein)
+        und die Klammern hatte ich auch ignoriert ,
+        gut dass es Erklärungen gibt: ```kg/m*s``` &rarr; ```((kg/m)*s)```))
 
 ------------------
 Und übrigens:
