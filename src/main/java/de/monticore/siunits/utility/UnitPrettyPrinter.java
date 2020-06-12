@@ -133,7 +133,9 @@ public class UnitPrettyPrinter {
             else
                 return String.join("*", numerators) + "/(" + String.join("*", denominators) + ")";
         } else {
-            return res;
+            List<String> numerators = Arrays.asList(res.split("\\*"));
+            numerators.sort(String::compareTo);
+            return String.join("*", numerators);
         }
     }
 
