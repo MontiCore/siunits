@@ -50,22 +50,15 @@ public class SynthesizeSymTypeFromSIUnitTypes4MathTest {
     }
 
     private void check(String s) throws IOException {
-        String controlBase = UnitPrettyPrinter.printBaseUnit(s);
-        if (controlBase.equals("rd")) {
-            s.toString();
-        }
-        if (UnitPrettyPrinter.printUnit(s).equals("rd")) {
-            s.toString();
-        }
         ASTSIUnitType4Math asttype = parseSIUnitType4Math(s);
         asttype.setEnclosingScope(scope);
         SymTypeExpression type = tc.symTypeFromAST(asttype);
-        assertEquals(controlBase, type.print());
-        assertEquals(UnitPrettyPrinter.printUnit(s), printBaseType(type));
+        assertEquals(UnitPrettyPrinter.printUnit(s), type.print());
     }
 
     @Test
     public void symTypeFromAST_Test1() throws IOException {
+        check("mm*dm");
         check("m");
         check("km");
         check("m*s^2/km");
@@ -80,10 +73,6 @@ public class SynthesizeSymTypeFromSIUnitTypes4MathTest {
     }
 
     protected String printBaseType(SymTypeExpression symType) {
-        if (symType instanceof SymTypeOfNumericWithSIUnit)
-            return ((SymTypeOfNumericWithSIUnit) symType).printDeclaredType();
-        if (symType instanceof SymTypeOfSIUnit)
-            return ((SymTypeOfSIUnit) symType).printDeclaredType();
         return symType.print();
     }
 }

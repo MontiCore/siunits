@@ -5,7 +5,7 @@ package de.monticore.types.check;
 import de.monticore.symboltable.serialization.JsonDeSers;
 import de.monticore.symboltable.serialization.JsonPrinter;
 import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
-import de.monticore.types.typesymbols._symboltable.TypeSymbolLoader;
+import de.monticore.types.typesymbols._symboltable.OOTypeSymbolLoader;
 
 import javax.measure.unit.Unit;
 
@@ -21,7 +21,7 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
     /**
      * Constructor with all parameters that are stored:
      */
-    public SymTypeOfNumericWithSIUnit(TypeSymbolLoader typeSymbolLoader, SymTypeExpression numericType, SymTypeExpression siunitType) {
+    public SymTypeOfNumericWithSIUnit(OOTypeSymbolLoader typeSymbolLoader, SymTypeExpression numericType, SymTypeExpression siunitType) {
         this.typeSymbolLoader = typeSymbolLoader;
         this.numericType = numericType;
         this.siunitType = siunitType;
@@ -30,7 +30,7 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
     public SymTypeOfNumericWithSIUnit(ITypeSymbolsScope enclosingScope, SymTypeConstant numericType, SymTypeExpression siunitType) {
         this.numericType = numericType;
         this.siunitType = siunitType;
-        this.typeSymbolLoader = new TypeSymbolLoader(print(), enclosingScope);
+        this.typeSymbolLoader = new OOTypeSymbolLoader(print(), enclosingScope);
     }
 
     /**
@@ -41,16 +41,9 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
         return "(" + numericType.print() + "," + siunitType.print() + ")";
     }
 
-    public String printDeclaredType() {
-        String siUnitPrint = siunitType instanceof SymTypeOfSIUnit ?
-                ((SymTypeOfSIUnit) siunitType).printDeclaredType() :
-                siunitType.print();
-        return "(" + numericType.print() + "," + siUnitPrint + ")";
-    }
-
     @Override
     public String toString() {
-        return printDeclaredType();
+        return print();
     }
 
     /**
@@ -70,7 +63,7 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
     @Override
     public SymTypeExpression deepClone() {
         return new SymTypeOfNumericWithSIUnit(
-                new TypeSymbolLoader(this.typeSymbolLoader.getName(), this.typeSymbolLoader.getEnclosingScope()),
+                new OOTypeSymbolLoader(this.typeSymbolLoader.getName(), this.typeSymbolLoader.getEnclosingScope()),
                 this.numericType.deepClone(), this.siunitType.deepClone());
     }
 

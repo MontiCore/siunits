@@ -8,9 +8,9 @@ import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICom
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.types.typesymbols.TypeSymbolsMill;
 import de.monticore.types.typesymbols._symboltable.FieldSymbol;
-import de.monticore.types.typesymbols._symboltable.TypeSymbol;
-import de.monticore.types.typesymbols._symboltable.TypeSymbolLoader;
-import de.monticore.types.typesymbols._symboltable.TypeVarSymbol;
+import de.monticore.types.typesymbols._symboltable.OOTypeSymbol;
+import de.monticore.types.typesymbols._symboltable.OOTypeSymbolLoader;
+import de.monticore.types.basictypesymbols._symboltable.TypeVarSymbol;
 import de.se_rwth.commons.logging.LogStub;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -45,7 +45,7 @@ public class DeriveSymTypeOfExpressionTest {
                         .setExportingSymbols(true)
                         .setAstNode(null)
                         .setName("Phantasy2").build();     // hopefully unused
-        // we add a variety of TypeSymbols to the same scope (which in reality doesn't happen)
+        // we add a variety of OOTypeSymbols to the same scope (which in reality doesn't happen)
         add2scope(scope, DefsTypeBasic._int);
         add2scope(scope, DefsTypeBasic._char);
         add2scope(scope, DefsTypeBasic._boolean);
@@ -58,12 +58,12 @@ public class DeriveSymTypeOfExpressionTest {
         add2scope(scope, DefsTypeBasic._String);
 
         // some FieldSymbols (ie. Variables, Attributes)
-        TypeSymbol p = new TypeSymbol("Person");
+        OOTypeSymbol p = new OOTypeSymbol("Person");
         add2scope(scope, p);
-        TypeSymbol s = new TypeSymbol("Student");
+        OOTypeSymbol s = new OOTypeSymbol("Student");
         add2scope(scope, s);
         s.setSuperTypeList(Lists.newArrayList(SymTypeExpressionFactory.createTypeObject("Person", scope)));
-        TypeSymbol f = new TypeSymbol("FirstSemesterStudent");
+        OOTypeSymbol f = new OOTypeSymbol("FirstSemesterStudent");
         add2scope(scope, f);
         f.setSuperTypeList(Lists.newArrayList(SymTypeExpressionFactory.createTypeObject("Student", scope)));
         add2scope(scope, field("foo", _intSymType));
@@ -76,21 +76,21 @@ public class DeriveSymTypeOfExpressionTest {
 
         //testing for generics
         TypeVarSymbol genArgs = typeVariable("GenArg");
-        TypeSymbol genSuperType = TypeSymbolsMill.typeSymbolBuilder()
+        OOTypeSymbol genSuperType = TypeSymbolsMill.oOTypeSymbolBuilder()
                 .setSpannedScope(TypeSymbolsMill.typeSymbolsScopeBuilder().build())
                 .setTypeParameterList(Lists.newArrayList(genArgs))
                 .setEnclosingScope(scope)
                 .setName("GenSuper")
                 .build();
-        SymTypeExpression genArg = SymTypeExpressionFactory.createTypeVariable(new TypeSymbolLoader("GenArg", scope));
-        SymTypeExpression genSuper = SymTypeExpressionFactory.createGenerics(new TypeSymbolLoader("GenSuper", scope), genArg);
-        TypeSymbol genSubType = TypeSymbolsMill.typeSymbolBuilder()
+        SymTypeExpression genArg = SymTypeExpressionFactory.createTypeVariable(new OOTypeSymbolLoader("GenArg", scope));
+        SymTypeExpression genSuper = SymTypeExpressionFactory.createGenerics(new OOTypeSymbolLoader("GenSuper", scope), genArg);
+        OOTypeSymbol genSubType = TypeSymbolsMill.oOTypeSymbolBuilder()
                 .setSpannedScope(TypeSymbolsMill.typeSymbolsScopeBuilder().build())
                 .setName("GenSub").setSuperTypeList(Lists.newArrayList(genSuper))
                 .setTypeParameterList(Lists.newArrayList(genArgs))
                 .setEnclosingScope(scope)
                 .build();
-        SymTypeExpression genSub = SymTypeExpressionFactory.createGenerics(new TypeSymbolLoader("GenSub", scope), genArg);
+        SymTypeExpression genSub = SymTypeExpressionFactory.createGenerics(new OOTypeSymbolLoader("GenSub", scope), genArg);
         FieldSymbol genSubField = field("genericSub", genSub);
         FieldSymbol genSuperField = field("genericSuper", genSuper);
         add2scope(scope, genSuperType);
@@ -180,10 +180,6 @@ public class DeriveSymTypeOfExpressionTest {
     }
 
     protected String printType(SymTypeExpression symType) {
-        if (symType instanceof SymTypeOfNumericWithSIUnit)
-            return ((SymTypeOfNumericWithSIUnit) symType).printDeclaredType();
-        if (symType instanceof SymTypeOfSIUnit)
-            return ((SymTypeOfSIUnit) symType).printDeclaredType();
         return symType.print();
     }
 

@@ -802,4 +802,8 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         }
         return "";
     }
+
+    protected String printType(SymTypeExpression symType) {
+        return symType.print();
+    }
 }

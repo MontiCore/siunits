@@ -6,7 +6,7 @@ import de.monticore.symboltable.modifiers.AccessModifier;
 import de.monticore.types.check.SymTypeExpression;
 import de.monticore.types.typesymbols._symboltable.FieldSymbol;
 import de.monticore.types.typesymbols._symboltable.MethodSymbol;
-import de.monticore.types.typesymbols._symboltable.TypeSymbol;
+import de.monticore.types.typesymbols._symboltable.OOTypeSymbol;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -43,8 +43,8 @@ public class CombineExpressionsWithLiteralsScope extends CombineExpressionsWithL
     if(this.isPresentSpanningSymbol()){
       IScopeSpanningSymbol spanningSymbol = getSpanningSymbol();
       //if the methodsymbol is in the spanned scope of a typesymbol then look for method in super types too
-      if(spanningSymbol instanceof TypeSymbol){
-        TypeSymbol typeSymbol = ((TypeSymbol) spanningSymbol);
+      if(spanningSymbol instanceof OOTypeSymbol){
+        OOTypeSymbol typeSymbol = ((OOTypeSymbol) spanningSymbol);
         for(SymTypeExpression t : typeSymbol.getSuperTypeList()){
           set.addAll(t.getMethodList(name));
         }
@@ -66,8 +66,8 @@ public class CombineExpressionsWithLiteralsScope extends CombineExpressionsWithL
     if(this.isPresentSpanningSymbol()){
       IScopeSpanningSymbol spanningSymbol = getSpanningSymbol();
       //if the fieldsymbol is in the spanned scope of a typesymbol then look for method in super types too
-      if(spanningSymbol instanceof TypeSymbol){
-        TypeSymbol typeSymbol = (TypeSymbol) spanningSymbol;
+      if(spanningSymbol instanceof OOTypeSymbol){
+        OOTypeSymbol typeSymbol = (OOTypeSymbol) spanningSymbol;
         for(SymTypeExpression superType : typeSymbol.getSuperTypeList()){
           result.addAll(superType.getFieldList(name));
         }
@@ -77,8 +77,8 @@ public class CombineExpressionsWithLiteralsScope extends CombineExpressionsWithL
   }
 
   @Override
-  public List<TypeSymbol> resolveTypeLocallyMany(boolean foundSymbols, String name, AccessModifier modifier, Predicate predicate){
-    List<TypeSymbol> result = super.resolveTypeLocallyMany(foundSymbols,name,modifier,predicate);
+  public List<OOTypeSymbol> resolveTypeLocallyMany(boolean foundSymbols, String name, AccessModifier modifier, Predicate predicate){
+    List<OOTypeSymbol> result = super.resolveTypeLocallyMany(foundSymbols,name,modifier,predicate);
     //    TODO ND: uncomment when adding inner types
     //    if(this.isPresentSpanningSymbol()){
     //      IScopeSpanningSymbol spanningSymbol = getSpanningSymbol();

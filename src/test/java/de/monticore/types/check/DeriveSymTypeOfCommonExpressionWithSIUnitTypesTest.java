@@ -671,4 +671,8 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         }
         return "";
     }
+
+    protected String printType(SymTypeExpression symType) {
+        return symType.print();
+    }
 }

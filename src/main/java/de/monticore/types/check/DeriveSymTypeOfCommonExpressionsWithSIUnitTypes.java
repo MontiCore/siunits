@@ -184,10 +184,6 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
     }
 
     protected String printType(SymTypeExpression symType) {
-        if (symType instanceof SymTypeOfNumericWithSIUnit)
-            return ((SymTypeOfNumericWithSIUnit) symType).printDeclaredType();
-        if (symType instanceof SymTypeOfSIUnit)
-            return ((SymTypeOfSIUnit) symType).printDeclaredType();
         return symType.print();
     }
 }

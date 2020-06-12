@@ -17,7 +17,7 @@ package de.monticore.types.check;
 import de.monticore.siunits.utility.UnitFactory;
 import de.monticore.symboltable.serialization.JsonDeSers;
 import de.monticore.symboltable.serialization.JsonPrinter;
-import de.monticore.types.typesymbols._symboltable.TypeSymbolLoader;
+import de.monticore.types.typesymbols._symboltable.OOTypeSymbolLoader;
 
 import javax.measure.unit.Unit;
 import java.util.ArrayList;
@@ -32,12 +32,12 @@ public class SymTypeOfSIUnitBasic extends SymTypeExpression {
     protected Optional<Integer> exponent = Optional.of(Integer.valueOf(1));
     protected Optional<String> prefix = Optional.of("");
 
-    public SymTypeOfSIUnitBasic(TypeSymbolLoader typeSymbolLoader) {
+    public SymTypeOfSIUnitBasic(OOTypeSymbolLoader typeSymbolLoader) {
         this.typeSymbolLoader = typeSymbolLoader;
         this.getTypeInfo().setSuperTypeList(new ArrayList<>());
     }
 
-    public SymTypeOfSIUnitBasic(TypeSymbolLoader typeSymbolLoader, Integer exponent) {
+    public SymTypeOfSIUnitBasic(OOTypeSymbolLoader typeSymbolLoader, Integer exponent) {
         this.typeSymbolLoader = typeSymbolLoader;
         this.exponent = Optional.ofNullable(exponent);
         this.getTypeInfo().setSuperTypeList(new ArrayList<>());
@@ -75,7 +75,7 @@ public class SymTypeOfSIUnitBasic extends SymTypeExpression {
 
     @Override
     public SymTypeOfSIUnitBasic deepClone() {
-        TypeSymbolLoader newTypeSymbolLoader = new TypeSymbolLoader(typeSymbolLoader.getName(), typeSymbolLoader.getEnclosingScope());
+        OOTypeSymbolLoader newTypeSymbolLoader = new OOTypeSymbolLoader(typeSymbolLoader.getName(), typeSymbolLoader.getEnclosingScope());
         SymTypeOfSIUnitBasic clone;
         if (!exponent.isPresent())
             clone = new SymTypeOfSIUnitBasic(newTypeSymbolLoader);

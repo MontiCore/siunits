@@ -3,8 +3,8 @@
 package de.monticore.types.check;
 
 import de.monticore.siunits.utility.SIUnitConstants;
-import de.monticore.types.typesymbols._symboltable.TypeSymbol;
-import de.monticore.types.typesymbols._symboltable.TypeSymbolLoader;
+import de.monticore.types.typesymbols._symboltable.OOTypeSymbol;
+import de.monticore.types.typesymbols._symboltable.OOTypeSymbolLoader;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolsScope;
 
 import java.util.HashMap;
@@ -49,9 +49,9 @@ public class DefsSIUnitType extends DefsTypeBasic {
 
     private static void createSIUnitBasicTypeAndAddToScope(String name, TypeSymbolsScope scope) {
         if (sIUnitBasicTypes.get(name) != null) return;
-        TypeSymbol newSymbol = type(name);
+        OOTypeSymbol newSymbol = type(name);
         scope.add(newSymbol);
-        SymTypeOfSIUnitBasic newSymType = new SymTypeOfSIUnitBasic(new TypeSymbolLoader(name, scope));
+        SymTypeOfSIUnitBasic newSymType = new SymTypeOfSIUnitBasic(new OOTypeSymbolLoader(name, scope));
         sIUnitBasicTypes.put(name, newSymType);
     }
 
