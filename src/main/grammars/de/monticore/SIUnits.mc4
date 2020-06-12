@@ -24,6 +24,25 @@ package de.monticore;
 
 grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
 
+    concept antlr {
+        parserjava {
+            public static final String prefixRegex =
+                "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|µ|n|p|f|a|z|y)";
+            public static final String unitRegex =
+                "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)";
+            public static final String officialyAcceptedRegex =
+                ("min|h|d|ha|t|au|Np|B|dB|eV|Da|u");
+
+            public boolean isUnitWithPrefix() {
+                return cmpTokenRegEx(1, prefixRegex + "?" + unitRegex);
+            }
+
+            public boolean isUnitWithoutPrefix() {
+                return cmpTokenRegEx(1, officialyAcceptedRegex);
+            }
+        }
+    }
+
     /**
       * Every SIUnit is either a dimensionless unit 
       * such as 'deg' or a SIUnitExpression
@@ -117,20 +136,26 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
     --> das geht durch nutzung eines vollqualifizierten Statischen strings
     oder besser wäre durch eine lokale Variable im Parser. 
     Marita weiss evtl. ob und wie das geht.
+
+   DONE:
+    Die langen Strings sind in cocept antlr ausgelagert, s.o.
    
    Ein alternativer versuch von mir:
-    UnitBaseDimWithPrefix implements SIUnitBasic <10> =
-    { cmpTokenRegEx(1,
-        "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|µ|n|p|f|a|z|y)?" +
-        "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)")
-    }? (Name | NonNameUnit)
-    
-    token NonNameUnit = 
-         'µ'       UnitChar+ 
-       | UnitChar* 'Ω' 
+   DONE:
+    Diese Variante klappt und es gibt auch keine Probleme mit Variablennamen
+   */
+    SIUnitWithPrefix implements SIUnitBasic <10> =
+    { isUnitWithPrefix() }?
+        (Name | NonNameUnit);
+
+    token NonNameUnit =
+         'µ'       UnitChar+
+       | UnitChar* 'Ω'
        | 'µ'       'Ω' ;
 
     fragment token UnitChar = 'a'..'z' | 'A'..'Z' ;
+
+/*
 
 
 -------
@@ -181,19 +206,19 @@ Und übrigens:
         
  */   
     
-    SIUnitWithPrefix implements SIUnitBasic <10> =
-        { cmpTokenRegEx(1,
-            "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|µ|n|p|f|a|z|y)?" +
-            "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)") ||
-          noSpace(2) && cmpTokenRegEx(2,
-            "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)") ||
-          noSpace(2) && cmpToken(2, "Ω") && cmpTokenRegEx(1,
-            "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|µ|n|p|f|a|z|y)")
-        }?
-        NameWithMicroOmega;
-
-    NameWithMicroOmega =
-        unitWithPrefix:Name | "µ" microUnit:Name | prefixForOhm:Name "Ω" | onlyOhm:"Ω" | microOhm:"µΩ";
+//    SIUnitWithPrefix implements SIUnitBasic <10> =
+//        { cmpTokenRegEx(1,
+//            "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|µ|n|p|f|a|z|y)?" +
+//            "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)") ||
+//          noSpace(2) && cmpTokenRegEx(2,
+//            "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)") ||
+//          noSpace(2) && cmpToken(2, "Ω") && cmpTokenRegEx(1,
+//            "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|µ|n|p|f|a|z|y)")
+//        }?
+//        NameWithMicroOmega;
+//
+//    NameWithMicroOmega =
+//        unitWithPrefix:Name | "µ" microUnit:Name | prefixForOhm:Name "Ω" | onlyOhm:"Ω" | microOhm:"µΩ";
 
 
     /**
@@ -204,9 +229,7 @@ Und übrigens:
      * https://en.wikipedia.org/wiki/Non-SI_units_mentioned_in_the_SI
      */
     OfficallyAcceptedUnit implements SIUnitBasic =
-        { next(
-          "min","h","d","ha","t","au","Np","B","dB","eV","Da","u")
-        }? unit:Name;
+        { isUnitWithoutPrefix() }? unit:Name;
 
     /**
      * CelsiusFahrenheit matches "°C" and "°F"

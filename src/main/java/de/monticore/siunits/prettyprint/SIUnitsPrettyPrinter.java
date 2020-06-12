@@ -78,38 +78,14 @@ public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
         printer.print(")");
     }
 
-    /**
-     * Prints a NameWithMicroOmega
-     * @param node NameWithMicroOmega
-     */
-    @Override
-    public void visit(ASTNameWithMicroOmega node) {
-        if (node.isPresentUnitWithPrefix())
-            printer.print(node.getUnitWithPrefix());
-        else if(node.isPresentPrefixForOhm())
-            printer.print(node.getPrefixForOhm() + "Ω");
-        else if(node.isPresentMicroUnit())
-            printer.print("µ" + node.getMicroUnit());
-        else if (node.isPresentMicroOhm())
-            printer.print("µΩ");
-        else
-            printer.print("Ω");
-    }
 
-    //    @Override
-//    public void visit(ASTGreekMicro node) {
-//        printer.print("µ" + node.getUnit());
-//    }
-//
-//    @Override
-//    public void visit(ASTGreekOhm node) {
-//        if (node.isPresentPrefix())
-//            printer.print(node.getPrefix() + "Ω");
-//        else if (node.isPresentMicro())
-//            printer.print("µΩ");
-//        else
-//            printer.print("Ω");
-//    }
+    @Override
+    public void visit(ASTSIUnitWithPrefix node) {
+        if (node.isPresentName())
+            printer.print(node.getName());
+        else
+            printer.print(node.getNonNameUnit());
+    }
 
     /**
      * Prints a OfficallyAcceptedUnit

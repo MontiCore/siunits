@@ -5,6 +5,9 @@ package de.monticore.testsijava;
 siclass MyClass {
     km/h<double> var = 3.0 m/s;
     int varInt = 3;
+    int y = 3;
+    int m = 3;
+    int km = 3;
     method m<int> method1 (int varInt2) {
         // Hier könnte 0 bei rauskommen double -> int
         km/ms^2<int> var2 = 4 m/s^2;
