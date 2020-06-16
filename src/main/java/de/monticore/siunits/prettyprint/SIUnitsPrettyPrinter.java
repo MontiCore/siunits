@@ -28,53 +28,53 @@ public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
     }
 
     /**
-     * Prints a SIUnitMultExpression
-     * @param node SIUnitMultExpression
+     * Prints a SIUnitMult
+     * @param node SIUnitMult
      */
     @Override
-    public void traverse(ASTSIUnitMultExpression node) {
+    public void traverse(ASTSIUnitMult node) {
         node.getLeft().accept(getRealThis());
         printer.print("*");
         node.getRight().accept(getRealThis());
     }
 
     /**
-     * Prints a SIUnitDivExpression
-     * @param node SIUnitDivExpression
+     * Prints a SIUnitDiv
+     * @param node SIUnitDiv
      */
     @Override
-    public void traverse(ASTSIUnitDivExpression node) {
+    public void traverse(ASTSIUnitDiv node) {
         node.getLeft().accept(getRealThis());
         printer.print("/");
         node.getRight().accept(getRealThis());
     }
 
     /**
-     * Prints a ASTSIUnitOneDivExpression
-     * @param node ASTSIUnitOneDivExpression
+     * Prints a ASTSIUnitOneDiv
+     * @param node ASTSIUnitOneDiv
      */
     @Override
-    public void traverse(ASTSIUnitOneDivExpression node) {
+    public void traverse(ASTSIUnitOneDiv node) {
         printer.print("1/");
         node.getRight().accept(getRealThis());
     }
 
     /**
-     * Prints a SIUnitExponentExpression
-     * @param node SIUnitExponentExpression
+     * Prints a SIUnitExponent
+     * @param node SIUnitExponent
      */
     @Override
-    public void endVisit(ASTSIUnitExponentExpression node) {
+    public void endVisit(ASTSIUnitExponent node) {
         printer.print("^" + node.getExponent().getValue());
     }
 
     @Override
-    public void visit(ASTSIUnitBracketExpression node) {
+    public void visit(ASTSIUnitBracket node) {
         printer.print("(");
     }
 
     @Override
-    public void endVisit(ASTSIUnitBracketExpression node) {
+    public void endVisit(ASTSIUnitBracket node) {
         printer.print(")");
     }
 
@@ -114,7 +114,11 @@ public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
      */
     @Override
     public void visit(ASTCelsiusFahrenheit node) {
-        printer.print("°" + node.getUnit());
+        if (node.isPresentName())
+            printer.print("°" + node.getName());
+        else
+            printer.print("°" + node.getNonNameUnit());
+//        printer.print("°" + node.getUnit());
     }
 
 

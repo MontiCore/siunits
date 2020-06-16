@@ -26,19 +26,32 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
 
     concept antlr {
         parserjava {
-            public static final String prefixRegex =
+            public static final String prefix =
                 "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|µ|n|p|f|a|z|y)";
-            public static final String unitRegex =
+            public static final String unitWithPrefix =
                 "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)";
-            public static final String officialyAcceptedRegex =
-                ("min|h|d|ha|t|au|Np|B|dB|eV|Da|u");
-
+            public static final String unitWithoutPrefix =
+                "(min|h|d|ha|t|au|Np|B|dB|eV|Da|u)";
+            public static final String units =
+                "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L|min|h|d|ha|t|au|Np|B|dB|eV|Da|u)";
             public boolean isUnitWithPrefix() {
-                return cmpTokenRegEx(1, prefixRegex + "?" + unitRegex);
+                return cmpTokenRegEx(1, prefix + "?" + unitWithPrefix);
             }
 
             public boolean isUnitWithoutPrefix() {
-                return cmpTokenRegEx(1, officialyAcceptedRegex);
+                return cmpTokenRegEx(1, unitWithoutPrefix);
+            }
+
+            public boolean isSIUnit() {
+                char b = 92; // \ (backslash)
+                char u = 94; // ^
+                String exponent = "(" + b + u + "-?" + b + "d)";
+                String unitKindGroup =
+                    prefix + "?" + unitWithPrefix + exponent + "?(" + units + exponent + "?)*";
+                String unitKindGroupWithoutPrefix =
+                    unitWithoutPrefix + exponent + "?(" + units + exponent + "?)*";
+                String regex = "(" + unitKindGroup + ")|(" + unitKindGroupWithoutPrefix + ")";
+                return cmpTokenRegEx(1, regex);
             }
         }
     }
@@ -48,8 +61,9 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
       * such as 'deg' or a SIUnitExpression
       */
     SIUnit =
-       SIUnitDimensionless | SIUnitExpression;
+       SIUnitDimensionless | SIUnitCompound;
 // TODO EK: Umbenennung
+// Done Umbenennung in SIUnitCompound
 // wir brauchen noch eine Umbenennung,
 // leider ist es mir gerade jetzt erst aufgefallen:
 //    SIUnitExpression  ist ja keine(!) Expression.
@@ -72,27 +86,32 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
      * of 'x*y', 'x/y', 'x^n' and '(x)' 
      * is possible
      */
-    interface SIUnitExpression;
+    interface SIUnitCompound;
 
 // TODO: der Einfachheit halber hier jeweils das "Expression" streichen
-    SIUnitMultExpression implements SIUnitExpression <10> =
-        left:SIUnitExpression "*" right:SIUnitExpression;
+// Done
+    SIUnitMult implements SIUnitCompound <10> =
+        left:SIUnitCompound "*" right:SIUnitCompound;
 
 // TODO: der Einfachheit halber hier jeweils das "Expression" streichen
-    SIUnitOneDivExpression implements SIUnitExpression <20> =
-        "1/" right:SIUnitExpression;
+// Done
+    SIUnitOneDiv implements SIUnitCompound <20> =
+        "1/" right:SIUnitCompound;
 
 // TODO: der Einfachheit halber hier jeweils das "Expression" streichen
-    SIUnitDivExpression implements SIUnitExpression <30> =
-        left:SIUnitExpression "/" right:SIUnitExpression;
+// Done
+    SIUnitDiv implements SIUnitCompound <30> =
+        left:SIUnitCompound "/" right:SIUnitCompound;
 
 // TODO: der Einfachheit halber hier jeweils das "Expression" streichen
-    SIUnitBracketExpression implements SIUnitExpression <40> =
+// Done
+    SIUnitBracket implements SIUnitCompound <40> =
         "(" SIUnit ")";
 
 // TODO: der Einfachheit halber hier jeweils das "Expression" streichen
-    SIUnitExponentExpression implements SIUnitExpression <50> =
-        SIUnitExpression "^" exponent:SignedNatLiteral;
+// Done
+    SIUnitExponent implements SIUnitCompound <50> =
+        SIUnitCompound "^" exponent:SignedNatLiteral;
 
     /**
      * The SIUnitBasics are the primitives of the SIUnitExpressions 
@@ -105,7 +124,7 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
      * Other derived or officialy accepted units are also contained 
      * ('h', 'day', 'Ohm', ...)
      */
-    interface SIUnitBasic extends SIUnitExpression;
+    interface SIUnitBasic extends SIUnitCompound;
 
     /**
      * UnitBaseDimWithPrefix
@@ -119,17 +138,6 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
      * variable names in other places anymore.
      * See also functions available to handle the stored unit.
      */
-//    UnitBaseDimWithPrefix implements SIUnitBasic <10> =
-//        { cmpTokenRegEx(1,
-//            "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|µ|n|p|f|a|z|y)?" +
-//            "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)")
-//        }?
-//        (unit:Name | UnitWithPrefix);
-//
-//    token UnitWithPrefix =
-//        ("Y"|"Z"|"E"|"P"|"T"|"G"|"M"|"k"|"h"|"da"|"d"|"c"|"m"|"u"|"µ"|"n"|"p"|"f"|"a"|"z"|"y")?
-//        ("m"|"g"|"s"|"A"|"K"|"mol"|"cd"|"Hz"|"N"|"Pa"|"J"|"W"|"C"|"V"|"F"|"Ohm"|"Ω"|"S"|"Wb"|"T"|"H"|"lm"|"lx"|"Bq"|"Gy"|"Sv"|"kat"|"l"|"L");
-
 /* TODO:
     Um das schöner zu machen: einen könnten wir die länglichen
     Strings irgendwie auslagern bzw. nur einmal aufschreiben.
@@ -145,80 +153,74 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
     Diese Variante klappt und es gibt auch keine Probleme mit Variablennamen
    */
     SIUnitWithPrefix implements SIUnitBasic <10> =
-    { isUnitWithPrefix() }?
+    { isSIUnit() }?
         (Name | NonNameUnit);
 
-    token NonNameUnit =
-         'µ'       UnitChar+
-       | UnitChar* 'Ω'
-       | 'µ'       'Ω' ;
-
-    fragment token UnitChar = 'a'..'z' | 'A'..'Z' ;
-
-/*
-
-
--------
-  Wobei ich neugierig bin: Man könnte doch durch geeignete Definition der Regex auch 
-  Kombinationen beschreiben, wie etwa "VAh" oder "km/h".
-  Das zugehörige Token (und eine natürlich etwas komplexere regexp) wäre etwa:
-
-    token NonNameUnit = 
-         '1/' UnitPrefix? UnitKindGroup
-       | UnitKindGroup '/' UnitKindGroup
-       | UnitKindGroup 'Ω' UnitExponent? UnitKindGroup
-        
-    fragment token UnitKindGroup = UnitPrefix? ( UnitKind  UnitExponent? )+
-
-    fragment token UnitExponent = '^' '-'? [2-9]
-        
-    fragment token UnitPrefix = 
-        'Y'|'Z'|'E'|'P'|'T'|'G'|'M'|'k'|'h'|'da'|'d'|'c'|'m'|'u'|'µ'|'n'|'p'|'f'|'a'|'z'|'y'
-
-    fragment token UnitKind = 
-        'm'|'g'|'s'|'A'|'K'|'mol'|'cd'|'Hz'|'N'|'Pa'|'J'|'W'|'C'|'V'|'F'|'Ohm'|'Ω'|'S'|'Wb'|'T'|'H'|'lm'|'lx'|'Bq'|'Gy'|'Sv'|'kat'|'l'|'L'
-
-Eine solche Definition hätte natürlich ein Risiko:
-    km/h könnte nun plötzlich an anderer Stelle fälschlicherweise nicht 
-    mehr als Division zweier Variable verarbeitet werden (weshalb ich ja
-    Eine sehr fein begrenzte Definition des Tokens vorgenommen habe,
-    um das Problem zu begrenzen
-    
--------------
-Man könnte natürlich "VAh/km" immer noch als drei Token parsen,
-und da dann noSpace nutzen.
-
-    (( Anmerkung: ich war davon ausgegangen, dss "/" nur einmal auftritt. Das scheint nicht der Fall zu sein)
-        und die Klammern hatte ich auch ignoriert ,
-        gut dass es Erklärungen gibt: ```kg/m*s``` &rarr; ```((kg/m)*s)```))
-
-------------------
-Und übrigens:
- statt eine vorgegebene Funktion cmpTokenRegEx(1, .... mit 
- länglichem mehrfach wiederholtem String
- könnte man auch eine eigendefinierte Funktion nutzen
- (und da dann solche langen Strings verbergen.
- -- sowas wie: {de.monticore.siunit.isSIUnit(foo())}?
- 
- Und Marita sagt Ihnen, was da als foo() einzusetzen ist, um den 
- String des nächsten Token zu bekommen.
-
-        
- */   
-    
-//    SIUnitWithPrefix implements SIUnitBasic <10> =
-//        { cmpTokenRegEx(1,
-//            "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|µ|n|p|f|a|z|y)?" +
-//            "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)") ||
-//          noSpace(2) && cmpTokenRegEx(2,
-//            "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)") ||
-//          noSpace(2) && cmpToken(2, "Ω") && cmpTokenRegEx(1,
-//            "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|µ|n|p|f|a|z|y)")
-//        }?
-//        NameWithMicroOmega;
+//    token NonNameUnit =
+//         'µ'       UnitChar+
+//       | UnitChar* 'Ω'
+//       | 'µ'       'Ω' ;
 //
-//    NameWithMicroOmega =
-//        unitWithPrefix:Name | "µ" microUnit:Name | prefixForOhm:Name "Ω" | onlyOhm:"Ω" | microOhm:"µΩ";
+//    fragment token UnitChar = 'a'..'z' | 'A'..'Z' ;
+//
+//
+//
+//
+//-------
+//  Wobei ich neugierig bin: Man könnte doch durch geeignete Definition der Regex auch
+//  Kombinationen beschreiben, wie etwa "VAh" oder "km/h".
+//  Das zugehörige Token (und eine natürlich etwas komplexere regexp) wäre etwa:
+
+    token NonNameUnit =
+         UnitKindGroup | UnitKindGroupWithoutPrefix;
+
+    fragment token UnitKindGroup =
+            UnitPrefix? UnitKindWithPrefix UnitExponent?
+            ( UnitKind UnitExponent? )*;
+
+    fragment token UnitKindGroupWithoutPrefix =
+            UnitKindWithoutPrefix  UnitExponent?
+            ( UnitKind UnitExponent? )*;
+
+    fragment token UnitExponent = '^' '-'? ('1'..'9');
+
+    fragment token UnitPrefix = 
+        'Y'|'Z'|'E'|'P'|'T'|'G'|'M'|'k'|'h'|"da"|'d'|'c'|'m'|'u'|'µ'|'n'|'p'|'f'|'a'|'z'|'y';
+
+    fragment token UnitKindWithPrefix =
+        'm'|'g'|'s'|'A'|'K'|"mol"|"cd"|"Hz"|'N'|"Pa"|'J'|'W'|'C'|'V'|'F'|"Ohm"|'Ω'|'S'|"Wb"|'T'|'H'|"lm"|"lx"|"Bq"|"Gy"|"Sv"|"kat"|'l'|'L';
+        
+    fragment token UnitKindWithoutPrefix =
+        "min"|'h'|'d'|"ha"|'t'|"au"|"Np"|"B"|"dB"|"eV"|"Da"|'u';
+
+    fragment token UnitKind = UnitKindWithPrefix | UnitKindWithoutPrefix;
+
+//Eine solche Definition hätte natürlich ein Risiko:
+//    km/h könnte nun plötzlich an anderer Stelle fälschlicherweise nicht
+//    mehr als Division zweier Variable verarbeitet werden (weshalb ich ja
+//    Eine sehr fein begrenzte Definition des Tokens vorgenommen habe,
+//    um das Problem zu begrenzen
+//
+//-------------
+//Man könnte natürlich "VAh/km" immer noch als drei Token parsen,
+//und da dann noSpace nutzen.
+//
+//    (( Anmerkung: ich war davon ausgegangen, dss "/" nur einmal auftritt. Das scheint nicht der Fall zu sein)
+//        und die Klammern hatte ich auch ignoriert ,
+//        gut dass es Erklärungen gibt: ```kg/m*s``` &rarr; ```((kg/m)*s)```))
+//
+//------------------
+//Und übrigens:
+// statt eine vorgegebene Funktion cmpTokenRegEx(1, .... mit
+// länglichem mehrfach wiederholtem String
+// könnte man auch eine eigendefinierte Funktion nutzen
+// (und da dann solche langen Strings verbergen.
+// -- sowas wie: {de.monticore.siunit.isSIUnit(foo())}?
+//
+// Und Marita sagt Ihnen, was da als foo() einzusetzen ist, um den
+// String des nächsten Token zu bekommen.
+
+        
 
 
     /**
@@ -237,7 +239,7 @@ Und übrigens:
      * Lookahead needed at the beginning to distinguish with other alternatives
      */
     CelsiusFahrenheit implements SIUnitBasic =
-        { cmpToken(2,"F","C") && noSpace(2) }? "°" unit:Name;
+        { cmpToken(2,"F","C") && noSpace(2) }? "°" (Name| NonNameUnit);
 
 
     /**

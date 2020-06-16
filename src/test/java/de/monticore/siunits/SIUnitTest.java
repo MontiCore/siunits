@@ -2,6 +2,7 @@
 
 package de.monticore.siunits;
 
+import de.monticore.siunits._parser.SIUnitsParser;
 import de.monticore.testsiunitliterals._parser.TestSIUnitLiteralsParser;
 import de.monticore.siunits._ast.ASTSIUnit;
 import de.monticore.siunits.utility.SIUnitConstants;
@@ -21,7 +22,7 @@ import static org.junit.Assert.*;
 
 public class SIUnitTest {
 
-    TestSIUnitLiteralsParser parser = new TestSIUnitLiteralsParser();
+    SIUnitsParser parser = new SIUnitsParser();
 
     @BeforeClass
     public static void init() {
@@ -49,8 +50,25 @@ public class SIUnitTest {
     }
 
     @Test
+    public void testNewCompoundUnits() {
+        String a = "" + '\\' + '^';
+        try {
+            parseSIUnit("kVA");
+            parseSIUnit("kV^2A^3");
+            parseSIUnit("kVAh");
+            parseSIUnit("kVAh/°C");
+            checkInvalid("khA");
+            checkInvalid("VkA");
+        }
+        catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
     public void testSIUnit() {
         try {
+            checkSIUnit("°C", "°C", "K");
             checkSIUnit("kg", "kg", "kg");
             checkSIUnit("cd", "cd", "cd");
             checkSIUnit("m", "m", "m");
@@ -61,7 +79,6 @@ public class SIUnitTest {
             checkSIUnit("deg", "deg", "1");
             checkSIUnit("s^-1", "1/s", "1/s");
             checkSIUnit("1/s", "1/s", "1/s");
-            checkSIUnit("°C", "°C", "K");
             checkSIUnit("°F", "°F", "K");
         }
         catch (IOException e) {
