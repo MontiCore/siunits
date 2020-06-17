@@ -130,19 +130,19 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
 
     fragment token UnitPrefix = 
          'Y'|'Z'|'E'|'P'|'T'|'G'|'M'|'k'|'h'|"da"|'d'|'c'|'m'|'u'
-	|'µ'|'n'|'p'|'f'|'a'|'z'|'y';
+        |'µ'|'n'|'p'|'f'|'a'|'z'|'y';
 
     fragment token UnitKindWithPrefix =
          'm'|'g'|'s'|'A'|'K'|"mol"|"cd"|"Hz"|'N'|"Pa"|'J'|'W'|'C'
-	|'V'|'F'|"Ohm"|'Ω'|'S'|"Wb"|'T'|'H'|"lm"|"lx"|"Bq"|"Gy"
-	|"Sv"|"kat"|'l'|'L';
+        |'V'|'F'|"Ohm"|'Ω'|'S'|"Wb"|'T'|'H'|"lm"|"lx"|"Bq"|"Gy"
+        |"Sv"|"kat"|'l'|'L';
         
     fragment token UnitKindWithoutPrefix =
         "min"|'h'|'d'|"ha"|'t'|"au"|"Np"|"B"|"dB"|"eV"|"Da"|'u';
 
     fragment token UnitKind = UnitKindWithPrefix | UnitKindWithoutPrefix;
 
-// tODO: to handle:
+// TODO: to handle:
 //Eine solche Definition hätte natürlich ein Risiko:
 //    km/h könnte nun plötzlich an anderer Stelle fälschlicherweise nicht
 //    mehr als Division zweier Variable verarbeitet werden (weshalb ich ja
