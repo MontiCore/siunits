@@ -47,7 +47,8 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
         left:SIUnitCompound "/" right:SIUnitCompound;
 
     SIUnitBracket implements SIUnitCompound =
-        "(" SIUnitCompound ")" ("^" exponent:SignedNatLiteral)?;
+        "(" SIUnitCompound ")"
+        ("^" exponent:SignedNatLiteral)?;
 
     /**
      * The SIUnitBasics are the primitives of the SIUnitExpressions 
