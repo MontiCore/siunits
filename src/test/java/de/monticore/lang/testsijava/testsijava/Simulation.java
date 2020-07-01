@@ -55,7 +55,7 @@ public class Simulation {
             Log.error("0xE549012 No such method: " + methodName);
         MethodSymbol methodSymbol = methodSymbolOpt.get();
 
-        for (ASTSIJavaMethodStatement statement : ((ASTMethodDeclaration) methodSymbol.getAstNode()).getStatementList()) {
+        for (ASTSIJavaMethodStatement statement : ((ASTMethodDeclaration) methodSymbol.getAstNode()).getSIJavaMethodStatementList()) {
             FieldSymbol fieldSymbol;
             ASTExpression expression;
             if (statement instanceof ASTVariableDeclaration) {
