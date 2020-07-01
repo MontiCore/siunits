@@ -10,8 +10,6 @@ package de.monticore;
  * The definitions are fully compliant to the definitions given in
  * International Bureau of Weights and Measures (20 May 2019),
  * SI Brochure: The International System of Units (SI) (9th ed.)
- * with exceptions for the aliasing of the non ASCII characters
- * 'µ' to u and 'Ω' to Ohm.
  *
  * SI Units are declared as independent Nonterminal and can then
  * be used as part of a 
@@ -23,38 +21,6 @@ package de.monticore;
  */
 
 grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
-
-    concept antlr {
-        parserjava {
-            public static final String prefix =
-                "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|µ|n|p|f|a|z|y)";
-            public static final String unitWithPrefix =
-                "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)";
-            public static final String unitWithoutPrefix =
-                "(min|h|d|ha|t|au|Np|B|dB|eV|Da|u)";
-            public static final String units =
-                "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L|min|h|d|ha|t|au|Np|B|dB|eV|Da|u)";
-            public boolean isUnitWithPrefix() {
-                return cmpTokenRegEx(1, prefix + "?" + unitWithPrefix);
-            }
-
-            public boolean isUnitWithoutPrefix() {
-                return cmpTokenRegEx(1, unitWithoutPrefix);
-            }
-
-            public boolean isSIUnit() {
-                char b = 92; // \ (backslash)
-                char u = 94; // ^
-                String exponent = "(" + b + u + "-?" + b + "d)";
-                String unitKindGroup =
-                    prefix + "?" + unitWithPrefix + exponent + "?(" + units + exponent + "?)*";
-                String unitKindGroupWithoutPrefix =
-                    unitWithoutPrefix + exponent + "?(" + units + exponent + "?)*";
-                String regex = "(" + unitKindGroup + ")|(" + unitKindGroupWithoutPrefix + ")";
-                return cmpTokenRegEx(1, regex);
-            }
-        }
-    }
 
     /**
       * Every SIUnit is either a dimensionless unit 
@@ -80,11 +46,8 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
     SIUnitDiv implements SIUnitCompound <30> =
         left:SIUnitCompound "/" right:SIUnitCompound;
 
-    SIUnitBracket implements SIUnitCompound <40> =
-        "(" SIUnit ")";
-
-    SIUnitExponent implements SIUnitCompound <50> =
-        SIUnitCompound "^" exponent:SignedNatLiteral;
+    SIUnitBracket implements SIUnitCompound =
+        "(" SIUnitCompound ")" ("^" exponent:SignedNatLiteral)?;
 
     /**
      * The SIUnitBasics are the primitives of the SIUnitExpressions 
@@ -112,25 +75,32 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
      * See also functions available to handle the stored unit.
      */
     SIUnitWithPrefix implements SIUnitBasic <10> =
-    { isSIUnit() }?
-        (Name | NonNameUnit);
+        { isSIUnitGroup() }? Name |
+        NonNameUnit;
 
     token NonNameUnit =
-         UnitKindGroup | UnitKindGroupWithoutPrefix;
+         UnitKindGroup |
+         UnitKindGroup "/" UnitKindGroup |
+         "1/" UnitKindGroup;
 
     fragment token UnitKindGroup =
-            UnitPrefix? UnitKindWithPrefix UnitExponent?
-            ( UnitKind UnitExponent? )*;
+        UnitKindGroupWithPrefix |
+        UnitKindGroupWithoutPrefix;
+
+    fragment token UnitKindGroupWithPrefix =
+        UnitPrefix UnitKindWithPrefix UnitExponent?
+        ( UnitKind UnitExponent? )*;
 
     fragment token UnitKindGroupWithoutPrefix =
-            UnitKindWithoutPrefix  UnitExponent?
-            ( UnitKind UnitExponent? )*;
+        ( UnitKind UnitExponent? )+;
 
     fragment token UnitExponent = '^' '-'? ('1'..'9');
 
     fragment token UnitPrefix = 
          'Y'|'Z'|'E'|'P'|'T'|'G'|'M'|'k'|'h'|"da"|'d'|'c'|'m'|'u'
         |'µ'|'n'|'p'|'f'|'a'|'z'|'y';
+
+    fragment token UnitKind = UnitKindWithPrefix | UnitKindWithoutPrefix;
 
     fragment token UnitKindWithPrefix =
          'm'|'g'|'s'|'A'|'K'|"mol"|"cd"|"Hz"|'N'|"Pa"|'J'|'W'|'C'
@@ -139,8 +109,6 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
         
     fragment token UnitKindWithoutPrefix =
         "min"|'h'|'d'|"ha"|'t'|"au"|"Np"|"B"|"dB"|"eV"|"Da"|'u';
-
-    fragment token UnitKind = UnitKindWithPrefix | UnitKindWithoutPrefix;
 
 // TODO: to handle:
 //Eine solche Definition hätte natürlich ein Risiko:
@@ -158,26 +126,6 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
 //        gut dass es Erklärungen gibt: ```kg/m*s``` &rarr; ```((kg/m)*s)```))
 //
 //------------------
-//Und übrigens:
-// statt eine vorgegebene Funktion cmpTokenRegEx(1, .... mit
-// länglichem mehrfach wiederholtem String
-// könnte man auch eine eigendefinierte Funktion nutzen
-// (und da dann solche langen Strings verbergen.
-// -- sowas wie: {de.monticore.siunit.isSIUnit(foo())}?
-//
-// Und Marita sagt Ihnen, was da als foo() einzusetzen ist, um den
-// String des nächsten Token zu bekommen.
-
-
-    /**
-     * OfficallyAcceptedUnit
-     *
-     * is realized like UnitBaseDimWithPrefix, using a regular matching 
-     * expression according to:
-     * https://en.wikipedia.org/wiki/Non-SI_units_mentioned_in_the_SI
-     */
-    OfficallyAcceptedUnit implements SIUnitBasic =
-        { isUnitWithoutPrefix() }? unit:Name;
 
     /**
      * CelsiusFahrenheit matches "°C" and "°F"
@@ -185,7 +133,7 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
      * Lookahead needed at the beginning to distinguish with other alternatives
      */
     CelsiusFahrenheit implements SIUnitBasic =
-        { cmpToken(2,"F","C") && noSpace(2) }? "°" (Name| NonNameUnit);
+        { cmpToken(2,"F","C") && noSpace(2) }? "°" Name;
 
 
     /**
@@ -194,6 +142,30 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
      */
     SIUnitDimensionless implements SIUnitBasic =
         "°" |
-        { next("deg","rad","sr") }? unit:Name;
+        { cmpToken(1,"deg","rad","sr") }? unit:Name;
+
+    concept antlr {
+        parserjava {
+            private static final String unitPrefix =
+                "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|µ|n|p|f|a|z|y)";
+            private static final String unitKindWithPrefix =
+                "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)";
+            private static final String unitKindWithoutPrefix =
+                "(min|h|d|ha|t|au|Np|B|dB|eV|Da)";
+            private static final String unitKind =
+                "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L|min|h|d|ha|t|au|Np|B|dB|eV|Da)";
+            private static final String other =
+                "(°F|°C|°|deg|rad|sr)";
+
+            public boolean isSIUnitGroup() {
+                String unitKindGroupWithPrefix =
+                    unitPrefix + unitKindWithPrefix + "(" + unitKind + ")*";
+                String unitKindGroupWithoutPrefix =
+                    "(" + unitKind + ")+";
+                String regex = "(" + unitKindGroupWithPrefix + ")|(" + unitKindGroupWithoutPrefix + ")";
+                return cmpTokenRegEx(1, regex);
+            }
+        }
+    }
         
 }

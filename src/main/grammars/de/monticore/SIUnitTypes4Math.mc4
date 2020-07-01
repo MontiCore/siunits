@@ -11,8 +11,6 @@ package de.monticore;
  *   International Bureau of Weights and Measures (20 May 2019),
  *   SI Brochure: The International System of Units (SI)
  *   (9th ed.)
- * with exceptions for the aliasing of the non ASCII
- * characters 'µ' to u and 'Ω' to Ohm
  *
  * With this definition an SI Unit such as "kg/m" 
  * can also be used as type definition.
@@ -30,7 +28,8 @@ component grammar SIUnitTypes4Math extends
         de.monticore.types.MCBasicTypes  {
 
 // TODO: Umbenennung: NT kann verkürzt werden zu SIUnitType (weil in 4Comp auch so verwendet)
+// DONE: s.u.
 
-  SIUnitType4Math implements MCObjectType <100> =
+  SIUnitType implements MCObjectType <100> =
     SIUnit;
 }
