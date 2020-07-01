@@ -2,10 +2,10 @@
 
 package de.monticore.types.check;
 
+import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
 import de.monticore.testsiunitliterals.TestSIUnitLiteralsMill;
 import de.monticore.testsiunitliterals._parser.TestSIUnitLiteralsParser;
 import de.monticore.testsiunitliterals._symboltable.ITestSIUnitLiteralsScope;
-import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
 import de.se_rwth.commons.logging.Log;
 import org.junit.Before;
 import org.junit.BeforeClass;

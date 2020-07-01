@@ -3,10 +3,10 @@ package de.monticore.types.check;
 
 import de.monticore.siunits.utility.SIUnitConstants;
 import de.monticore.siunits.utility.UnitPrettyPrinter;
-import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
-import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
-import de.monticore.lang.testsijava.testsijava._symboltable.ITestSIJavaScope;
-import de.monticore.siunittypes4math._ast.ASTSIUnitType4Math;
+import de.monticore.siunittypes4math._ast.ASTSIUnitType;
+import de.monticore.testsiunittypes.TestSIUnitTypesMill;
+import de.monticore.testsiunittypes._parser.TestSIUnitTypesParser;
+import de.monticore.testsiunittypes._symboltable.TestSIUnitTypesScope;
 import de.se_rwth.commons.logging.Log;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 public class SynthesizeSymTypeFromSIUnitTypes4MathTest {
 
-    private TestSIJavaParser parser = new TestSIJavaParser();
+    private TestSIUnitTypesParser parser = new TestSIUnitTypesParser();
     // This is the TypeChecker under Test:
     private TypeCheck tc = new TypeCheck(new SynthesizeSymTypeFromSIUnitTypes4Math());
 
@@ -31,11 +31,11 @@ public class SynthesizeSymTypeFromSIUnitTypes4MathTest {
         Log.enableFailQuick(false);
     }
 
-    ITestSIJavaScope scope;
+    TestSIUnitTypesScope scope;
 
     @Before
     public void setupForEach() {
-        scope = TestSIJavaMill.testSIJavaScopeBuilder()
+        scope = TestSIUnitTypesMill.testSIUnitTypesScopeBuilder()
                 .setEnclosingScope(null)       // No enclosing Scope: Search ending here
                 .setExportingSymbols(true)
                 .setAstNode(null)
@@ -43,14 +43,14 @@ public class SynthesizeSymTypeFromSIUnitTypes4MathTest {
     }
 
     // ------------------------------------------------------  Tests for Function 1, 1b, 1c
-    private ASTSIUnitType4Math parseSIUnitType4Math(String input) throws IOException {
-        Optional<ASTSIUnitType4Math> res = parser.parseSIUnitType4Math(new StringReader(input));
+    private ASTSIUnitType parseSIUnitType4Math(String input) throws IOException {
+        Optional<ASTSIUnitType> res = parser.parseSIUnitType(new StringReader(input));
         assertTrue(res.isPresent());
         return res.get();
     }
 
     private void check(String s) throws IOException {
-        ASTSIUnitType4Math asttype = parseSIUnitType4Math(s);
+        ASTSIUnitType asttype = parseSIUnitType4Math(s);
         asttype.setEnclosingScope(scope);
         SymTypeExpression type = tc.symTypeFromAST(asttype);
         assertEquals(UnitPrettyPrinter.printUnit(s), type.print());

@@ -3,11 +3,11 @@
 package de.monticore.siunitliterals.prettyprint;
 
 import de.monticore.MCCommonLiteralsPrettyPrinter;
+import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.siunitliterals._ast.ASTSIUnitLiteral;
 import de.monticore.siunitliterals._ast.ASTSignedSIUnitLiteral;
 import de.monticore.siunitliterals._visitor.SIUnitLiteralsVisitor;
 import de.monticore.siunits.prettyprint.SIUnitsPrettyPrinter;
-import de.monticore.prettyprint.IndentPrinter;
 
 public class SIUnitLiteralsPrettyPrinter extends MCCommonLiteralsPrettyPrinter
                                         implements SIUnitLiteralsVisitor {

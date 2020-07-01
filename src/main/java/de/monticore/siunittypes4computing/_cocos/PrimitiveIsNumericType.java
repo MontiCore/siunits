@@ -2,7 +2,6 @@
 
 package de.monticore.siunittypes4computing._cocos;
 
-import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4ComputingInt;
 import de.se_rwth.commons.logging.Log;
 

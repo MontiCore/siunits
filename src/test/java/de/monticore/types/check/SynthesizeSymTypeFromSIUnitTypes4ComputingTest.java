@@ -5,7 +5,7 @@ package de.monticore.types.check;
 import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
 import de.monticore.lang.testsijava.testsijava._symboltable.ITestSIJavaScope;
-import de.monticore.siunittypes4math._ast.ASTSIUnitType4Math;
+import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
 import de.se_rwth.commons.logging.Log;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -42,14 +42,14 @@ public class SynthesizeSymTypeFromSIUnitTypes4ComputingTest {
     }
 
     // ------------------------------------------------------  Tests for Function 1, 1b, 1c
-    private ASTSIUnitType4Math parseSIUnitType4Math(String input) throws IOException {
-        Optional<ASTSIUnitType4Math> res = parser.parseSIUnitType4Math(new StringReader(input));
+    private ASTSIUnitType4Computing parseSIUnitType4Computing(String input) throws IOException {
+        Optional<ASTSIUnitType4Computing> res = parser.parseSIUnitType4Computing(new StringReader(input));
         assertTrue(res.isPresent());
         return res.get();
     }
 
     private void check(String control, String s) throws IOException {
-        ASTSIUnitType4Math asttype = parseSIUnitType4Math(s);
+        ASTSIUnitType4Computing asttype = parseSIUnitType4Computing(s);
         asttype.setEnclosingScope(scope);
         SymTypeExpression type = tc.symTypeFromAST(asttype);
         assertEquals(control, printType(type));

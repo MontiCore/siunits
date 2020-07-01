@@ -1,9 +1,9 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.siunits.prettyprint;
 
+import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.siunits._ast.*;
 import de.monticore.siunits._visitor.SIUnitsVisitor;
-import de.monticore.prettyprint.IndentPrinter;
 
 public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
 
@@ -58,15 +58,15 @@ public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
         printer.print("1/");
         node.getRight().accept(getRealThis());
     }
-
-    /**
-     * Prints a SIUnitExponent
-     * @param node SIUnitExponent
-     */
-    @Override
-    public void endVisit(ASTSIUnitExponent node) {
-        printer.print("^" + node.getExponent().getValue());
-    }
+//
+//    /**
+//     * Prints a SIUnitExponent
+//     * @param node SIUnitExponent
+//     */
+//    @Override
+//    public void endVisit(ASTSIUnitExponent node) {
+//        printer.print("^" + node.getExponent().getValue());
+//    }
 
     @Override
     public void visit(ASTSIUnitBracket node) {
@@ -76,6 +76,8 @@ public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
     @Override
     public void endVisit(ASTSIUnitBracket node) {
         printer.print(")");
+        if (node.isPresentExponent())
+            printer.print("^" + node.getExponent().getValue());
     }
 
 
@@ -86,15 +88,15 @@ public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
         else
             printer.print(node.getNonNameUnit());
     }
-
-    /**
-     * Prints a OfficallyAcceptedUnit
-     * @param node OfficallyAcceptedUnit
-     */
-    @Override
-    public void visit(ASTOfficallyAcceptedUnit node) {
-        printer.print(node.getUnit());
-    }
+//
+//    /**
+//     * Prints a OfficallyAcceptedUnit
+//     * @param node OfficallyAcceptedUnit
+//     */
+//    @Override
+//    public void visit(ASTOfficallyAcceptedUnit node) {
+//        printer.print(node.getUnit());
+//    }
 
     /**
      * Prints a SiUnitDimensionless
@@ -114,11 +116,7 @@ public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
      */
     @Override
     public void visit(ASTCelsiusFahrenheit node) {
-        if (node.isPresentName())
-            printer.print("°" + node.getName());
-        else
-            printer.print("°" + node.getNonNameUnit());
-//        printer.print("°" + node.getUnit());
+        printer.print("°" + node.getName());
     }
 
 

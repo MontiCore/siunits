@@ -2,10 +2,10 @@
 
 package de.monticore.siunittypes4math.prettyprint;
 
+import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.siunits.prettyprint.SIUnitsPrettyPrinter;
 import de.monticore.siunittypes4math._ast.ASTSIUnitTypes4MathNode;
 import de.monticore.siunittypes4math._visitor.SIUnitTypes4MathVisitor;
-import de.monticore.prettyprint.IndentPrinter;
 
 public class SIUnitTypes4MathPrettyPrinter extends SIUnitsPrettyPrinter implements SIUnitTypes4MathVisitor {
 

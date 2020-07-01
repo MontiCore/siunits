@@ -1,11 +1,10 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable;
 
-import de.monticore.lang.testsijava.testsijavawithcustomtypes._visitor.TestSIJavaWithCustomTypesVisitor;
 import de.monticore.customsiunittypes4computing._ast.ASTCustomSIUnitType4Computing;
+import de.monticore.lang.testsijava.testsijavawithcustomtypes._visitor.TestSIJavaWithCustomTypesVisitor;
 import de.monticore.siunits._ast.ASTSIUnit;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
-import de.monticore.siunittypes4math._ast.ASTSIUnitType4Math;
 import de.monticore.types.check.FlatExpressionScopeSetterAbs;
 import de.monticore.types.mcbasictypes._ast.ASTMCPrimitiveType;
 
@@ -30,11 +29,6 @@ public class TestSIJavaWithCustomTypesScopeSetter extends FlatExpressionScopeSet
     @Override
     public TestSIJavaWithCustomTypesVisitor getRealThis() {
         return realThis;
-    }
-
-    @Override
-    public void visit(ASTSIUnitType4Math node) {
-        node.setEnclosingScope(getScope());
     }
 
     @Override

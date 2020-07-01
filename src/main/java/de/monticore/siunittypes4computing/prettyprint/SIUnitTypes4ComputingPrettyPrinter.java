@@ -2,11 +2,12 @@
 
 package de.monticore.siunittypes4computing.prettyprint;
 
+import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.siunits.prettyprint.SIUnitsPrettyPrinter;
+import de.monticore.siunittypes4computing._ast.ASTSIUnitFloatType;
+import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitTypes4ComputingNode;
 import de.monticore.siunittypes4computing._visitor.SIUnitTypes4ComputingVisitor;
-import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
-import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.types.prettyprint.MCBasicTypesPrettyPrinter;
 
 public class SIUnitTypes4ComputingPrettyPrinter extends MCBasicTypesPrettyPrinter
@@ -44,9 +45,17 @@ public class SIUnitTypes4ComputingPrettyPrinter extends MCBasicTypesPrettyPrinte
     @Override
     public void traverse(ASTSIUnitType4Computing node) {
         SIUnitsPrettyPrinter sipp = new SIUnitsPrettyPrinter(printer);
-        node.getSIUnitType4Math().getSIUnit().accept(sipp);
+        node.getSIUnit().accept(sipp);
         printer.print("<");
         node.getMCPrimitiveType().accept(getRealThis());
         printer.print(">");
     }
+
+    @Override
+    public void traverse(ASTSIUnitFloatType node) {
+        SIUnitsPrettyPrinter sipp = new SIUnitsPrettyPrinter(printer);
+        node.getSIUnit().accept(sipp);
+    }
+
+
 }

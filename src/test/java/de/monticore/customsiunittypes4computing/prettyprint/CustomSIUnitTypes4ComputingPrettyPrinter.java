@@ -5,8 +5,8 @@ package de.monticore.customsiunittypes4computing.prettyprint;
 import de.monticore.customsiunittypes4computing._ast.ASTCustomSIUnitType4Computing;
 import de.monticore.customsiunittypes4computing._ast.ASTCustomSIUnitTypes4ComputingNode;
 import de.monticore.customsiunittypes4computing._visitor.CustomSIUnitTypes4ComputingVisitor;
-import de.monticore.siunits.prettyprint.SIUnitsPrettyPrinter;
 import de.monticore.prettyprint.IndentPrinter;
+import de.monticore.siunits.prettyprint.SIUnitsPrettyPrinter;
 import de.monticore.types.prettyprint.MCBasicTypesPrettyPrinter;
 
 public class CustomSIUnitTypes4ComputingPrettyPrinter extends MCBasicTypesPrettyPrinter
@@ -45,6 +45,6 @@ public class CustomSIUnitTypes4ComputingPrettyPrinter extends MCBasicTypesPretty
         node.getMCPrimitiveType().accept(getRealThis());
         printer.print(" in ");
         SIUnitsPrettyPrinter sipp = new SIUnitsPrettyPrinter(printer);
-        node.getSIUnitType4Math().getSIUnit().accept(sipp);
+        node.getSIUnit().accept(sipp);
     }
 }
