@@ -10,7 +10,6 @@ import de.monticore.lang.testsijava.testsijavawithcustomtypes._cocos.TypeCheckCo
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._parser.TestSIJavaWithCustomTypesParser;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.ITestSIJavaWithCustomTypesScope;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.TestSIJavaWithCustomTypesGlobalScope;
-import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.TestSIJavaWithCustomTypesLanguage;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.TestSIJavaWithCustomTypesSymbolTableCreator;
 import de.se_rwth.commons.logging.Log;
 import de.se_rwth.commons.logging.LogStub;
@@ -48,9 +47,8 @@ public class SIJavaWithCustomTypesCoCoTest {
     }
 
     private ITestSIJavaWithCustomTypesScope buildScope(ASTSIJavaClass model) {
-        TestSIJavaWithCustomTypesLanguage lang = new TestSIJavaWithCustomTypesLanguage("TestSIJavaLanguage", "sijava") {};
         String path = "src/test/resources/";
-        ITestSIJavaWithCustomTypesScope globalScope = new TestSIJavaWithCustomTypesGlobalScope(new ModelPath(Paths.get(path)), lang);
+        ITestSIJavaWithCustomTypesScope globalScope = new TestSIJavaWithCustomTypesGlobalScope(new ModelPath(Paths.get(path)), "sijava");
 
         TestSIJavaWithCustomTypesSymbolTableCreator TestSIJavaSymbolTableCreator
                 = TestSIJavaWithCustomTypesMill.testSIJavaWithCustomTypesSymbolTableCreatorBuilder().addToScopeStack(globalScope).build();

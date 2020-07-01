@@ -13,7 +13,7 @@ grammar TestSIJava extends de.monticore.SIUnitLiterals,
                             de.monticore.expressions.AssignmentExpressions,
                             de.monticore.statements.MCCommonStatements,
                             de.monticore.SIUnitTypes4Computing,
-                            de.monticore.SIUnitTypes4Math,
+//                            de.monticore.SIUnitTypes4Math,
                             de.monticore.types.TypeSymbols {
 
     symbol scope SIJavaClass =
@@ -24,9 +24,8 @@ grammar TestSIJava extends de.monticore.SIUnitLiterals,
 
     interface SIJavaClassStatement;
 
-// TODO: streiche assignment
     FieldDeclaration implements Field, SIJavaClassStatement, SIJavaMethodStatement =
-        MCType Name ("=" assignment:Expression)? ";";
+        MCType Name ("=" Expression)? ";";
 
 // TODO: solche extra "fields" braucht es nicht, das macht aus meiner
 // Sicht keinen Sinn. Hab mir die Beispiele angesehen (Die modelle sehen an sich gut aus)
@@ -37,22 +36,30 @@ grammar TestSIJava extends de.monticore.SIUnitLiterals,
         m*s<int> varI_MS = varSomething * 3;
     Bleibt dabei: Typen sind keine Werte in unseren Sprachen.
 */
-    SIFieldDeclaration implements Field, SIJavaClassStatement, SIJavaMethodStatement =
-        "si" Name "=" (SIUnitType4Math | Expression) ";";
+// Done:
+//    SIFieldDeclaration implements Field, SIJavaClassStatement, SIJavaMethodStatement =
+//        "si" Name "=" (SIUnitType | Expression) ";";
 
 // TODO: da kann man "method" auch weglassen?
+// Done: ja das funktioniert
 // TODO: Function statt Method? (ganz neu rausgekommen)
+// TODO: Funktioniert im TypeCheck (noch) nicht? Er findet die Funktion nicht
     MethodDeclaration implements Method, SIJavaClassStatement =
-        "method" returnType:MCReturnType Name "(" (SIJavaParameter||",")* ")" "{"
+        returnType:MCReturnType Name "(" (SIJavaParameter||",")* ")" "{"
             statement:SIJavaMethodStatement*
+            SIJavaMethodReturn?
         "}";
 
 // TODO: Variable statt Field? (ganz neu rausgekommen)
+// TODO: Funktioniert im TypeCheck (noch) nicht? calculateNameExpression unterstützt nur Fields
     SIJavaParameter implements Field =
         MCType Name;
 
     interface SIJavaMethodStatement;
 
-    SIJavaMethodExpression implements SIJavaMethodStatement <10> =
-        expression:Expression ";";
+    SIJavaMethodExpression implements SIJavaMethodStatement =
+        AssignmentExpression ";";
+
+    SIJavaMethodReturn =
+        "return" Expression ";";
 }

@@ -8,7 +8,8 @@ siclass MyClass {
     int y = 3;
     int m = 3;
     int km = 3;
-    method m<int> method1 (int varInt2) {
+
+    m<int> method1 (int varInt2) {
         // Hier könnte 0 bei rauskommen double -> int
         km/ms^2<int> var2 = 4 m/s^2;
         var2 = 5 m / (2s * 5ms);
@@ -16,13 +17,6 @@ siclass MyClass {
         var2 *= varInt2;
         h<int> varS = 3s;
         dm<int> varI_M = 10 m;
-        dm<int> varI_M2 = 10 * method2();
-    }
-
-    method m method2 () {
-        si varM = m;
-        si varS = s;
-        si varSomething = varM * varS;
-        m*s<int> varI_MS = varSomething * 3;
+        return varI_M;
     }
 }

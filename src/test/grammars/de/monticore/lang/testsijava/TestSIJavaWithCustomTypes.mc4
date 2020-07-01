@@ -27,7 +27,7 @@ grammar TestSIJavaWithCustomTypes extends de.monticore.SIUnitLiterals,
         MCType Name ("=" assignment:Expression)? ";";
 
     symbol scope MethodDeclaration implements SIJavaClassStatement =
-        "method" MethodSignature "{"
+        MethodSignature "{"
             statement:SIJavaMethodStatement*
         "}";
 

@@ -8,7 +8,6 @@ import de.monticore.lang.testsijava.testsijava._cocos.TestSIJavaCoCoChecker;
 import de.monticore.lang.testsijava.testsijava._cocos.TypeCheckCoCo;
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
 import de.se_rwth.commons.logging.Log;
-import de.se_rwth.commons.logging.LogStub;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -21,7 +20,7 @@ public class SIJavaCoCoTest {
 
     @BeforeClass
     public static void init() {
-        LogStub.init();
+        Log.init();
         Log.enableFailQuick(false);
     }
 
@@ -69,5 +68,11 @@ public class SIJavaCoCoTest {
     public void testSIModel_WithError2() {
         String model = "de/monticore/lang/testsijava/testsijava/MyClass_WithCoCoError2.sijava";
         typeCheckCoCo(model, true);
+    }
+
+    @Test
+    public void testMain() {
+        String model = "de/monticore/lang/testsijava/testsijava/Main.sijava";
+        typeCheckCoCo(model, false);
     }
 }

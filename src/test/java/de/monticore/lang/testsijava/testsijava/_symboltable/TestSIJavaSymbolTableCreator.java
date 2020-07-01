@@ -3,8 +3,8 @@
 package de.monticore.lang.testsijava.testsijava._symboltable;
 
 import de.monticore.lang.testsijava.testsijava._ast.*;
+import de.monticore.siunittypes4computing._ast.ASTSIUnitFloatType;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
-import de.monticore.siunittypes4math._ast.ASTSIUnitType4Math;
 import de.monticore.types.check.*;
 import de.monticore.types.mcbasictypes._ast.ASTMCPrimitiveType;
 import de.monticore.types.mcbasictypes._ast.ASTMCQualifiedType;
@@ -48,21 +48,22 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
         ASTMCType astType = node.getMCType();
         SymTypeExpression symTypeExpression = tc.symTypeFromAST(astType);
         node.getSymbol().setType(symTypeExpression);
+        node.getSymbol().setIsVariable(true);
     }
 
-    @Override
-    public void endVisit(ASTSIFieldDeclaration node) {
-        super.endVisit(node);
-        // Add type in the symbol table creation process
-        SymTypeExpression symTypeExpression;
-        if (node.isPresentSIUnitType4Math()) {
-            ASTSIUnitType4Math astType = node.getSIUnitType4Math();
-            symTypeExpression = tc.symTypeFromAST(astType);
-        } else {
-            symTypeExpression = tc.typeOf(node.getExpression());
-        }
-        node.getSymbol().setType(symTypeExpression);
-    }
+//    @Override
+//    public void endVisit(ASTSIFieldDeclaration node) {
+//        super.endVisit(node);
+//        // Add type in the symbol table creation process
+//        SymTypeExpression symTypeExpression;
+//        if (node.isPresentSIUnitType()) {
+//            ASTSIUnitType astType = node.getSIUnitType();
+//            symTypeExpression = tc.symTypeFromAST(astType);
+//        } else {
+//            symTypeExpression = tc.typeOf(node.getExpression());
+//        }
+//        node.getSymbol().setType(symTypeExpression);
+//    }
 
     @Override
     public void endVisit(ASTMethodDeclaration node) {
@@ -71,6 +72,8 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
         ASTMCReturnType astType = node.getReturnType();
         SymTypeExpression symTypeExpression = tc.symTypeFromAST(astType);
         node.getSymbol().setReturnType(symTypeExpression);
+
+        // Add parameters
     }
 
     @Override
@@ -80,7 +83,6 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
         ASTMCType astType = node.getMCType();
         SymTypeExpression symTypeExpression = tc.symTypeFromAST(astType);
         node.getSymbol().setType(symTypeExpression);
-
         node.getSymbol().setIsParameter(true);
     }
 
@@ -90,19 +92,26 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
     public void visit(ASTFieldDeclaration node) {
         super.visit(node);
         // Add the enclosing scope to the assignment
-        if (node.isPresentAssignment())
-            node.getAssignment().accept(new TestSIJavaFlatExpressionScopeSetter(node.getEnclosingScope()));
-    }
-
-    @Override
-    public void visit(ASTSIFieldDeclaration node) {
-        super.visit(node);
-        // Add the enclosing scope to the assignment
         if (node.isPresentExpression())
             node.getExpression().accept(new TestSIJavaFlatExpressionScopeSetter(node.getEnclosingScope()));
     }
 
+//    @Override
+//    public void visit(ASTSIFieldDeclaration node) {
+//        super.visit(node);
+//        // Add the enclosing scope to the assignment
+//        if (node.isPresentExpression())
+//            node.getExpression().accept(new TestSIJavaFlatExpressionScopeSetter(node.getEnclosingScope()));
+//    }
+
     public void visit(ASTSIJavaMethodExpression node) {
+        super.visit(node);
+        // Add the enclosing scope to the expression
+        node.getExpression().accept(new TestSIJavaFlatExpressionScopeSetter(scopeStack.getLast()));
+    }
+
+    @Override
+    public void visit(ASTSIJavaMethodReturn node) {
         super.visit(node);
         // Add the enclosing scope to the expression
         node.getExpression().accept(new TestSIJavaFlatExpressionScopeSetter(scopeStack.getLast()));
@@ -114,8 +123,15 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
         node.setEnclosingScope(scopeStack.getLast());
     }
 
+//    @Override
+//    public void visit(ASTSIUnitType node) {
+//        super.visit(node);
+//        node.setEnclosingScope(scopeStack.getLast());
+//    }
+
+
     @Override
-    public void visit(ASTSIUnitType4Math node) {
+    public void visit(ASTSIUnitFloatType node) {
         super.visit(node);
         node.setEnclosingScope(scopeStack.getLast());
     }

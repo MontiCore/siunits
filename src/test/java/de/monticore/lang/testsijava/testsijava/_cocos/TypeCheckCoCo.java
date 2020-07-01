@@ -4,6 +4,7 @@ package de.monticore.lang.testsijava.testsijava._cocos;
 
 import de.monticore.ast.ASTNode;
 import de.monticore.lang.testsijava.testsijava._ast.ASTFieldDeclaration;
+import de.monticore.lang.testsijava.testsijava._ast.ASTMethodDeclaration;
 import de.monticore.lang.testsijava.testsijava._ast.ASTSIJavaClass;
 import de.monticore.lang.testsijava.testsijava._ast.ASTSIJavaMethodExpression;
 import de.monticore.lang.testsijava.testsijava._symboltable.TestSIJavaSymbolTableCreator;
@@ -51,15 +52,15 @@ public class TypeCheckCoCo implements TestSIJavaASTSIJavaClassCoCo {
 
         @Override
         public void visit(ASTFieldDeclaration node) {
-            if (node.isPresentAssignment()) {
+            if (node.isPresentExpression()) {
                 ASTMCType astType = node.getMCType();
                 SymTypeExpression varType = tc.symTypeFromAST(astType);
 
                 try {
                     // should throw an exception if there are incompatible types in the assignment expression
                     //  e.g. [m var = 3m + 3s
-                    if (!tc.isOfTypeForAssign(tc.symTypeFromAST(astType), node.getAssignment())) {
-                        SymTypeExpression assignmentType = tc.typeOf(node.getAssignment());
+                    if (!tc.isOfTypeForAssign(tc.symTypeFromAST(astType), node.getExpression())) {
+                        SymTypeExpression assignmentType = tc.typeOf(node.getExpression());
                         logError_notCompatible(node, varType.print(), assignmentType.print());
                     }
                 } catch (Exception e) {
@@ -76,6 +77,26 @@ public class TypeCheckCoCo implements TestSIJavaASTSIJavaClassCoCo {
                 if (assignmentType2 == null) logError(node, "Incompatible types");
             } catch (Exception e) {
                 logError(node, "Incompatible types");
+            }
+        }
+
+        @Override
+        public void visit(ASTMethodDeclaration node) {
+            if (node.getSymbol().getReturnType().isVoidType()) {
+                if (node.isPresentSIJavaMethodReturn())
+                    logError(node.getSIJavaMethodReturn(), "Return type void incompatible to actual return");
+            } else if (node.isPresentSIJavaMethodReturn()) {
+                try {
+                    // should throw an exception if there are incompatible types
+                    SymTypeExpression returnType = tc.typeOf(node.getSIJavaMethodReturn().getExpression());
+                    if (returnType == null) logError(node.getSIJavaMethodReturn(), "Incompatible types");
+                    if (!TypeCheck.compatible(node.getSymbol().getReturnType(), returnType))
+                        logError(node, "Return type void incompatible to actual return");
+                } catch (Exception e) {
+                    logError(node.getSIJavaMethodReturn(), "Incompatible types");
+                }
+            } else {
+                logError(node, "No return present");
             }
         }
 

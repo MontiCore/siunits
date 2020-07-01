@@ -3,7 +3,7 @@
 package de.monticore.testsijava;
 
 siclass MyClass_WithError2 {
-    method m method2 () {
+    m method2 () {
         si varM = m;
         si varS = s;
         si varSomething = varM * varS;
