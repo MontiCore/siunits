@@ -8,5 +8,5 @@ package de.monticore;
 component grammar CustomSIUnitTypes4Computing extends de.monticore.SIUnitTypes4Computing {
 
     CustomSIUnitType4Computing implements SIUnitType4ComputingInt =
-        MCPrimitiveType "in" SIUnitType4Math;
+        MCPrimitiveType "in" SIUnit;
 }

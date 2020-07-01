@@ -27,7 +27,7 @@ public class SynthesizeSymTypeFromTestSIJava extends TestSIJavaDelegatorVisitor
         symTypeFromSIUnitTypes4Computing.setTypeCheckResult(typeCheckResult);
 
         setMCBasicTypesVisitor(symTypeFromMCBasicTypes);
-        setSIUnitTypes4MathVisitor(symTypeFromSIUnitTypes4Math);
+//        setSIUnitTypes4MathVisitor(symTypeFromSIUnitTypes4Math);
         setSIUnitTypes4ComputingVisitor(symTypeFromSIUnitTypes4Computing);
         setTestSIJavaVisitor(new TestSIJavaBasicVisitor());
 
@@ -59,7 +59,7 @@ public class SynthesizeSymTypeFromTestSIJava extends TestSIJavaDelegatorVisitor
     public TypeCheckResult typeCheckResult;
 
     public Optional<SymTypeExpression> getResult() {
-        return Optional.of(typeCheckResult.getLast());
+        return Optional.of(typeCheckResult.getCurrentResult());
     }
 
     public void setTypeCheckResult(TypeCheckResult typeCheckResult){

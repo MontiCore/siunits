@@ -21,7 +21,7 @@ public class SynthesizeSymTypeOfCombinedTypes extends CombineExpressionsWithLite
 
     @Override
     public Optional<SymTypeExpression> getResult() {
-        return Optional.of(typeCheckResult.getLast());
+        return Optional.of(typeCheckResult.getCurrentResult());
     }
 
     @Override

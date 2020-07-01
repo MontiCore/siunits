@@ -32,21 +32,21 @@ public class DeriveSymTypeOfSIUnitLiterals extends DeriveSymTypeOfMCCommonLitera
     @Override
     public void traverse(ASTSIUnitLiteral node) {
         node.getNumericLiteral().accept(getRealThis());
-        traverseSIUnitLiteral(result.getLast(), node.getSIUnit(), node.getEnclosingScope());
+        traverseSIUnitLiteral(result.getCurrentResult(), node.getSIUnit(), node.getEnclosingScope());
     }
 
     @Override
     public void traverse(ASTSignedSIUnitLiteral node) {
         node.getSignedNumericLiteral().accept(getRealThis());
-        traverseSIUnitLiteral(result.getLast(), node.getSIUnit(), node.getEnclosingScope());
+        traverseSIUnitLiteral(result.getCurrentResult(), node.getSIUnit(), node.getEnclosingScope());
     }
 
     private void traverseSIUnitLiteral(SymTypeExpression literalType, ASTSIUnit astsiUnit, ISIUnitLiteralsScope enclosingScope) {
         SymTypeExpression siunitType = SIUnitSymTypeExpressionFactory.createSIUnit(SIUnitsPrettyPrinter.prettyprint(astsiUnit), getScope(enclosingScope));
         if (siunitType instanceof SymTypeOfSIUnit)
-            result.setLast(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(
+            result.setCurrentResult(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(
                     literalType, siunitType, getScope(enclosingScope)));
         else // case for siunit m/m
-            result.setLast(literalType);
+            result.setCurrentResult(literalType);
     }
 }

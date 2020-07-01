@@ -3,7 +3,7 @@
 package de.monticore.types.check;
 
 import de.monticore.siunits.prettyprint.SIUnitsPrettyPrinter;
-import de.monticore.siunittypes4math._ast.ASTSIUnitType4Math;
+import de.monticore.siunittypes4math._ast.ASTSIUnitType;
 import de.monticore.siunittypes4math._visitor.SIUnitTypes4MathVisitor;
 import de.monticore.types.mcbasictypes._symboltable.IMCBasicTypesScope;
 import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
@@ -47,7 +47,7 @@ public class SynthesizeSymTypeFromSIUnitTypes4Math implements ISynthesize, SIUni
     public TypeCheckResult typeCheckResult = new TypeCheckResult();
 
     public Optional<SymTypeExpression> getResult() {
-        return Optional.of(typeCheckResult.getLast());
+        return Optional.of(typeCheckResult.getCurrentResult());
     }
 
     public void init() {
@@ -59,8 +59,8 @@ public class SynthesizeSymTypeFromSIUnitTypes4Math implements ISynthesize, SIUni
     }
 
     @Override
-    public void endVisit(ASTSIUnitType4Math siunittype) {
-        typeCheckResult.setLast(SIUnitSymTypeExpressionFactory.createSIUnit(
+    public void endVisit(ASTSIUnitType siunittype) {
+        typeCheckResult.setCurrentResult(SIUnitSymTypeExpressionFactory.createSIUnit(
                 SIUnitsPrettyPrinter.prettyprint(siunittype.getSIUnit()), getScope(siunittype.getEnclosingScope())));
     }
 

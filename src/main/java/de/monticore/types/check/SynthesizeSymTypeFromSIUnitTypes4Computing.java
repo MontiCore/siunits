@@ -3,12 +3,13 @@
 package de.monticore.types.check;
 
 import de.monticore.siunits._ast.ASTSIUnit;
+import de.monticore.siunits._symboltable.ISIUnitsScope;
 import de.monticore.siunits.utility.UnitPrettyPrinter;
+import de.monticore.siunittypes4computing._ast.ASTSIUnitFloatType;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4ComputingInt;
 import de.monticore.siunittypes4computing._symboltable.ISIUnitTypes4ComputingScope;
 import de.monticore.siunittypes4computing._visitor.SIUnitTypes4ComputingVisitor;
-import de.monticore.siunittypes4math._ast.ASTSIUnitType4Math;
 import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
 import de.se_rwth.commons.logging.Log;
 
@@ -42,20 +43,20 @@ public class SynthesizeSymTypeFromSIUnitTypes4Computing extends SynthesizeSymTyp
         return realThis;
     }
 
-
-
     @Override
-    public void endVisit(ASTSIUnitType4Math node) {
-        typeCheckResult.setLast(SIUnitSymTypeExpressionFactory.createSIUnit(UnitPrettyPrinter.printUnit(node.getSIUnit()), getScope(node.getEnclosingScope())));
+    public void traverse(ASTSIUnitFloatType node) {
+        SymTypeExpression numericType = SymTypeExpressionFactory.createTypeConstant("double");
+        SymTypeExpression siunitType = null;
+
+        siunitType = SIUnitSymTypeExpressionFactory.createSIUnit(
+                UnitPrettyPrinter.printUnit(node.getSIUnit()), getScope(node.getEnclosingScope()));
+
+        typeCheckResult.setCurrentResult(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(numericType, siunitType, getScope(node.getEnclosingScope())));
     }
 
-    private ITypeSymbolsScope getScope(ISIUnitTypes4ComputingScope enclosingScope) {
-        // is accepted only here, decided on 07.04.2020
-        if(!(enclosingScope instanceof ITypeSymbolsScope)){
-            Log.error("0xAE106 the enclosing scope of the type does not implement the interface ITypeSymbolsScope");
-        }
-        // is accepted only here, decided on 07.04.2020
-        return (ITypeSymbolsScope) enclosingScope;
+    @Override
+    public void visit(ASTSIUnit node) {
+        typeCheckResult.setCurrentResult(SIUnitSymTypeExpressionFactory.createSIUnit(UnitPrettyPrinter.printUnit(node), getScope(node.getEnclosingScope())));
     }
 
     @Override
@@ -68,17 +69,15 @@ public class SynthesizeSymTypeFromSIUnitTypes4Computing extends SynthesizeSymTyp
         SymTypeExpression siunitType = null;
 
         node.getMCPrimitiveType().accept(getRealThis());
-        if (!typeCheckResult.isPresentLast() || !isNumericType(typeCheckResult.getLast())) {
+        if (!typeCheckResult.isPresentCurrentResult() || !isNumericType(typeCheckResult.getCurrentResult())) {
             Log.error("0xA0495");
         }
-        numericType = typeCheckResult.getLast();
+        numericType = typeCheckResult.getCurrentResult();
         typeCheckResult.reset();
-        node.getSIUnitType4Math().accept(getRealThis());
-        if (!typeCheckResult.isPresentLast()){
-            Log.error("0xA0496");
-        }
-        siunitType = typeCheckResult.getLast();
-        typeCheckResult.setLast(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(numericType, siunitType, getScope(node.getEnclosingScope())));
+
+        siunitType = SIUnitSymTypeExpressionFactory.createSIUnit(
+                UnitPrettyPrinter.printUnit(node.getSIUnit()), getScope(node.getEnclosingScope()));
+        typeCheckResult.setCurrentResult(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(numericType, siunitType, getScope(node.getEnclosingScope())));
     }
 
     /**
@@ -89,5 +88,23 @@ public class SynthesizeSymTypeFromSIUnitTypes4Computing extends SynthesizeSymTyp
                 isLong(type) || isInt(type) ||
                 isChar(type) || isShort(type) ||
                 isByte(type));
+    }
+
+    private ITypeSymbolsScope getScope(ISIUnitsScope enclosingScope) {
+        // is accepted only here, decided on 07.04.2020
+        if(!(enclosingScope instanceof ITypeSymbolsScope)){
+            Log.error("0xAE112 the enclosing scope of the type does not implement the interface ITypeSymbolsScope");
+        }
+        // is accepted only here, decided on 07.04.2020
+        return (ITypeSymbolsScope) enclosingScope;
+    }
+
+    private ITypeSymbolsScope getScope(ISIUnitTypes4ComputingScope enclosingScope) {
+        // is accepted only here, decided on 07.04.2020
+        if(!(enclosingScope instanceof ITypeSymbolsScope)){
+            Log.error("0xAE106 the enclosing scope of the type does not implement the interface ITypeSymbolsScope");
+        }
+        // is accepted only here, decided on 07.04.2020
+        return (ITypeSymbolsScope) enclosingScope;
     }
 }

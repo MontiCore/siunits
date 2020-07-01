@@ -1,0 +1,6 @@
+/* (c) https://github.com/MontiCore/monticore */
+package de.monticore;
+
+grammar TestSIUnitTypes extends de.monticore.SIUnitTypes4Math{
+      
+}

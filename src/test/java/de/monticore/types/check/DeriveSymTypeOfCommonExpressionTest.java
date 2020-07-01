@@ -4,7 +4,10 @@ package de.monticore.types.check;
 import com.google.common.collect.Lists;
 import de.monticore.expressions.combineexpressionswithliterals.CombineExpressionsWithLiteralsMill;
 import de.monticore.expressions.combineexpressionswithliterals._parser.CombineExpressionsWithLiteralsParser;
-import de.monticore.expressions.combineexpressionswithliterals._symboltable.*;
+import de.monticore.expressions.combineexpressionswithliterals._symboltable.CombineExpressionsWithLiteralsArtifactScope;
+import de.monticore.expressions.combineexpressionswithliterals._symboltable.CombineExpressionsWithLiteralsGlobalScope;
+import de.monticore.expressions.combineexpressionswithliterals._symboltable.CombineExpressionsWithLiteralsScope;
+import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICombineExpressionsWithLiteralsScope;
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.io.paths.ModelPath;
 import de.monticore.types.basictypesymbols._symboltable.TypeVarSymbol;
@@ -674,13 +677,7 @@ public class DeriveSymTypeOfCommonExpressionTest {
    */
   public void init_advanced() {
     CombineExpressionsWithLiteralsGlobalScope globalScope = CombineExpressionsWithLiteralsMill.combineExpressionsWithLiteralsGlobalScopeBuilder()
-        .setCombineExpressionsWithLiteralsLanguage(
-            new CombineExpressionsWithLiteralsLanguage("CombineExpressionsWithLiterals","ce") {
-              @Override
-              public CombineExpressionsWithLiteralsParser getParser() {
-              return null;
-            }
-            })
+        .setModelFileExtension("ce")
         .setModelPath(new ModelPath())
         .build();
 

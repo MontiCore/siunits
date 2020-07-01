@@ -2,10 +2,10 @@
 
 package de.monticore.siunittypes4math;
 
-import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
-import de.monticore.siunittypes4math.prettyprint.SIUnitTypes4MathPrettyPrinter;
-import de.monticore.siunittypes4math._ast.ASTSIUnitType4Math;
 import de.monticore.prettyprint.IndentPrinter;
+import de.monticore.siunittypes4math._ast.ASTSIUnitType;
+import de.monticore.siunittypes4math.prettyprint.SIUnitTypes4MathPrettyPrinter;
+import de.monticore.testsiunittypes._parser.TestSIUnitTypesParser;
 import de.se_rwth.commons.logging.Log;
 import de.se_rwth.commons.logging.LogStub;
 import org.junit.Before;
@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 
 public class SIUnitTypesTest {
 
-    TestSIJavaParser parser = new TestSIJavaParser();
+    TestSIUnitTypesParser parser = new TestSIUnitTypesParser();
     SIUnitTypes4MathPrettyPrinter prettyPrinter = new SIUnitTypes4MathPrettyPrinter(new IndentPrinter());
 
     @Before
@@ -36,10 +36,10 @@ public class SIUnitTypesTest {
     }
 
     private void test(String control, String s, boolean expectedParseError) {
-        Optional<ASTSIUnitType4Math> astOpt = Optional.empty();
+        Optional<ASTSIUnitType> astOpt = Optional.empty();
         prettyPrinter = new SIUnitTypes4MathPrettyPrinter(new IndentPrinter());
         try {
-            astOpt = parser.parseSIUnitType4Math(new StringReader(s));
+            astOpt = parser.parseSIUnitType(new StringReader(s));
         } catch (IOException e) {
             e.printStackTrace();
         }
