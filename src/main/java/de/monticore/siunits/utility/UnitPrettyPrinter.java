@@ -16,8 +16,8 @@ public class UnitPrettyPrinter {
     /**
      * Prints the unit of a String in a former way, e.g. m*km^-1/g -> 1/kg
      *
-     * @param unit as String to print
-     * @return the String representation of the unit
+     * @param unit some String representation of a unit
+     * @return the formatted String representation of the unit
      */
     public static String printUnit(String unit) {
         return getInstance()._printUnit(unit);
@@ -28,19 +28,11 @@ public class UnitPrettyPrinter {
     }
 
     /**
-     * Prints the standard unit of a String in a former way, e.g. km*kg/g -> m
+     * Prints the unit of a String in a former way, e.g. m*km^-1/g -> 1/kg
      *
-     * @param unit the unit as String to print
-     * @return the String representation of the unit's standard unit
+     * @param unit as String to print
+     * @return the String representation of the unit
      */
-    public static String printStandardUnit(String unit) {
-        return getInstance()._printStandardUnit(unit);
-    }
-
-    private String _printStandardUnit(String unit) {
-        return _printUnit(UnitFactory.createStandardUnit(unit));
-    }
-
     public static String printBaseUnit(String unit) {
         return getInstance()._printBaseUnit(unit);
     }
@@ -69,20 +61,6 @@ public class UnitPrettyPrinter {
 
     private String _printUnit(ASTSIUnit siunit) {
         return _printUnit(UnitFactory.createUnit(siunit));
-    }
-
-    /**
-     * Prints a the standard unit of a {@link de.monticore.siunits._ast.ASTSIUnit} in a former way, e.g. km*kg/g -> m
-     *
-     * @param siunit the {@link de.monticore.siunits._ast.ASTSIUnit} to print
-     * @return the String representation of the unit's standard unit
-     */
-    public static String printStandardUnit(ASTSIUnit siunit) {
-        return getInstance()._printStandardUnit(siunit);
-    }
-
-    private String _printStandardUnit(ASTSIUnit siunit) {
-        return _printUnit(UnitFactory.createStandardUnit(siunit));
     }
 
     public static String printBaseUnit(ASTSIUnit siunit) {
@@ -122,10 +100,9 @@ public class UnitPrettyPrinter {
 
         if (res.contains("/")) {
             String numerator = res.split("/")[0];
-            String denominator = res.split("/")[1];
+            String denominator = res.split("/")[1].replace("(","").replace(")","");
             List<String> numerators = Arrays.asList(numerator.split("\\*"));
-            List<String> denominators = Arrays.asList(denominator.replace("(", "").replace(")", "")
-                    .split("\\*"));
+            List<String> denominators = Arrays.asList(denominator.split("\\*"));
             numerators.sort(String::compareTo);
             denominators.sort(String::compareTo);
             if (denominators.size() == 1)
@@ -137,20 +114,6 @@ public class UnitPrettyPrinter {
             numerators.sort(String::compareTo);
             return String.join("*", numerators);
         }
-    }
-
-    /**
-     * Prints a the standard unit of a {@link javax.measure.unit.Unit} in a former way, e.g. km*kg/g -> m
-     *
-     * @param unit the {@link javax.measure.unit.Unit} to print
-     * @return the String representation of the unit's standard unit
-     */
-    public static String printStandardUnit(Unit unit) {
-        return getInstance()._printStandardUnit(unit);
-    }
-
-    private String _printStandardUnit(Unit unit) {
-        return _printUnit(UnitFactory.createStandardUnit(unit));
     }
 
     public static String printBaseUnit(Unit unit) {

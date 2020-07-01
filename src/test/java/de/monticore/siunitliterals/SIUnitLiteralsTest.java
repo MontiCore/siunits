@@ -2,14 +2,14 @@
 
 package de.monticore.siunitliterals;
 
-import de.monticore.siunitliterals._ast.ASTSIUnitLiteral;
-import de.monticore.siunitliterals.utility.SIUnitLiteralDecoder;
-import de.monticore.testsiunitliterals._parser.TestSIUnitLiteralsParser;
-import de.monticore.siunits.prettyprint.SIUnitsPrettyPrinter;
-import de.monticore.siunits.utility.UnitPrettyPrinter;
 import de.monticore.literals.mccommonliterals._ast.ASTBasicFloatLiteral;
 import de.monticore.literals.mccommonliterals._ast.ASTBasicLongLiteral;
 import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
+import de.monticore.siunitliterals._ast.ASTSIUnitLiteral;
+import de.monticore.siunitliterals.utility.SIUnitLiteralDecoder;
+import de.monticore.siunits.prettyprint.SIUnitsPrettyPrinter;
+import de.monticore.siunits.utility.UnitPrettyPrinter;
+import de.monticore.testsiunitliterals._parser.TestSIUnitLiteralsParser;
 import de.se_rwth.commons.logging.Log;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class SIUnitLiteralsTest {
     }
 
     private void checkSIUnitLiteral(String s, double number, String unit, double value,
-                                    String standardUnit) throws IOException {
+                                    String baseUnit) throws IOException {
         ASTLiteral lit = parseLiteral(s);
         assertTrue(lit instanceof ASTSIUnitLiteral);
 
@@ -39,7 +39,7 @@ public class SIUnitLiteralsTest {
         assertEquals(number, decoder.getDouble((ASTSIUnitLiteral) lit), 0.0001);
         assertEquals(value, decoder.valueOf((ASTSIUnitLiteral) lit), 0.0001);
         assertEquals(unit, unitAsString);
-        assertEquals(standardUnit, UnitPrettyPrinter.printStandardUnit(unitAsString));
+        assertEquals(baseUnit, UnitPrettyPrinter.printBaseUnit(unitAsString));
     }
 
     private void checkLongLiteral(String s) throws IOException {
@@ -76,7 +76,7 @@ public class SIUnitLiteralsTest {
             checkSIUnitLiteral("30.4 s^3/m^2*kg", 30.4, "s^3/m^2*kg", 30.4, "kg*s^3/m^2");
             checkSIUnitLiteral("30.4s^3/m^2*kg", 30.4, "s^3/m^2*kg", 30.4, "kg*s^3/m^2");
             checkSIUnitLiteral("1 h/min", 1, "h/min", 60, "1");
-            checkSIUnitLiteral("30.4 rad", 30.4, "rad", 30.4, "rad");
+            checkSIUnitLiteral("30.4 rad", 30.4, "rad", 30.4, "1");
         } catch (IOException e) {
             fail(e.getMessage());
         }
@@ -86,11 +86,11 @@ public class SIUnitLiteralsTest {
     public void testWithFOrL() {
         try {
             checkSIUnitLiteral("30.2f km", 30.2, "km", 30200, "m");
-            checkSIUnitLiteral("30.4F F", 30.4, "F", 30.4, "F");
+            checkSIUnitLiteral("30.4F F", 30.4, "F", 30.4, "A^2*s^4/(kg*m^2)");
             checkSIUnitLiteral("30.4F kg", 30.4, "kg", 30.4, "kg");
-            checkSIUnitLiteral("30L F", 30, "F", 30, "F");
-            checkSIUnitLiteral("30.2 F", 30.2, "F", 30.2, "F");
-            checkSIUnitLiteral("30F", 30, "F", 30, "F");
+            checkSIUnitLiteral("30L F", 30, "F", 30, "A^2*s^4/(kg*m^2)");
+            checkSIUnitLiteral("30.2 F", 30.2, "F", 30.2, "A^2*s^4/(kg*m^2)");
+            checkSIUnitLiteral("30F", 30, "F", 30, "A^2*s^4/(kg*m^2)");
             checkSIUnitLiteral("30 L", 30, "L", 0.03, "m^3");
             checkSIUnitLiteral("30.2L", 30.2, "L", 0.0302, "m^3");
             checkSIUnitLiteral("30 l", 30, "l", 0.03, "m^3");

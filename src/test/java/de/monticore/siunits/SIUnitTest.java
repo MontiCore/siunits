@@ -2,13 +2,11 @@
 
 package de.monticore.siunits;
 
-import de.monticore.siunits._parser.SIUnitsParser;
-import de.monticore.testsiunitliterals._parser.TestSIUnitLiteralsParser;
 import de.monticore.siunits._ast.ASTSIUnit;
+import de.monticore.siunits._parser.SIUnitsParser;
 import de.monticore.siunits.utility.SIUnitConstants;
 import de.monticore.siunits.utility.UnitPrettyPrinter;
 import de.se_rwth.commons.logging.Log;
-import de.se_rwth.commons.logging.LogStub;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -51,14 +49,25 @@ public class SIUnitTest {
 
     @Test
     public void testNewCompoundUnits() {
-        String a = "" + '\\' + '^';
         try {
+            checkSIUnit("(kV^2A/VA*ks)^3","kVA","kVA");
+            parseSIUnit("s^-1");
+            parseSIUnit("(s)");
+            parseSIUnit("(s)^-1");
             parseSIUnit("kVA");
             parseSIUnit("kV^2A^3");
             parseSIUnit("kVAh");
             parseSIUnit("kVAh/°C");
             checkInvalid("khA");
             checkInvalid("VkA");
+
+            checkSIUnit("s^-1","1/s","1/s");
+            checkSIUnit("(s)","s","s");
+            checkSIUnit("(s)^-1","1/s","1/s");
+            checkSIUnit("kVA","kVA","kVA");
+            checkSIUnit("kV^2A^3","kV^2A^3","kV^2A^3");
+            checkSIUnit("kVAh","kVAh","kVAh");
+            checkSIUnit("kVAh/°C","kVAh/°C","kVAh/°C");
         }
         catch (IOException e) {
             fail(e.getMessage());

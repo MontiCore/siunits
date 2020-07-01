@@ -4,6 +4,8 @@ package de.monticore.siunits.utility;
 
 import de.monticore.siunits._ast.ASTSIUnit;
 import de.monticore.siunits._parser.SIUnitsParser;
+import de.se_rwth.commons.logging.LogStub;
+import org.junit.Before;
 import org.junit.Test;
 
 import javax.measure.unit.Unit;
@@ -15,9 +17,15 @@ import static org.junit.Assert.fail;
 
 public class UnitPrettyPrinterTest {
 
+    @Before
+    public void init() {
+        LogStub.init();
+    }
+
     @Test
     public void test() {
         assertEquals("C*m/(kg*s^2)", UnitPrettyPrinter.printUnit("m/(s*s/(C/kg))"));
+        assertEquals("m/(g*km)", UnitPrettyPrinter.printUnit("m*km^-1/g"));
     }
 
     @Test
@@ -39,8 +47,8 @@ public class UnitPrettyPrinterTest {
         assertEquals(UnitPrettyPrinter.printUnit(s), UnitPrettyPrinter.printUnit(unit));
         assertEquals(UnitPrettyPrinter.printUnit(unit), UnitPrettyPrinter.printUnit(astsiUnit));
 
-        assertEquals(UnitPrettyPrinter.printStandardUnit(s), UnitPrettyPrinter.printStandardUnit(astsiUnit));
-        assertEquals(UnitPrettyPrinter.printStandardUnit(s), UnitPrettyPrinter.printStandardUnit(unit));
-        assertEquals(UnitPrettyPrinter.printStandardUnit(unit), UnitPrettyPrinter.printStandardUnit(astsiUnit));
+        assertEquals(UnitPrettyPrinter.printBaseUnit(s), UnitPrettyPrinter.printBaseUnit(astsiUnit));
+        assertEquals(UnitPrettyPrinter.printBaseUnit(s), UnitPrettyPrinter.printBaseUnit(unit));
+        assertEquals(UnitPrettyPrinter.printBaseUnit(unit), UnitPrettyPrinter.printBaseUnit(astsiUnit));
     }
 }

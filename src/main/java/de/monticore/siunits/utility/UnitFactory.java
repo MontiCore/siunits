@@ -15,18 +15,19 @@ import javax.measure.unit.*;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This class is intended to handle the Units from the jscience package javax.measure.unit.
  * It should be the only class to create Units or to print them. It is mainly used to handle
- * SI units from the grammar de.monticore.siunits.SIUnits.mc4
+ * SI units from the grammar de.monticore.SIUnits.mc4
  */
 public class UnitFactory {
 
     /**
-     * Create a {@link javax.measure.unit.Unit} from a String, e.g. from km/(Ohm*siunit^2)
+     * Create a {@link javax.measure.unit.Unit} from a ASTSIUnit
      *
-     * @param siunit ast of the SIUnit from the grammar de.monticore.siunits.SIUnits
+     * @param siunit ast of the SIUnit from the grammar de.monticore.SIUnits
      * @return a {@link javax.measure.unit.Unit}
      */
     public static Unit createUnit(ASTSIUnit siunit) {
@@ -36,12 +37,69 @@ public class UnitFactory {
     private Unit _createUnit(ASTSIUnit siunit) {
         String print = SIUnitsWithBracketsPrettyPrinter.prettyprint(siunit);
         String str = print
-                .replace("1/", "(m/m)/");
-        return Unit.valueOf(str);
+                .replace("(1/", "((m/m)/");
+        str = resolveUnitKindGroup(str);
+        Unit res = Unit.valueOf(str);
+//        Unit baseUnit = createBaseUnit(res);
+//        res = baseUnit.transform(baseUnit.getConverterTo(res));
+        return res;
+    }
+
+    private String resolveUnitKindGroup(String str) {
+        List<String> unitKindGroups = Arrays.asList(str.split("[\\*/\\/\\)\\(]"))
+                .stream().filter(s -> !s.equals("") && !s.matches("\\^\\-?\\d+"))
+                .collect(Collectors.toList());
+        List<String> allUnits = SIUnitConstants.getAllUnits();
+
+        for (String unitKindGroup : unitKindGroups) {
+            if (!allUnits.contains(unitKindGroup)) {
+                // is something like kVA
+                List<String> compounds = new LinkedList<>();
+                String[] split = unitKindGroup.split("[\\^\\-\\d+]");
+                for (String s : split) {
+                    while (!s.equals("")) {
+                        if (allUnits.contains(s)) {
+                            compounds.add(s);
+                            s = "";
+                        } else {
+                            boolean found = false;
+                            for (String unitWithPrefix : SIUnitConstants.getUnitsWithPrefix()) {
+                                if (s.startsWith(unitWithPrefix)) {
+                                    compounds.add(unitWithPrefix);
+                                    s = s.substring(unitWithPrefix.length());
+                                    found = true;
+                                }
+                            }
+                            if (!found) {
+                                for (String unit : allUnits) {
+                                    if (s.startsWith(unit)) {
+                                        compounds.add(unit);
+                                        s = s.substring(unit.length());
+                                        found = true;
+                                    }
+                                }
+                            }
+                            if (!found) {
+                                Log.error("0xE01654 cannot match unit");
+                                return null;
+                            }
+                        }
+                    }
+                }
+                String newUnitKindGroup = unitKindGroup;
+                for (String compound : compounds) {
+                    newUnitKindGroup = newUnitKindGroup.replace(compound, "*" + compound);
+                }
+                newUnitKindGroup = newUnitKindGroup.substring(1);
+                str = str.replace(unitKindGroup, newUnitKindGroup);
+            }
+        }
+        return str;
     }
 
     /**
-     * Create a {@link javax.measure.unit.Unit} from a String, e.g. from km/(Ohm*siunit^2)
+     * Create a {@link javax.measure.unit.Unit}
+     * from a String, e.g. from km/(Ohm*kg^2)
      *
      * @param siunit the String representation of a unit
      * @return a {@link javax.measure.unit.Unit}
@@ -63,18 +121,26 @@ public class UnitFactory {
         return _createUnit(ast.get());
     }
 
-    public static Unit createBaseUnit(Unit unit) {
-        return getInstance()._createBaseUnit(unit);
+    /**
+     * Create a {@link javax.measure.unit.Unit} as
+     * combination of base units (m, s, mol, A, K, cd, kg)
+     * from a {@link javax.measure.unit.Unit}
+     *
+     * @param {@link javax.measure.unit.Unit}
+     * @return a {@link javax.measure.unit.Unit} as base unit
+     */
+    public static Unit createBaseUnit(Unit siunit) {
+        return getInstance()._createBaseUnit(siunit);
     }
 
-    private Unit _createBaseUnit(Unit unit) {
-        Unit<?> systemUnit = unit.getStandardUnit();
+    private Unit _createBaseUnit(Unit siunit) {
+        Unit<?> systemUnit = siunit.getStandardUnit();
         if (systemUnit instanceof BaseUnit) {
             return systemUnit;
         } else if (systemUnit instanceof AlternateUnit) {
             return _createBaseUnit(((AlternateUnit) systemUnit).getParent());
         } else if (!(systemUnit instanceof ProductUnit)) {
-            Log.error("0xAE101 System Unit cannot be an instance of " + unit.getClass());
+            Log.error("0xAE101 System Unit cannot be an instance of " + siunit.getClass());
             return null;
         } else {
             ProductUnit<?> productUnit = (ProductUnit) systemUnit;
@@ -91,52 +157,42 @@ public class UnitFactory {
         }
     }
 
-    public static Unit createBaseUnit(ASTSIUnit unit) {
-        return getInstance()._createBaseUnit(unit);
+    /**
+     * Create a {@link javax.measure.unit.Unit} as
+     * combination of base units (m, s, mol, A, K, cd, kg)
+     * from a ASTSIUnit
+     *
+     * @param siunit ast of the SIUnit from the grammar de.monticore.SIUnits
+     * @return a {@link javax.measure.unit.Unit} as base unit
+     */
+    public static Unit createBaseUnit(ASTSIUnit siunit) {
+        return getInstance()._createBaseUnit(siunit);
     }
 
-    private Unit _createBaseUnit(ASTSIUnit unit) {
-        String asString = SIUnitsWithBracketsPrettyPrinter.prettyprint(unit);
+    private Unit _createBaseUnit(ASTSIUnit siunit) {
+        String asString = SIUnitsWithBracketsPrettyPrinter.prettyprint(siunit);
         return _createBaseUnit(_createUnit(asString));
     }
 
-    public static Unit createBaseUnit(String unit) {
-        return getInstance()._createBaseUnit(unit);
+    /**
+     * from a String, e.g. from km/(Ohm*kg^2)
+     *
+     * @param siunit the String representation of a unit
+     * @return a {@link javax.measure.unit.Unit}
+     */
+    public static Unit createBaseUnit(String siunit) {
+        return getInstance()._createBaseUnit(siunit);
     }
 
-    private Unit _createBaseUnit(String unit) {
-        return _createBaseUnit(_createUnit(unit));
+    private Unit _createBaseUnit(String siunit) {
+        return _createBaseUnit(_createUnit(siunit));
     }
 
-    public static Unit createStandardUnit(Unit unit) {
-        return getInstance()._createStandardUnit(unit);
-    }
-
-    private Unit _createStandardUnit(Unit unit) {
-        return unit.getStandardUnit();
-    }
-
-    public static Unit createStandardUnit(ASTSIUnit unit) {
-        return getInstance()._createStandardUnit(unit);
-    }
-
-    private Unit _createStandardUnit(ASTSIUnit unit) {
-        return _createStandardUnit(_createUnit(unit));
-    }
-
-    public static Unit createStandardUnit(String unit) {
-        return getInstance()._createStandardUnit(unit);
-    }
-
-    private Unit _createStandardUnit(String unit) {
-        return _createStandardUnit(_createUnit(unit));
+    public static UnitConverter getConverter(Unit source, Unit target) {
+        return source.getConverterTo(target);
     }
 
     public static Unit removePrefixes(Unit unit) {
-        return getInstance()._removePrefixes(unit);
-    }
-
-    private Unit _removePrefixes(Unit unit) {
         if (unit instanceof AlternateUnit) {
             return unit;
         } else if (unit instanceof BaseUnit) {
@@ -145,14 +201,14 @@ public class UnitFactory {
             ProductUnit productUnit = (ProductUnit) unit;
             Unit baseUnits = Unit.ONE;
             for (int i = 0; i < productUnit.getUnitCount(); ++i) {
-                Unit<?> un = _removePrefixes(productUnit.getUnit(i));
+                Unit<?> un = removePrefixes(productUnit.getUnit(i));
                 un = un.pow(productUnit.getUnitPow(i));
                 un = un.root(productUnit.getUnitRoot(i));
                 baseUnits = baseUnits.times(un);
             }
             return baseUnits;
         } else if (unit instanceof TransformedUnit) {
-            return _removePrefixes(((TransformedUnit) unit).getParentUnit());
+            return removePrefixes(((TransformedUnit) unit).getParentUnit());
         }
         return null;
     }
@@ -175,7 +231,7 @@ public class UnitFactory {
         addUnit("au", SI.METRE, new RationalConverter(149597870700L, 1L));
         addUnit("Np", Unit.ONE, new LogConverter(2.718281828459045D));
         addUnit("B", Unit.ONE, new LogConverter(10.0D));
-        addUnit("deg", NonSI.REVOLUTION, new RationalConverter(1L,360L));
+        addUnit("deg", NonSI.REVOLUTION, new RationalConverter(1L, 360L));
         addUnit("Da", SI.KILOGRAM, new MultiplyConverter(1.66053906660E-27D));
         // MBq would be Rd otherwise
         // cGy, cSv would be wrong otherwise
@@ -184,8 +240,8 @@ public class UnitFactory {
         addUnit("cSv", SI.SIEVERT, new RationalConverter(1L, 100L));
 
         Unit Ohm = addUnit("Ohm", SI.OHM, UnitConverter.IDENTITY);
-        Unit LITER = addUnit("L", SI.CUBIC_METRE, new RationalConverter(1L,1000L));
-        Unit Liter = addUnit("l", SI.CUBIC_METRE, new RationalConverter(1L,1000L));
+        Unit LITER = addUnit("L", SI.CUBIC_METRE, new RationalConverter(1L, 1000L));
+        Unit Liter = addUnit("l", SI.CUBIC_METRE, new RationalConverter(1L, 1000L));
 
         // relabel
         UnitFormat.getInstance().label(NonSI.DAY, "d");
@@ -256,7 +312,7 @@ public class UnitFactory {
             else if (convertersNeg[i] == 1.0E24D)
                 converter = new Compound(new RationalConverter(1L, (long) 1.0E18D), new RationalConverter(1L, (long) 1.0E6D));
             else
-                converter = new UniqueConverter(new RationalConverter(1L, (long) convertersNeg[i]),1);
+                converter = new UniqueConverter(new RationalConverter(1L, (long) convertersNeg[i]), 1);
             converters.put(prefixNamesNeg[i], converter);
         }
 
