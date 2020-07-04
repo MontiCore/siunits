@@ -1,7 +1,8 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore;
 
-/* Beta-version: This is intended to become a MontiCore stable grammar. */
+/* This is a MontiCore stable grammar.
+ * Adaptations -- if any -- are conservative. */
 
 /**
  * This grammar declares SI unit also as types 
@@ -26,9 +27,6 @@ package de.monticore;
 component grammar SIUnitTypes4Math extends
         de.monticore.SIUnits,
         de.monticore.types.MCBasicTypes  {
-
-// TODO: Umbenennung: NT kann verkürzt werden zu SIUnitType (weil in 4Comp auch so verwendet)
-// DONE: s.u.
 
   SIUnitType implements MCObjectType <100> =
     SIUnit;
