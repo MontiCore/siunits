@@ -1,0 +1,17 @@
+/* (c) https://github.com/MontiCore/monticore */
+
+package test.de.monticore.lang.testsijava.testsijava;
+
+siclass Main {
+
+    s<double> main () {
+        km/h<double> v = 3 m/s;
+        dm distance = 200 m;
+        return calculateTime(v, distance) * 20;
+    }
+
+    s<double> calculateTime(m/s v, m d) {
+        return d / v;
+    }
+
+}
