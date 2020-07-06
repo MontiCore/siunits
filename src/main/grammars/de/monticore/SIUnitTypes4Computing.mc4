@@ -30,7 +30,7 @@ package de.monticore;
 
 component grammar SIUnitTypes4Computing extends
         de.monticore.types.MCBasicTypes,
-         de.monticore.SIUnits {
+         de.monticore.SIUnitTypes4Math {
 
     interface SIUnitType4ComputingInt extends MCType =
         MCPrimitiveType SIUnit;
