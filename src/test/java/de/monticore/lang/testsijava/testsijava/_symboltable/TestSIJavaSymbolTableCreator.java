@@ -3,8 +3,8 @@
 package de.monticore.lang.testsijava.testsijava._symboltable;
 
 import de.monticore.lang.testsijava.testsijava._ast.*;
-import de.monticore.siunittypes4computing._ast.ASTSIUnitFloatType;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
+import de.monticore.siunittypes4math._ast.ASTSIUnitType;
 import de.monticore.types.check.*;
 import de.monticore.types.mcbasictypes._ast.ASTMCPrimitiveType;
 import de.monticore.types.mcbasictypes._ast.ASTMCQualifiedType;
@@ -131,7 +131,7 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
 
 
     @Override
-    public void visit(ASTSIUnitFloatType node) {
+    public void visit(ASTSIUnitType node) {
         super.visit(node);
         node.setEnclosingScope(scopeStack.getLast());
     }
