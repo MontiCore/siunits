@@ -5,7 +5,6 @@ package de.monticore.types.check;
 import de.monticore.siunits._ast.ASTSIUnit;
 import de.monticore.siunits._symboltable.ISIUnitsScope;
 import de.monticore.siunits.utility.UnitPrettyPrinter;
-import de.monticore.siunittypes4computing._ast.ASTSIUnitFloatType;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4ComputingInt;
 import de.monticore.siunittypes4computing._symboltable.ISIUnitTypes4ComputingScope;
@@ -43,16 +42,6 @@ public class SynthesizeSymTypeFromSIUnitTypes4Computing extends SynthesizeSymTyp
         return realThis;
     }
 
-    @Override
-    public void traverse(ASTSIUnitFloatType node) {
-        SymTypeExpression numericType = SymTypeExpressionFactory.createTypeConstant("double");
-        SymTypeExpression siunitType = null;
-
-        siunitType = SIUnitSymTypeExpressionFactory.createSIUnit(
-                UnitPrettyPrinter.printUnit(node.getSIUnit()), getScope(node.getEnclosingScope()));
-
-        typeCheckResult.setCurrentResult(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(numericType, siunitType, getScope(node.getEnclosingScope())));
-    }
 
     @Override
     public void visit(ASTSIUnit node) {

@@ -27,7 +27,7 @@ public class SynthesizeSymTypeFromTestSIJava extends TestSIJavaDelegatorVisitor
         symTypeFromSIUnitTypes4Computing.setTypeCheckResult(typeCheckResult);
 
         setMCBasicTypesVisitor(symTypeFromMCBasicTypes);
-//        setSIUnitTypes4MathVisitor(symTypeFromSIUnitTypes4Math);
+        setSIUnitTypes4MathVisitor(symTypeFromSIUnitTypes4Math);
         setSIUnitTypes4ComputingVisitor(symTypeFromSIUnitTypes4Computing);
         setTestSIJavaVisitor(new TestSIJavaBasicVisitor());
 

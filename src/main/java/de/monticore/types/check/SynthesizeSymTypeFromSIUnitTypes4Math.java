@@ -2,7 +2,7 @@
 
 package de.monticore.types.check;
 
-import de.monticore.siunits.prettyprint.SIUnitsPrettyPrinter;
+import de.monticore.siunits.utility.UnitPrettyPrinter;
 import de.monticore.siunittypes4math._ast.ASTSIUnitType;
 import de.monticore.siunittypes4math._visitor.SIUnitTypes4MathVisitor;
 import de.monticore.types.mcbasictypes._symboltable.IMCBasicTypesScope;
@@ -59,9 +59,14 @@ public class SynthesizeSymTypeFromSIUnitTypes4Math implements ISynthesize, SIUni
     }
 
     @Override
-    public void endVisit(ASTSIUnitType siunittype) {
-        typeCheckResult.setCurrentResult(SIUnitSymTypeExpressionFactory.createSIUnit(
-                SIUnitsPrettyPrinter.prettyprint(siunittype.getSIUnit()), getScope(siunittype.getEnclosingScope())));
+    public void traverse(ASTSIUnitType node) {
+        SymTypeExpression numericType = SymTypeExpressionFactory.createTypeConstant("double");
+        SymTypeExpression siunitType = null;
+
+        siunitType = SIUnitSymTypeExpressionFactory.createSIUnit(
+                UnitPrettyPrinter.printUnit(node.getSIUnit()), getScope(node.getEnclosingScope()));
+
+        typeCheckResult.setCurrentResult(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(numericType, siunitType, getScope(node.getEnclosingScope())));
     }
 
     public ITypeSymbolsScope getScope (IMCBasicTypesScope mcBasicTypesScope){
