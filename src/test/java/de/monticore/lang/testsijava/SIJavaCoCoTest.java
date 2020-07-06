@@ -56,25 +56,25 @@ public class SIJavaCoCoTest {
 
     @Test
     public void testSIModel() {
-        String model = "de/monticore/lang/testsijava/testsijava/MyClass.sijava";
+        String model = "test/de/monticore/lang/testsijava/testsijava/MyClass.sijava";
         typeCheckCoCo(model, false);
     }
 
     @Test
     public void testSIModel_WithError() {
-        String model = "de/monticore/lang/testsijava/testsijava/MyClass_WithCoCoError.sijava";
+        String model = "test/de/monticore/lang/testsijava/testsijava/MyClass_WithCoCoError.sijava";
         typeCheckCoCo(model, true);
     }
 
     @Test
     public void testSIModel_WithError2() {
-        String model = "de/monticore/lang/testsijava/testsijava/MyClass_WithCoCoError2.sijava";
+        String model = "test/de/monticore/lang/testsijava/testsijava/MyClass_WithCoCoError2.sijava";
         typeCheckCoCo(model, true);
     }
 
     @Test
     public void testMain() {
-        String model = "de/monticore/lang/testsijava/testsijava/Main.sijava";
+        String model = "test/de/monticore/lang/testsijava/testsijava/Main.sijava";
         typeCheckCoCo(model, false);
     }
 }

@@ -35,13 +35,13 @@ public class SIJavaWithCustomTypesTest {
 
     @Test
     public void parseSIModelTest1() {
-        String model = "de/monticore/lang/testsijava/testsijavawithcustomtypes/MyClass.sijava";
+        String model = "test/de/monticore/lang/testsijava/testsijavawithcustomtypes/MyClass.sijava";
         parseModel(model);
     }
 
     @Test
     public void parseSIModelTest2() {
-        String model = "de/monticore/lang/testsijava/testsijavawithcustomtypes/MyClass_WithCoCoError.sijava";
+        String model = "test/de/monticore/lang/testsijava/testsijavawithcustomtypes/MyClass_WithCoCoError.sijava";
         parseModel(model);
     }
 }

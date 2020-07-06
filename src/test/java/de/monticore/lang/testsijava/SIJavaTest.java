@@ -35,19 +35,19 @@ public class SIJavaTest {
 
     @Test
     public void parseSIModelTest1() {
-        String model = "de/monticore/lang/testsijava/testsijava/MyClass.sijava";
+        String model = "test/de/monticore/lang/testsijava/testsijava/MyClass.sijava";
         parseModel(model);
     }
 
     @Test
     public void parseSIModelTest2() {
-        String model = "de/monticore/lang/testsijava/testsijava/MyClass_WithCoCoError.sijava";
+        String model = "test/de/monticore/lang/testsijava/testsijava/MyClass_WithCoCoError.sijava";
         parseModel(model);
     }
 
     @Test
     public void parseMain() {
-        String model = "de/monticore/lang/testsijava/testsijava/Main.sijava";
+        String model = "test/de/monticore/lang/testsijava/testsijava/Main.sijava";
         parseModel(model);
     }
 }

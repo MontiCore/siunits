@@ -71,13 +71,13 @@ public class SIJavaWithCustomTypesCoCoTest {
 
     @Test
     public void testSIModel() {
-        String model = "de/monticore/lang/testsijava/testsijavawithcustomtypes/MyClass.sijava";
+        String model = "test/de/monticore/lang/testsijava/testsijavawithcustomtypes/MyClass.sijava";
         typeCheckCoCo(model, false);
     }
 
     @Test
     public void testSIModel_WithError() {
-        String model = "de/monticore/lang/testsijava/testsijavawithcustomtypes/MyClass_WithCoCoError.sijava";
+        String model = "test/de/monticore/lang/testsijava/testsijavawithcustomtypes/MyClass_WithCoCoError.sijava";
         typeCheckCoCo(model, true);
     }
 }
