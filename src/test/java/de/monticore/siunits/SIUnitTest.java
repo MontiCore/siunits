@@ -8,6 +8,7 @@ import de.monticore.siunits.utility.SIUnitConstants;
 import de.monticore.siunits.utility.UnitPrettyPrinter;
 import de.se_rwth.commons.logging.Log;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -107,6 +108,7 @@ public class SIUnitTest {
         checkInvalid("µ Ω");
     }
 
+    @Ignore
     @Test
     public void testAll() throws IOException {
         List<String> faultyUnits = new ArrayList<>();
