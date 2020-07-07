@@ -131,7 +131,7 @@ public class SIUnitsWithBracketsPrettyPrinter implements SIUnitsVisitor {
      */
     @Override
     public void visit(ASTCelsiusFahrenheit node) {
-        printer.print("°" + node.getName());
+        printer.print("°" + node.getUnit());
     }
 
 

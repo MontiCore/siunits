@@ -133,15 +133,15 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
      *
      * Lookahead needed at the beginning to distinguish with other alternatives
      */
-    CelsiusFahrenheit implements SIUnitBasic <20> =
-        { cmpToken(2,"F","C") && noSpace(2) }? "°" Name;
+    CelsiusFahrenheit implements SIUnitBasic =
+        { cmpToken(2,"F","C") && noSpace(2) }? "°" unit:Name;
 
 
     /**
      * SIUnitDimensionless matches "°" and "deg|rad|sr"
      * according to see https://en.wikipedia.org/wiki/SI_derived_unit
      */
-    SIUnitDimensionless implements SIUnitBasic <10> =
+    SIUnitDimensionless implements SIUnitBasic =
         { !cmpToken(2,"F","C") || !noSpace(2) }? "°" |
         { cmpToken(1,"deg","rad","sr") }? unit:Name;
 

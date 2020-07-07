@@ -48,7 +48,7 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
         ASTMCType astType = node.getMCType();
         SymTypeExpression symTypeExpression = tc.symTypeFromAST(astType);
         node.getSymbol().setType(symTypeExpression);
-        node.getSymbol().setIsVariable(true);
+//        node.getSymbol().setIsVariable(true);
     }
 
 //    @Override
@@ -83,7 +83,7 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
         ASTMCType astType = node.getMCType();
         SymTypeExpression symTypeExpression = tc.symTypeFromAST(astType);
         node.getSymbol().setType(symTypeExpression);
-        node.getSymbol().setIsParameter(true);
+//        node.getSymbol().setIsParameter(true);
     }
 
     // ************************* Set enclosing scope ***********************
