@@ -69,7 +69,7 @@ public class SIUnitsWithBracketsPrettyPrinter implements SIUnitsVisitor {
         node.getRight().accept(getRealThis());
         printer.print(")");
     }
-//
+
 //    /**
 //     * Prints a SIUnitExponent
 //     * @param node SIUnitExponent
@@ -78,7 +78,7 @@ public class SIUnitsWithBracketsPrettyPrinter implements SIUnitsVisitor {
 //    public void visit(ASTSIUnitExponent node) {
 //        printer.print("(");
 //    }
-//
+
 //    /**
 //     * Prints a SIUnitExponent
 //     * @param node SIUnitExponent
@@ -96,16 +96,20 @@ public class SIUnitsWithBracketsPrettyPrinter implements SIUnitsVisitor {
     @Override
     public void endVisit(ASTSIUnitBracket node) {
         printer.print(")");
-        if (node.isPresentExponent())
-            printer.print("^" + node.getExponent().getValue());
     }
+
 
     @Override
     public void visit(ASTSIUnitWithPrefix node) {
         if (node.isPresentName())
             printer.print(node.getName());
-        else
+        else if (node.isPresentNonNameUnit())
             printer.print(node.getNonNameUnit());
+    }
+
+    @Override
+    public void endVisit(ASTSIUnitExponent node) {
+        printer.print("^" + node.getExponent().getSource());
     }
 //
 //    @Override

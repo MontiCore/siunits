@@ -10,58 +10,84 @@ package de.monticore;
  * The definitions are fully compliant to the definitions given in
  * International Bureau of Weights and Measures (20 May 2019),
  * SI Brochure: The International System of Units (SI) (9th ed.)
+ * with exceptions for the aliasing of the non ASCII characters
+ * 'µ' to u and 'Ω' to Ohm.
  *
  * SI Units are declared as independent Nonterminal and can then
- * be used as part of a 
+ * be used as part of a
  * * value definition, such as "5kg", or
  * * type definition, such as "km/h"
- * 
+ *
  * The grammar extends the MontiCore common literals, because it uses
  * natural numbers e.g. as exponent.
  */
 
 grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
 
+    concept antlr {
+
+        parserjava {
+            public static final String prefix =
+                "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|µ|n|p|f|a|z|y)";
+            public static final String unitWithPrefix =
+                "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)";
+            public static final String unitWithoutPrefix =
+                "(min|h|d|ha|t|au|Np|B|dB|eV|Da|u)";
+            public static final String units =
+                "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L|min|h|d|ha|t|au|Np|B|dB|eV|Da|u)";
+
+            public boolean isSIUnit() {
+                String unitKindGroupWithPrefix =
+                    prefix + "?" + unitWithPrefix + units + "*";
+                String unitKindGroupWithoutPrefix =
+                    unitWithoutPrefix + "?" + units + "*";
+                String regex = "(" + unitKindGroupWithPrefix + ")|(" + unitKindGroupWithoutPrefix + ")";
+                return cmpTokenRegEx(1, regex);
+            }
+        }
+    }
+
     /**
-      * Every SIUnit is either a dimensionless unit 
+      * Every SIUnit is either a dimensionless unit
       * such as 'deg' or a SIUnitExpression
       */
-    SIUnit =
-       SIUnitDimensionless | SIUnitCompound;
+    interface SIUnit;
 
     /**
-     * The SIUnitExpression describes an expression containing 
-     * SIUnitBasics as primitives so that every combination 
-     * of 'x*y', 'x/y', 'x^n' and '(x)' 
+     * The SIUnitExpression describes an expression containing
+     * SIUnitBasics as primitives so that every combination
+     * of 'x*y', 'x/y', 'x^n' and '(x)'
      * is possible
      */
-    interface SIUnitCompound;
 
-    SIUnitMult implements SIUnitCompound <10> =
-        left:SIUnitCompound "*" right:SIUnitCompound;
+    SIUnitMult implements SIUnit <10> =
+        left:SIUnit "*" right:SIUnit;
 
-    SIUnitOneDiv implements SIUnitCompound <20> =
-        "1/" right:SIUnitCompound;
+    SIUnitOneDiv implements SIUnit <20> =
+        "1/" right:SIUnit;
 
-    SIUnitDiv implements SIUnitCompound <30> =
-        left:SIUnitCompound "/" right:SIUnitCompound;
+    SIUnitDiv implements SIUnit <30> =
+        left:SIUnit "/" right:SIUnit;
 
-    SIUnitBracket implements SIUnitCompound =
-        "(" SIUnitCompound ")"
-        ("^" exponent:SignedNatLiteral)?;
+    SIUnitBracket implements SIUnit <40> =
+        "(" SIUnit ")";
+
+    SIUnitExponent implements SIUnit <50> =
+        SIUnit "^" exponent:SignedNatLiteral;
 
     /**
-     * The SIUnitBasics are the primitives of the SIUnitExpressions 
-     * 
-     * SIUnitBasics contains the basic SI units without prefixes 
-     * such as 'm', 's' or 'kg' 
-     * as well as the basic SI units with prefixes 
+     * The SIUnitBasics are the primitives of the SIUnitExpressions
+     *
+     * SIUnitBasics contains the basic SI units without prefixes
+     * such as 'm', 's' or 'kg'
+     * as well as the basic SI units with prefixes
      * such as 'km', 'mm' or 'ms'.
      *
-     * Other derived or officialy accepted units are also contained 
+     * Other derived or officialy accepted units are also contained
      * ('h', 'day', 'Ohm', ...)
      */
-    interface SIUnitBasic extends SIUnitCompound;
+    interface SIUnitPrimitive extends SIUnit;
+
 
     /**
      * UnitBaseDimWithPrefix
@@ -75,43 +101,63 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
      * variable names in other places anymore.
      * See also functions available to handle the stored unit.
      */
-    SIUnitWithPrefix implements SIUnitBasic <10> =
-        { isSIUnitGroup() }? Name |
-        NonNameUnit;
+/* TODO:
+    Um das schöner zu machen: einen könnten wir die länglichen
+    Strings irgendwie auslagern bzw. nur einmal aufschreiben.
+    --> das geht durch nutzung eines vollqualifizierten Statischen strings
+    oder besser wäre durch eine lokale Variable im Parser.
+    Marita weiss evtl. ob und wie das geht.
+
+   DONE:
+    Die langen Strings sind in cocept antlr ausgelagert, s.o.
+
+   Ein alternativer versuch von mir:
+   DONE:
+    Diese Variante klappt und es gibt auch keine Probleme mit Variablennamen
+   */
+    SIUnitWithPrefix implements SIUnitPrimitive <10> =
+    { isSIUnit() }? Name
+    | NonNameUnit;
+
+//    token NonNameUnit =
+//         'µ'       UnitChar+
+//       | UnitChar* 'Ω'
+//       | 'µ'       'Ω' ;
+//
+//    fragment token UnitChar = 'a'..'z' | 'A'..'Z' ;
+//
+//
+//
+//
+//-------
+//  Wobei ich neugierig bin: Man könnte doch durch geeignete Definition der Regex auch
+//  Kombinationen beschreiben, wie etwa "VAh" oder "km/h".
+//  Das zugehörige Token (und eine natürlich etwas komplexere regexp) wäre etwa:
 
     token NonNameUnit =
-         UnitKindGroup |
-         UnitKindGroup "/" UnitKindGroup |
-         "1/" UnitKindGroup;
+         UnitKindGroup | UnitKindGroupWithoutPrefix;
 
     fragment token UnitKindGroup =
-        UnitKindGroupWithPrefix |
-        UnitKindGroupWithoutPrefix;
-
-    fragment token UnitKindGroupWithPrefix =
-        UnitPrefix UnitKindWithPrefix UnitExponent?
-        ( UnitKind UnitExponent? )*;
+            UnitPrefix? UnitKindWithPrefix UnitExponent?
+            ( UnitKind UnitExponent? )*;
 
     fragment token UnitKindGroupWithoutPrefix =
-        ( UnitKind UnitExponent? )+;
+            UnitKindWithoutPrefix  UnitExponent?
+            ( UnitKind UnitExponent? )*;
 
     fragment token UnitExponent = '^' '-'? ('1'..'9');
 
-    fragment token UnitPrefix = 
-         'Y'|'Z'|'E'|'P'|'T'|'G'|'M'|'k'|'h'|"da"|'d'|'c'|'m'|'u'
-        |'µ'|'n'|'p'|'f'|'a'|'z'|'y';
-
-    fragment token UnitKind = UnitKindWithPrefix | UnitKindWithoutPrefix;
+    fragment token UnitPrefix =
+        'Y'|'Z'|'E'|'P'|'T'|'G'|'M'|'k'|'h'|"da"|'d'|'c'|'m'|'u'|'µ'|'n'|'p'|'f'|'a'|'z'|'y';
 
     fragment token UnitKindWithPrefix =
-         'm'|'g'|'s'|'A'|'K'|"mol"|"cd"|"Hz"|'N'|"Pa"|'J'|'W'|'C'
-        |'V'|'F'|"Ohm"|'Ω'|'S'|"Wb"|'T'|'H'|"lm"|"lx"|"Bq"|"Gy"
-        |"Sv"|"kat"|'l'|'L';
-        
+        'm'|'g'|'s'|'A'|'K'|"mol"|"cd"|"Hz"|'N'|"Pa"|'J'|'W'|'C'|'V'|'F'|"Ohm"|'Ω'|'S'|"Wb"|'T'|'H'|"lm"|"lx"|"Bq"|"Gy"|"Sv"|"kat"|'l'|'L';
+
     fragment token UnitKindWithoutPrefix =
         "min"|'h'|'d'|"ha"|'t'|"au"|"Np"|"B"|"dB"|"eV"|"Da"|'u';
 
-// TODO: to handle:
+    fragment token UnitKind = UnitKindWithPrefix | UnitKindWithoutPrefix;
+
 //Eine solche Definition hätte natürlich ein Risiko:
 //    km/h könnte nun plötzlich an anderer Stelle fälschlicherweise nicht
 //    mehr als Division zweier Variable verarbeitet werden (weshalb ich ja
@@ -127,13 +173,23 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
 //        gut dass es Erklärungen gibt: ```kg/m*s``` &rarr; ```((kg/m)*s)```))
 //
 //------------------
+//Und übrigens:
+// statt eine vorgegebene Funktion cmpTokenRegEx(1, .... mit
+// länglichem mehrfach wiederholtem String
+// könnte man auch eine eigendefinierte Funktion nutzen
+// (und da dann solche langen Strings verbergen.
+// -- sowas wie: {de.monticore.siunit.isSIUnit(foo())}?
+//
+// Und Marita sagt Ihnen, was da als foo() einzusetzen ist, um den
+// String des nächsten Token zu bekommen.
+
 
     /**
      * CelsiusFahrenheit matches "°C" and "°F"
      *
      * Lookahead needed at the beginning to distinguish with other alternatives
      */
-    CelsiusFahrenheit implements SIUnitBasic =
+    CelsiusFahrenheit implements SIUnitPrimitive <50> =
         { cmpToken(2,"F","C") && noSpace(2) }? "°" unit:Name;
 
 
@@ -141,32 +197,8 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
      * SIUnitDimensionless matches "°" and "deg|rad|sr"
      * according to see https://en.wikipedia.org/wiki/SI_derived_unit
      */
-    SIUnitDimensionless implements SIUnitBasic =
-        { !cmpToken(2,"F","C") || !noSpace(2) }? "°" |
+    SIUnitDimensionless implements SIUnitPrimitive <10> =
+        "°" |
         { cmpToken(1,"deg","rad","sr") }? unit:Name;
-
-    concept antlr {
-        parserjava {
-            private static final String unitPrefix =
-                "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|µ|n|p|f|a|z|y)";
-            private static final String unitKindWithPrefix =
-                "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L)";
-            private static final String unitKindWithoutPrefix =
-                "(min|h|d|ha|t|au|Np|B|dB|eV|Da)";
-            private static final String unitKind =
-                "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L|min|h|d|ha|t|au|Np|B|dB|eV|Da)";
-            private static final String other =
-                "(°F|°C|°|deg|rad|sr)";
-
-            public boolean isSIUnitGroup() {
-                String unitKindGroupWithPrefix =
-                    unitPrefix + unitKindWithPrefix + "(" + unitKind + ")*";
-                String unitKindGroupWithoutPrefix =
-                    "(" + unitKind + ")+";
-                String regex = "(" + unitKindGroupWithPrefix + ")|(" + unitKindGroupWithoutPrefix + ")";
-                return cmpTokenRegEx(1, regex);
-            }
-        }
-    }
         
 }
