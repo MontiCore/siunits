@@ -116,15 +116,15 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
     Diese Variante klappt und es gibt auch keine Probleme mit Variablennamen
    */
     SIUnitWithPrefix implements SIUnitPrimitive <10> =
-    { isSIUnit() }? Name
-    | NonNameUnit;
+    { isSIUnit() }? (Name | NonNameUnit) |
+    UnitKindGroupWithExponent;
 
-//    token NonNameUnit =
-//         'µ'       UnitChar+
-//       | UnitChar* 'Ω'
-//       | 'µ'       'Ω' ;
-//
-//    fragment token UnitChar = 'a'..'z' | 'A'..'Z' ;
+    token NonNameUnit =
+         'µ'       UnitChar+
+       | UnitChar* 'Ω'
+       | 'µ'       'Ω' ;
+
+    fragment token UnitChar = 'a'..'z' | 'A'..'Z' ;
 //
 //
 //
@@ -134,16 +134,24 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
 //  Kombinationen beschreiben, wie etwa "VAh" oder "km/h".
 //  Das zugehörige Token (und eine natürlich etwas komplexere regexp) wäre etwa:
 
-    token NonNameUnit =
+    token UnitKindGroupWithExponent =
          UnitKindGroup | UnitKindGroupWithoutPrefix;
 
     fragment token UnitKindGroup =
-            UnitPrefix? UnitKindWithPrefix UnitExponent?
-            ( UnitKind UnitExponent? )*;
+            UnitPrefix? UnitKindWithPrefix UnitExponent
+                ( UnitKind UnitExponent? )* |
+            UnitPrefix? UnitKindWithPrefix
+                ( UnitKind )*
+                ( UnitKind UnitExponent )
+                ( UnitKind UnitExponent? )*;
 
     fragment token UnitKindGroupWithoutPrefix =
-            UnitKindWithoutPrefix  UnitExponent?
-            ( UnitKind UnitExponent? )*;
+            UnitPrefix? UnitKindWithPrefix UnitExponent
+                ( UnitKind UnitExponent? )* |
+            UnitPrefix? UnitKindWithPrefix
+                ( UnitKind )*
+                ( UnitKind UnitExponent )
+                ( UnitKind UnitExponent? )*;
 
     fragment token UnitExponent = '^' '-'? ('1'..'9');
 
@@ -190,7 +198,7 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
      * Lookahead needed at the beginning to distinguish with other alternatives
      */
     CelsiusFahrenheit implements SIUnitPrimitive <50> =
-        { cmpToken(2,"F","C") && noSpace(2) }? "°" unit:Name;
+        { cmpToken(2, "C", "F") && noSpace(2) }? "°" unit:Name;
 
 
     /**

@@ -85,6 +85,8 @@ public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
             printer.print(node.getName());
         else if (node.isPresentNonNameUnit())
             printer.print(node.getNonNameUnit());
+        else if(node.isPresentUnitKindGroupWithExponent())
+            printer.print(node.getUnitKindGroupWithExponent());
     }
 
     @Override
