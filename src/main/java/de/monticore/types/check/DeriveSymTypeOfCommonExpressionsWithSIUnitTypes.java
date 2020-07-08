@@ -151,6 +151,25 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
         return super.getUnaryIntegralPromotionType(type);
     }
 
+
+    /**
+     * helper method for the calculation of the ASTBooleanNotExpression
+     */
+    @Override
+    protected Optional<SymTypeExpression> getUnaryNumericPromotionType(SymTypeExpression type) {
+        if (isNumericWithSIUnitType(type)) {
+            Optional<SymTypeExpression> numericType = getNumeric(type);
+            Optional<SymTypeExpression> siUnitType = getSIUnit(type);
+            numericType = super.getUnaryNumericPromotionType(numericType.get());
+            if (numericType.isPresent() && isNumericType(numericType.get())) {
+                return Optional.of(SIUnitSymTypeExpressionFactory.
+                        createNumericWithSIUnitType(numericType.get(), siUnitType.get(), type.getTypeInfo().getEnclosingScope()));
+            }
+            return Optional.empty();
+        }
+        return super.getUnaryNumericPromotionType(type);
+    }
+
     public boolean isSIUnitType(SymTypeExpression type) {
         return type instanceof SymTypeOfSIUnit;
     }

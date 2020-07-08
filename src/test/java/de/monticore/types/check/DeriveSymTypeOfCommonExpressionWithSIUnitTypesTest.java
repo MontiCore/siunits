@@ -209,6 +209,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         assertEquals("int", printType(tc.typeOf(astex)));
 
         // example with siunit
+        // TODO fix 3 m/varM
         s = "(3 m)/varM";
         astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);

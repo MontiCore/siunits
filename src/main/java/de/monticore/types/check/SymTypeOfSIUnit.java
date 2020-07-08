@@ -113,9 +113,9 @@ public class SymTypeOfSIUnit extends SymTypeExpression {
         if(this.typeSymbolLoader== null ||sym.typeSymbolLoader==null){
             return false;
         }
-        if(!this.typeSymbolLoader.getEnclosingScope().equals(sym.typeSymbolLoader.getEnclosingScope())){
-            return false;
-        }
+//        if(!this.typeSymbolLoader.getEnclosingScope().equals(sym.typeSymbolLoader.getEnclosingScope())){
+//            return false;
+//        }
         if (!this.getUnit().isCompatible(((SymTypeOfSIUnit) sym).getUnit())) {
             return false;
         }

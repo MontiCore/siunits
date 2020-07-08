@@ -1,12 +1,12 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.types.check;
 
+import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
+import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
+import de.monticore.lang.testsijava.testsijava._symboltable.TestSIJavaScope;
 import de.monticore.siunits.utility.SIUnitConstants;
 import de.monticore.siunits.utility.UnitPrettyPrinter;
 import de.monticore.siunittypes4math._ast.ASTSIUnitType;
-import de.monticore.testsiunittypes.TestSIUnitTypesMill;
-import de.monticore.testsiunittypes._parser.TestSIUnitTypesParser;
-import de.monticore.testsiunittypes._symboltable.TestSIUnitTypesScope;
 import de.se_rwth.commons.logging.Log;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 public class SynthesizeSymTypeFromSIUnitTypes4MathTest {
 
-    private TestSIUnitTypesParser parser = new TestSIUnitTypesParser();
+    private TestSIJavaParser parser = new TestSIJavaParser();
     // This is the TypeChecker under Test:
     private TypeCheck tc = new TypeCheck(new SynthesizeSymTypeFromSIUnitTypes4Math());
 
@@ -31,11 +31,11 @@ public class SynthesizeSymTypeFromSIUnitTypes4MathTest {
         Log.enableFailQuick(false);
     }
 
-    TestSIUnitTypesScope scope;
+    TestSIJavaScope scope;
 
     @Before
     public void setupForEach() {
-        scope = TestSIUnitTypesMill.testSIUnitTypesScopeBuilder()
+        scope = TestSIJavaMill.testSIJavaScopeBuilder()
                 .setEnclosingScope(null)       // No enclosing Scope: Search ending here
                 .setExportingSymbols(true)
                 .setAstNode(null)
@@ -53,7 +53,7 @@ public class SynthesizeSymTypeFromSIUnitTypes4MathTest {
         ASTSIUnitType asttype = parseSIUnitType4Math(s);
         asttype.setEnclosingScope(scope);
         SymTypeExpression type = tc.symTypeFromAST(asttype);
-        assertEquals(UnitPrettyPrinter.printUnit(s), type.print());
+        assertEquals("(double," + UnitPrettyPrinter.printUnit(s) + ")", type.print());
     }
 
     @Test

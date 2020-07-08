@@ -22,7 +22,7 @@ public class SynthesizeSymTypeFromSIUnitTypes4ComputingTest {
 
     private TestSIJavaParser parser = new TestSIJavaParser();
     // This is the TypeChecker under Test:
-    private TypeCheck tc = new TypeCheck(new SynthesizeSymTypeFromSIUnitTypes4Math(), null);;
+    private TypeCheck tc = new TypeCheck(new SynthesizeSymTypeFromSIUnitTypes4Computing(), null);;
 
     @BeforeClass
     public static void setup() {
@@ -57,10 +57,10 @@ public class SynthesizeSymTypeFromSIUnitTypes4ComputingTest {
 
     @Test
     public void symTypeFromAST_Test1() throws IOException {
-        check("m", "m");
-        check("km", "km");
-        check("m*s^2/km", "m*s^2/km");
-        check("m*s^2/km^3", "m*s^2/km^3");
+        check("(double,m)", "m<double>");
+        check("(int,km)", "km<int>");
+        check("(float,m*s^2/km)", "m*s^2/km<float>");
+        check("(long,m*s^2/km^3)", "m*s^2/km^3<long>");
     }
 
     protected String printType(SymTypeExpression symType) {

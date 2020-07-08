@@ -113,13 +113,6 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
         node.setEnclosingScope(scopeStack.getLast());
     }
 
-//    @Override
-//    public void visit(ASTSIUnitType node) {
-//        super.visit(node);
-//        node.setEnclosingScope(scopeStack.getLast());
-//    }
-
-
     @Override
     public void visit(ASTSIUnitType node) {
         super.visit(node);
