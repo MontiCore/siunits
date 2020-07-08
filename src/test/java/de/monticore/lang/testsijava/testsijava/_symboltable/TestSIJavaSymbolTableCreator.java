@@ -10,6 +10,7 @@ import de.monticore.types.mcbasictypes._ast.ASTMCPrimitiveType;
 import de.monticore.types.mcbasictypes._ast.ASTMCQualifiedType;
 import de.monticore.types.mcbasictypes._ast.ASTMCReturnType;
 import de.monticore.types.mcbasictypes._ast.ASTMCType;
+import de.monticore.types.typesymbols._symboltable.MethodSymbol;
 
 import java.util.Deque;
 
@@ -26,6 +27,17 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
     public TestSIJavaSymbolTableCreator(Deque<? extends de.monticore.lang.testsijava.testsijava._symboltable.ITestSIJavaScope> scopeStack) {
         super(scopeStack);
         initTypeCheck();
+    }
+
+    @Override
+    public void visit(ASTSIJavaClass node) {
+        super.visit(node);
+
+        MethodSymbol printMethod = new MethodSymbol("print");
+        printMethod.setReturnType(SymTypeExpressionFactory.createTypeVoid());
+        node.getSpannedScope().add(printMethod);
+
+        MethodSymbol value = new MethodSymbol("value");
     }
 
     // ************************* set type *************************
@@ -50,20 +62,6 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
         node.getSymbol().setType(symTypeExpression);
 //        node.getSymbol().setIsVariable(true);
     }
-
-//    @Override
-//    public void endVisit(ASTSIFieldDeclaration node) {
-//        super.endVisit(node);
-//        // Add type in the symbol table creation process
-//        SymTypeExpression symTypeExpression;
-//        if (node.isPresentSIUnitType()) {
-//            ASTSIUnitType astType = node.getSIUnitType();
-//            symTypeExpression = tc.symTypeFromAST(astType);
-//        } else {
-//            symTypeExpression = tc.typeOf(node.getExpression());
-//        }
-//        node.getSymbol().setType(symTypeExpression);
-//    }
 
     @Override
     public void endVisit(ASTMethodDeclaration node) {
@@ -95,14 +93,6 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
         if (node.isPresentExpression())
             node.getExpression().accept(new TestSIJavaFlatExpressionScopeSetter(node.getEnclosingScope()));
     }
-
-//    @Override
-//    public void visit(ASTSIFieldDeclaration node) {
-//        super.visit(node);
-//        // Add the enclosing scope to the assignment
-//        if (node.isPresentExpression())
-//            node.getExpression().accept(new TestSIJavaFlatExpressionScopeSetter(node.getEnclosingScope()));
-//    }
 
     public void visit(ASTSIJavaMethodExpression node) {
         super.visit(node);

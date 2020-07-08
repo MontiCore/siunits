@@ -4,8 +4,13 @@ package de.monticore.lang.testsijava.testsijava.generator.prettyprint;
 import de.monticore.lang.testsijava.testsijava._ast.*;
 import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaVisitor;
 import de.monticore.prettyprint.IndentPrinter;
+import de.monticore.siunits.utility.UnitFactory;
 import de.monticore.types.check.SymTypeExpression;
 import de.monticore.types.check.SymTypeOfNumericWithSIUnit;
+
+import javax.measure.unit.Unit;
+import java.util.LinkedList;
+import java.util.List;
 
 public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
 
@@ -54,13 +59,8 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
 
     @Override
     public void traverse(ASTFieldDeclaration node) {
-        String typePrint = node.getSymbol().getType().print();
-        if (node.getSymbol().getType() instanceof SymTypeOfNumericWithSIUnit) {
-            SymTypeOfNumericWithSIUnit type = (SymTypeOfNumericWithSIUnit) node.getSymbol().getType();
-            typePrint = type.getNumericType().print();
-        }
+        String typePrint = printNumericType(node.getSymbol().getType());
         printer.print(typePrint);
-
         printer.print(" " + node.getName());
 
         if (node.isPresentExpression()) {
@@ -72,11 +72,14 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
 
     @Override
     public void traverse(ASTMethodDeclaration node) {
-        SymTypeExpression returnType = node.getSymbol().getReturnType();
-        String typePrint = returnType instanceof SymTypeOfNumericWithSIUnit ?
-                ((SymTypeOfNumericWithSIUnit) returnType).getNumericType().print() :
-                returnType.print();
-        printer.print("public " + typePrint + " " + node.getName() + "(");
+        printWrapper(node);
+
+        printIntern(node);
+    }
+
+    private void printIntern(ASTMethodDeclaration node) {
+        String typePrint = printNumericType(node.getSymbol().getReturnType());
+        printer.print("public " + typePrint + " " + node.getName() + "_(");
 
         boolean first = true;
         for (ASTSIJavaParameter parameter : node.getSIJavaParameterList()) {
@@ -96,30 +99,10 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
         }
 
         if (node.isPresentSIJavaMethodReturn()) {
-            printer.println();
-            printer.print("return ");
+            if (!node.getSIJavaMethodStatementList().isEmpty())
+                printer.println();
+            printer.print("return (" + typePrint + ") (");
 
-            typePrint = returnType.print();
-            if (returnType instanceof SymTypeOfNumericWithSIUnit)
-                typePrint = ((SymTypeOfNumericWithSIUnit) returnType).getNumericType().print();
-
-            printer.print("(" + typePrint + ") (");
-
-//            if (returnType instanceof SymTypeOfNumericWithSIUnit) {
-//                SymTypeOfNumericWithSIUnit siUnitReturnType = (SymTypeOfNumericWithSIUnit) returnType;
-//                double factor = UnitFactory.getConverter(
-//                        UnitFactory.createBaseUnit(
-//                                siUnitReturnType.getUnit()),
-//                        siUnitReturnType.getUnit()).convert(1);
-//
-//                if (factor != 1) {
-//                    printer.print("(" + factor + " * ");
-//                    node.getSIJavaMethodReturn().accept(getRealThis());
-//                    printer.print(")");
-//                } else {
-//                    node.getSIJavaMethodReturn().accept(getRealThis());
-//                }
-//            } else
             node.getSIJavaMethodReturn().accept(getRealThis());
             printer.println(");");
         }
@@ -129,15 +112,71 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
         printer.println("}");
     }
 
+    private void printWrapper(ASTMethodDeclaration node) {
+        SymTypeExpression returnType = node.getSymbol().getReturnType();
+        String typePrint = returnType instanceof SymTypeOfNumericWithSIUnit ?
+                ((SymTypeOfNumericWithSIUnit) returnType).getNumericType().print() :
+                returnType.print();
+        printer.print("public " + typePrint + " " + node.getName() + "(");
+
+        boolean first = true;
+        for (ASTSIJavaParameter parameter : node.getSIJavaParameterList()) {
+            if (!first) {
+                printer.print(", ");
+            } else {
+                first = false;
+            }
+            parameter.accept(getRealThis());
+        }
+        printer.println(") {");
+        printer.indent();
+
+        List<String> newParameters = new LinkedList<>();
+        for (ASTSIJavaParameter parameter : node.getSIJavaParameterList()) {
+            String newName = parameter.getName() + "_";
+            newParameters.add(newName);
+            SymTypeExpression parType = parameter.getSymbol().getType();
+            String numericType = printNumericType(parType);
+            String factor = "";
+
+            if (parType instanceof SymTypeOfNumericWithSIUnit) {
+                Unit parUnit = ((SymTypeOfNumericWithSIUnit) parType).getUnit();
+                double d = UnitFactory.getConverter(parUnit, UnitFactory.createBaseUnit(parUnit)).convert(1);
+                if (d != 1)
+                    factor = " * " + d;
+            }
+
+            printer.print(numericType + " " + newName + " = (" + numericType + ") " + parameter.getName());
+            printer.println(factor + ";");
+        }
+
+        if (!node.getSIJavaParameterList().isEmpty())
+            printer.println();
+        String factor = "";
+        if (node.isPresentSIJavaMethodReturn()) {
+            printer.print("return (" + typePrint + ") ");
+            if (returnType instanceof SymTypeOfNumericWithSIUnit) {
+                Unit returnUnit = ((SymTypeOfNumericWithSIUnit) returnType).getUnit();
+                double d = UnitFactory.getConverter(UnitFactory.createBaseUnit(returnUnit), returnUnit).convert(1);
+                if (d != 1)
+                    factor = " * " + d + ")";
+            }
+        }
+
+        if (!factor.equals(""))
+            printer.print("(");
+        printer.print(node.getName() + "_(");
+        printer.print(String.join(", ", newParameters));
+        printer.println(")" + factor + ";");
+
+        printer.unindent();
+        printer.println("}");
+
+    }
+
     @Override
     public void traverse(ASTSIJavaParameter node) {
-        SymTypeExpression type = node.getSymbol().getType();
-        if (type instanceof SymTypeOfNumericWithSIUnit) {
-            printer.print(((SymTypeOfNumericWithSIUnit) type).getNumericType().print());
-        } else {
-            printer.print(type.print());
-        }
-        printer.print(" " + node.getName());
+        printer.print(printNumericType(node.getSymbol().getType()) + " " + node.getName());
     }
 
     @Override
@@ -183,5 +222,12 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
     @Override
     public void endVisit(ASTSIJavaMethodStatement node) {
 
+    }
+
+    private String printNumericType(SymTypeExpression symTypeExpression) {
+        if (symTypeExpression instanceof SymTypeOfNumericWithSIUnit)
+            return ((SymTypeOfNumericWithSIUnit) symTypeExpression).getNumericType().print();
+        else
+            return symTypeExpression.print();
     }
 }

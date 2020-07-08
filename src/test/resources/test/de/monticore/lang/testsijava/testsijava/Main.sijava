@@ -4,13 +4,22 @@ package test.de.monticore.lang.testsijava.testsijava;
 
 siclass Main {
 
-    s<double> main () {
-        km/h<double> v = 3 m/s;
-        dm distance = 200 m;
-        return calculateTime(v, distance) * 20;
+    s<int> main () {
+        km/h<double> v = 3 dm/h;
+        dm distance = 200000 µm;
+
+//        double d_R = value(distance);
+//        double d_B = baseValue(distance);
+
+//        print(d_R);
+//        print(d_B);
+//        print(distance);
+
+        min time = 3 min;
+        return calculateTime(v, distance) * 20 + time;
     }
 
-    s<double> calculateTime(m/s v, m d) {
+    h<double> calculateTime(km/h v, m d) {
         return d / v;
     }
 
