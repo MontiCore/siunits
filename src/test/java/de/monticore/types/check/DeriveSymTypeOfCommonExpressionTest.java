@@ -43,6 +43,7 @@ public class DeriveSymTypeOfCommonExpressionTest {
   public static void setup() {
     LogStub.init();
     LogStub.enableFailQuick(false);
+    Log.enableFailQuick(false);
   }
 
   @Before
