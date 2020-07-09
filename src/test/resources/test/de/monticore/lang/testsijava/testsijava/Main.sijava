@@ -11,7 +11,7 @@ siclass Main {
 //        double d_R = value(distance);
 //        double d_B = baseValue(distance);
 
-//        print(d_R);
+        print(d_R);
 //        print(d_B);
 //        print(distance);
 

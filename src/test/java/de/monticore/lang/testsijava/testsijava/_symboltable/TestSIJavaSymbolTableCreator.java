@@ -37,7 +37,13 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
         printMethod.setReturnType(SymTypeExpressionFactory.createTypeVoid());
         node.getSpannedScope().add(printMethod);
 
-        MethodSymbol value = new MethodSymbol("value");
+        MethodSymbol valueMethod = new MethodSymbol("value");
+        valueMethod.setReturnType(SymTypeExpressionFactory.createTypeConstant("double"));
+        node.getSpannedScope().add(valueMethod);
+
+        MethodSymbol basevalueMethod = new MethodSymbol("basevalue");
+        valueMethod.setReturnType(SymTypeExpressionFactory.createTypeConstant("double"));
+        node.getSpannedScope().add(valueMethod);
     }
 
     // ************************* set type *************************
