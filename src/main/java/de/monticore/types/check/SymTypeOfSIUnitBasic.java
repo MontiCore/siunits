@@ -17,7 +17,7 @@ package de.monticore.types.check;
 import de.monticore.siunits.utility.UnitFactory;
 import de.monticore.symboltable.serialization.JsonDeSers;
 import de.monticore.symboltable.serialization.JsonPrinter;
-import de.monticore.types.typesymbols._symboltable.OOTypeSymbolLoader;
+import de.monticore.types.typesymbols._symboltable.OOTypeSymbolSurrogate;
 
 import javax.measure.unit.Unit;
 import java.util.ArrayList;
@@ -32,19 +32,19 @@ public class SymTypeOfSIUnitBasic extends SymTypeExpression {
     protected Optional<Integer> exponent = Optional.of(Integer.valueOf(1));
     protected Optional<String> prefix = Optional.of("");
 
-    public SymTypeOfSIUnitBasic(OOTypeSymbolLoader typeSymbolLoader) {
-        this.typeSymbolLoader = typeSymbolLoader;
+    public SymTypeOfSIUnitBasic(OOTypeSymbolSurrogate typeSymbolSurrogate) {
+        this.typeSymbolSurrogate = typeSymbolSurrogate;
         this.getTypeInfo().setSuperTypeList(new ArrayList<>());
     }
 
-    public SymTypeOfSIUnitBasic(OOTypeSymbolLoader typeSymbolLoader, Integer exponent) {
-        this.typeSymbolLoader = typeSymbolLoader;
+    public SymTypeOfSIUnitBasic(OOTypeSymbolSurrogate typeSymbolSurrogate, Integer exponent) {
+        this.typeSymbolSurrogate = typeSymbolSurrogate;
         this.exponent = Optional.ofNullable(exponent);
         this.getTypeInfo().setSuperTypeList(new ArrayList<>());
     }
 
     public String getName() {
-        return typeSymbolLoader.getName();
+        return typeSymbolSurrogate.getName();
     }
 
     public String getExponentString() {
@@ -75,7 +75,8 @@ public class SymTypeOfSIUnitBasic extends SymTypeExpression {
 
     @Override
     public SymTypeOfSIUnitBasic deepClone() {
-        OOTypeSymbolLoader newTypeSymbolLoader = new OOTypeSymbolLoader(typeSymbolLoader.getName(), typeSymbolLoader.getEnclosingScope());
+        OOTypeSymbolSurrogate newTypeSymbolLoader = new OOTypeSymbolSurrogate(typeSymbolSurrogate.getName());
+        newTypeSymbolLoader.setEnclosingScope(typeSymbolSurrogate.getEnclosingScope());
         SymTypeOfSIUnitBasic clone;
         if (!exponent.isPresent())
             clone = new SymTypeOfSIUnitBasic(newTypeSymbolLoader);
@@ -88,10 +89,10 @@ public class SymTypeOfSIUnitBasic extends SymTypeExpression {
     public boolean deepEquals(SymTypeExpression sym) {
         if (!(sym instanceof SymTypeOfSIUnitBasic))
             return false;
-        if(this.typeSymbolLoader== null ||sym.typeSymbolLoader==null){
+        if(this.typeSymbolSurrogate== null ||sym.typeSymbolSurrogate==null){
             return false;
         }
-        if(!this.typeSymbolLoader.getEnclosingScope().equals(sym.typeSymbolLoader.getEnclosingScope())){
+        if(!this.typeSymbolSurrogate.getEnclosingScope().equals(sym.typeSymbolSurrogate.getEnclosingScope())){
             return false;
         }
         if (!this.getUnit().isCompatible(((SymTypeOfSIUnitBasic) sym).getUnit())) {

@@ -4,7 +4,7 @@ package de.monticore.types.check;
 
 import de.monticore.siunits.utility.SIUnitConstants;
 import de.monticore.types.typesymbols._symboltable.OOTypeSymbol;
-import de.monticore.types.typesymbols._symboltable.OOTypeSymbolLoader;
+import de.monticore.types.typesymbols._symboltable.OOTypeSymbolSurrogate;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolsScope;
 
 import java.util.HashMap;
@@ -51,7 +51,9 @@ public class DefsSIUnitType extends DefsTypeBasic {
         if (sIUnitBasicTypes.get(name) != null) return;
         OOTypeSymbol newSymbol = type(name);
         scope.add(newSymbol);
-        SymTypeOfSIUnitBasic newSymType = new SymTypeOfSIUnitBasic(new OOTypeSymbolLoader(name, scope));
+        OOTypeSymbolSurrogate loader = (new OOTypeSymbolSurrogate(name));
+        loader.setEnclosingScope(scope);
+        SymTypeOfSIUnitBasic newSymType = new SymTypeOfSIUnitBasic(loader);
         sIUnitBasicTypes.put(name, newSymType);
     }
 
