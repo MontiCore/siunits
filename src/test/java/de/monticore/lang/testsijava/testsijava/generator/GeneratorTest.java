@@ -1,5 +1,7 @@
 package de.monticore.lang.testsijava.testsijava.generator;
 
+import de.se_rwth.commons.logging.Log;
+import org.junit.Before;
 import org.junit.Test;
 
 public class GeneratorTest {
@@ -11,14 +13,19 @@ public class GeneratorTest {
         Generator.generate(modelPath, model, outputPath);
     }
 
+    @Before
+    public void init() {
+        Log.init();
+    }
+
     @Test
-    public void test1() {
+    public void testMyClass() {
         String model = "test/de/monticore/lang/testsijava/testsijava/MyClass.sijava";
         test(model);
     }
 
     @Test
-    public void test2() {
+    public void testMain() {
         String model = "test/de/monticore/lang/testsijava/testsijava/Main.sijava";
         test(model);
     }
