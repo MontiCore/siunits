@@ -54,23 +54,29 @@ public class MyCommonExpressionsPrettyPrinter extends CommonExpressionsPrettyPri
                 Log.error("0xE5672872 argument is invalid");
             }
 
-            String factor = "";
-            String typePrint = "";
-            if (fieldSymbol.get().getType() instanceof SymTypeOfNumericWithSIUnit) {
-                Unit un = ((SymTypeOfNumericWithSIUnit) fieldSymbol.get().getType()).getUnit();
-                double d = UnitFactory.getConverter(UnitFactory.createBaseUnit(un), un).convert(1);
-                if (d != 1)
-                    factor = "" + d + " * ";
-                typePrint = UnitPrettyPrinter.printUnit(un);
-            }
-
             if (name.equals(print)) {
-                this.getPrinter().println("System.out.println(\"\" + " + factor + fieldSymbol.get().getName()
-                + typePrint + ");");
+                String factor = "";
+                String typePrint = "";
+                if (fieldSymbol.get().getType() instanceof SymTypeOfNumericWithSIUnit) {
+                    Unit un = ((SymTypeOfNumericWithSIUnit) fieldSymbol.get().getType()).getUnit();
+                    double d = UnitFactory.getConverter(UnitFactory.createBaseUnit(un), un).convert(1);
+                    if (d != 1)
+                        factor = "" + d + " * ";
+                    typePrint = " + \" " + UnitPrettyPrinter.printUnit(un) + "\"";
+                }
+                this.getPrinter().print("System.out.println(\"\" + " + factor + fieldSymbol.get().getName()
+                + typePrint + ")");
             } else if (name.equals(value)) {
-
+                String factor = "";
+                if (fieldSymbol.get().getType() instanceof SymTypeOfNumericWithSIUnit) {
+                    Unit un = ((SymTypeOfNumericWithSIUnit) fieldSymbol.get().getType()).getUnit();
+                    double d = UnitFactory.getConverter(UnitFactory.createBaseUnit(un), un).convert(1);
+                    if (d != 1)
+                        factor = "" + d + " * ";
+                }
+                this.getPrinter().print(factor + fieldSymbol.get().getName());
             } else if (name.equals(basevalue)) {
-
+                this.getPrinter().print(fieldSymbol.get().getName());
             }
         } else {
             node.getExpression().accept(getRealThis());
