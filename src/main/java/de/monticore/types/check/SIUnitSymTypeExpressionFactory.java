@@ -149,12 +149,6 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
      * @param denominator List of the denominator SIBasicTypes
      */
     public static SymTypeExpression createSIUnit(OOTypeSymbolSurrogate typeSymbolSurrogate, List<SymTypeOfSIUnitBasic> numerator, List<SymTypeOfSIUnitBasic> denominator) {
-        SymTypeExpression result;
-        if (numerator.size() == 0 && denominator.size() == 0 || typeSymbolSurrogate.getName().equals("1"))
-            result = createTypeConstant("int");
-        else
-            result = new SymTypeOfSIUnit(typeSymbolSurrogate, numerator, denominator);
-
         // Check if the symType is already in the scope and add it otherwise
         // Needed because there can be created new SIUnitType while computing, e.g. varM*varS
         final String name = typeSymbolSurrogate.getName();
@@ -163,6 +157,12 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
             typeSymbolSurrogate.getEnclosingScope().add(newSymbol);
         }
 
+        SymTypeExpression result;
+        if (numerator.size() == 0 && denominator.size() == 0 || typeSymbolSurrogate.getName().equals("1"))
+            result = createTypeConstant("int");
+        else
+            result = new SymTypeOfSIUnit(typeSymbolSurrogate, numerator, denominator);
+
         return result;
     }
 
@@ -170,6 +170,14 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
      * creates a numeric with siunit type
      */
     public static SymTypeExpression createNumericWithSIUnitType(SymTypeExpression numericType, SymTypeExpression siunitType, OOTypeSymbolSurrogate typeSymbolSurrogate) {
+        // Check if the symType is already in the scope and add it otherwise
+        // Needed because there can be created new SIUnitType while computing, e.g. varM*varS
+        final String name = typeSymbolSurrogate.getName();
+        if (typeSymbolSurrogate.getEnclosingScope().getLocalOOTypeSymbols().stream().filter(x -> x.getName().equals(name)).collect(Collectors.toList()).size() == 0) {
+            OOTypeSymbol newSymbol = DefsSIUnitType.type(name);
+            typeSymbolSurrogate.getEnclosingScope().add(newSymbol);
+        }
+
         SymTypeExpression result;
         if (!isNumericType(numericType))
             Log.error("0xA0498 SymTypeExpression must be numeric type");
@@ -177,14 +185,6 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
             result = numericType;
         else
             result = new SymTypeOfNumericWithSIUnit(typeSymbolSurrogate, numericType, siunitType);
-
-        // Check if the symType is already in the scope and add it otherwise
-        // Needed because there can be created new SIUnitType while computing, e.g. varM*varS
-        final String name = result.print();
-        if (typeSymbolSurrogate.getEnclosingScope().getLocalOOTypeSymbols().stream().filter(x -> x.getName().equals(name)).collect(Collectors.toList()).size() == 0) {
-            OOTypeSymbol newSymbol = DefsSIUnitType.type(name);
-            typeSymbolSurrogate.getEnclosingScope().add(newSymbol);
-        }
 
         return result;
     }

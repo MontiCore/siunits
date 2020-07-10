@@ -17,6 +17,8 @@ import java.util.Map;
  */
 public class DefsSIUnitType extends DefsTypeBasic {
 
+    private static SymTypeOfSIUnit superUnit;
+
     /**
      * List of all SIUnitBasicTypes without prefix or exponent
      */
@@ -28,15 +30,6 @@ public class DefsSIUnitType extends DefsTypeBasic {
 
     private static void setup_SIUnitTypes() {
         sIUnitBasicTypes = new HashMap<>();
-
-//        List<String> baseUnits = Arrays.asList
-//                ("A", "lm", "C", "Sv", "F", "H", "J", "K",
-//                        "mol", "bit", "lx", "N", "Pa", "Gy", "S",
-//                        "rad", "T", "V", "W", "kg", "sr", "kat",
-//                        "cd", "Ohm", "Wb", "m", "Bq", "Hz", "s");
-
-//        List<String> baseUnits = Arrays.asList
-//                ("s", "m", "kg", "A", "K", "mol", "cd");
 
         List<String> baseUnits = SIUnitConstants.getAllUnits();
 
@@ -61,5 +54,9 @@ public class DefsSIUnitType extends DefsTypeBasic {
         if (sIUnitBasicTypes == null)
             setup_SIUnitTypes();
         return sIUnitBasicTypes;
+    }
+
+    public static SymTypeOfSIUnit getSuperUnit() {
+        return superUnit;
     }
 }

@@ -4,11 +4,14 @@ package de.monticore.types.check;
 import de.monticore.siunits.utility.UnitFactory;
 import de.monticore.symboltable.serialization.JsonDeSers;
 import de.monticore.symboltable.serialization.JsonPrinter;
+import de.monticore.types.typesymbols.TypeSymbolsMill;
+import de.monticore.types.typesymbols._symboltable.OOTypeSymbol;
 import de.monticore.types.typesymbols._symboltable.OOTypeSymbolSurrogate;
 import de.monticore.types.typesymbols._symboltable.TypeSymbolsScope;
 
 import javax.measure.quantity.Dimensionless;
 import javax.measure.unit.Unit;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +25,21 @@ public class SymTypeOfSIUnit extends SymTypeExpression {
     private List<SymTypeOfSIUnitBasic> numerator;
     private List<SymTypeOfSIUnitBasic> denominator;
 
+    private static SymTypeOfSIUnit superUnitType;
+
+    public static SymTypeOfSIUnit getSuperUnitType() {
+        if (superUnitType == null) {
+            String name = "SuperUnit";
+            TypeSymbolsScope enclosingScope = TypeSymbolsMill.typeSymbolsScopeBuilder().build();
+            OOTypeSymbol newSymbol =  de.monticore.types.check.DefsTypeBasic.type(name);
+            enclosingScope.add(newSymbol);
+            OOTypeSymbolSurrogate loader = (new OOTypeSymbolSurrogate(name));
+            loader.setEnclosingScope(enclosingScope);
+            superUnitType = new SymTypeOfSIUnit(loader, new LinkedList<>(), new LinkedList<>());
+        }
+        return superUnitType;
+    }
+
     /**
      * Constructor with all parameters that are stored:
      */
@@ -29,6 +47,7 @@ public class SymTypeOfSIUnit extends SymTypeExpression {
         this.typeSymbolSurrogate = typeSymbolSurrogate;
         this.numerator = numerator;
         this.denominator = denominator;
+        setSuperType();
     }
 
     public SymTypeOfSIUnit(TypeSymbolsScope enclosingScope, List<SymTypeOfSIUnitBasic> numerator, List<SymTypeOfSIUnitBasic> denominator) {
@@ -36,6 +55,15 @@ public class SymTypeOfSIUnit extends SymTypeExpression {
         this.denominator = denominator;
         this.typeSymbolSurrogate = new OOTypeSymbolSurrogate(print());
         this.typeSymbolSurrogate.setEnclosingScope(enclosingScope);
+        setSuperType();
+    }
+
+    private void setSuperType() {
+        if (superUnitType != null && this != superUnitType) {
+            List<SymTypeExpression> superTypes = new LinkedList<>();
+            superTypes.add(getSuperUnitType());
+            this.getTypeInfo().setSuperTypeList(superTypes);
+        }
     }
 
     public boolean isDimensonless() {

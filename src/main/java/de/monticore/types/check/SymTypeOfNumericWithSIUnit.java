@@ -4,10 +4,15 @@ package de.monticore.types.check;
 
 import de.monticore.symboltable.serialization.JsonDeSers;
 import de.monticore.symboltable.serialization.JsonPrinter;
+import de.monticore.types.typesymbols.TypeSymbolsMill;
 import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
+import de.monticore.types.typesymbols._symboltable.OOTypeSymbol;
 import de.monticore.types.typesymbols._symboltable.OOTypeSymbolSurrogate;
+import de.monticore.types.typesymbols._symboltable.TypeSymbolsScope;
 
 import javax.measure.unit.Unit;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * SymTypeOfNumericWithSIUnit stores any kind of Numerics combined with SIUnit applied
@@ -18,6 +23,23 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
     private SymTypeExpression siunitType;
     private SymTypeExpression numericType;
 
+    private static SymTypeOfNumericWithSIUnit superNumericUnitType;
+
+    public static SymTypeOfNumericWithSIUnit getSuperNumericUnitType() {
+        if (superNumericUnitType == null) {
+            String name = "SuperNumericWithUnit";
+            TypeSymbolsScope enclosingScope = TypeSymbolsMill.typeSymbolsScopeBuilder().build();
+            OOTypeSymbol newSymbol =  de.monticore.types.check.DefsTypeBasic.type(name);
+            enclosingScope.add(newSymbol);
+            OOTypeSymbolSurrogate loader = (new OOTypeSymbolSurrogate(name));
+            loader.setEnclosingScope(enclosingScope);
+
+            SymTypeConstant doubeType = SymTypeExpressionFactory.createTypeConstant("double");
+            superNumericUnitType = new SymTypeOfNumericWithSIUnit(loader, doubeType, SymTypeOfSIUnit.getSuperUnitType());
+        }
+        return superNumericUnitType;
+    }
+
     /**
      * Constructor with all parameters that are stored:
      */
@@ -25,6 +47,7 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
         this.typeSymbolSurrogate = typeSymbolSurrogate;
         this.numericType = numericType;
         this.siunitType = siunitType;
+        setSuperType();
     }
 
     public SymTypeOfNumericWithSIUnit(ITypeSymbolsScope enclosingScope, SymTypeConstant numericType, SymTypeExpression siunitType) {
@@ -32,6 +55,15 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
         this.siunitType = siunitType;
         this.typeSymbolSurrogate = new OOTypeSymbolSurrogate(print());
         this.typeSymbolSurrogate.setEnclosingScope(enclosingScope);
+        setSuperType();
+    }
+
+    private void setSuperType() {
+        if (superNumericUnitType != null && this != superNumericUnitType) {
+            List<SymTypeExpression> superTypes = new LinkedList<>();
+            superTypes.add(getSuperNumericUnitType());
+            this.getTypeInfo().setSuperTypeList(superTypes);
+        }
     }
 
     /**
