@@ -10,9 +10,11 @@ import de.monticore.types.mcbasictypes._ast.ASTMCPrimitiveType;
 import de.monticore.types.mcbasictypes._ast.ASTMCQualifiedType;
 import de.monticore.types.mcbasictypes._ast.ASTMCReturnType;
 import de.monticore.types.mcbasictypes._ast.ASTMCType;
+import de.monticore.types.typesymbols._symboltable.FieldSymbol;
 import de.monticore.types.typesymbols._symboltable.MethodSymbol;
 
 import java.util.Deque;
+import java.util.Iterator;
 
 /**
  * The SymType for every field symbol has to be set when creating the symbol table
@@ -33,17 +35,82 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
     public void visit(ASTSIJavaClass node) {
         super.visit(node);
 
-        MethodSymbol printMethod = new MethodSymbol("print");
-        printMethod.setReturnType(SymTypeExpressionFactory.createTypeVoid());
-        node.getSpannedScope().add(printMethod);
+        addMethods(node);
+    }
 
-        MethodSymbol valueMethod = new MethodSymbol("value");
-        valueMethod.setReturnType(SymTypeExpressionFactory.createTypeConstant("double"));
+    private void addMethods(ASTSIJavaClass node) {
+        SymTypeConstant _double = SymTypeExpressionFactory.createTypeConstant("double");
+        SymTypeOfNumericWithSIUnit _superNumericUnitType = SymTypeOfNumericWithSIUnit.getSuperNumericUnitType();
+        SymTypeVoid _void = SymTypeExpressionFactory.createTypeVoid();
+
+
+        MethodSymbol printSIUnitMethod = DefsTypeBasic.method("print", _void);
+        FieldSymbol field = DefsSIUnitType.field(_superNumericUnitType.getTypeInfo().getName(), _superNumericUnitType);
+        printSIUnitMethod.getSpannedScope().add(field);
+        node.getSpannedScope().add(printSIUnitMethod);
+
+
+        MethodSymbol printNumericMethod = DefsTypeBasic.method("print", _void);
+        field = DefsSIUnitType.field("double", _double);
+        printNumericMethod.getSpannedScope().add(field);
+        node.getSpannedScope().add(printNumericMethod);
+
+
+        MethodSymbol sivalueMethod = DefsTypeBasic.method("value", _double);
+        field = DefsSIUnitType.field(_superNumericUnitType.getTypeInfo().getName(), _superNumericUnitType);
+        sivalueMethod.getSpannedScope().add(field);
+        node.getSpannedScope().add(sivalueMethod);
+
+
+        MethodSymbol valueMethod = DefsTypeBasic.method("value", _double);
+        field = DefsSIUnitType.field("double", _double);
+        valueMethod.getSpannedScope().add(field);
         node.getSpannedScope().add(valueMethod);
 
-        MethodSymbol basevalueMethod = new MethodSymbol("basevalue");
-        valueMethod.setReturnType(SymTypeExpressionFactory.createTypeConstant("double"));
-        node.getSpannedScope().add(valueMethod);
+
+        MethodSymbol sibasevalueMethod = DefsTypeBasic.method("basevalue", _double);
+        field = DefsSIUnitType.field(_superNumericUnitType.getTypeInfo().getName(), _superNumericUnitType);
+        sibasevalueMethod.getSpannedScope().add(field);
+        node.getSpannedScope().add(sibasevalueMethod);
+
+
+        MethodSymbol basevalueMethod = DefsTypeBasic.method("basevalue", _double);
+        field = DefsSIUnitType.field("double", _double);
+        basevalueMethod.getSpannedScope().add(field);
+        node.getSpannedScope().add(basevalueMethod);
+    }
+
+    @Override
+    public void traverse(ASTMethodDeclaration node) {
+        if (null != node.getReturnType()) {
+            node.getReturnType().accept(getRealThis());
+        }
+        {
+            Iterator<ASTSIJavaParameter> iter_sIJavaParameters = node.getSIJavaParameterList().iterator();
+            while (iter_sIJavaParameters.hasNext()) {
+                iter_sIJavaParameters.next().accept(getRealThis());
+            }
+        }
+
+        ITestSIJavaScope scope = createScope(false);
+        putOnStack(scope);
+
+        Iterator<ASTSIJavaMethodStatement> iter_sIJavaMethodStatements = node.getSIJavaMethodStatementList().iterator();
+        while (iter_sIJavaMethodStatements.hasNext()) {
+            iter_sIJavaMethodStatements.next().accept(getRealThis());
+        }
+
+        if (node.isPresentSIJavaMethodReturn()) {
+            node.getSIJavaMethodReturn().accept(getRealThis());
+        }
+
+        if (node.getSpannedScope() != null) {
+            node.getSpannedScope().accept(getRealThis());
+        }
+
+        scope.accept(getRealThis());
+
+        removeCurrentScope();
     }
 
     // ************************* set type *************************
