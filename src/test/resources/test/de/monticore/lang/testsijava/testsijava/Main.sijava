@@ -8,18 +8,19 @@ siclass Main {
         km/h<double> v = 3 dm/h;
         dm distance = 200000 µm;
 
-//        double d_R = value(distance);
-//        double d_B = baseValue(distance);
-
-        print(d_R);
-//        print(d_B);
-//        print(distance);
-
         min time = 3 min;
         return calculateTime(v, distance) * 20 + time;
     }
 
     h<double> calculateTime(km/h v, m d) {
+
+        double d_R = value(d);
+        double d_B = basevalue(d);
+
+        print(d_R);
+        print(d_B);
+        print(d);
+
         return d / v;
     }
 
