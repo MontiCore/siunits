@@ -101,20 +101,6 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
      * variable names in other places anymore.
      * See also functions available to handle the stored unit.
      */
-/* TODO:
-    Um das schöner zu machen: einen könnten wir die länglichen
-    Strings irgendwie auslagern bzw. nur einmal aufschreiben.
-    --> das geht durch nutzung eines vollqualifizierten Statischen strings
-    oder besser wäre durch eine lokale Variable im Parser.
-    Marita weiss evtl. ob und wie das geht.
-
-   DONE:
-    Die langen Strings sind in cocept antlr ausgelagert, s.o.
-
-   Ein alternativer versuch von mir:
-   DONE:
-    Diese Variante klappt und es gibt auch keine Probleme mit Variablennamen
-   */
     SIUnitWithPrefix implements SIUnitPrimitive <10> =
     { isSIUnit() }? (Name | NonNameUnit) |
     UnitKindGroupWithExponent;
@@ -125,6 +111,8 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
        | 'µ'       'Ω' ;
 
     fragment token UnitChar = 'a'..'z' | 'A'..'Z' ;
+
+// TODO: diesen Kommentar behandeln
 //
 //
 //
@@ -166,6 +154,8 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
 
     fragment token UnitKind = UnitKindWithPrefix | UnitKindWithoutPrefix;
 
+// TODO: diesen Kommentar behandeln
+//
 //Eine solche Definition hätte natürlich ein Risiko:
 //    km/h könnte nun plötzlich an anderer Stelle fälschlicherweise nicht
 //    mehr als Division zweier Variable verarbeitet werden (weshalb ich ja
