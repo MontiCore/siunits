@@ -112,6 +112,9 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
 
     fragment token UnitChar = 'a'..'z' | 'A'..'Z' ;
 
+// TODO: den neuen Teil genau so kommentieren, wie oben
+
+
 // TODO: diesen Kommentar behandeln
 //
 //
