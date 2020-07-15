@@ -269,7 +269,8 @@ The concrete name and syntax can be adapted when building new DSLs.
 ((TODO: This is still in discussion:
     are those available in the Tool (on the AST) or at runtime?))
 
-The following table contains a set of use cases and examples for the work with SI units on the AST
+The following table contains a set of use cases and examples for the work with SI units on the AST:
+
 | Beschreibung | Java-Syntax | Returnwert |
 | ------ | ------ | ------ |
 | Unit von SILiteral |  `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); javax.measure.Unit u=d.UnitOf(ASTSILiteral)` | km |
