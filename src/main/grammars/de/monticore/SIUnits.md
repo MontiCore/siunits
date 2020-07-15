@@ -264,21 +264,19 @@ In case of a sum expression where several scales are used, a conversion to the s
 is undertaken, e.g. `unit(5cm+10dm+2mm)` returns `1052` as milli is the smallest scale.
 The concrete name and syntax can be adapted when building new DSLs.
 
-| Beschreibung | DSL-Syntax | funktionale Syntax | Java-Syntax | Returnwert |
-| ------ | ------ | ------ |------| ------|
-| Unit von SILiteral | `[5km]` | `unit(5km)` | `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); javax.measure.Unit u=d.UnitOf(ASTSILiteral)` | km
-| BaseUnit von SILiteral | `B[5km]` | `baseunit(5km)` |  `UnitFactory.createBaseUnit(u)` | m
-| Literal von SILiteral | `{5km}` | `value(5km)` | `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); d.NumberOf(ASTSILiteral)` oder `d.DoubleOf(ASTSILiteral)` | 5
-| Literal von SILiteral umgerechnet auf Basisunits | `B{5km}` | `basevalue(5km)` | `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); d.ValueOf(ASTSILiteral)` | 5000
-| SILiteral zu TargetSILiteral | `5km==>cm` | `convert(5km, cm)` | `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); double res=d.ValueOf(ASTSILiteral, javax.measure.Unit); ...` | 500.000 cm 
 
-# Library Functions 
-
+# Library Functions
 ((TODO: This is still in discussion:
     are those available in the Tool (on the AST) or at runtime?))
 
+The following table contains a set of use cases and examples for the work with SI units on the AST
 | Beschreibung | Java-Syntax | Returnwert |
 | ------ | ------ | ------ |
+| Unit von SILiteral |  `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); javax.measure.Unit u=d.UnitOf(ASTSILiteral)` | km |
+| BaseUnit von SILiteral |  `UnitFactory.createBaseUnit(u)` | m |
+| Literal von SILiteral | `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); d.NumberOf(ASTSILiteral)` oder `d.DoubleOf(ASTSILiteral)` | 5
+| Literal von SILiteral umgerechnet auf Basisunits  | `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); d.ValueOf(ASTSILiteral)` | 5000 |
+| SILiteral zu TargetSILiteral  | `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); double res=d.ValueOf(ASTSILiteral, javax.measure.Unit); ...` | 500.000 cm |
 | Convert Units | `c=getConverter(srcUnit/*km*/, targetUnit/*m*/); c.convert(5.2);`  | 5200 | 
 | Convert to Base Units | `c=getConverter(srcUnit/*km*/); c.convert(5.2);`  | 5200 |
 | Create Unit | `UnitFactory.createUnit("km/s")` | `javax.measure.Unit` |
