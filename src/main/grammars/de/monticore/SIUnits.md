@@ -1,13 +1,13 @@
 <!-- (c) https://github.com/MontiCore/monticore -->
 
 <!-- 
-  TODO:  Links so anpassen, dass die Übertragung nach Github klappen wird
+  TODO:  Links so anpassen, dass die Ãœbertragung nach Github klappen wird
   (relative Links only)
   
   TODO:
-  Wir müssen über die Umsetzung (mit oder ohne explizites Mitschleppen 
+  Wir mÃ¼ssen Ã¼ber die Umsetzung (mit oder ohne explizites Mitschleppen 
   der Einheiten zur Laufzeit)
-  sowie über die Bedeutung der Funktionen nochmal nachdenken.
+  sowie Ã¼ber die Bedeutung der Funktionen nochmal nachdenken.
  -->
 
 # SIUnits
@@ -255,6 +255,14 @@ and  is explained in
 
 ((TODO: This is still in discussion:
     are those available in the Tool (on the AST) or at runtime?))
+
+Two functions should be available in a DSL to work on unit literals and variables with units:
+`baseunit(..)` takes a variable or constant and returns the value of the expression
+after converting it to base units, e.g. `baseunit(5km)` returns `5000`.
+`unit(..)` returns the value of the expression, e.g. `unit(5km)` returns `5`.
+In case of a sum expression where several scales are used, a conversion to the smallest scale
+is undertaken, e.g. `unit(5cm+10dm+2mm)` returns `1052` as milli is the smallest scale.
+The concrete name and syntax can be adapted when building new DSLs.
 
 | Beschreibung | DSL-Syntax | funktionale Syntax | Java-Syntax | Returnwert |
 | ------ | ------ | ------ |------| ------|
