@@ -274,7 +274,7 @@ The following table contains a set of use cases and examples for the work with S
 | ------ | ------ | ------ |
 | Unit von SILiteral |  `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); javax.measure.Unit u=d.UnitOf(ASTSILiteral)` | km |
 | BaseUnit von SILiteral |  `UnitFactory.createBaseUnit(u)` | m |
-| Literal von SILiteral | `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); d.NumberOf(ASTSILiteral)` oder `d.DoubleOf(ASTSILiteral)` | 5
+| Literal von SILiteral | `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); d.NumberOf(ASTSILiteral)` oder `d.DoubleOf(ASTSILiteral)` | 5 |
 | Literal von SILiteral umgerechnet auf Basisunits  | `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); d.ValueOf(ASTSILiteral)` | 5000 |
 | SILiteral zu TargetSILiteral  | `SIUnitLiteralDecoder d = new SIUnitLiteralDecoder(...); double res=d.ValueOf(ASTSILiteral, javax.measure.Unit); ...` | 500.000 cm |
 | Convert Units | `c=getConverter(srcUnit/*km*/, targetUnit/*m*/); c.convert(5.2);`  | 5200 | 
