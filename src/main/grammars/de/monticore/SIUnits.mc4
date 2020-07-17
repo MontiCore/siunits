@@ -13,7 +13,7 @@ package de.monticore;
  * International Bureau of Weights and Measures (20 May 2019),
  * SI Brochure: The International System of Units (SI) (9th ed.).
  *
- * SI Units are declared as independent Nonterminal and can then
+ * SI units are declared as independent Nonterminal and can then
  * be used as part of a
  * * value definition, such as "5kg", or
  * * type definition, such as "km/h"
@@ -47,6 +47,7 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
   SIUnitExponent implements SIUnit <30> =
     SIUnit { noSpace(1,2) }? "^" exponent:SignedNatLiteral;
 
+
   /**
    * The SIUnitPrimitives are the primitives of the SIUnit
    *
@@ -60,6 +61,21 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
    */
   interface SIUnitPrimitive extends SIUnit;
 
+
+  /**
+   * The SIUnitKindGroupWithExponent combines
+   * several SIUnitWithPrefix and SIUnitWithoutPrefix
+   * with exponents as one SI unit group, such as
+   * 'kV^2Ah' and 's^2m'
+   */
+  SIUnitKindGroupWithExponent implements SIUnitPrimitive =
+    SIUnitWithPrefix "^" exponent:SignedNatLiteral
+      (SIUnitWithoutPrefix "^" exponent:SignedNatLiteral)*
+      SIUnitWithoutPrefix? |
+    (SIUnitWithoutPrefix "^" exponent:SignedNatLiteral)*
+      SIUnitWithoutPrefix?;
+
+
   /**
    * SIUnitWithPrefix
    *
@@ -69,7 +85,7 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
    * * https://en.wikipedia.org/wiki/SI_derived_unit
    * * https://en.wikipedia.org/wiki/Non-SI_units_mentioned_in_the_SI
    *
-   * The expression matches a SI unit beginning
+   * The expression matches a SI unit starting
    * with a prefix. A SI unit that can have a
    * prefix is one of the following:
    *  'm,g,s,A,K,mol,cd,Hz,N,Pa,J,W,C,V,F,Ohm,
@@ -100,8 +116,8 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
    * * https://en.wikipedia.org/wiki/SI_derived_unit
    * * https://en.wikipedia.org/wiki/Non-SI_units_mentioned_in_the_SI
    *
-   * The expression matches a SI Unit not beginning
-   * with a prefix. A SI Unit that do not need a
+   * The expression matches a SI unit not starting
+   * with a prefix. A SI unit that do not need a
    * prefix is one of the following:
    *  'm,g,s,A,K,mol,cd,Hz,N,Pa,J,W,C,V,F,Ohm,
    *   Ω,S,Wb,T,H,lm,lx,Bq,Gy,Sv,kat,l,L'
@@ -123,23 +139,10 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
   SIUnitWithoutPrefix implements SIUnitPrimitive =
     { isSIUnitWithoutPrefix() }? (Name | NonNameUnit);
 
-  /**
-   * The SIUnitKindGroupWithExponent combines
-   * several SIUnitWithPrefix and SIUnitWithoutPrefix
-   * with exponents as one SI unit group, such as
-   * 'kV^2Ah' and 's^2m'
-   */
-  SIUnitKindGroupWithExponent implements SIUnitPrimitive =
-    SIUnitWithPrefix "^" exponent:SignedNatLiteral
-      (SIUnitWithoutPrefix "^" exponent:SignedNatLiteral)*
-      SIUnitWithoutPrefix? |
-    SIUnitWithoutPrefix "^" exponent:SignedNatLiteral
-      (SIUnitWithoutPrefix "^" exponent:SignedNatLiteral)*
-      SIUnitWithoutPrefix?;
 
   /** This Token is needed because the Name-Token
    * does not cover greek Ohm 'Ω' and greek mu 'µ'.
-   * The Token contains at least one of this
+   * The Token contains at least one of those
    * symbols.
    */
   token NonNameUnit =
@@ -151,14 +154,15 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
     'a'..'z' | 'A'..'Z' ;
 
 // TODO: den neuen Teil genau so kommentieren, wie oben
+// Done: s.o.
 
 
 // TODO: diesen Kommentar behandeln
+// Done
 //
 //  TODO: Wobei ich neugierig bin: Man könnte doch durch geeignete Definition der Regex auch
 //  Kombinationen beschreiben, wie etwa "VAh" oder "km/h".
 //  Das zugehörige Token (und eine natürlich etwas komplexere regexp) wäre etwa:
-
 // Done: Hier gibt es leider Probleme mit Expressions
 //  wie 'm/secondVariable' => zwei Tokens:
 //   'm/s' 'econdVariable'
@@ -183,8 +187,8 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
 
 
 
+  // Defining semantic predicates
   concept antlr {
-
     parserjava {
       public static final String prefix =
         "(Y|Z|E|P|T|G|M|k|h|da|d|c|m|u|µ|n|p|f|a|z|y)";
