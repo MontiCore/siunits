@@ -85,8 +85,8 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
    * * https://en.wikipedia.org/wiki/SI_derived_unit
    * * https://en.wikipedia.org/wiki/Non-SI_units_mentioned_in_the_SI
    *
-   * The expression matches a SI unit starting
-   * with a prefix. A SI unit that can have a
+   * The expression matches an SI unit starting
+   * with a prefix. An SI unit that can have a
    * prefix is one of the following:
    *  'm,g,s,A,K,mol,cd,Hz,N,Pa,J,W,C,V,F,Ohm,
    *   Ω,S,Wb,T,H,lm,lx,Bq,Gy,Sv,kat,l,L'
@@ -116,8 +116,8 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
    * * https://en.wikipedia.org/wiki/SI_derived_unit
    * * https://en.wikipedia.org/wiki/Non-SI_units_mentioned_in_the_SI
    *
-   * The expression matches a SI unit not starting
-   * with a prefix. A SI unit that do not need a
+   * The expression matches an SI unit not starting
+   * with a prefix. An SI unit that does not need a
    * prefix is one of the following:
    *  'm,g,s,A,K,mol,cd,Hz,N,Pa,J,W,C,V,F,Ohm,
    *   Ω,S,Wb,T,H,lm,lx,Bq,Gy,Sv,kat,l,L'
