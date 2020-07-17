@@ -70,24 +70,6 @@ public class SIUnitsWithBracketsPrettyPrinter implements SIUnitsVisitor {
         printer.print(")");
     }
 
-//    /**
-//     * Prints a SIUnitExponent
-//     * @param node SIUnitExponent
-//     */
-//    @Override
-//    public void visit(ASTSIUnitExponent node) {
-//        printer.print("(");
-//    }
-
-//    /**
-//     * Prints a SIUnitExponent
-//     * @param node SIUnitExponent
-//     */
-//    @Override
-//    public void endVisit(ASTSIUnitExponent node) {
-//        printer.print("^" + node.getExponent().getValue() + ")");
-//    }
-
     @Override
     public void visit(ASTSIUnitBracket node) {
         printer.print("(");
@@ -105,19 +87,35 @@ public class SIUnitsWithBracketsPrettyPrinter implements SIUnitsVisitor {
             printer.print(node.getName());
         else if (node.isPresentNonNameUnit())
             printer.print(node.getNonNameUnit());
-        else if(node.isPresentUnitKindGroupWithExponent())
-            printer.print(node.getUnitKindGroupWithExponent());
+    }
+
+
+    @Override
+    public void visit(ASTSIUnitWithoutPrefix node) {
+        if (node.isPresentName())
+            printer.print(node.getName());
+        else if (node.isPresentNonNameUnit())
+            printer.print(node.getNonNameUnit());
+    }
+
+    @Override
+    public void traverse(ASTSIUnitKindGroupWithExponent node) {
+        int j = 0;
+        if (node.isPresentSIUnitWithPrefix()) {
+            node.getSIUnitWithPrefix().accept(getRealThis());
+            printer.print("^" + node.getExponent(j++).getSource());
+        }
+        for (int i = 0; i < node.getSIUnitWithoutPrefixList().size(); i++) {
+            node.getSIUnitWithoutPrefix(i).accept(getRealThis());
+            if (j < node.getExponentList().size())
+                printer.print("^" + node.getExponent(j++).getSource());
+        }
     }
 
     @Override
     public void endVisit(ASTSIUnitExponent node) {
         printer.print("^" + node.getExponent().getSource());
     }
-//
-//    @Override
-//    public void visit(ASTOfficallyAcceptedUnit node) {
-//        printer.print(node.getUnit());
-//    }
 
     /**
      * Prints a SiUnitDimensionless

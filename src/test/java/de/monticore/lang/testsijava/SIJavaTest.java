@@ -18,7 +18,7 @@ public class SIJavaTest {
     @Before
     public void init() {
         Log.init();
-        Log.enableFailQuick(false);
+        Log.enableFailQuick(true);
     }
 
     private ASTSIJavaClass parseModel(String input) {
