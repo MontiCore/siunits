@@ -1,7 +1,7 @@
 # TestSIJava
 The TestSIJava language serves as an example on how to integrate SIUnits, SIUnitLiterals, SIUnitTypes and 
 SIUnitTypes4Computing (see [SIUnits language](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/SIUnits.md)) 
-in a Java-like language. TypeCheck classes are setup for this language and can be used to check
+is a Java-like language. TypeCheck classes are setup for this language and can be used to check
 whether a field declaration is initialized with a compatible type or expression. 
 
 ## [TestSIJava.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/lang/testsijava/TestSIJava.mc4)

@@ -6,11 +6,11 @@ import de.monticore.expressions.expressionsbasis._ast.ASTNameExpression;
 import de.monticore.expressions.prettyprint.AssignmentExpressionsPrettyPrinter;
 import de.monticore.prettyprint.CommentPrettyPrinter;
 import de.monticore.prettyprint.IndentPrinter;
+import de.monticore.symbols.oosymbols._symboltable.FieldSymbol;
+import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
 import de.monticore.types.basictypesymbols._symboltable.VariableSymbol;
 import de.monticore.types.check.SymTypeExpression;
 import de.monticore.types.check.SymTypeOfNumericWithSIUnit;
-import de.monticore.types.typesymbols._symboltable.FieldSymbol;
-import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
 import de.se_rwth.commons.logging.Log;
 
 import java.util.Optional;
@@ -29,7 +29,7 @@ public class MyAssignmentExpressionsPrettyPrinter extends AssignmentExpressionsP
             Log.error("0xE725687 Left side of AssignmentExpression is not a NameExpression");
         } else {
             String nameToResolve = ((ASTNameExpression) node.getLeft()).getName();
-            ITypeSymbolsScope enclosingScope = (ITypeSymbolsScope) node.getEnclosingScope();
+            IOOSymbolsScope enclosingScope = (IOOSymbolsScope) node.getEnclosingScope();
             Optional<FieldSymbol> fieldSymbol = enclosingScope.resolveField(nameToResolve);
             Optional<VariableSymbol> variable = enclosingScope.resolveVariable(nameToResolve);
             if (fieldSymbol.isPresent()) {

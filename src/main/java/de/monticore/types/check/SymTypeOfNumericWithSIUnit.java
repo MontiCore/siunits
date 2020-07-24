@@ -2,13 +2,13 @@
 
 package de.monticore.types.check;
 
+import de.monticore.symbols.oosymbols.OOSymbolsMill;
+import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
+import de.monticore.symbols.oosymbols._symboltable.OOSymbolsScope;
+import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbol;
+import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbolSurrogate;
 import de.monticore.symboltable.serialization.JsonDeSers;
 import de.monticore.symboltable.serialization.JsonPrinter;
-import de.monticore.types.typesymbols.TypeSymbolsMill;
-import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
-import de.monticore.types.typesymbols._symboltable.OOTypeSymbol;
-import de.monticore.types.typesymbols._symboltable.OOTypeSymbolSurrogate;
-import de.monticore.types.typesymbols._symboltable.TypeSymbolsScope;
 
 import javax.measure.unit.Unit;
 import java.util.LinkedList;
@@ -28,7 +28,7 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
     public static SymTypeOfNumericWithSIUnit getSuperNumericUnitType() {
         if (superNumericUnitType == null) {
             String name = "SuperNumericWithUnit";
-            TypeSymbolsScope enclosingScope = TypeSymbolsMill.typeSymbolsScopeBuilder().build();
+            OOSymbolsScope enclosingScope = OOSymbolsMill.oOSymbolsScopeBuilder().build();
             OOTypeSymbol newSymbol =  de.monticore.types.check.DefsTypeBasic.type(name);
             enclosingScope.add(newSymbol);
             OOTypeSymbolSurrogate loader = (new OOTypeSymbolSurrogate(name));
@@ -50,7 +50,7 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
         setSuperType();
     }
 
-    public SymTypeOfNumericWithSIUnit(ITypeSymbolsScope enclosingScope, SymTypeConstant numericType, SymTypeExpression siunitType) {
+    public SymTypeOfNumericWithSIUnit(IOOSymbolsScope enclosingScope, SymTypeConstant numericType, SymTypeExpression siunitType) {
         this.numericType = numericType;
         this.siunitType = siunitType;
         this.typeSymbolSurrogate = new OOTypeSymbolSurrogate(print());
@@ -62,7 +62,7 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
         if (superNumericUnitType != null && this != superNumericUnitType) {
             List<SymTypeExpression> superTypes = new LinkedList<>();
             superTypes.add(getSuperNumericUnitType());
-            this.getTypeInfo().setSuperTypeList(superTypes);
+            this.getTypeInfo().setSuperTypesList(superTypes);
         }
     }
 

@@ -10,7 +10,7 @@ grammar TestSIJavaWithCustomTypes extends de.monticore.SIUnitLiterals,
                             de.monticore.expressions.AssignmentExpressions,
                             de.monticore.statements.MCCommonStatements,
                             de.monticore.CustomSIUnitTypes4Computing,
-                            de.monticore.types.TypeSymbols {
+                            de.monticore.symbols.OOSymbols {
 
     symbol scope SIJavaClass =
     "package" package:(Name& || ".")+ ";"

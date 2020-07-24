@@ -9,9 +9,9 @@ import de.monticore.prettyprint.CommentPrettyPrinter;
 import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.siunits.utility.UnitFactory;
 import de.monticore.siunits.utility.UnitPrettyPrinter;
+import de.monticore.symbols.oosymbols._symboltable.FieldSymbol;
+import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
 import de.monticore.types.check.SymTypeOfNumericWithSIUnit;
-import de.monticore.types.typesymbols._symboltable.FieldSymbol;
-import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
 import de.se_rwth.commons.logging.Log;
 
 import javax.measure.unit.Unit;
@@ -49,7 +49,7 @@ public class MyCommonExpressionsPrettyPrinter extends CommonExpressionsPrettyPri
                 argument = ((ASTNameExpression) node.getArguments().getExpression(0)).getName();
             }
 
-            Optional<FieldSymbol> fieldSymbol = ((ITypeSymbolsScope) node.getEnclosingScope()).resolveField(argument);
+            Optional<FieldSymbol> fieldSymbol = ((IOOSymbolsScope) node.getEnclosingScope()).resolveField(argument);
             if (!fieldSymbol.isPresent()) {
                 Log.error("0xE5672872 argument is invalid");
             }

@@ -9,7 +9,7 @@ import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4ComputingInt;
 import de.monticore.siunittypes4computing._symboltable.ISIUnitTypes4ComputingScope;
 import de.monticore.siunittypes4computing._visitor.SIUnitTypes4ComputingVisitor;
-import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
+import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
 import de.se_rwth.commons.logging.Log;
 
 import static de.monticore.types.check.TypeCheck.*;
@@ -79,21 +79,21 @@ public class SynthesizeSymTypeFromSIUnitTypes4Computing extends SynthesizeSymTyp
                 isByte(type));
     }
 
-    private ITypeSymbolsScope getScope(ISIUnitsScope enclosingScope) {
+    private IOOSymbolsScope getScope(ISIUnitsScope enclosingScope) {
         // is accepted only here, decided on 07.04.2020
-        if(!(enclosingScope instanceof ITypeSymbolsScope)){
-            Log.error("0xAE112 the enclosing scope of the type does not implement the interface ITypeSymbolsScope");
+        if(!(enclosingScope instanceof IOOSymbolsScope)){
+            Log.error("0xAE112 the enclosing scope of the type does not implement the interface IOOSymbolsScope");
         }
         // is accepted only here, decided on 07.04.2020
-        return (ITypeSymbolsScope) enclosingScope;
+        return (IOOSymbolsScope) enclosingScope;
     }
 
-    private ITypeSymbolsScope getScope(ISIUnitTypes4ComputingScope enclosingScope) {
+    private IOOSymbolsScope getScope(ISIUnitTypes4ComputingScope enclosingScope) {
         // is accepted only here, decided on 07.04.2020
-        if(!(enclosingScope instanceof ITypeSymbolsScope)){
-            Log.error("0xAE106 the enclosing scope of the type does not implement the interface ITypeSymbolsScope");
+        if(!(enclosingScope instanceof IOOSymbolsScope)){
+            Log.error("0xAE106 the enclosing scope of the type does not implement the interface IOOSymbolsScope");
         }
         // is accepted only here, decided on 07.04.2020
-        return (ITypeSymbolsScope) enclosingScope;
+        return (IOOSymbolsScope) enclosingScope;
     }
 }

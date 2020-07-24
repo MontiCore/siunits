@@ -3,9 +3,9 @@
 package de.monticore.types.check;
 
 import de.monticore.siunits.utility.UnitPrettyPrinter;
-import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
-import de.monticore.types.typesymbols._symboltable.OOTypeSymbol;
-import de.monticore.types.typesymbols._symboltable.OOTypeSymbolSurrogate;
+import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
+import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbol;
+import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbolSurrogate;
 import de.se_rwth.commons.logging.Log;
 
 import java.util.ArrayList;
@@ -83,7 +83,7 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
      * @param name           Of form km^2*s/kg, ...
      * @param enclosingScope The node's enclosing scope
      */
-    public static SymTypeExpression createSIUnit(String name, ITypeSymbolsScope enclosingScope) {
+    public static SymTypeExpression createSIUnit(String name, IOOSymbolsScope enclosingScope) {
         String formattedStandard = UnitPrettyPrinter.printUnit(name);
         String[] split = formattedStandard.split("\\/");
         List<String> numeratorStringList = Arrays.asList(split[0].split("\\*"));
@@ -109,7 +109,7 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
      * @param denominator    List of the denominator SIBasicTypes
      * @param enclosingScope The node's enclosing scope
      */
-    public static SymTypeExpression createSIUnit(List<SymTypeOfSIUnitBasic> numerator, List<SymTypeOfSIUnitBasic> denominator, ITypeSymbolsScope enclosingScope) {
+    public static SymTypeExpression createSIUnit(List<SymTypeOfSIUnitBasic> numerator, List<SymTypeOfSIUnitBasic> denominator, IOOSymbolsScope enclosingScope) {
         String numeratorString = numerator.stream().map(SymTypeOfSIUnitBasic::print).collect(Collectors.joining("*"));
         String denominatorString = numerator.stream().map(SymTypeOfSIUnitBasic::print).collect(Collectors.joining("*"));
         if (numerator.size() > 1)
@@ -192,7 +192,7 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
     /**
      * creates a numeric with siunit type
      */
-    public static SymTypeExpression createNumericWithSIUnitType(SymTypeExpression numericType, SymTypeExpression siunitType, ITypeSymbolsScope enclosingScope) {
+    public static SymTypeExpression createNumericWithSIUnitType(SymTypeExpression numericType, SymTypeExpression siunitType, IOOSymbolsScope enclosingScope) {
         String siUnitPrint = siunitType.print();
         String name = "(" + numericType.print() + "," + siUnitPrint + ")";
         OOTypeSymbolSurrogate loader = new OOTypeSymbolSurrogate(name);

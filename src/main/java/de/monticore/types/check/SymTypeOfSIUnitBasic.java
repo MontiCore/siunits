@@ -15,9 +15,9 @@
 package de.monticore.types.check;
 
 import de.monticore.siunits.utility.UnitFactory;
+import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbolSurrogate;
 import de.monticore.symboltable.serialization.JsonDeSers;
 import de.monticore.symboltable.serialization.JsonPrinter;
-import de.monticore.types.typesymbols._symboltable.OOTypeSymbolSurrogate;
 
 import javax.measure.unit.Unit;
 import java.util.ArrayList;
@@ -34,13 +34,13 @@ public class SymTypeOfSIUnitBasic extends SymTypeExpression {
 
     public SymTypeOfSIUnitBasic(OOTypeSymbolSurrogate typeSymbolSurrogate) {
         this.typeSymbolSurrogate = typeSymbolSurrogate;
-        this.getTypeInfo().setSuperTypeList(new ArrayList<>());
+        this.getTypeInfo().setSuperTypesList(new ArrayList<>());
     }
 
     public SymTypeOfSIUnitBasic(OOTypeSymbolSurrogate typeSymbolSurrogate, Integer exponent) {
         this.typeSymbolSurrogate = typeSymbolSurrogate;
         this.exponent = Optional.ofNullable(exponent);
-        this.getTypeInfo().setSuperTypeList(new ArrayList<>());
+        this.getTypeInfo().setSuperTypesList(new ArrayList<>());
     }
 
     public String getName() {

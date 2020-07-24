@@ -2,12 +2,11 @@
 package de.monticore.types.check;
 
 import de.monticore.siunits.utility.UnitFactory;
+import de.monticore.symbols.oosymbols._symboltable.OOSymbolsScope;
+import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbol;
+import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbolSurrogate;
 import de.monticore.symboltable.serialization.JsonDeSers;
 import de.monticore.symboltable.serialization.JsonPrinter;
-import de.monticore.types.typesymbols.TypeSymbolsMill;
-import de.monticore.types.typesymbols._symboltable.OOTypeSymbol;
-import de.monticore.types.typesymbols._symboltable.OOTypeSymbolSurrogate;
-import de.monticore.types.typesymbols._symboltable.TypeSymbolsScope;
 
 import javax.measure.quantity.Dimensionless;
 import javax.measure.unit.Unit;
@@ -30,7 +29,7 @@ public class SymTypeOfSIUnit extends SymTypeExpression {
     public static SymTypeOfSIUnit getSuperUnitType() {
         if (superUnitType == null) {
             String name = "SuperUnit";
-            TypeSymbolsScope enclosingScope = TypeSymbolsMill.typeSymbolsScopeBuilder().build();
+            OOSymbolsScope enclosingScope = new OOSymbolsScope();
             OOTypeSymbol newSymbol =  de.monticore.types.check.DefsTypeBasic.type(name);
             enclosingScope.add(newSymbol);
             OOTypeSymbolSurrogate loader = (new OOTypeSymbolSurrogate(name));
@@ -50,7 +49,7 @@ public class SymTypeOfSIUnit extends SymTypeExpression {
         setSuperType();
     }
 
-    public SymTypeOfSIUnit(TypeSymbolsScope enclosingScope, List<SymTypeOfSIUnitBasic> numerator, List<SymTypeOfSIUnitBasic> denominator) {
+    public SymTypeOfSIUnit(OOSymbolsScope enclosingScope, List<SymTypeOfSIUnitBasic> numerator, List<SymTypeOfSIUnitBasic> denominator) {
         this.numerator = numerator;
         this.denominator = denominator;
         this.typeSymbolSurrogate = new OOTypeSymbolSurrogate(print());
@@ -62,7 +61,7 @@ public class SymTypeOfSIUnit extends SymTypeExpression {
         if (superUnitType != null && this != superUnitType) {
             List<SymTypeExpression> superTypes = new LinkedList<>();
             superTypes.add(getSuperUnitType());
-            this.getTypeInfo().setSuperTypeList(superTypes);
+            this.getTypeInfo().setSuperTypesList(superTypes);
         }
     }
 

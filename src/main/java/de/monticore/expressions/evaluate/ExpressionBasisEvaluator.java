@@ -14,9 +14,9 @@ import de.monticore.siunitliterals._ast.ASTSIUnitLiteralsNode;
 import de.monticore.siunitliterals._ast.ASTSignedSIUnitLiteral;
 import de.monticore.siunitliterals.utility.NumberDecoder;
 import de.monticore.siunitliterals.utility.SIUnitLiteralDecoder;
-import de.monticore.types.basictypesymbols._symboltable.VariableSymbol;
-import de.monticore.types.typesymbols._symboltable.FieldSymbol;
-import de.monticore.types.typesymbols._symboltable.ITypeSymbolsScope;
+import de.monticore.symbols.basicsymbols._symboltable.VariableSymbol;
+import de.monticore.symbols.oosymbols._symboltable.FieldSymbol;
+import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
 import de.se_rwth.commons.logging.Log;
 
 import java.util.HashMap;
@@ -45,13 +45,13 @@ public class ExpressionBasisEvaluator implements ExpressionsBasisVisitor {
         this.variableValues = variableValues;
     }
 
-    public ITypeSymbolsScope getScope (IExpressionsBasisScope expressionsBasisScope){
+    public IOOSymbolsScope getScope (IExpressionsBasisScope expressionsBasisScope){
         // is accepted only here, decided on 07.04.2020
-        if(!(expressionsBasisScope instanceof ITypeSymbolsScope)){
-            Log.error("0xE03017 the enclosing scope of the expression does not implement the interface ITypeSymbolsScope");
+        if(!(expressionsBasisScope instanceof IOOSymbolsScope)){
+            Log.error("0xE03017 the enclosing scope of the expression does not implement the interface IOOSymbolsScope");
         }
         // is accepted only here, decided on 07.04.2020
-        return (ITypeSymbolsScope) expressionsBasisScope;
+        return (IOOSymbolsScope) expressionsBasisScope;
     }
 
     private EvaluationResult evaluationResult = new EvaluationResult();

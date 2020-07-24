@@ -105,8 +105,8 @@ public class SIUnitsWithBracketsPrettyPrinter implements SIUnitsVisitor {
             node.getSIUnitWithPrefix().accept(getRealThis());
             printer.print("^" + node.getExponent(j++).getSource());
         }
-        for (int i = 0; i < node.getSIUnitWithoutPrefixList().size(); i++) {
-            node.getSIUnitWithoutPrefix(i).accept(getRealThis());
+        for (int i = 0; i < node.getSIUnitWithoutPrefixsList().size(); i++) {
+            node.getSIUnitWithoutPrefixs(i).accept(getRealThis());
             if (j < node.getExponentList().size())
                 printer.print("^" + node.getExponent(j++).getSource());
         }

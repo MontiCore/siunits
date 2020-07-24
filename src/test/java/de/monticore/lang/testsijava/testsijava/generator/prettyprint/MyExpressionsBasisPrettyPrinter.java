@@ -13,7 +13,7 @@ public class MyExpressionsBasisPrettyPrinter extends ExpressionsBasisPrettyPrint
 //    public void handle(ASTNameExpression node) {
 //        CommentPrettyPrinter.printPreComments(node, this.getPrinter());
 //
-//        ITypeSymbolsScope enclosingScope = (ITypeSymbolsScope) node.getEnclosingScope();
+//        IOOSymbolsScope enclosingScope = (IOOSymbolsScope) node.getEnclosingScope();
 //        Optional<VariableSymbol> variableSymbol = enclosingScope.resolveVariable(node.getName());
 //        Optional<FieldSymbol> fieldSymbol = enclosingScope.resolveField(node.getName());
 //
