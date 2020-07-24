@@ -6,8 +6,8 @@ public class MainTest {
 
     @Test
     public void main() {
-        Main main = new Main();
-        main.main();
+//        Main main = new Main();
+//        main.main();
     }
 
     @Test

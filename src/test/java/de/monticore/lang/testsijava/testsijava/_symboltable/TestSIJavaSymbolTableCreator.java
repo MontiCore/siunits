@@ -2,7 +2,7 @@
 
 package de.monticore.lang.testsijava.testsijava._symboltable;
 
-import de.monticore.lang.testsijava.testsijava._ast.ASTSIJavaClass;
+import de.monticore.lang.testsijava.testsijava._ast.*;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
 import de.monticore.siunittypes4math._ast.ASTSIUnitType;
 import de.monticore.symbols.oosymbols._symboltable.FieldSymbol;
@@ -80,13 +80,15 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
         node.getSpannedScope().add(basevalueMethod);
     }
 
+
+
     @Override
     public void traverse(ASTMethodDeclaration node) {
         if (null != node.getReturnType()) {
             node.getReturnType().accept(getRealThis());
         }
         {
-            Iterator<ASTSIJavaParameter> iter_sIJavaParameters = node.getSIJavaParameterList().iterator();
+            Iterator<ASTSIJavaParameter> iter_sIJavaParameters = node.getSIJavaParametersList().iterator();
             while (iter_sIJavaParameters.hasNext()) {
                 iter_sIJavaParameters.next().accept(getRealThis());
             }
@@ -95,7 +97,7 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
         ITestSIJavaScope scope = createScope(false);
         putOnStack(scope);
 
-        Iterator<ASTSIJavaMethodStatement> iter_sIJavaMethodStatements = node.getSIJavaMethodStatementList().iterator();
+        Iterator<ASTSIJavaMethodStatement> iter_sIJavaMethodStatements = node.getSIJavaMethodStatementsList().iterator();
         while (iter_sIJavaMethodStatements.hasNext()) {
             iter_sIJavaMethodStatements.next().accept(getRealThis());
         }

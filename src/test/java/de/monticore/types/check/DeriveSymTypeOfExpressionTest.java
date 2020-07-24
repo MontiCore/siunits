@@ -6,11 +6,10 @@ import de.monticore.expressions.combineexpressionswithliterals.CombineExpression
 import de.monticore.expressions.combineexpressionswithliterals._parser.CombineExpressionsWithLiteralsParser;
 import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICombineExpressionsWithLiteralsScope;
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
+import de.monticore.symbols.basicsymbols._symboltable.TypeVarSymbol;
+import de.monticore.symbols.oosymbols.OOSymbolsMill;
 import de.monticore.symbols.oosymbols._symboltable.FieldSymbol;
 import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbol;
-import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbolSurrogate;
-import de.monticore.types.basictypesymbols._symboltable.TypeVarSymbol;
-import de.monticore.types.typesymbols.TypeSymbolsMill;
 import de.se_rwth.commons.logging.LogStub;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -45,7 +44,7 @@ public class DeriveSymTypeOfExpressionTest {
                         .setExportingSymbols(true)
                         .setAstNode(null)
                         .setName("Phantasy2").build();     // hopefully unused
-        // we add a variety of OOTypeSymbols to the same scope (which in reality doesn't happen)
+        // we add a variety of TypeSymbols to the same scope (which in reality doesn't happen)
         add2scope(scope, DefsTypeBasic._int);
         add2scope(scope, DefsTypeBasic._char);
         add2scope(scope, DefsTypeBasic._boolean);
@@ -59,50 +58,44 @@ public class DeriveSymTypeOfExpressionTest {
 
         // some FieldSymbols (ie. Variables, Attributes)
         OOTypeSymbol p = new OOTypeSymbol("Person");
-        add2scope(scope, p);
+        add2scope(scope,p);
         OOTypeSymbol s = new OOTypeSymbol("Student");
-        add2scope(scope, s);
-        s.setSuperTypeList(Lists.newArrayList(SymTypeExpressionFactory.createTypeObject("Person", scope)));
+        add2scope(scope,s);
+        s.setSuperTypesList(Lists.newArrayList(SymTypeExpressionFactory.createTypeObject("Person", scope)));
         OOTypeSymbol f = new OOTypeSymbol("FirstSemesterStudent");
-        add2scope(scope, f);
-        f.setSuperTypeList(Lists.newArrayList(SymTypeExpressionFactory.createTypeObject("Student", scope)));
+        add2scope(scope,f);
+        f.setSuperTypesList(Lists.newArrayList(SymTypeExpressionFactory.createTypeObject("Student", scope)));
         add2scope(scope, field("foo", _intSymType));
         add2scope(scope, field("bar2", _booleanSymType));
-        add2scope(scope, field("person1", SymTypeExpressionFactory.createTypeObject("Person", scope)));
-        add2scope(scope, field("person2", SymTypeExpressionFactory.createTypeObject("Person", scope)));
-        add2scope(scope, field("student1", SymTypeExpressionFactory.createTypeObject("Student", scope)));
-        add2scope(scope, field("student2", SymTypeExpressionFactory.createTypeObject("Student", scope)));
-        add2scope(scope, field("firstsemester", SymTypeExpressionFactory.createTypeObject("FirstSemesterStudent", scope)));
+        add2scope(scope, field("person1",SymTypeExpressionFactory.createTypeObject("Person",scope)));
+        add2scope(scope, field("person2",SymTypeExpressionFactory.createTypeObject("Person",scope)));
+        add2scope(scope, field("student1",SymTypeExpressionFactory.createTypeObject("Student",scope)));
+        add2scope(scope,field("student2",SymTypeExpressionFactory.createTypeObject("Student",scope)));
+        add2scope(scope,field("firstsemester",SymTypeExpressionFactory.createTypeObject("FirstSemesterStudent",scope)));
 
         //testing for generics
         TypeVarSymbol genArgs = typeVariable("GenArg");
-        OOTypeSymbol genSuperType = TypeSymbolsMill.oOTypeSymbolBuilder()
-                .setSpannedScope(TypeSymbolsMill.typeSymbolsScopeBuilder().build())
-                .setTypeParameterList(Lists.newArrayList(genArgs))
+        OOTypeSymbol genSuperType = OOSymbolsMill.oOTypeSymbolBuilder()
+                .setSpannedScope(OOSymbolsMill.oOSymbolsScopeBuilder().build())
                 .setEnclosingScope(scope)
                 .setName("GenSuper")
                 .build();
-        OOTypeSymbolSurrogate loader = new OOTypeSymbolSurrogate("GenArg");
-        loader.setEnclosingScope(scope);
-        SymTypeExpression genArg = SymTypeExpressionFactory.createTypeVariable(loader);
-        loader = new OOTypeSymbolSurrogate("GenSuper");
-        loader.setEnclosingScope(scope);
-        SymTypeExpression genSuper = SymTypeExpressionFactory.createGenerics(loader, genArg);
-        OOTypeSymbol genSubType = TypeSymbolsMill.oOTypeSymbolBuilder()
-                .setSpannedScope(TypeSymbolsMill.typeSymbolsScopeBuilder().build())
-                .setName("GenSub").setSuperTypeList(Lists.newArrayList(genSuper))
-                .setTypeParameterList(Lists.newArrayList(genArgs))
+        genSuperType.addTypeVarSymbol(genArgs);
+        SymTypeExpression genArg = SymTypeExpressionFactory.createTypeVariable("GenArg",scope);
+        SymTypeExpression genSuper = SymTypeExpressionFactory.createGenerics("GenSuper",scope,genArg);
+        OOTypeSymbol genSubType = OOSymbolsMill.oOTypeSymbolBuilder()
+                .setSpannedScope(OOSymbolsMill.oOSymbolsScopeBuilder().build())
+                .setName("GenSub").setSuperTypesList(Lists.newArrayList(genSuper))
                 .setEnclosingScope(scope)
                 .build();
-        loader = new OOTypeSymbolSurrogate("GenSub");
-        loader.setEnclosingScope(scope);
-        SymTypeExpression genSub = SymTypeExpressionFactory.createGenerics(loader, genArg);
-        FieldSymbol genSubField = field("genericSub", genSub);
-        FieldSymbol genSuperField = field("genericSuper", genSuper);
-        add2scope(scope, genSuperType);
-        add2scope(scope, genSubType);
-        add2scope(scope, genSubField);
-        add2scope(scope, genSuperField);
+        genSubType.addTypeVarSymbol(genArgs);
+        SymTypeExpression genSub = SymTypeExpressionFactory.createGenerics("GenSub",scope,genArg);
+        FieldSymbol genSubField = field("genericSub",genSub);
+        FieldSymbol genSuperField = field("genericSuper",genSuper);
+        add2scope(scope,genSuperType);
+        add2scope(scope,genSubType);
+        add2scope(scope,genSubField);
+        add2scope(scope,genSuperField);
 
         flatExpressionScopeSetter = new FlatExpressionScopeSetter(scope);
     }

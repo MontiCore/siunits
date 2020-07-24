@@ -3,6 +3,6 @@
 package de.monticore;
 
 grammar TestSIUnitLiterals extends de.monticore.SIUnitLiterals,
-                                    de.monticore.types.TypeSymbols {
+                                    de.monticore.symbols.OOSymbols {
 
 }

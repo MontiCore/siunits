@@ -40,7 +40,7 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
         printer.println();
         printer.indent();
 
-        for (ASTSIJavaClassStatement statement : node.getSIJavaClassStatementList()) {
+        for (ASTSIJavaClassStatement statement : node.getSIJavaClassStatementsList()) {
             if (statement instanceof ASTFieldDeclaration) {
                 statement.accept(getRealThis());
                 printer.println(";");
@@ -82,7 +82,7 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
         printer.print("public " + typePrint + " " + node.getName() + "_(");
 
         boolean first = true;
-        for (ASTSIJavaParameter parameter : node.getSIJavaParameterList()) {
+        for (ASTSIJavaParameter parameter : node.getSIJavaParametersList()) {
             if (!first) {
                 printer.print(", ");
             } else {
@@ -93,13 +93,13 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
         printer.println(") {");
         printer.indent();
 
-        for (ASTSIJavaMethodStatement statement : node.getSIJavaMethodStatementList()) {
+        for (ASTSIJavaMethodStatement statement : node.getSIJavaMethodStatementsList()) {
             statement.accept(getRealThis());
             printer.println(";");
         }
 
         if (node.isPresentSIJavaMethodReturn()) {
-            if (!node.getSIJavaMethodStatementList().isEmpty())
+            if (!node.getSIJavaMethodStatementsList().isEmpty())
                 printer.println();
             printer.print("return (" + typePrint + ") (");
 
@@ -120,7 +120,7 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
         printer.print("public " + typePrint + " " + node.getName() + "(");
 
         boolean first = true;
-        for (ASTSIJavaParameter parameter : node.getSIJavaParameterList()) {
+        for (ASTSIJavaParameter parameter : node.getSIJavaParametersList()) {
             if (!first) {
                 printer.print(", ");
             } else {
@@ -132,7 +132,7 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
         printer.indent();
 
         List<String> newParameters = new LinkedList<>();
-        for (ASTSIJavaParameter parameter : node.getSIJavaParameterList()) {
+        for (ASTSIJavaParameter parameter : node.getSIJavaParametersList()) {
             String newName = parameter.getName() + "_";
             newParameters.add(newName);
             SymTypeExpression parType = parameter.getSymbol().getType();
@@ -150,7 +150,7 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
             printer.println(factor + ";");
         }
 
-        if (!node.getSIJavaParameterList().isEmpty())
+        if (!node.getSIJavaParametersList().isEmpty())
             printer.println();
         String factor = "";
         if (node.isPresentSIJavaMethodReturn()) {

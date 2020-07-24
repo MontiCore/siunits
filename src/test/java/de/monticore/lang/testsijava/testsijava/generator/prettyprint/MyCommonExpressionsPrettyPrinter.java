@@ -42,11 +42,11 @@ public class MyCommonExpressionsPrettyPrinter extends CommonExpressionsPrettyPri
                 && preDefined.contains(((ASTNameExpression) node.getExpression()).getName())) {
             String name = ((ASTNameExpression) node.getExpression()).getName();
             String argument = "";
-            if (node.getArguments().getExpressionList().size() != 1
-                    || !(node.getArguments().getExpression(0) instanceof ASTNameExpression)) {
+            if (node.getArguments().getExpressionsList().size() != 1
+                    || !(node.getArguments().getExpressions(0) instanceof ASTNameExpression)) {
                 Log.error("0xE5672871 argument is not a Name");
             } else {
-                argument = ((ASTNameExpression) node.getArguments().getExpression(0)).getName();
+                argument = ((ASTNameExpression) node.getArguments().getExpressions(0)).getName();
             }
 
             Optional<FieldSymbol> fieldSymbol = ((IOOSymbolsScope) node.getEnclosingScope()).resolveField(argument);
