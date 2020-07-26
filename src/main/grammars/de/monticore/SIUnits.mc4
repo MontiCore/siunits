@@ -72,7 +72,7 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
     SIUnitWithPrefix "^" exponent:SignedNatLiteral
       (SIUnitWithoutPrefix "^" exponent:SignedNatLiteral)*
       SIUnitWithoutPrefix? |
-    (SIUnitWithoutPrefix "^" exponent:SignedNatLiteral)*
+    (SIUnitWithoutPrefix "^" exponent:SignedNatLiteral)+
       SIUnitWithoutPrefix?;
 
 

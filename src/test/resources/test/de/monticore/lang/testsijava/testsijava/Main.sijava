@@ -12,7 +12,7 @@ siclass Main {
         return calculateTime(v, distance) * 20 + time;
     }
 
-    h<double> calculateTime(km/h v, m d) {
+    h<double> calculateTime(km/h v, mm d) {
 
         double d_R = value(d);
         double d_B = basevalue(d);

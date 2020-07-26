@@ -5,7 +5,6 @@ import de.monticore.literals.mccommonliterals.MCCommonLiteralsMill;
 import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
 import de.se_rwth.commons.logging.Log;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -35,13 +34,6 @@ public class DeriveSymTypeOfMCCommonLiteralsTest {
   
   // ------------------------------------------------------  Tests for Function 2b
 
-  // Mill used ... alternative would be a Parser for Literals
-  @Test
-  @Ignore
-  public void deriveTFromLiteral1Null() throws IOException {
-    ASTLiteral lit = MCCommonLiteralsMill.nullLiteralBuilder().build();
-    assertEquals("null", tc.typeOf(lit).print());
-  }
 
   @Test
   public void deriveTFromLiteral1Boolean() throws IOException {

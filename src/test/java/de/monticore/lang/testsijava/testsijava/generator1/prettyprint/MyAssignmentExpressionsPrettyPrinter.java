@@ -1,5 +1,5 @@
 /* (c) https://github.com/MontiCore/monticore */
-package de.monticore.lang.testsijava.testsijava.generator.prettyprint;
+package de.monticore.lang.testsijava.testsijava.generator1.prettyprint;
 
 import de.monticore.expressions.assignmentexpressions._ast.ASTAssignmentExpression;
 import de.monticore.expressions.expressionsbasis._ast.ASTNameExpression;
@@ -10,7 +10,6 @@ import de.monticore.symbols.basicsymbols._symboltable.VariableSymbol;
 import de.monticore.symbols.oosymbols._symboltable.FieldSymbol;
 import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
 import de.monticore.types.check.SymTypeExpression;
-import de.monticore.types.check.SymTypeOfNumericWithSIUnit;
 import de.se_rwth.commons.logging.Log;
 
 import java.util.Optional;
@@ -82,19 +81,19 @@ public class MyAssignmentExpressionsPrettyPrinter extends AssignmentExpressionsP
                 Log.error("0xA0114 Missing implementation for RegularAssignmentExpression");
         }
         this.getPrinter().print(" ");
-        if (type.isPresent()) {
-            this.getPrinter().print("(");
-            if (type.get() instanceof SymTypeOfNumericWithSIUnit)
-                this.getPrinter().print(((SymTypeOfNumericWithSIUnit) type.get()).getNumericType().print());
-            else
-                this.getPrinter().print(type.get().print());
-            this.getPrinter().print(") (");
-        }
+//        if (type.isPresent()) {
+//            this.getPrinter().print("(");
+//            if (type.get() instanceof SymTypeOfNumericWithSIUnit)
+//                this.getPrinter().print(((SymTypeOfNumericWithSIUnit) type.get()).getNumericType().print());
+//            else
+//                this.getPrinter().print(type.get().print());
+//            this.getPrinter().print(") (");
+//        }
 
         node.getRight().accept(this.getRealThis());
-        if (type.isPresent()) {
-            this.getPrinter().print(")");
-        }
+//        if (type.isPresent()) {
+//            this.getPrinter().print(")");
+//        }
         CommentPrettyPrinter.printPostComments(node, this.getPrinter());
     }
 }

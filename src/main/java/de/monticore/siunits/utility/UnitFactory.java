@@ -192,6 +192,14 @@ public class UnitFactory {
         return source.getConverterTo(target);
     }
 
+    public static UnitConverter getConverterTo(Unit target) {
+        return createBaseUnit(target).getConverterTo(target);
+    }
+
+    public static UnitConverter getConverterFrom(Unit source) {
+        return source.getConverterTo(createBaseUnit(source));
+    }
+
     public static Unit removePrefixes(Unit unit) {
         if (unit instanceof AlternateUnit) {
             return unit;

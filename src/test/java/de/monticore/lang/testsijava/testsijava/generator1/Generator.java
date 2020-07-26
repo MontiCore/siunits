@@ -1,5 +1,5 @@
 /* (c) https://github.com/MontiCore/monticore */
-package de.monticore.lang.testsijava.testsijava.generator;
+package de.monticore.lang.testsijava.testsijava.generator1;
 
 import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._ast.ASTSIJavaClass;

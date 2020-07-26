@@ -96,7 +96,7 @@ public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
         }
         for (int i = 0; i < node.getSIUnitWithoutPrefixsList().size(); i++) {
             node.getSIUnitWithoutPrefixs(i).accept(getRealThis());
-            if (j < node.getSIUnitWithoutPrefixsList().size())
+            if (j < node.getExponentList().size())
                 printer.print("^" + node.getExponent(j++).getSource());
         }
     }

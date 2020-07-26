@@ -1,5 +1,5 @@
 /* (c) https://github.com/MontiCore/monticore */
-package de.monticore.lang.testsijava.testsijava.generator.prettyprint;
+package de.monticore.lang.testsijava.testsijava.generator2.prettyprint;
 
 import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.siunitliterals._ast.ASTSIUnitLiteral;

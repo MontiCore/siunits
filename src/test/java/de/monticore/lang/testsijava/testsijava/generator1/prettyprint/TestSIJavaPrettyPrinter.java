@@ -1,5 +1,5 @@
 /* (c) https://github.com/MontiCore/monticore */
-package de.monticore.lang.testsijava.testsijava.generator.prettyprint;
+package de.monticore.lang.testsijava.testsijava.generator1.prettyprint;
 
 import de.monticore.lang.testsijava.testsijava._ast.*;
 import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaVisitor;
@@ -59,14 +59,16 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
 
     @Override
     public void traverse(ASTFieldDeclaration node) {
-        String typePrint = printNumericType(node.getSymbol().getType());
-        printer.print(typePrint);
+//        String typePrint = printNumericType(node.getSymbol().getType());
+//        printer.print(typePrint);
+        printer.print("double");
         printer.print(" " + node.getName());
 
         if (node.isPresentExpression()) {
-            printer.print(" = (" + typePrint + ") (");
+//            printer.print(" = (" + typePrint + ") (");
+            printer.print(" = ");
             node.getExpression().accept(getRealThis());
-            printer.print(")");
+//            printer.print(")");
         }
     }
 
@@ -78,7 +80,8 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
     }
 
     private void printIntern(ASTMethodDeclaration node) {
-        String typePrint = printNumericType(node.getSymbol().getReturnType());
+//        String typePrint = printNumericType(node.getSymbol().getReturnType());
+        String typePrint = "double";
         printer.print("public " + typePrint + " " + node.getName() + "_(");
 
         boolean first = true;
@@ -101,10 +104,12 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
         if (node.isPresentSIJavaMethodReturn()) {
             if (!node.getSIJavaMethodStatementsList().isEmpty())
                 printer.println();
-            printer.print("return (" + typePrint + ") (");
+//            printer.print("return (" + typePrint + ") (");
+            printer.print("return ");
 
             node.getSIJavaMethodReturn().accept(getRealThis());
-            printer.println(");");
+//            printer.println(");");
+            printer.println(";");
         }
 
 

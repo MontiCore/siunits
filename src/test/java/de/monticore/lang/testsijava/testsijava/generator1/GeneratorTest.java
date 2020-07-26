@@ -1,4 +1,4 @@
-package de.monticore.lang.testsijava.testsijava.generator;
+package de.monticore.lang.testsijava.testsijava.generator1;
 
 import de.se_rwth.commons.logging.Log;
 import org.apache.commons.io.FileUtils;
@@ -11,8 +11,8 @@ import java.io.IOException;
 public class GeneratorTest {
 
     private String modelPath = "src/test/resources";
-    private String outputPath = "target/generated-test-sources/monticore/sourcecode";
-    private String compareModelPath = "src/test/resources/compare";
+    private String outputPath = "target/generate1";
+    private String compareModelPath = "src/test/resources/compare1";
 
     private void test(String model) throws IOException {
         Generator.generate(modelPath, model, outputPath);

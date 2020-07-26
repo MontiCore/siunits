@@ -1,5 +1,5 @@
 /* (c) https://github.com/MontiCore/monticore */
-package de.monticore.lang.testsijava.testsijava.generator.prettyprint;
+package de.monticore.lang.testsijava.testsijava.generator1.prettyprint;
 
 import de.monticore.expressions.commonexpressions._ast.ASTCallExpression;
 import de.monticore.expressions.expressionsbasis._ast.ASTArguments;

@@ -1,0 +1,17 @@
+/* (c) https://github.com/MontiCore/monticore */
+
+package test.de.monticore.lang.testsijava.testsijava;
+
+siclass Main2 {
+
+    1/s func1 () {
+        cm<int> v1 = 5 dm;
+        mm v2 = v1;
+        return func2(v2) * 1 m;
+    }
+
+    dm/h func2(km x) {
+        return x * 2 ms;
+    }
+
+}

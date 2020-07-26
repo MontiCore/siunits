@@ -1,10 +1,10 @@
 /* (c) https://github.com/MontiCore/monticore */
-package de.monticore.lang.testsijava.testsijava.generator;
+package de.monticore.lang.testsijava.testsijava.generator2;
 
 import de.monticore.MCCommonLiteralsPrettyPrinter;
 import de.monticore.lang.testsijava.testsijava._ast.ASTSIJavaClass;
 import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaDelegatorVisitor;
-import de.monticore.lang.testsijava.testsijava.generator.prettyprint.*;
+import de.monticore.lang.testsijava.testsijava.generator2.prettyprint.*;
 import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.types.prettyprint.MCBasicTypesPrettyPrinter;
 
@@ -22,6 +22,7 @@ public class PrintAsJavaClass extends TestSIJavaDelegatorVisitor {
 
     public static String printAsJavaClass(ASTSIJavaClass siclass) {
         IndentPrinter printer = new IndentPrinter();
+        printer.setIndentLength(4);
         PrintAsJavaClass printAsJavaClass = new PrintAsJavaClass(printer);
         siclass.accept(printAsJavaClass);
         return printer.getContent();
