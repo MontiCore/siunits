@@ -10,8 +10,10 @@ import de.monticore.siunits.utility.UnitFactory;
 import de.monticore.symbols.basicsymbols._symboltable.VariableSymbol;
 import de.monticore.symbols.oosymbols._symboltable.FieldSymbol;
 import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
+import de.monticore.types.check.DeriveSymTypeOfTestSIJava;
 import de.monticore.types.check.SymTypeExpression;
 import de.monticore.types.check.SymTypeOfNumericWithSIUnit;
+import de.monticore.types.check.TypeCheck;
 import de.se_rwth.commons.logging.Log;
 
 import javax.measure.unit.Unit;
@@ -82,24 +84,26 @@ public class MyAssignmentExpressionsPrettyPrinter extends AssignmentExpressionsP
             default:
                 Log.error("0xA0114 Missing implementation for RegularAssignmentExpression");
         }
-        this.getPrinter().print(" ");
 
-        boolean needsFactor = false;
+        String typePrint = type.get() instanceof SymTypeOfNumericWithSIUnit ?
+                ((SymTypeOfNumericWithSIUnit) type.get()).getNumericType().print() :
+                type.get().print();
+        this.getPrinter().print(" (" + typePrint + ") (");
+
         if (type.isPresent() && type.get() instanceof SymTypeOfNumericWithSIUnit) {
             Unit unit = ((SymTypeOfNumericWithSIUnit) type.get()).getUnit();
-            double factor = UnitFactory.getConverterTo(unit).convert(1);
-
-            if (factor != 1) {
-                needsFactor = true;
-                this.getPrinter().print("" + factor + " * (");
+            TypeCheck tc = new TypeCheck(null, new DeriveSymTypeOfTestSIJava());
+            SymTypeExpression rightType = tc.typeOf(node.getRight());
+            if (rightType instanceof SymTypeOfNumericWithSIUnit) {
+                double convert = UnitFactory.getConverter(((SymTypeOfNumericWithSIUnit) rightType).getUnit(), unit).convert(1);
+                if (convert != 1) {
+                    this.getPrinter().print("" + convert + " * ");
+                }
             }
         }
-
         node.getRight().accept(this.getRealThis());
+        this.getPrinter().print(")");
 
-        if (needsFactor) {
-            this.getPrinter().print(")");
-        }
         CommentPrettyPrinter.printPostComments(node, this.getPrinter());
     }
 }

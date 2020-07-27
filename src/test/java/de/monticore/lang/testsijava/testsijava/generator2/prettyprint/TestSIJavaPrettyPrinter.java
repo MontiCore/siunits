@@ -5,8 +5,10 @@ import de.monticore.lang.testsijava.testsijava._ast.*;
 import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaVisitor;
 import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.siunits.utility.UnitFactory;
+import de.monticore.types.check.DeriveSymTypeOfTestSIJava;
 import de.monticore.types.check.SymTypeExpression;
 import de.monticore.types.check.SymTypeOfNumericWithSIUnit;
+import de.monticore.types.check.TypeCheck;
 
 import javax.measure.unit.Unit;
 
@@ -62,13 +64,15 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
             String factor = "";
             if (node.getSymbol().getType() instanceof SymTypeOfNumericWithSIUnit) {
                 Unit unit = ((SymTypeOfNumericWithSIUnit) node.getSymbol().getType()).getUnit();
-                double convert = UnitFactory.getConverterTo(unit).convert(1);
+                TypeCheck tc = new TypeCheck(null, new DeriveSymTypeOfTestSIJava());
+                SymTypeOfNumericWithSIUnit rightType = (SymTypeOfNumericWithSIUnit) tc.typeOf(node.getExpression());
+                double convert = UnitFactory.getConverter(rightType.getUnit(), unit).convert(1);
                 if (convert != 1) {
                     factor = "" + convert + " * ";
                 }
             }
 
-            printer.print(" = (" + typePrint + ") " + factor + "(");
+            printer.print(" = (" + typePrint + ") (" + factor);
             node.getExpression().accept(getRealThis());
             printer.print(")");
         }
@@ -103,13 +107,17 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
             String  factor = "";
             if (node.getSymbol().getReturnType() instanceof SymTypeOfNumericWithSIUnit) {
                 Unit unit = ((SymTypeOfNumericWithSIUnit) node.getSymbol().getReturnType()).getUnit();
-                double convert = UnitFactory.getConverterTo(unit).convert(1);
-                if (convert != 1) {
-                    factor = "" + convert + " * ";
+                TypeCheck tc = new TypeCheck(null, new DeriveSymTypeOfTestSIJava());
+                SymTypeExpression rightType = tc.typeOf(node.getSIJavaMethodReturn().getExpression());
+                if (rightType instanceof SymTypeOfNumericWithSIUnit) {
+                    double convert = UnitFactory.getConverter(((SymTypeOfNumericWithSIUnit) rightType).getUnit(), unit).convert(1);
+                    if (convert != 1) {
+                        factor = "" + convert + " * ";
+                    }
                 }
             }
 
-            printer.print("return (" + typePrint + ") " + factor + "(");
+            printer.print("return (" + typePrint + ") (" + factor);
 
             node.getSIJavaMethodReturn().accept(getRealThis());
             printer.println(");");

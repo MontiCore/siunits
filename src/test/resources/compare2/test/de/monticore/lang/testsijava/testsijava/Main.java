@@ -4,11 +4,11 @@ public class Main {
 
 
     public int main() {
-        double v = (double) 3.6 * (8.333333333333333E-5);
-        double distance = (double) 10.0 * (0.2);
-        double time = (double) 0.016666666666666666 * (180.0);
+        double v = (double) (1.0E-4 * 3.0);
+        double distance = (double) (9.999999999999999E-6 * 200000.0);
+        double time = (double) (3.0);
 
-        return (int) (calculateTime(v, 100.0 * distance) * 20 + (60.0 * time));
+        return (int) (3600.0 * calculateTime(v, 100.0 * distance) * 20 + time);
     }
 
     public double calculateTime(double v, double d) {
@@ -18,6 +18,6 @@ public class Main {
         System.out.println(d_B);
         System.out.println(d + "mm");
 
-        return (double) 2.777777777777778E-4 * ((0.001 * d) / (0.2777777777777778 * v));
+        return (double) (1.0E-6 * d / v);
     }
 }
