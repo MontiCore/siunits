@@ -5,6 +5,8 @@ import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.siunits._ast.*;
 import de.monticore.siunits._visitor.SIUnitsVisitor;
 
+import java.util.Iterator;
+
 public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
 
     private SIUnitsVisitor realThis = this;
@@ -27,48 +29,45 @@ public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
         return printer;
     }
 
+
+    @Override
+    public void traverse(ASTSIUnit node) {
+        node.getNumerator().accept(getRealThis());
+        if (node.isPresentDenominator()) {
+            printer.print("/");
+            node.getDenominator().accept(getRealThis());
+        }
+    }
+
+
     /**
      * Prints a SIUnitMult
      * @param node SIUnitMult
      */
     @Override
     public void traverse(ASTSIUnitMult node) {
-        node.getLeft().accept(getRealThis());
-        printer.print("*");
-        node.getRight().accept(getRealThis());
+        Iterator<ASTSIUnitPrimitive> iterator = node.getSIUnitPrimitivesList().iterator();
+        while (iterator.hasNext()) {
+            iterator.next().accept(getRealThis());
+            if (iterator.hasNext())
+                printer.print("*");
+        }
     }
 
-    /**
-     * Prints a SIUnitDiv
-     * @param node SIUnitDiv
-     */
-    @Override
-    public void traverse(ASTSIUnitDiv node) {
-        node.getLeft().accept(getRealThis());
-        printer.print("/");
-        node.getRight().accept(getRealThis());
-    }
-
-    /**
-     * Prints a ASTSIUnitOneDiv
-     * @param node ASTSIUnitOneDiv
-     */
     @Override
     public void traverse(ASTSIUnitOneDiv node) {
         printer.print("1/");
-        node.getRight().accept(getRealThis());
+        if (node.isPresentCelsiusFahrenheit())
+            node.getCelsiusFahrenheit().accept(getRealThis());
+        if (node.isPresentSIUnitDimensionless())
+            node.getSIUnitDimensionless().accept(getRealThis());
+        if (node.isPresentSIUnitKindGroupWithExponent())
+            node.getSIUnitKindGroupWithExponent().accept(getRealThis());
+        if (node.isPresentSIUnitWithoutPrefix())
+            node.getSIUnitWithoutPrefix().accept(getRealThis());
+        if (node.isPresentSIUnitWithPrefix())
+            node.getSIUnitWithPrefix().accept(getRealThis());
     }
-
-    @Override
-    public void visit(ASTSIUnitBracket node) {
-        printer.print("(");
-    }
-
-    @Override
-    public void endVisit(ASTSIUnitBracket node) {
-        printer.print(")");
-    }
-
 
     @Override
     public void visit(ASTSIUnitWithPrefix node) {
@@ -100,12 +99,6 @@ public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
                 printer.print("^" + node.getExponent(j++).getSource());
         }
     }
-
-    @Override
-    public void endVisit(ASTSIUnitExponent node) {
-        printer.print("^" + node.getExponent().getSource());
-    }
-
     /**
      * Prints a SiUnitDimensionless
      * @param node SiUnitDimensionless

@@ -30,22 +30,13 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
    * combination of 'x*y', 'x/y', 'x^n' and '(x)'
    * is possible.
    */
-  interface SIUnit;
 
-  SIUnitMult implements SIUnit <10> =
-    left:SIUnit { noSpace(1,2) }? "*" right:SIUnit;
+  SIUnit =
+    numerator:SIUnitMult ( "/" denominator:SIUnitMult)?;
 
-  SIUnitDiv implements SIUnit <20> =
-    left:SIUnit { noSpace(1,2) }? "/" right:SIUnit;
-
-  SIUnitOneDiv implements SIUnit =
-    { cmpToken(1, "1") && noSpace(2,3) }? NatLiteral "/" right:SIUnit;
-
-  SIUnitBracket implements SIUnit =
-    { noSpace(2) }? "(" SIUnit { noSpace(1) }? ")";
-
-  SIUnitExponent implements SIUnit <30> =
-    SIUnit { noSpace(1,2) }? "^" exponent:SignedNatLiteral;
+  SIUnitMult =
+    (SIUnitPrimitive || "*")+ |
+    "(" (SIUnitPrimitive || "*")+ ")";
 
 
   /**
@@ -59,7 +50,7 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
    * Other derived or officialy accepted units are also contained
    * ('h', 'day', 'Ohm', ...)
    */
-  interface SIUnitPrimitive extends SIUnit;
+  interface SIUnitPrimitive;
 
 
   /**
@@ -184,6 +175,14 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
   SIUnitDimensionless implements SIUnitPrimitive =
     "°" |
     { cmpToken(1,"deg","rad","sr") }? unit:Name;
+
+  SIUnitOneDiv implements SIUnitPrimitive =
+    { cmpToken(1,"1") }? NatLiteral "/"
+      (SIUnitKindGroupWithExponent |
+      SIUnitWithoutPrefix |
+      SIUnitWithPrefix |
+      CelsiusFahrenheit |
+      SIUnitDimensionless );
 
 
 
