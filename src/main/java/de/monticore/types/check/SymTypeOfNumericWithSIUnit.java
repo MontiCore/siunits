@@ -28,7 +28,7 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
     public static SymTypeOfNumericWithSIUnit getSuperNumericUnitType() {
         if (superNumericUnitType == null) {
             String name = "SuperNumericWithUnit";
-            OOSymbolsScope enclosingScope = OOSymbolsMill.oOSymbolsScopeBuilder().build();
+            IOOSymbolsScope enclosingScope = OOSymbolsMill.oOSymbolsScopeBuilder().build();
             OOTypeSymbol newSymbol =  de.monticore.types.check.DefsTypeBasic.type(name);
             enclosingScope.add(newSymbol);
             OOTypeSymbolSurrogate loader = (new OOTypeSymbolSurrogate(name));

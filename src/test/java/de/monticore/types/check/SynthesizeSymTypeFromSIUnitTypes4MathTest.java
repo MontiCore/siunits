@@ -3,6 +3,7 @@ package de.monticore.types.check;
 
 import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
+import de.monticore.lang.testsijava.testsijava._symboltable.ITestSIJavaScope;
 import de.monticore.lang.testsijava.testsijava._symboltable.TestSIJavaScope;
 import de.monticore.siunits.utility.SIUnitConstants;
 import de.monticore.siunits.utility.UnitPrettyPrinter;
@@ -31,7 +32,7 @@ public class SynthesizeSymTypeFromSIUnitTypes4MathTest {
         Log.enableFailQuick(false);
     }
 
-    TestSIJavaScope scope;
+    ITestSIJavaScope scope;
 
     @Before
     public void setupForEach() {
