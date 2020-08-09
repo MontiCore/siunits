@@ -68,3 +68,16 @@ This package also contains models which can be parsed but do not fulfil the Type
 This grammar has a similar purpose as the [TestSIJava](#testsijavamc4) grammar, but uses [CustomSIUnitTypes4Computing](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/lang/types/CustomSIUnitTypes4Computing.mc4) 
 instead of the given [SIUnitTypes4Computing](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/lang/types/SIUnitTypes4Computing.mc4) 
 which come with the SIUnit language.
+
+## Further Information
+
+* [Project root: MontiCore @github](https://github.com/MontiCore/monticore)
+* [MontiCore documentation](http://www.monticore.de/)
+
+* [**List of languages**](https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/docs/Languages.md)
+* [**MontiCore Core Grammar Library**](https://git.rwth-aachen.de/monticore/monticore/blob/dev/monticore-grammar/src/main/grammars/de/monticore/Grammars.md)
+* [Best Practices](BestPractices.md)
+* [Publications about MBSE and MontiCore](https://www.se-rwth.de/publications/)
+
+* [Licence definition](https://github.com/MontiCore/monticore/blob/master/00.org/Licenses/LICENSE-MONTICORE-3-LEVEL.md)
+
