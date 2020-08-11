@@ -5,8 +5,6 @@ import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.siunits._ast.*;
 import de.monticore.siunits._visitor.SIUnitsVisitor;
 
-import java.util.Iterator;
-
 public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
 
     private SIUnitsVisitor realThis = this;
@@ -32,41 +30,16 @@ public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
 
     @Override
     public void traverse(ASTSIUnit node) {
-        node.getNumerator().accept(getRealThis());
+        if (node.isPresentNatLiteral())
+            printer.print("1");
+        else if (node.isPresentNumerator())
+            node.getNumerator().accept(getRealThis());
+        else if (node.isPresentSIUnitPrimitive())
+            node.getSIUnitPrimitive().accept(getRealThis());
         if (node.isPresentDenominator()) {
             printer.print("/");
             node.getDenominator().accept(getRealThis());
         }
-    }
-
-
-    /**
-     * Prints a SIUnitMult
-     * @param node SIUnitMult
-     */
-    @Override
-    public void traverse(ASTSIUnitMult node) {
-        Iterator<ASTSIUnitPrimitive> iterator = node.getSIUnitPrimitivesList().iterator();
-        while (iterator.hasNext()) {
-            iterator.next().accept(getRealThis());
-            if (iterator.hasNext())
-                printer.print("*");
-        }
-    }
-
-    @Override
-    public void traverse(ASTSIUnitOneDiv node) {
-        printer.print("1/");
-        if (node.isPresentCelsiusFahrenheit())
-            node.getCelsiusFahrenheit().accept(getRealThis());
-        if (node.isPresentSIUnitDimensionless())
-            node.getSIUnitDimensionless().accept(getRealThis());
-        if (node.isPresentSIUnitKindGroupWithExponent())
-            node.getSIUnitKindGroupWithExponent().accept(getRealThis());
-        if (node.isPresentSIUnitWithoutPrefix())
-            node.getSIUnitWithoutPrefix().accept(getRealThis());
-        if (node.isPresentSIUnitWithPrefix())
-            node.getSIUnitWithPrefix().accept(getRealThis());
     }
 
     @Override

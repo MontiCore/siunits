@@ -73,8 +73,8 @@ public class SIUnitLiteralsTest {
             checkSIUnitLiteral("30 g^2", 30, "g^2", 0.00003, "kg^2");
             checkSIUnitLiteral("30 km^2", 30, "km^2", 30000000, "m^2");
             checkSIUnitLiteral("30.4kg^2", 30.4, "kg^2", 30.4, "kg^2");
-            checkSIUnitLiteral("30.4 s^3/m^2*kg", 30.4, "s^3/m^2*kg", 30.4, "kg*s^3/m^2");
-            checkSIUnitLiteral("30.4s^3/m^2*kg", 30.4, "s^3/m^2*kg", 30.4, "kg*s^3/m^2");
+            checkSIUnitLiteral("30.4 s^3/kgm^2", 30.4, "s^3/kgm^2", 30.4, "s^3/(kg*m^2)");
+            checkSIUnitLiteral("30.4s^3/kgm^2", 30.4, "s^3/kgm^2", 30.4, "s^3/(kg*m^2)");
             checkSIUnitLiteral("1 h/min", 1, "h/min", 60, "1");
             checkSIUnitLiteral("30.4 rad", 30.4, "rad", 30.4, "1");
         } catch (IOException e) {

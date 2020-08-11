@@ -52,10 +52,8 @@ public class SIUnitTest {
     public void testUnitGroup() {
         try {
             parseSIUnit("s^-1");
-            parseSIUnit("(s)");
-            parseSIUnit("(s)^-1");
             parseSIUnit("kVA");
-            parseSIUnit("kV^2A^3");
+            parseSIUnit("kV^2A^3/m^2");
             parseSIUnit("kVAh");
             parseSIUnit("kVAh/°C");
             parseSIUnit("kV^2A^3h");
@@ -64,10 +62,7 @@ public class SIUnitTest {
             checkInvalid("khA");
             checkInvalid("kV°C");
 
-            checkSIUnit("(kV^2A/VA*ks)^3","kV^6*ks^3/V^3","kg^3*m^6/(A^3*s^6)");
             checkSIUnit("s^-1","1/s","1/s");
-            checkSIUnit("(s)","s","s");
-            checkSIUnit("(s)^-1","1/s","1/s");
             checkSIUnit("kVA","A*kV","kg*m^2/s^3");
             checkSIUnit("kV^2A^3","A^3*kV^2","A*kg^2*m^4/s^6");
             checkSIUnit("kVAh","A*h*kV","kg*m^2/s^2");
@@ -88,7 +83,7 @@ public class SIUnitTest {
             checkSIUnit("s^2", "s^2", "s^2");
             checkSIUnit("s^2/kg", "s^2/kg", "s^2/kg");
             checkSIUnit("s^2/min", "s^2/min", "s");
-            checkSIUnit("s^2*kg/(min*m)", "kg*s^2/(m*min)", "kg*s/m");
+            checkSIUnit("kgs^2/minm", "kg*s^2/(m*min)", "kg*s/m");
             checkSIUnit("deg", "deg", "1");
             checkSIUnit("s^-1", "1/s", "1/s");
             checkSIUnit("1/s", "1/s", "1/s");

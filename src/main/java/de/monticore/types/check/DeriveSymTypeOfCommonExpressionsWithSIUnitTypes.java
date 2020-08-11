@@ -37,7 +37,7 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
     protected Optional<SymTypeExpression> calculateMultDivideExpression(ASTInfixExpression expr, String operator, SymTypeExpression leftResult, SymTypeExpression rightResult) {
         if (isSIUnitType(leftResult) && isSIUnitType(rightResult)) {
             // if both are SI unit types the result the result has to be calculated depending on the operator
-            String newUnitName = printType(leftResult) + operator + "(" + printType(rightResult) + ")";
+            String newUnitName = "(" + printType(leftResult) + ")" + operator + "(" + printType(rightResult) + ")";
             return Optional.of(SIUnitSymTypeExpressionFactory.createSIUnit(newUnitName, getScope(expr.getEnclosingScope())));
         } else if (isSIUnitType(leftResult) && isNumericType(rightResult)) {
             return Optional.of(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(rightResult, leftResult, getScope(expr.getEnclosingScope())));

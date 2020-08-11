@@ -32,11 +32,11 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
    */
 
   SIUnit =
-    numerator:SIUnitMult ( "/" denominator:SIUnitMult)?;
-
-  SIUnitMult =
-    (SIUnitPrimitive || "*")+ |
-    "(" (SIUnitPrimitive || "*")+ ")";
+    { isSIOneDiv() }?
+      one:NatLiteral "/" denominator:SIUnitPrimitive |
+    { isSIDiv() }?
+      numerator:SIUnitPrimitive "/" denominator:SIUnitPrimitive |
+    SIUnitPrimitive;
 
 
   /**
@@ -51,20 +51,6 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
    * ('h', 'day', 'Ohm', ...)
    */
   interface SIUnitPrimitive;
-
-
-  /**
-   * The SIUnitKindGroupWithExponent combines
-   * several SIUnitWithPrefix and SIUnitWithoutPrefix
-   * with exponents as one SI unit group, such as
-   * 'kV^2Ah' and 's^2m'
-   */
-  SIUnitKindGroupWithExponent implements SIUnitPrimitive =
-    SIUnitWithPrefix "^" exponent:SignedNatLiteral
-      (SIUnitWithoutPrefix "^" exponent:SignedNatLiteral)*
-      SIUnitWithoutPrefix? |
-    (SIUnitWithoutPrefix "^" exponent:SignedNatLiteral)+
-      SIUnitWithoutPrefix?;
 
 
   /**
@@ -95,7 +81,7 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
    * stored unit.
    */
   SIUnitWithPrefix implements SIUnitPrimitive =
-    { isSIUnitWithPrefix() }? (Name | NonNameUnit);
+    { isSIUnitWithPrefix(1) }? (Name | NonNameUnit);
 
 
   /**
@@ -128,7 +114,7 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
    * stored unit.
    */
   SIUnitWithoutPrefix implements SIUnitPrimitive =
-    { isSIUnitWithoutPrefix() }? (Name | NonNameUnit);
+    { isSIUnitWithoutPrefix(1) }? (Name | NonNameUnit);
 
 
   /** This Token is needed because the Name-Token
@@ -144,19 +130,19 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
   fragment token UnitChar =
     'a'..'z' | 'A'..'Z' ;
 
-// TODO: den neuen Teil genau so kommentieren, wie oben
-// Done: s.o.
 
-
-// TODO: diesen Kommentar behandeln
-// Done
-//
-//  TODO: Wobei ich neugierig bin: Man könnte doch durch geeignete Definition der Regex auch
-//  Kombinationen beschreiben, wie etwa "VAh" oder "km/h".
-//  Das zugehörige Token (und eine natürlich etwas komplexere regexp) wäre etwa:
-// Done: Hier gibt es leider Probleme mit Expressions
-//  wie 'm/secondVariable' => zwei Tokens:
-//   'm/s' 'econdVariable'
+  /**
+   * The SIUnitKindGroupWithExponent combines
+   * several SIUnitWithPrefix and SIUnitWithoutPrefix
+   * with exponents as one SI unit group, such as
+   * 'kV^2Ah' and 's^2m'
+   */
+  SIUnitKindGroupWithExponent implements SIUnitPrimitive =
+    SIUnitWithPrefix "^" exponent:SignedNatLiteral
+      (SIUnitWithoutPrefix "^" exponent:SignedNatLiteral)*
+      SIUnitWithoutPrefix? |
+    (SIUnitWithoutPrefix "^" exponent:SignedNatLiteral)+
+      SIUnitWithoutPrefix?;
 
 
   /**
@@ -165,7 +151,7 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
    * Lookahead needed at the beginning to distinguish with other alternatives
    */
   CelsiusFahrenheit implements SIUnitPrimitive =
-    { cmpToken(2, "C", "F") && noSpace(2) }? "°" unit:Name;
+    { isCelsiusFahrenheit(1) }? "°" unit:Name;
 
 
   /**
@@ -174,16 +160,7 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
    */
   SIUnitDimensionless implements SIUnitPrimitive =
     "°" |
-    { cmpToken(1,"deg","rad","sr") }? unit:Name;
-
-  SIUnitOneDiv implements SIUnitPrimitive =
-    { cmpToken(1,"1") }? NatLiteral "/"
-      (SIUnitKindGroupWithExponent |
-      SIUnitWithoutPrefix |
-      SIUnitWithPrefix |
-      CelsiusFahrenheit |
-      SIUnitDimensionless );
-
+    { isDimensionless(1) }? unit:Name;
 
 
   // Defining semantic predicates
@@ -199,24 +176,86 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
         "(m|g|s|A|K|mol|cd|Hz|N|Pa|J|W|C|V|F|Ohm|Ω|S|Wb|T|H|lm|lx|Bq|Gy|Sv|kat|l|L|min|h|d|ha|t|au|Np|B|dB|eV|Da|u)";
 
       /* returns true iff the next token matches a
-       *  SI unit (-group) starting with a
-       *  prefix.
+       *  SI unit starting with a prefix
        */
-      public boolean isSIUnitWithPrefix() {
-        String unitKindGroupWithPrefix =
-          prefix + unitWithPrefix + units + "*";
-        String unitKindGroupWithoutPrefix =
-          units + "*";
-        String regex = "(" + unitKindGroupWithPrefix + ")|(" + unitKindGroupWithoutPrefix + ")";
-        return cmpTokenRegEx(1, regex);
+      public boolean isSIUnitWithPrefix(int i) {
+        String regex = "(" + prefix + unitWithPrefix + units + "*" + ")|" + units + "*";
+        return cmpTokenRegEx(i, regex);
       }
 
       /* returns true iff the next token matches a
-       *  SI unit (-group) starting without a prefix
+       *  SI unit starting without a prefix
        */
-      public boolean isSIUnitWithoutPrefix() {
-        String regex = units + "*";
-        return cmpTokenRegEx(1, regex);
+      public boolean isSIUnitWithoutPrefix(int i) {
+        return cmpTokenRegEx(i, units + "*");
+      }
+
+      public boolean isDimensionless(int i) {
+        return cmpToken(i,"°","deg","rad","sr");
+      }
+
+      public boolean isCelsiusFahrenheit(int i) {
+        return cmpToken(1,"°") && cmpToken(2,"C","F") && noSpace(2);
+      }
+
+      public int countPrimitive(int i) {
+        if (isSIUnitWithPrefix(i)) return 1;
+        if (isSIUnitWithoutPrefix(i)) return 1;
+        if (isDimensionless(i)) return 1;
+        if (isCelsiusFahrenheit(i)) return 2;
+        else
+          return -1;
+      }
+
+      public int isSIUnitKindGroupWithExponent(int i) {
+        int j = countPrimitive(i);
+        int counter = 0;
+        if (j > 0) {
+          while (j > 0) {
+            counter += j;
+            if (cmpToken(i + counter, "^")
+                && noSpace(i + counter, i + counter + 1)
+                && cmpTokenRegEx(i + counter + 1, "\\d+")) {
+              counter += 2;
+              j = countPrimitive(i + counter);
+            } else if (cmpToken(i + counter, "^")
+                && noSpace(i + counter, i + counter + 1, i + counter + 2)
+                && cmpToken(i + counter + 1, "-")
+                && cmpTokenRegEx(i + counter + 2, "\\d+")) {
+              counter += 3;
+              j = countPrimitive(i + counter);
+            }
+            else j = -1;
+          }
+          return counter;
+        }
+        return -1;
+      }
+
+      public int countSIUnit(int i) {
+        int j = isSIUnitKindGroupWithExponent(i);
+        if (j > 0) return j;
+        j = countPrimitive(i);
+        if (j > 0) return j;
+        return -1;
+      }
+
+      public boolean isSIUnit(int i) {
+        return countSIUnit(i) > 0;
+      }
+
+      public boolean isSIDiv() {
+        int j = countSIUnit(1);
+        if (j > 0 && noSpace(1 + j, 2 + j)
+            && cmpToken(1 + j, "/")
+            && isSIUnit(2 + j)) {
+          return true;
+        }
+        return false;
+      }
+
+      public boolean isSIOneDiv() {
+        return cmpToken(1, "1") && noSpace(2,3) && isSIUnit(3);
       }
     }
   }

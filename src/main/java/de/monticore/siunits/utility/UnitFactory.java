@@ -3,7 +3,6 @@
 package de.monticore.siunits.utility;
 
 import de.monticore.siunits._ast.ASTSIUnit;
-import de.monticore.siunits._parser.SIUnitsParser;
 import de.monticore.siunits.prettyprint.SIUnitsWithBracketsPrettyPrinter;
 import de.se_rwth.commons.logging.Log;
 
@@ -12,8 +11,6 @@ import javax.measure.converter.MultiplyConverter;
 import javax.measure.converter.RationalConverter;
 import javax.measure.converter.UnitConverter;
 import javax.measure.unit.*;
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,13 +33,7 @@ public class UnitFactory {
 
     private Unit _createUnit(ASTSIUnit siunit) {
         String print = SIUnitsWithBracketsPrettyPrinter.prettyprint(siunit);
-        String str = print
-                .replace("(1/", "((m/m)/");
-        str = resolveUnitKindGroup(str);
-        Unit res = Unit.valueOf(str);
-//        Unit baseUnit = createBaseUnit(res);
-//        res = baseUnit.transform(baseUnit.getConverterTo(res));
-        return res;
+        return _createUnit(print);
     }
 
     private String resolveUnitKindGroup(String str) {
@@ -111,14 +102,12 @@ public class UnitFactory {
     private Unit _createUnit(String siunit) {
         if ("1".equals(siunit))
             return Unit.ONE;
-        SIUnitsParser parser = new SIUnitsParser();
-        Optional<ASTSIUnit> ast = null;
-        try {
-            ast = parser.parse(new StringReader(siunit));
-        } catch (IOException e) {
-            Log.error("0xAE100 SIUnit " + siunit + " could not be parsed.");
-        }
-        return _createUnit(ast.get());
+
+        String str = siunit
+                .replace("(1/", "((m/m)/");
+        str = resolveUnitKindGroup(str);
+        Unit res = Unit.valueOf(str);
+        return res;
     }
 
     /**
