@@ -73,16 +73,16 @@ public class DeriveSymTypeOfSIUnitLiteralsTest {
 
     @Test
     public void deriveTFromLiteralComplex1() throws IOException {
-        ASTLiteral lit = parser.parse(new StringReader("3.2 km^2*s/h^2")).get();
+        ASTLiteral lit = parser.parse(new StringReader("3.2 km^2s/h^2")).get();
         lit.setEnclosingScope(scope);
         assertEquals("(double,km^2*s/h^2)", printType(tc.typeOf(lit)));
     }
 
     @Test
     public void deriveTFromLiteralComplex2() throws IOException {
-        ASTLiteral lit = parser.parse(new StringReader("3 (mm^2*mm^3)/(km*s^2*kg)")).get();
+        ASTLiteral lit = parser.parse(new StringReader("3 mm^5/kms^2g")).get();
         lit.setEnclosingScope(scope);
-        assertEquals("(int,mm^5/(kg*km*s^2))", printType(tc.typeOf(lit)));
+        assertEquals("(int,mm^5/(g*km*s^2))", printType(tc.typeOf(lit)));
     }
 
     @Test

@@ -459,7 +459,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         init_basic();
 
         //example with two siunit types
-        String s = "3 km/s==2 m^2/1 m*s";
+        String s = "3 km/s==2 m^2/1 sm";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
         astex.accept(flatExpressionScopeSetter);
@@ -518,7 +518,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         init_basic();
 
         //example with two siunit types
-        String s = "varI_M/varD_S!=5m^2/(m*s)";
+        String s = "varI_M/varD_S!=5m^2/sm";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
         assertEquals("boolean", printType(tc.typeOf(astex)));

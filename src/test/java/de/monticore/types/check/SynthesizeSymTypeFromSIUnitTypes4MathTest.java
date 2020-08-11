@@ -4,7 +4,6 @@ package de.monticore.types.check;
 import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
 import de.monticore.lang.testsijava.testsijava._symboltable.ITestSIJavaScope;
-import de.monticore.lang.testsijava.testsijava._symboltable.TestSIJavaScope;
 import de.monticore.siunits.utility.SIUnitConstants;
 import de.monticore.siunits.utility.UnitPrettyPrinter;
 import de.monticore.siunittypes4math._ast.ASTSIUnitType;
@@ -59,11 +58,11 @@ public class SynthesizeSymTypeFromSIUnitTypes4MathTest {
 
     @Test
     public void symTypeFromAST_Test1() throws IOException {
-        check("mm*dm");
+        check("mmm");
         check("m");
         check("km");
-        check("m*s^2/km");
-        check("m*s^2/km^3");
+        check("s^2m/km");
+        check("s^m2/km^3");
     }
 
     @Test

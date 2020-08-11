@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.StringReader;
 
 import static de.monticore.types.check.DefsTypeBasic.add2scope;
 import static de.monticore.types.check.DefsTypeBasic.field;
@@ -753,9 +752,6 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
      */
     @Test
     public void deriveFromRegularAssignmentExpression() throws IOException {
-        String a = "3 mm^2/ks^3h^2";
-        ASTExpression astex2 = p.parseExpression(new StringReader(a)).get();
-        astex2.toString();
         //example with km - km
         String s = "varD_KMe2perHmSe4 = 3 mm^2/ks^3h^2";
         ASTExpression astex = p.parse_StringExpression(s).get();
@@ -774,7 +770,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidRegularAssignmentExpression1() throws IOException {
         //not possible because m^2/s^5 and m/s^5 are incompatible types
-        String s = "varD_KMe2perHmSe4 = 3 mm/(h^2*ks^3)";
+        String s = "varD_KMe2perHmSe4 = 3 mm/ks^3h^2";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
         try {

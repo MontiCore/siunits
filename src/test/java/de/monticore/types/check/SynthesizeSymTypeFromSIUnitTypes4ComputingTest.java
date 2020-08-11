@@ -59,8 +59,8 @@ public class SynthesizeSymTypeFromSIUnitTypes4ComputingTest {
     public void symTypeFromAST_Test1() throws IOException {
         check("(double,m)", "m<double>");
         check("(int,km)", "km<int>");
-        check("(float,m*s^2/km)", "m*s^2/km<float>");
-        check("(long,m*s^2/km^3)", "m*s^2/km^3<long>");
+        check("(float,m*s^2/km)", "s^2m/km<float>");
+        check("(long,m*s^2/km^3)", "s^2m/km^3<long>");
     }
 
     protected String printType(SymTypeExpression symType) {
