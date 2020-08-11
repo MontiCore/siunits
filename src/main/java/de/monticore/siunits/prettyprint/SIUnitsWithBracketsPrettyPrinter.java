@@ -36,7 +36,7 @@ public class SIUnitsWithBracketsPrettyPrinter implements SIUnitsVisitor {
 
     @Override
     public void traverse(ASTSIUnit node) {
-        if (node.isPresentNatLiteral())
+        if (node.isPresentOne())
             printer.print("1");
         else if (node.isPresentNumerator())
             node.getNumerator().accept(getRealThis());

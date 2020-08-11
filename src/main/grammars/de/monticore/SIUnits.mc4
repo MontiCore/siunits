@@ -36,7 +36,8 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
       one:NatLiteral "/" denominator:SIUnitPrimitive |
     { isSIDiv() }?
       numerator:SIUnitPrimitive "/" denominator:SIUnitPrimitive |
-    SIUnitPrimitive;
+    { !isSIDiv() }?
+      SIUnitPrimitive;
 
 
   /**
@@ -50,7 +51,12 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
    * Other derived or officialy accepted units are also contained
    * ('h', 'day', 'Ohm', ...)
    */
-  interface SIUnitPrimitive;
+  SIUnitPrimitive =
+    { !isSIUnitKindGroupWithExponent(1) }? SIUnitWithPrefix |
+    { !isSIUnitKindGroupWithExponent(1) }? SIUnitWithoutPrefix |
+    { !isSIUnitKindGroupWithExponent(1) }? SIUnitDimensionless |
+    { !isSIUnitKindGroupWithExponent(1) }? CelsiusFahrenheit |
+    SIUnitKindGroupWithExponent;
 
 
   /**
@@ -80,7 +86,7 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
    * See also functions available to handle the
    * stored unit.
    */
-  SIUnitWithPrefix implements SIUnitPrimitive =
+  SIUnitWithPrefix =
     { isSIUnitWithPrefix(1) }? (Name | NonNameUnit);
 
 
@@ -113,7 +119,7 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
    * See also functions available to handle the
    * stored unit.
    */
-  SIUnitWithoutPrefix implements SIUnitPrimitive =
+  SIUnitWithoutPrefix =
     { isSIUnitWithoutPrefix(1) }? (Name | NonNameUnit);
 
 
@@ -132,25 +138,11 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
 
 
   /**
-   * The SIUnitKindGroupWithExponent combines
-   * several SIUnitWithPrefix and SIUnitWithoutPrefix
-   * with exponents as one SI unit group, such as
-   * 'kV^2Ah' and 's^2m'
-   */
-  SIUnitKindGroupWithExponent implements SIUnitPrimitive =
-    SIUnitWithPrefix "^" exponent:SignedNatLiteral
-      (SIUnitWithoutPrefix "^" exponent:SignedNatLiteral)*
-      SIUnitWithoutPrefix? |
-    (SIUnitWithoutPrefix "^" exponent:SignedNatLiteral)+
-      SIUnitWithoutPrefix?;
-
-
-  /**
    * CelsiusFahrenheit matches "°C" and "°F"
    *
    * Lookahead needed at the beginning to distinguish with other alternatives
    */
-  CelsiusFahrenheit implements SIUnitPrimitive =
+  CelsiusFahrenheit =
     { isCelsiusFahrenheit(1) }? "°" unit:Name;
 
 
@@ -158,9 +150,23 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
    * SIUnitDimensionless matches "°" and "deg|rad|sr"
    * according to https://en.wikipedia.org/wiki/SI_derived_unit
    */
-  SIUnitDimensionless implements SIUnitPrimitive =
+  SIUnitDimensionless =
     "°" |
     { isDimensionless(1) }? unit:Name;
+
+
+  /**
+   * The SIUnitKindGroupWithExponent combines
+   * several SIUnitWithPrefix and SIUnitWithoutPrefix
+   * with exponents as one SI unit group, such as
+   * 'kV^2Ah' and 's^2m'
+   */
+  SIUnitKindGroupWithExponent =
+    SIUnitWithPrefix "^" exponent:SignedNatLiteral
+      (SIUnitWithoutPrefix "^" exponent:SignedNatLiteral)*
+      SIUnitWithoutPrefix? |
+    (SIUnitWithoutPrefix "^" exponent:SignedNatLiteral)+
+      SIUnitWithoutPrefix?;
 
 
   // Defining semantic predicates
@@ -179,7 +185,7 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
        *  SI unit starting with a prefix
        */
       public boolean isSIUnitWithPrefix(int i) {
-        String regex = "(" + prefix + unitWithPrefix + units + "*" + ")|" + units + "*";
+        String regex = "(" + prefix + unitWithPrefix + units + "*" + ")|" + units + "+";
         return cmpTokenRegEx(i, regex);
       }
 
@@ -187,7 +193,7 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
        *  SI unit starting without a prefix
        */
       public boolean isSIUnitWithoutPrefix(int i) {
-        return cmpTokenRegEx(i, units + "*");
+        return cmpTokenRegEx(i, units + "+");
       }
 
       public boolean isDimensionless(int i) {
@@ -207,10 +213,11 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
           return -1;
       }
 
-      public int isSIUnitKindGroupWithExponent(int i) {
+      public int countSIUnitKindGroupWithExponent(int i) {
         int j = countPrimitive(i);
         int counter = 0;
-        if (j > 0) {
+        if (j > 0 && !cmpToken(i + j, "^")) return -1;
+        else if (j > 0) {
           while (j > 0) {
             counter += j;
             if (cmpToken(i + counter, "^")
@@ -232,8 +239,12 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
         return -1;
       }
 
+      public boolean isSIUnitKindGroupWithExponent(int i) {
+        return countSIUnitKindGroupWithExponent(i) > 0;
+      }
+
       public int countSIUnit(int i) {
-        int j = isSIUnitKindGroupWithExponent(i);
+        int j = countSIUnitKindGroupWithExponent(i);
         if (j > 0) return j;
         j = countPrimitive(i);
         if (j > 0) return j;
