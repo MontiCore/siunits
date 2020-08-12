@@ -158,18 +158,19 @@ prettyprints a SIUnitType`.
 ## TypeCheck
 
 * The classes for the TypeCheck mechanic can be found in the package 
-  `de.monticore.types.check`. 
-* SymTypes (MontiCore's internal form of storage for types) can be
- synthesized from a SIUnitType and a SIUnitType4Computing and can be derived 
- from SIUnitLiterals or Expressions.
- The classes for deriving from AssignmentExpressions and CommonExpressions were 
- extended, in order to work with SIUnits and
- SIUnitLiterals as well. E.g. `3m + 2s` should not be possible, while the 
- type of `3m / 2.2s` is `(double,m/s)`.
-   ((TODO: Abschnitt unklar formuliert?))
-* Note that the type of a dimensionless Unit other than the pre defines is 
-  invalid. E.g. `3 km/m` is not accepet by the typechecker.
-  ((TODO: Warum eigentlich?))
+  `de.monticore.types.check`. Those extend the existing mechanics to 
+  work with `SIUnits`. 
+* With the [TypeCheck][TypeCheck] class [SymTypeExpressions][SymTypeExpression] 
+ (MontiCore's internal form of storage for types) can be
+ synthesized from a `MCType` and returns a [SymTypeOfSIUnit][SymTypeOfSIUnit] 
+ or a [SymTypeOfNumericWithSIUnit][SymTypeOfNumericWithSIUnit] for a 
+ `SIUnitType` or `SIUnitType4Computing`.
+* With the [TypeCheck][TypeCheck] class [SymTypeExpressions][SymTypeExpression] 
+ can be derived from a `Literal` or an `Expression` and returns a [SymTypeOfSIUnit][SymTypeOfSIUnit] 
+ or a [SymTypeOfNumericWithSIUnit][SymTypeOfNumericWithSIUnit] for expressions
+ containing `SIUnits`. Note that only AssignmentExpressions and CommonExpressions
+ can result in a SymTypeExpression for `SIUnits`. E.g. the SymTypeExpression for
+ `3m / 2.2s` is `(double,m/s)` and `typeOf(3m + 2s)` has no result.
 
 The TypeCheck classes here are:
 
@@ -212,13 +213,19 @@ To get the TypeCheck mechanic work with your DSL, the language needs to
    [de.monticore.symbols.OOSymbols.mc4][OOSymbols]
    grammar. 
 2. Create a derive and a synthesize class for your language which 
-  usually combine the existing derive/synthsize
-  classes with a DelegetorVisitor. In addition, each TypeSymbol, 
+  usually combine the existing derive- / synthsize-
+  classes using a DelegetorVisitor. 
+3. While building the symbol table each TypeSymbol, 
   TypeVarSymbol, FieldSymbol, and MethodSymbol needs to be 
-  set a SymType while building the symbol table. Furthermore, each 
-  Expression, Literal, SignedLiteral, and MCType and
-  MCReturnType need to have an enclosing scope. Exemplary, this is 
-  all done for the 
+  assigned a [SymTypeExpressions][SymTypeExpression]. 
+4. While building the symbol table each Expression, 
+  Literal, SignedLiteral, MCType and MCReturnType 
+  need to have an enclosing scope.
+5. When using methods or functions, those need to have a
+  spannedScope which only contains the parameters. In this
+  scope, the scope of the method's body can be nested.
+
+Exemplary, this is all done for the 
   [TestSIJava][TestSIJavaGrammar]
   language. For further explanation, see the documentation for the 
   [TestSIJava][TestSIJavaDoc] language.
@@ -227,6 +234,7 @@ To get the TypeCheck mechanic work with your DSL, the language needs to
 or have been the same to'dos already without the given SIUnit Extension.
 or is this piece of to do not necessary anymore, becaus we now DO have a concrete syntax and therefore typecheck
 already?))
+Done: Those are always todos when using TypeCheck
 
 
 ## Extensibility
@@ -418,6 +426,8 @@ For Variant 2, we provide the following implementation:
 [DeriveSymTypeOfAssignmentExpressions]: https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/java/de/monticore/types/check/DeriveSymTypeOfAssignmentExpressions.java
 [DeriveSymTypeOfCommonExpressionsWithSIUnitTypes]: ../../../java/de/monticore/types/check/DeriveSymTypeOfCommonExpressionsWithSIUnitTypes.java
 [DeriveSymTypeOfCommonExpressions]: https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/java/de/monticore/types/check/DeriveSymTypeOfCommonExpressions.java
+[SymTypeExpression]: https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/java/de/monticore/types/check/SymTypeExpression.java
+[TypeCheck]: https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/java/de/monticore/types/check/TypeCheck.java
 
 [TestSIJavaDoc]: ../../../../test/grammars/de/monticore/lang/testsijava/TestSIJava.md
 [Types]: https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/java/de/monticore/types/check/Types.md
