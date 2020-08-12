@@ -104,7 +104,7 @@ prettyprints a SIUnitLiteral.
 
 The SIUnitTypes interprete the SIUnits as type in the MontiCore type universe. 
 Therefore, the grammar extends 
-[SIUnits.mc4][SIUnitsGrammar] 
+[SIUnits.mc4][SIUnitGrammar] 
 and [de.monticore.types.MCBasicTypes.mc4][MCBasicTypesGrammar]. 
 A SIUnitType implements the MCObjectType and can therefore be used wherever a type is used,
 e.g. when a variable is declared or a method parameter is typed.
