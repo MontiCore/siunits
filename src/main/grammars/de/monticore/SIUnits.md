@@ -3,6 +3,8 @@
 <!-- 
   TODO:  Links so anpassen, dass die Übertragung nach Github klappen wird
   (relative Links only)
+  Done:
+  TODO:  Die MontiCore Links sind alle noch absolut
   
   TODO:
   Wir müssen über die Umsetzung (mit oder ohne explizites Mitschleppen 
@@ -372,13 +374,22 @@ For Variant 2, we provide the following implementation:
 
 * [Licence definition](https://github.com/MontiCore/monticore/blob/master/00.org/Licenses/LICENSE-MONTICORE-3-LEVEL.md)
 
+<!--   
+    TODO:  Die MontiCore Links sind alle noch absolut:
+    MCCommonLiteralsGrammar
+    MCBasicTypesGrammar
+    OOSymbols
+    DeriveSymTypeOfAssignmentExpressions
+    DeriveSymTypeOfCommonExpressions
+    Types
+-->
 
 [SIUnitGrammar]: SIUnits.mc4
 [SIUnitLiteralsGrammar]: SIUnitLiterals.mc4
 [SIUnitTypes4MathGrammar]: SIUnitTypes4Math.mc4
 [SIUnitTypes4ComputingGrammar]: SIUnitTypes4Computing.mc4
 [TestSIJavaGrammar]: ../../../../test/grammars/de/monticore/lang/testsijava/TestSIJava.mc4
-[CustomSIUnitTypes4ComputingGrammar]: https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/CustomSIUnitTypes4Computing.mc4
+[CustomSIUnitTypes4ComputingGrammar]: ../../../../test/grammars/de/monticore/CustomSIUnitTypes4Computing.mc4
 [MCCommonLiteralsGrammar]: https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/grammars/de/monticore/literals/MCCommonLiterals.mc4
 [MCBasicTypesGrammar]: https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/types/MCBasicTypes.mc4
 [OOSymbols]: https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/symbols/OOSymbols.mc4
@@ -409,7 +420,7 @@ For Variant 2, we provide the following implementation:
 [DeriveSymTypeOfCommonExpressions]: https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/java/de/monticore/types/check/DeriveSymTypeOfCommonExpressions.java
 
 [TestSIJavaDoc]: ../../../../test/grammars/de/monticore/lang/testsijava/TestSIJava.md
-
 [Types]: https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/java/de/monticore/types/check/Types.md
+
 [JavaUnit]: http://unitsofmeasurement.github.io/unit-api/site/apidocs/javax/measure/Unit.html
 [JavaMeasure]: http://unitsofmeasurement.github.io/unit-api/site/apidocs/javax/measure/package-summary.html
