@@ -21,13 +21,13 @@ checking.
 
 ## The grammar files are (see details below):
 
-* [SIUnits.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnits.mc4)
-* [SIUnitLiterals.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnitLiterals.mc4)
-* [SIUnitTypes4Math.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnitTypes4Math.mc4)
-* [SIUnitTypes4Computing.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnitTypes4Computing.mc4)
+* [SIUnits.mc4][SIUnitGrammar]
+* [SIUnitLiterals.mc4][SIUnitLiteralsGrammar]
+* [SIUnitTypes4Math.mc4][SIUnitTypes4MathGrammar]
+* [SIUnitTypes4Computing.mc4][SIUnitTypes4ComputingGrammar]
 
 
-## [SIUnits.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnits.mc4)
+## [SIUnits.mc4][SIUnitGrammar]
 
 ### Description
 
@@ -35,11 +35,11 @@ This is the base grammar of the SIUnits language. It introduces SI
 units and other units that can be derived from them.
 This grammar defines SI units with their prefixes and complex, 
 composed SI units allowing us to parse simple and derived units 
-such as `m`, `km`, `km^2` or `m*deg/(h^2*mg)`.
+such as `m`, `km`, `km^2` or `km^2/VA^2h`.
 
 ### Functionality
 
-* [UnitPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunits/utility/UnitPrettyPrinter.java)
+* [UnitPrettyPrinter][UnitPrettyPrinter]
     Prints a Unit in a former and consistent way from an 
     ```ASTSIUnit```,a String or a ```javax.measure.Unit```
         as either BaseUnit, StandardUnit or asIs-Unit.
@@ -47,14 +47,14 @@ such as `m`, `km`, `km^2` or `m*deg/(h^2*mg)`.
 ### Generators
 
 There are two PrettyPrinters, the 
-[SIUnitsPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunits/prettyprint/SIUnitsPrettyPrinter.java)
+[SIUnitsPrettyPrinter][SIUnitsPrettyPrinter]
 to prettyprint the SIUnits normally ( ```kg/m*s``` &rarr; ```kg/m*s``` ) 
-and the [SIUnitsWithBracketsPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunits/prettyprint/SIUnitsWithBracketsPrettyPrinter.java)
+and the [SIUnitsWithBracketsPrettyPrinter][SIUnitsWithBracketsPrettyPrinter]
 to prettyprint the SIUnits with brackets around each expression 
 ( ```kg/m*s``` &rarr; ```((kg/m)*s)``` ). 
 
 
-## [SIUnitLiterals.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnitLiterals.mc4)
+## [SIUnitLiterals.mc4][SIUnitLiteralsGrammar]
 
 ### Description
 
@@ -62,7 +62,7 @@ The SIUnitLiterals allow to describe concrete values, such as
 `5km` or `23.4m/s` that can be used within ordinary expressions. 
 For that purpose they combine a NumericalLiteral resp.
 SignedNumericalLiteral from the 
-[MCCommonLiterals.mc4](https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/grammars/de/monticore/literals/MCCommonLiterals.mc4) 
+[MCCommonLiterals.mc4][MCCommonLiteralsGrammar] 
 grammar with a SIUnit from the [SIUnits](#siunitsmc4) grammar. 
 
 SIUnitLiterals allows us to parse literals of the following forms. 
@@ -84,7 +84,7 @@ MCCommonLiterals grammar:
 
 ### Functionality
 
-The [SIUnitLiteralDecoder](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunitliterals/utility/SIUnitLiteralDecoder.java)
+The [SIUnitLiteralDecoder][SIUnitLiteralDecoder]
 extracts the number of an SIUnitLiteral as either a java ```double``` or a java 
 ```java.lang.Number``` and calculates the value of
 a SIUnitLiteral (```3 km``` has value3000``` and ```3 km``` in
@@ -92,18 +92,18 @@ a SIUnitLiteral (```3 km``` has value3000``` and ```3 km``` in
 
 ### Generators
 
-The [SIUnitLiteralsPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunitliterals/prettyprint/SIUnitLiteralsPrettyPrinter.java)
+The [SIUnitLiteralsPrettyPrinter][SIUnitLiteralsPrettyPrinter]
 prettyprints a SIUnitLiteral.
 
 
-## [SIUnitTypes4Math.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnitTypes4Math.mc4)
+## [SIUnitTypes4Math.mc4][SIUnitTypes4MathGrammar]
 
 ### Description
 
 The SIUnitTypes interprete the SIUnits as type in the MontiCore type universe. 
 Therefore, the grammar extends 
-[SIUnits.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnits.mc4) 
-and [de.monticore.types.MCBasicTypes.mc4](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/types/MCBasicTypes.mc4). 
+[SIUnits.mc4][SIUnitsGrammar] 
+and [de.monticore.types.MCBasicTypes.mc4][MCBasicTypesGrammar]. 
 A SIUnitType implements the MCObjectType and can therefore be used wherever a type is used,
 e.g. when a variable is declared or a method parameter is typed.
 
@@ -115,12 +115,12 @@ SIUnitTypes4Computing grammar, where concrete types of numbers can be added as w
 ### Generators
 
 The 
-[SIUnitTypes4MathPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunittypes4math/prettyprint/SIUnitTypes4MathPrettyPrinter.java)
+[SIUnitTypes4MathPrettyPrinter][SIUnitTypes4MathPrettyPrinter]
 prettyprints a SIUnitType and can be found in the package 
 ```de.monticore.siunittypes4math.prettyprint```.
 
 
-## [SIUnitTypes4Computing.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnitTypes4Computing.mc4)
+## [SIUnitTypes4Computing.mc4][SIUnitTypes4ComputingGrammar]
 
 ### Description
 
@@ -143,12 +143,12 @@ possible.
 
 ### Functionality
 
-The [PrimitiveIsNumericType](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunittypes4computing/_cocos/PrimitiveIsNumericType.java)
+The [PrimitiveIsNumericType][PrimitiveIsNumericType]
 CoCo checks whether the MCPrimitiveType part is a numeric type.
 
 ### Generators
 
-The [SIUnitTypes4ComputingPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunittypes4computing/prettyprint/SIUnitTypes4MathPrettyPrinter.java)
+The [SIUnitTypes4ComputingPrettyPrinter][SIUnitTypes4ComputingPrettyPrinter]
 prettyprints a SIUnitType`.
 
 
@@ -171,43 +171,43 @@ prettyprints a SIUnitType`.
 
 The TypeCheck classes here are:
 
-* [SymTypeOfSIUnitBasic](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/SymTypeOfSIUnitBasic.java)
+* [SymTypeOfSIUnitBasic][SymTypeOfSIUnitBasic]
     which defines the SymType of a SIUnit basis, e.g. ```m``` or ```kg``` 
     without any other prefixes.
-* [DefsSIUnitType](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/DefsSIUnitType.java)
+* [DefsSIUnitType][DefsSIUnitType]
     which contains the list with all SIUnit basic types.
-* [SymTypeOfSIUnit](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/SymTypeOfSIUnit.java)
+* [SymTypeOfSIUnit][SymTypeOfSIUnit]
     which contains a numerator and denominator list of SymTypeOfSIUnitBasic. 
     It also provides the declared Unit
     as ```javax.measure.Unit```.
-* [SymTypeOfNumericWithSIUnit](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/SymTypeOfNumericWithSIUnit.java)
+* [SymTypeOfNumericWithSIUnit][SymTypeOfNumericWithSIUnit]
     which contains a numeric type (SymTypeConstant) and a SymTypeOfSIUnit. 
     It also provides the declared Unit
     as ```javax.measure.Unit```.
-* [SIUnitSymTypeExpressionFactory](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/SIUnitSymTypeExpressionFactory.java)
+* [SIUnitSymTypeExpressionFactory][SIUnitSymTypeExpressionFactory]
     which is the only class to create SymTypeOfSIUnitBasic, SymTypeOfSIUnit 
     and SymTypeOfNumericWithSIUnit.
-* [SynthesizeSymTypeFromSIUnitTypes4Math](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/SynthesizeSymTypeFromSIUnitTypes4Math.java)
+* [SynthesizeSymTypeFromSIUnitTypes4Math][SynthesizeSymTypeFromSIUnitTypes4Math]
     which synthesizes a ```SymTypeOfSIUnit``` from a ```SIUnitType4Math```.
-* [SynthesizeSymTypeFromSIUnitTypes4Computing](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/SynthesizeSymTypeFromSIUnitTypes4Computing.java)
+* [SynthesizeSymTypeFromSIUnitTypes4Computing][SynthesizeSymTypeFromSIUnitTypes4Computing]
     which synthesizes a ```SymTypeOfNumericWithSIUnit``` from a 
     ```SIUnitType4Computing```. If one defined your own
     custom ```SIUnitType4Computing```, the class needs to be extended and the 
     ```traverseSIUnitType4Computing()``` can be called. This is exemplary done in 
-    [SynthesizeSymTypeFromCustomSIUnitTypes4Computing](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/types/check/SynthesizeSymTypeFromCustomSIUnitTypes4Computing.java).
-* [DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes.java)
-    which extends the [DeriveSymTypeOfAssignmentExpressions](https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/java/de/monticore/types/check/DeriveSymTypeOfAssignmentExpressions.java)
+    [SynthesizeSymTypeFromCustomSIUnitTypes4Computing][SynthesizeSymTypeFromCustomSIUnitTypes4Computing].
+* [DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes][DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes]
+    which extends the [DeriveSymTypeOfAssignmentExpressions][DeriveSymTypeOfAssignmentExpressions]
     class in order to work with SIUnitTypes as well. 
-* [DeriveSymTypeOfCommonExpressionsWithSIUnitTypes](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/DeriveSymTypeOfCommonExpressionsWithSIUnitTypes.java)
+* [DeriveSymTypeOfCommonExpressionsWithSIUnitTypes][DeriveSymTypeOfCommonExpressionsWithSIUnitTypes]
     which extends the 
-    [DeriveSymTypeOfCommonExpressions](https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/java/de/monticore/types/check/DeriveSymTypeOfCommonExpressions.java)
+    [DeriveSymTypeOfCommonExpressions][DeriveSymTypeOfCommonExpressions]
     class in order to work with SIUnitTypes as well.
     
-For more info see [TypeCheck](https://git.rwth-aachen.de/monticore/monticore/-/tree/master/monticore-grammar/src/main/java/de/monticore/types/check).
+For more info see [TypeCheck][Types]
 
 To get the TypeCheck mechanic work with your DSL, the language needs to
 1. extend the 
-   [de.monticore.types.TypeSymbols.mc4](https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/types/TypeSymbols.mc4)
+   [de.monticore.types.TypeSymbols.mc4][TypeSymbolsGrammar]
    grammar. 
 2. Create a derive and a synthesize class for your language which 
   usually combine the existing derive/synthsize
@@ -217,9 +217,9 @@ To get the TypeCheck mechanic work with your DSL, the language needs to
   Expression, Literal, SignedLiteral, and MCType and
   MCReturnType need to have an enclosing scope. Exemplary, this is 
   all done for the 
-  [TestSIJava](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/lang/testsijava/TestSIJava.md)
+  [TestSIJava][TestSIJavaGrammar]
   language. For further explanation, see the documentation for the 
-  [TestSIJava](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/lang/testsijava/TestSIJava.md) language.
+  [TestSIJava][TestSIJavaDoc] language.
 
 ((TODO: I would like to understand, whether the above two dues are completely new
 or have been the same to'dos already without the given SIUnit Extension.
@@ -230,26 +230,26 @@ already?))
 ## Extensibility
 
 * Additional units can be added directly extending the grammar 
-  [SIUnits.mc4](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnits.mc4)
+  [SIUnits.mc4][SIUnitsGrammar]
     * There might be changes necessary in the classes
-        * [UnitFactory](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunits/utility/UnitFactory.java)
-        * [UnitPrettyPrinter](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunits/utility/UnitPrettyPrinter.java)
-        * [DefsSIUnitType](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/DefsSIUnitType.java)
+        * [UnitFactory][UnitFactory]
+        * [UnitPrettyPrinter][UnitPrettyPrinter]
+        * [DefsSIUnitType][DefsSIUnitType]
 * An alternative syntax fot the definition of primitive types combined with 
   SI units can be defined by implementing `MCObjectType` as it is done in
-  [CustomSIUnitTypes4Computing](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/CustomSIUnitTypes4Computing.mc4)
+  [CustomSIUnitTypes4Computing][CustomSIUnitTypes4ComputingGrammar]
     * To include the new custom types to the TypeCheck mechanic, a DSL developer 
     needs to implement a Synthesize-Class which extends the 
-    [SynthesizeSymTypeFromSIUnitTypes4Computing](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/types/check/SynthesizeSymTypeFromSIUnitTypes4Computing.java)
+    [SynthesizeSymTypeFromSIUnitTypes4Computing][SynthesizeSymTypeFromSIUnitTypes4Computing]
     class and implements its visitor. For reference have a look on 
-    [SynthesizeSymTypeFromCustomSIUnitTypes4Computing.java](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/java/de/monticore/types/check/SynthesizeSymTypeFromCustomSIUnitTypes4Computing.java).
+    [SynthesizeSymTypeFromCustomSIUnitTypes4Computing.java][SynthesizeSymTypeFromCustomSIUnitTypes4Computing]
 
 ## Usage
 
 Usage of the SI Units package is shown using the 
-[SI Java test language](https://git.rwth-aachen.de/monticore/languages/siunits/-/tree/master/src/test/grammars/de/monticore/lang/testsijava) 
+[SI Java test language][TestSIJavaGrammar] 
 and  is explained in 
-[this tutorial](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/lang/testsijava/TestSIJava.md).
+[this tutorial][TestSIJavaDoc].
 
 # Further Functions
 
@@ -309,7 +309,7 @@ There are mainly two approaches, while the latter also cames in variants:
    a value for `km/h<int> x` in form of a simple `int` value, an object
    with attributes like `int value`, `String siUnit`, and `int scaleFactor` are 
    carried around at runtime. 
-   [Unit](http://unitsofmeasurement.github.io/unit-api/site/apidocs/javax/measure/Unit.html)
+   [Unit][JavaUnit]
    is such a framework for Java.
 
    * As a side effect the SI Units are themselves encoded as values
@@ -328,9 +328,9 @@ It is up to the developer of a generator to decide which solution to be taken.
 For Variant 2, we provide the following implementation:
 
 * For calculating with the units the
-  [Unit](http://unitsofmeasurement.github.io/unit-api/site/apidocs/javax/measure/Unit.html)
+  [Unit][JavaUnit]
   class from the 
-  [javax.measure](http://unitsofmeasurement.github.io/unit-api/site/apidocs/javax/measure/package-summary.html) 
+  [javax.measure][JavaMeasure] 
   package is used.
 
 * The main classes that used to handle a 
@@ -338,7 +338,7 @@ For Variant 2, we provide the following implementation:
   ```UnitPrettyPrinter``` and can be found in the package 
   ```de.monticore.siunits.utility```.
 
-* [UnitFactory](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunits/utility/UnitFactory.java)
+* [UnitFactory][UnitFactory]
     * Creates Units from an ```ASTSIUnit``` or a String
     * Creates the BaseUnit from an ```ASTSIUnit```,a String or a `
       ``javax.measure.Unit```
@@ -348,10 +348,50 @@ For Variant 2, we provide the following implementation:
          V, W, kg, sr, kat, cd, Ohm, Wb, m, Bq, Hz, s
 
 * The 
-  [SIUnitLiteralDecoder](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunitliterals/utility/SIUnitLiteralDecoder.java)
+  [SIUnitLiteralDecoder][SIUnitLiteralDecoder]
   extracts the number of an SIUnitLiteral:
   For this it uses the 
-  [NumberDecoder](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/java/de/monticore/siunitliterals/utility/NumberDecoder.java)
+  [NumberDecoder][NumberDecoder]
   which extracts the number of a NumericLiteral or SignedNumericLiteral as 
   either a java ```double``` or a java ```java.lang.Number```.
 
+[SIUnitGrammar]: SIUnits.mc4
+[SIUnitLiteralsGrammar]: SIUnitLiterals.mc4
+[SIUnitTypes4MathGrammar]: SIUnitTypes4Math.mc4
+[SIUnitTypes4ComputingGrammar]: SIUnitTypes4Computing.mc4
+[TestSIJavaGrammar]: ../../../../test/grammars/de/monticore/lang/testsijava/TestSIJava.mc4
+[CustomSIUnitTypes4ComputingGrammar]: https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/test/grammars/de/monticore/CustomSIUnitTypes4Computing.mc4
+[MCCommonLiteralsGrammar]: https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/grammars/de/monticore/literals/MCCommonLiterals.mc4
+[MCBasicTypesGrammar]: https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/types/MCBasicTypes.mc4
+[TypeSymbolsGrammar]: https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/types/TypeSymbols.mc4
+
+[SIUnitsPrettyPrinter]: ../../../java/de/monticore/siunits/prettyprint/SIUnitsPrettyPrinter.java
+[SIUnitsWithBracketsPrettyPrinter]: ../../../java/de/monticore/siunits/prettyprint/SIUnitsWithBracketsPrettyPrinter.java
+[SIUnitLiteralsPrettyPrinter]: ../../../java/de/monticore/siunitliterals/prettyprint/SIUnitLiteralsPrettyPrinter.java
+[SIUnitTypes4MathPrettyPrinter]: ../../../java/de/monticore/siunittypes4math/prettyprint/SIUnitTypes4MathPrettyPrinter.java
+[SIUnitTypes4ComputingPrettyPrinter]: ../../../java/de/monticore/siunittypes4computing/prettyprint/SIUnitTypes4MathPrettyPrinter.java
+
+[UnitFactory]: ../../../java/de/monticore/siunits/utility/UnitFactory.java
+[UnitPrettyPrinter]: ../../../java/de/monticore/siunits/utility/UnitPrettyPrinter.java 
+[SIUnitLiteralDecoder]: ../../../java/de/monticore/siunitliterals/utility/SIUnitLiteralDecoder.java
+[NumberDecoder]: ../../../java/de/monticore/siunitliterals/utility/NumberDecoder.java
+[PrimitiveIsNumericType]: ../../../java/de/monticore/siunittypes4computing/_cocos/PrimitiveIsNumericType.java
+
+[SymTypeOfSIUnitBasic]: ../../../java/de/monticore/types/check/SymTypeOfSIUnitBasic.java
+[DefsSIUnitType]: ../../../java/de/monticore/types/check/DefsSIUnitType.java
+[SymTypeOfSIUnit]: ../../../java/de/monticore/types/check/SymTypeOfSIUnit.java
+[SymTypeOfNumericWithSIUnit]: ../../../java/de/monticore/types/check/SymTypeOfNumericWithSIUnit.java
+[SIUnitSymTypeExpressionFactory]: ../../../java/de/monticore/types/check/SIUnitSymTypeExpressionFactory.java
+[SynthesizeSymTypeFromSIUnitTypes4Math]: ../../../java/de/monticore/types/check/SynthesizeSymTypeFromSIUnitTypes4Math.java
+[SynthesizeSymTypeFromSIUnitTypes4Computing]: ../../../java/de/monticore/types/check/SynthesizeSymTypeFromSIUnitTypes4Computing.java
+[SynthesizeSymTypeFromCustomSIUnitTypes4Computing]: ../../../../test/java/de/monticore/types/check/SynthesizeSymTypeFromCustomSIUnitTypes4Computing.java
+[DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes]: ../../../java/de/monticore/types/check/DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes.java
+[DeriveSymTypeOfAssignmentExpressions]: https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/java/de/monticore/types/check/DeriveSymTypeOfAssignmentExpressions.java
+[DeriveSymTypeOfCommonExpressionsWithSIUnitTypes]: ../../../java/de/monticore/types/check/DeriveSymTypeOfCommonExpressionsWithSIUnitTypes.java
+[DeriveSymTypeOfCommonExpressions]: https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/java/de/monticore/types/check/DeriveSymTypeOfCommonExpressions.java
+
+[TestSIJavaDoc]: ../../../../test/grammars/de/monticore/lang/testsijava/TestSIJava.md
+
+[Types]: https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/java/de/monticore/types/check/Types.md
+[JavaUnit]: http://unitsofmeasurement.github.io/unit-api/site/apidocs/javax/measure/Unit.html
+[JavaMeasure]: http://unitsofmeasurement.github.io/unit-api/site/apidocs/javax/measure/package-summary.htmltps://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/java/de/monticore/types/check/Types.md
