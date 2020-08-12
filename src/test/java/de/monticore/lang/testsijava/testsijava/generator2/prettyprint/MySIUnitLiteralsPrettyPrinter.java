@@ -16,12 +16,12 @@ public class MySIUnitLiteralsPrettyPrinter extends SIUnitLiteralsPrettyPrinter {
     @Override
     public void traverse(ASTSIUnitLiteral node) {
         SIUnitLiteralDecoder decoder = new SIUnitLiteralDecoder();
-        printer.print(decoder.getDouble(node));
+        printer.print(decoder.doubleOf(node));
     }
 
     @Override
     public void traverse(ASTSignedSIUnitLiteral node) {
         SIUnitLiteralDecoder decoder = new SIUnitLiteralDecoder();
-        printer.print(decoder.getDouble(node));
+        printer.print(decoder.doubleOf(node));
     }
 }

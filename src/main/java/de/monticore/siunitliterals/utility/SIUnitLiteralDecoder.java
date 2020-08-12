@@ -18,6 +18,9 @@ import javax.measure.unit.Unit;
  * This class can be initialized with a {@link de.monticore.MCCommonLiteralsPrettyPrinter} to prettyprint
  * your own custom {@link de.monticore.literals.mccommonliterals._ast.ASTNumericLiteral} or
  * {@link de.monticore.literals.mccommonliterals._ast.ASTSignedNumericLiteral}.
+ *
+ * It also extracts the {@link javax.measure.unit.Unit} from {@link de.monticore.siunitliterals._ast.ASTSIUnitLiteral}
+ * or a {@link de.monticore.siunitliterals._ast.ASTSignedSIUnitLiteral}.
  */
 public class SIUnitLiteralDecoder {
 
@@ -42,7 +45,7 @@ public class SIUnitLiteralDecoder {
      * meaning valueOf(1 km) = 1000, valueOf(1 l) = 0.001 (1 l = 1 dm^3 = 0.001 m^3).
      */
     public double valueOf(ASTSIUnitLiteral lit) {
-        double number = decoder.getDouble(getNumber(lit));
+        double number = decoder.getDouble(numberOf(lit));
         Unit unit = UnitFactory.createUnit(lit.getSIUnit());
         UnitConverter converter = unit.getConverterTo(UnitFactory.createBaseUnit(unit));
         return converter.convert(number);
@@ -53,7 +56,7 @@ public class SIUnitLiteralDecoder {
      * meaning valueOf(1 km) = 1000, valueOf(1 l) = 0.001 (1 l = 1 dm^3 = 0.001 m^3).
      */
     public double valueOf(ASTSignedSIUnitLiteral lit) {
-        double number = decoder.getDouble(getNumber(lit));
+        double number = decoder.getDouble(numberOf(lit));
         Unit unit = UnitFactory.createUnit(lit.getSIUnit());
         UnitConverter converter = unit.getConverterTo(UnitFactory.createBaseUnit(unit));
         return converter.convert(number);
@@ -64,7 +67,7 @@ public class SIUnitLiteralDecoder {
      * as the Unit given, meaning valueOf(1 km, m) = 1000, valueOf(1 km, mm) = 1000000.
      */
     public double valueOf(ASTSIUnitLiteral lit, Unit asUnit) {
-        double number = decoder.getDouble(getNumber(lit));
+        double number = decoder.getDouble(numberOf(lit));
         Unit unit = UnitFactory.createUnit(lit.getSIUnit());
         UnitConverter converter = unit.getConverterTo(asUnit);
         return converter.convert(number);
@@ -75,7 +78,7 @@ public class SIUnitLiteralDecoder {
      * as the Unit given, meaning valueOf(1 km, m) = 1000, valueOf(1 km, mm) = 1000000.
      */
     public double valueOf(ASTSignedSIUnitLiteral lit, Unit asUnit) {
-        double number = decoder.getDouble(getNumber(lit));
+        double number = decoder.getDouble(numberOf(lit));
         Unit unit = UnitFactory.createUnit(lit.getSIUnit());
         UnitConverter converter = unit.getConverterTo(asUnit);
         return converter.convert(number);
@@ -92,33 +95,49 @@ public class SIUnitLiteralDecoder {
 
     /**
      * Returns the number of a {@link de.monticore.siunitliterals._ast.ASTSIUnitLiteral} as double,
-     * meaning getDouble(3 km) = 3.
+     * meaning doubleOf(3 km) = 3.
      */
-    public double getDouble(ASTSIUnitLiteral lit) {
+    public double doubleOf(ASTSIUnitLiteral lit) {
         return decoder.getDouble(lit.getNumericLiteral());
     }
 
     /**
      * Returns the number of a {@link de.monticore.siunitliterals._ast.ASTSignedSIUnitLiteral} as double,
-     * meaning getDouble(3 km) = 3.
+     * meaning doubleOf(3 km) = 3.
      */
-    public double getDouble(ASTSignedSIUnitLiteral lit) {
+    public double doubleOf(ASTSignedSIUnitLiteral lit) {
         return decoder.getDouble(lit.getSignedNumericLiteral());
     }
 
     /**
      * Returns the number of a {@link de.monticore.siunitliterals._ast.ASTSIUnitLiteral} as a {@link java.lang.Number},
-     * meaning getDouble(3 km) = 3.
+     * meaning doubleOf(3 km) = 3.
      */
-    public Number getNumber(ASTSIUnitLiteral lit) {
+    public Number numberOf(ASTSIUnitLiteral lit) {
         return decoder.decode(lit.getNumericLiteral());
     }
 
     /**
      * Returns the number of a {@link de.monticore.siunitliterals._ast.ASTSignedSIUnitLiteral} as a {@link java.lang.Number},
-     * meaning getDouble(3 km) = 3.
+     * meaning doubleOf(3 km) = 3.
      */
-    public Number getNumber(ASTSignedSIUnitLiteral lit) {
+    public Number numberOf(ASTSignedSIUnitLiteral lit) {
         return decoder.decode(lit.getSignedNumericLiteral());
+    }
+
+    /**
+     * Returns the {@link javax.measure.unit.Unit} from a {@link de.monticore.siunitliterals._ast.ASTSIUnitLiteral}
+     * meaning getUnit(3 km) = km.
+     */
+    public Unit getUnit(ASTSIUnitLiteral lit) {
+        return UnitFactory.createUnit(lit.getSIUnit());
+    }
+
+    /**
+     * Returns the {@link javax.measure.unit.Unit} from a {@link de.monticore.siunitliterals._ast.ASTSignedSIUnitLiteral}
+     * meaning getUnit(3 km) = km.
+     */
+    public Unit getUnit(ASTSignedSIUnitLiteral lit) {
+        return UnitFactory.createUnit(lit.getSIUnit());
     }
 }
