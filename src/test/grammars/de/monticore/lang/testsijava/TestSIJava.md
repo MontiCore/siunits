@@ -1,3 +1,7 @@
+<!--   
+    Add generator description
+-->
+
 # TestSIJava
 The TestSIJava language serves as an example on how to integrate SIUnits, SIUnitLiterals, SIUnitTypes and 
 SIUnitTypes4Computing (see [SIUnits language][SIUnitsDoc]) 
@@ -9,9 +13,9 @@ whether a field declaration is initialized with a compatible type or expression.
 TestSIJava is a very limited Java-like grammar which combines expressions with SIUnits and SIUnitLiterals and each Type 
 or ReturnType can be a SIUnitType or a SIUnitType4Computing. Accepted are  models with a 
 package, a classname and several Field- and Method declarations. A Method contains expressions which can be used to 
-assign new values to variables. In addition to "normal" variable declations of the form ```type name = assignment```,
-there are wildcard SI variable declarations of the form ```si name = assignment```, where the assignment is either itself
-the SIUnitType, e.g. ```si var_m = m``` or an expression of other si variables, e.g. ```si var = var_M/var_S```. For an
+assign new values to variables. In addition to "normal" variable declations of the form `type name = assignment`,
+there are wildcard SI variable declarations of the form `si name = assignment`, where the assignment is either itself
+the SIUnitType, e.g. `si var_m = m` or an expression of other si variables, e.g. `si var = var_M/var_S`. For an
 example model see [MyClass.sijava][MyClass].
 
 ### Functionality
@@ -21,8 +25,8 @@ a few classes which allows for this usage. (For more info on TypeChecking see [T
     checks for each field assignment whether the initialized value (can be an expression) is compatible to the declared type. 
     It also checks for each expression inside a method whether all assignments are valid (types are compatible). The 
     [TypeCheck][TypeCheck]
-    class is used for that purpose. It is initialized with the custom ```SynthesizeSymTypeFromTestSIJava.java``` and 
-    ```DeriveSymTypeOfTestSIJava.java``` (see below).
+    class is used for that purpose. It is initialized with the custom `SynthesizeSymTypeFromTestSIJava.java` and 
+    `DeriveSymTypeOfTestSIJava.java` (see below).
 * [TestSIJavaScope.java][TestSIJavaScope]
     allows for the correct resolving of methods, types, and fields.
 * [TestSIJavaSymbolTableCreator.java][TestSIJavaSymbolTableCreator] 
@@ -39,26 +43,26 @@ a few classes which allows for this usage. (For more info on TypeChecking see [T
     is the custom derive class to derive the SymType of an expression or a Literal (SignedLiteral). It uses the
     DelegatorVisitorPattern to utilize the existing derive classes. It sets the same [TypeCheckResult][TypeCheckResult] 
     object to each of the underlying derive class, so they can share their results. It is mainly used in the TypeCheckCoco 
-    but also in the SymbolTable creation process to calculate the SymType of an SIVariable Declaration of the form ```si var = var_M/var_S```.
+    but also in the SymbolTable creation process to calculate the SymType of an SIVariable Declaration of the form `si var = var_M/var_S`.
 
 ### Symbol Table
-Each SIJavaClass spans a symbol scope. In this scope there can be the Symbols ```FieldDeclaration```, ```SIFieldDeclaration```
-and ```MethodDeclaration```.
-The FieldDeclaration and SIFieldDeclaration both implement ```Field``` from the ```de.monticore.types.TypeSymbols``` grammar.
-The MethodDeclaration implements the ```Method``` from the ```de.monticore.types.TypeSymbols``` grammar.
-The ```MethodDeclaration``` symbol again spans a scope which can contain the Symbols ```FieldDeclaration``` 
-and ```SIFieldDeclaration```. It also contains the ```SIJavaParameter``` symbols which are given as the method's parameters.
+Each SIJavaClass spans a symbol scope. In this scope there can be the Symbols `FieldDeclaration`, `SIFieldDeclaration`
+and `MethodDeclaration`.
+The FieldDeclaration and SIFieldDeclaration both implement `Field` from the `de.monticore.types.TypeSymbols` grammar.
+The MethodDeclaration implements the `Method` from the `de.monticore.types.TypeSymbols` grammar.
+The `MethodDeclaration` symbol again spans a scope which can contain the Symbols `FieldDeclaration` 
+and `SIFieldDeclaration`. It also contains the `SIJavaParameter` symbols which are given as the method's parameters.
 
 In the Symbol Table creation process the [TestSIJavaSymbolTableCreator][TestSIJavaSymbolTableCreator] 
-assigns each of those symbols a type as SymTypeExpression. For a ```FieldDeclaration```
-this type is synthesized from the given ```MCType``` (```de.monticore.MCBasics``` grammar). For a ```SIFieldDeclaration```
-it is derived from the given assignment expression or synthesized from the given assignment ```SIUnitType4Math```.
-For a ```MethodDeclaration``` it is synthesized from the given ```MCReturnType``` (```de.monticore.MCBasics``` grammar).
-For a ```SIJavaParameter``` it is synthesized from the given ```MCType```.
+assigns each of those symbols a type as SymTypeExpression. For a `FieldDeclaration`
+this type is synthesized from the given `MCType` (`de.monticore.MCBasics` grammar). For a `SIFieldDeclaration`
+it is derived from the given assignment expression or synthesized from the given assignment `SIUnitType4Math`.
+For a `MethodDeclaration` it is synthesized from the given `MCReturnType` (`de.monticore.MCBasics` grammar).
+For a `SIJavaParameter` it is synthesized from the given `MCType`.
 
 In the Symbol Table creation process, the [TestSIJavaSymbolTableCreator][TestSIJavaSymbolTableCreator]
-assigns each Node in the AST the enclosing Scope, which is the last Scope on the ScopeStack, i.e. for a ```SIJavaParameter```
-it is the method's scope, the ```SIJavaParameter``` is a parameter of.
+assigns each Node in the AST the enclosing Scope, which is the last Scope on the ScopeStack, i.e. for a `SIJavaParameter`
+it is the method's scope, the `SIJavaParameter` is a parameter of.
 
 ### Models
 Valid models can be found [here][ValidModels].
@@ -81,6 +85,13 @@ which come with the SIUnit language.
 
 * [Licence definition](https://github.com/MontiCore/monticore/blob/master/00.org/Licenses/LICENSE-MONTICORE-3-LEVEL.md)
 
+<!--   
+    TODO:  Die MontiCore Links sind alle noch absolut:
+    TypeCheckResult
+    TypeCheck
+    Types
+-->
+
 [TestSIJavaGrammar]: TestSIJava.mc4
 [TestSIJavaWithCustomTypesGrammar]: TestSIJavaWithCustomTypes.mc4
 [CustomSIUnitTypes4ComputingGrammar]: ../../CustomSIUnitTypes4Computing.mc4
@@ -94,8 +105,8 @@ which come with the SIUnit language.
 [TypeCheckResult]: https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/java/de/monticore/types/check/TypeCheckResult.java
 [DeriveSymTypeOfTestSIJava]: ../../../../../java/de/monticore/types/check/DeriveSymTypeOfTestSIJava.java
 
-[MyClass]: ../../../../../resources/test/de/monticore/lang/testsijava/MyClass.sijava
-[ValidModels]: ../../../../../resources/test/de/monticore/lang/testsijava
+[MyClass]: ../../../../../resources/test/de/monticore/lang/testsijava/testsijava/MyClass.sijava
+[ValidModels]: ../../../../../resources/test/de/monticore/lang/testsijava/testsijava
 
 [TypeCheckCoCo]: ../../../../../java/de/monticore/lang/testsijava/testsijava/_cocos/TypeCheckCoCo.java
 [TypeCheck]: https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/java/de/monticore/types/check/TypeCheck.java
