@@ -290,10 +290,10 @@ The following table contains a set of use cases and examples for the work with S
 | Unit of SIUnitLiteral |  `javax.measure.Unit u = d.getUnit(astLiteral)` | `javax.measure.Unit` km |
 | Base Units of SIUnitLiteral |  `UnitFactory.createBaseUnit(u)` | `javax.measure.Unit` m |
 | Literal of SIUnitLiteral | `d.getNumber(astLiteral)` or `d.getDouble(astLiteral)` | `java.lang.Integer` 5 or `double` 5.0 |
-| Literal of SIUnitLiteral as Base Units  | `d.valueOf(astLiteral/*km*/)` | `double` 5000 |
-| Literal of SIUnitLiteral as TargetUnit  | `d.valueOf(astLiteral/*km*/, targetUnit/*cm*/); ...` | `double` 500,000 |
-| Convert Units | `c = UnitFactory.getConverter(sourceUnit/*km*/, targetUnit/*cm*/); c.convert(5.2);`  | `double` 5,200,000 | 
-| Convert to Base Units | `c = UnitFactory.getConverterFrom(u/*km*/); c.convert(5.2);`  | `double` 5200 |
+| Literal of SIUnitLiteral as Base Units  | `d.valueOf(astLiteral/*km*/)` | `double` 5000.0 |
+| Literal of SIUnitLiteral as TargetUnit  | `d.valueOf(astLiteral/*km*/, targetUnit/*cm*/); ...` | `double` 500,000.0 |
+| Convert Units | `c = UnitFactory.getConverter(sourceUnit/*km*/, targetUnit/*cm*/); c.convert(5.2);`  | `double` 5,200,000.0 | 
+| Convert to Base Units | `c = UnitFactory.getConverterFrom(u/*km*/); c.convert(5.2);`  | `double` 5,200.0 |
 | Convert from Base Units | `c = UnitFactory.getConverterTo(u/*km*/); c.convert(5200);`  | `double` 5.2 |
 | Create Unit | `UnitFactory.createUnit("km/s")` | `javax.measure.Unit` |
 | Print javax.measure.Unit | `UnitPrettyPrinter.printUnit(javax.measure.Unit / String / ASTSIUnit)` `UnitPrettyPrinter.printBaseUnit(javax.measure.Unit / String / ASTSIUnit)` | `String` |
