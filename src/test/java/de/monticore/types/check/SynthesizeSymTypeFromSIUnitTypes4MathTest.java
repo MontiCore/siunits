@@ -62,7 +62,7 @@ public class SynthesizeSymTypeFromSIUnitTypes4MathTest {
         check("m");
         check("km");
         check("s^2m/km");
-        check("s^m2/km^3");
+        check("s^2m/km^3");
     }
 
     @Test

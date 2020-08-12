@@ -51,9 +51,9 @@ public class SIUnitTest {
     @Test
     public void testUnitGroup() {
         try {
+            parseSIUnit("kV^2A^3/m^2");
             parseSIUnit("s^-1");
             parseSIUnit("kVA");
-            parseSIUnit("kV^2A^3/m^2");
             parseSIUnit("kVAh");
             parseSIUnit("kVAh/°C");
             parseSIUnit("kV^2A^3h");

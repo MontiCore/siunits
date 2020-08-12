@@ -62,6 +62,7 @@ public class SIUnitLiteralsTest {
     @Test
     public void testSIUnitLiterals() {
         try {
+            checkSIUnitLiteral("30.4 s^3/kgm^2", 30.4, "s^3/kgm^2", 30.4, "s^3/(kg*m^2)");
             checkSIUnitLiteral("30kg", 30, "kg", 30, "kg");
             checkSIUnitLiteral("30km", 30, "km", 30000, "m");
             checkSIUnitLiteral("30g", 30, "g", 0.03, "kg");
@@ -73,7 +74,6 @@ public class SIUnitLiteralsTest {
             checkSIUnitLiteral("30 g^2", 30, "g^2", 0.00003, "kg^2");
             checkSIUnitLiteral("30 km^2", 30, "km^2", 30000000, "m^2");
             checkSIUnitLiteral("30.4kg^2", 30.4, "kg^2", 30.4, "kg^2");
-            checkSIUnitLiteral("30.4 s^3/kgm^2", 30.4, "s^3/kgm^2", 30.4, "s^3/(kg*m^2)");
             checkSIUnitLiteral("30.4s^3/kgm^2", 30.4, "s^3/kgm^2", 30.4, "s^3/(kg*m^2)");
             checkSIUnitLiteral("1 h/min", 1, "h/min", 60, "1");
             checkSIUnitLiteral("30.4 rad", 30.4, "rad", 30.4, "1");
