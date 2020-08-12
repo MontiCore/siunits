@@ -204,69 +204,65 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
         return cmpToken(1,"°") && cmpToken(2,"C","F") && noSpace(2);
       }
 
-      public int countPrimitive(int i) {
-        if (isSIUnitWithPrefix(i)) return 1;
-        if (isSIUnitWithoutPrefix(i)) return 1;
-        if (isDimensionless(i)) return 1;
-        if (isCelsiusFahrenheit(i)) return 2;
-        else
-          return -1;
-      }
-
       public int countSIUnitKindGroupWithExponent(int i) {
-        int j = countPrimitive(i);
+        if (!isSIUnitWithPrefix(i) && !isSIUnitWithoutPrefix(i))
+          return -1;
+        if (!cmpToken(i + 1, "^") || !(
+            cmpTokenRegEx(i + 2, "\\d+") && noSpace(i + 1, i + 2) ||
+            cmpToken(i + 2, "-") && cmpTokenRegEx(i + 3, "\\d+") &&
+            noSpace(i + 1, i + 2, i + 3)))
+          return -1;
+
+        boolean loop = true;
         int counter = 0;
-        if (j > 0 && !cmpToken(i + j, "^")) return -1;
-        else if (j > 0) {
-          while (j > 0) {
-            counter += j;
-            if (cmpToken(i + counter, "^")
-                && noSpace(i + counter, i + counter + 1)
-                && cmpTokenRegEx(i + counter + 1, "\\d+")) {
-              counter += 2;
-              j = countPrimitive(i + counter);
-            } else if (cmpToken(i + counter, "^")
-                && noSpace(i + counter, i + counter + 1, i + counter + 2)
-                && cmpToken(i + counter + 1, "-")
-                && cmpTokenRegEx(i + counter + 2, "\\d+")) {
-              counter += 3;
-              j = countPrimitive(i + counter);
-            }
-            else j = -1;
-          }
-          return counter;
+        while (loop) {
+          counter ++;
+          if (cmpToken(i + counter, "^")
+              && cmpTokenRegEx(i + counter + 1, "\\d+")
+              && noSpace(i + counter, i + counter + 1))
+            counter += 2;
+          else if (cmpToken(i + counter, "^")
+              && cmpToken(i + counter + 1, "-")
+              && cmpTokenRegEx(i + counter + 2, "\\d+")
+              && noSpace(i + counter, i + counter + 1, i + counter + 2))
+            counter += 3;
+          else
+            loop = false;
+          if (!isSIUnitWithoutPrefix(i + counter))
+            loop = false;
         }
-        return -1;
+        return counter;
       }
 
       public boolean isSIUnitKindGroupWithExponent(int i) {
         return countSIUnitKindGroupWithExponent(i) > 0;
       }
 
-      public int countSIUnit(int i) {
+      public int countPrimitive(int i) {
         int j = countSIUnitKindGroupWithExponent(i);
         if (j > 0) return j;
-        j = countPrimitive(i);
-        if (j > 0) return j;
+        if (isSIUnitWithPrefix(i)) return 1;
+        if (isSIUnitWithoutPrefix(i)) return 1;
+        if (isDimensionless(i)) return 1;
+        if (isCelsiusFahrenheit(i)) return 2;
         return -1;
       }
 
-      public boolean isSIUnit(int i) {
-        return countSIUnit(i) > 0;
+      public boolean isPrimitive(int i) {
+        return countPrimitive(i) > 0;
       }
 
       public boolean isSIDiv() {
-        int j = countSIUnit(1);
+        int j = countPrimitive(1);
         if (j > 0 && noSpace(1 + j, 2 + j)
             && cmpToken(1 + j, "/")
-            && isSIUnit(2 + j)) {
+            && isPrimitive(2 + j))
           return true;
-        }
         return false;
       }
 
       public boolean isSIOneDiv() {
-        return cmpToken(1, "1") && noSpace(2,3) && isSIUnit(3);
+        return cmpToken(1, "1") && noSpace(2,3) && isPrimitive(3);
       }
     }
   }
