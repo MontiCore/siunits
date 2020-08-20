@@ -3,7 +3,7 @@
 package de.monticore.siunits.utility;
 
 import de.monticore.siunits._ast.ASTSIUnit;
-import de.monticore.siunits.prettyprint.SIUnitsWithBracketsPrettyPrinter;
+import de.monticore.siunits.prettyprint.SIUnitsPrettyPrinter;
 import de.se_rwth.commons.logging.Log;
 
 import javax.measure.converter.LogConverter;
@@ -32,21 +32,24 @@ public class UnitFactory {
     }
 
     private Unit _createUnit(ASTSIUnit siunit) {
-        String print = SIUnitsWithBracketsPrettyPrinter.prettyprint(siunit);
+        String print = SIUnitsPrettyPrinter.prettyprint(siunit);
         return _createUnit(print);
     }
 
     private String resolveUnitKindGroup(String str) {
-        List<String> unitKindGroups = Arrays.asList(str.split("[\\*/\\/\\)\\(]"))
+        // split into unitgroups: split for *,/,(,)
+        //  and filter out ^-2 that are not part of
+        //  the group, e.g. (kVAh)^2
+        List<String> unitKindGroupsWithExponent = Arrays.asList(str.split("[\\*/\\/\\)\\(]"))
                 .stream().filter(s -> !s.equals("") && !s.matches("\\^\\-?\\d+"))
                 .collect(Collectors.toList());
         List<String> allUnits = SIUnitConstants.getAllUnits();
 
-        for (String unitKindGroup : unitKindGroups) {
-            if (!allUnits.contains(unitKindGroup)) {
+        for (String unitKindGroupWithExponent : unitKindGroupsWithExponent) {
+            if (!allUnits.contains(unitKindGroupWithExponent)) {
                 // is something like kVA
                 List<String> compounds = new LinkedList<>();
-                String[] split = unitKindGroup.split("[\\^\\-\\d+]");
+                String[] split = unitKindGroupWithExponent.split("[\\^\\-\\d+]");
                 for (String s : split) {
                     while (!s.equals("")) {
                         if (allUnits.contains(s)) {
@@ -77,15 +80,15 @@ public class UnitFactory {
                         }
                     }
                 }
-                String newUnitKindGroup = unitKindGroup;
+                String newUnitKindGroup = unitKindGroupWithExponent;
                 for (String compound : compounds) {
                     newUnitKindGroup = newUnitKindGroup.replace(compound, "*" + compound);
                 }
                 newUnitKindGroup = newUnitKindGroup.substring(1);
-                str = str.replace(unitKindGroup, newUnitKindGroup);
+                str = str.replace(unitKindGroupWithExponent, newUnitKindGroup);
             }
         }
-        return str;
+        return "(" + str + ")";
     }
 
     /**
@@ -159,7 +162,7 @@ public class UnitFactory {
     }
 
     private Unit _createBaseUnit(ASTSIUnit siunit) {
-        String asString = SIUnitsWithBracketsPrettyPrinter.prettyprint(siunit);
+        String asString = SIUnitsPrettyPrinter.prettyprint(siunit);
         return _createBaseUnit(_createUnit(asString));
     }
 
@@ -175,18 +178,6 @@ public class UnitFactory {
 
     private Unit _createBaseUnit(String siunit) {
         return _createBaseUnit(_createUnit(siunit));
-    }
-
-    public static UnitConverter getConverter(Unit source, Unit target) {
-        return source.getConverterTo(target);
-    }
-
-    public static UnitConverter getConverterTo(Unit target) {
-        return createBaseUnit(target).getConverterTo(target);
-    }
-
-    public static UnitConverter getConverterFrom(Unit source) {
-        return source.getConverterTo(createBaseUnit(source));
     }
 
     public static Unit removePrefixes(Unit unit) {

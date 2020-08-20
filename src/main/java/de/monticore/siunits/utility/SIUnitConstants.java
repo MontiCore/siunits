@@ -9,32 +9,40 @@ import java.util.List;
 
 public class SIUnitConstants {
 
-    public static String[] prefixes = {"Y", "Z", "E", "P", "T", "G", "M", "k", "h", "da", "d", "c", "m", "µ", "u", "n", "p", "f", "a", "z", "y"};
-    public static String[] unitBases = {"m", "g", "s", "A", "K", "mol", "cd", "Hz", "N", "Pa", "J", "W", "C", "V", "F", "Ohm", "Ω", "S", "Wb", "T", "H", "lm", "lx", "Bq", "Gy", "Sv", "kat", "l", "L"};
-    public static String[] officallyAccepted = {"min", "h", "d", "ha", "t", "au", "Np", "B", "dB", "eV", "Da", "u"};
+    public static String[] prefixes =
+            {"Y", "Z", "E", "P", "T", "G", "M", "k", "h", "da", "d", "c", "m",
+                    "µ", "u", "n", "p", "f", "a", "z", "y"};
+    public static String[] unitBases =
+            {"m", "g", "s", "A", "K", "mol", "cd", "Hz", "N", "Pa", "J", "W",
+                    "C", "V", "F", "Ohm", "Ω", "S", "Wb", "T", "H", "lm", "lx",
+                    "Bq", "Gy", "Sv", "kat", "l", "L"};
+    public static String[]
+            unitBasesWithoutPrefix =
+            {"min", "h", "d", "ha", "t", "au", "Np", "B", "dB", "eV", "Da",
+                    "u"};
     public static String[] dimensionless = {"°", "deg", "rad", "sr"};
     public static String[] fahrenheitCelcius = {"°C", "°F"};
 
 
     private static List<String> prefixUnits;
-    private static List<String> allStandardUnits;
+    private static List<String> allUnits;
 
     public static List<String> getAllUnits() {
-        if (allStandardUnits == null) {
+        if (allUnits == null) {
 
-            allStandardUnits = new ArrayList<>();
-            allStandardUnits.addAll(Lists.newArrayList(officallyAccepted));
-            allStandardUnits.addAll(Lists.newArrayList(dimensionless));
-            allStandardUnits.addAll(Lists.newArrayList(fahrenheitCelcius));
+            allUnits = new ArrayList<>();
+            allUnits.addAll(Lists.newArrayList(unitBasesWithoutPrefix));
+            allUnits.addAll(Lists.newArrayList(dimensionless));
+            allUnits.addAll(Lists.newArrayList(fahrenheitCelcius));
 
             for (String unitBase : unitBases) {
-                allStandardUnits.add(unitBase);
+                allUnits.add(unitBase);
                 for (String prefix : prefixes) {
-                    allStandardUnits.add(prefix + unitBase);
+                    allUnits.add(prefix + unitBase);
                 }
             }
         }
-        return allStandardUnits;
+        return allUnits;
     }
 
     public static List<String> getUnitsWithPrefix() {
@@ -48,6 +56,4 @@ public class SIUnitConstants {
         }
         return prefixUnits;
     }
-
-    //TODO: Return StandardUnits
 }
