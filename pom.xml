@@ -48,12 +48,6 @@
             <artifactId>jscience</artifactId>
             <version>${jscience.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>si.uom</groupId>-->
-<!--            <artifactId>si-units</artifactId>-->
-<!--            <version>2.0.1</version>-->
-<!--        </dependency>-->
-
 
         <!-- MontiCore Dependencies -->
         <dependency>
