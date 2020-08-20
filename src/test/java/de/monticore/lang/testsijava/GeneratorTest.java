@@ -1,5 +1,6 @@
-package de.monticore.lang.testsijava.testsijava.generator1;
+package de.monticore.lang.testsijava;
 
+import de.monticore.lang.testsijava.testsijava.generator.Generator;
 import de.se_rwth.commons.logging.Log;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
@@ -11,10 +12,10 @@ import java.io.IOException;
 public class GeneratorTest {
 
     private String modelPath = "src/test/resources";
-    private String outputPath = "target/generate1";
-    private String compareModelPath = "src/test/resources/compare1";
+    private String outputPath = "target/generate";
+    private String compareModelPath = "src/test/resources/compare";
 
-    private void test(String model) throws IOException {
+    private void test(String model) throws IOException, ClassNotFoundException {
         Generator.generate(modelPath, model, outputPath);
         String javaModelName = model.replace(".sijava", ".java");
         File generatedFile = new File(outputPath + "/" + javaModelName);
@@ -29,14 +30,26 @@ public class GeneratorTest {
     }
 
     @Test
-    public void testMyClass() throws IOException {
+    public void testMyClass() throws IOException, ClassNotFoundException {
         String model = "test/de/monticore/lang/testsijava/testsijava/MyClass.sijava";
         test(model);
     }
 
     @Test
-    public void testMain() throws IOException {
+    public void testMain() throws IOException, ClassNotFoundException {
         String model = "test/de/monticore/lang/testsijava/testsijava/Main.sijava";
+        test(model);
+    }
+
+    @Test
+    public void testMain2() throws IOException, ClassNotFoundException {
+        String model = "test/de/monticore/lang/testsijava/testsijava/Main2.sijava";
+        test(model);
+    }
+
+    @Test
+    public void testPrintAndValue() throws IOException, ClassNotFoundException {
+        String model = "test/de/monticore/lang/testsijava/testsijava/TestPrintAndValue.sijava";
         test(model);
     }
 }

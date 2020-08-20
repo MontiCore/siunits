@@ -1,5 +1,5 @@
 /* (c) https://github.com/MontiCore/monticore */
-package de.monticore.lang.testsijava.testsijava.generator1;
+package de.monticore.lang.testsijava.testsijava.generator;
 
 import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._ast.ASTSIJavaClass;
@@ -27,6 +27,7 @@ public class Generator {
             Log.error("0xE6548322 Cannot build symbol table");
         }
         String print = PrintAsJavaClass.printAsJavaClass(ast);
+        print = "/* (c) https://github.com/MontiCore/monticore */\n\n" + print;
 
         String filePath = outputPath;
         String className = "";

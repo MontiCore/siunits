@@ -1,0 +1,31 @@
+/* (c) https://github.com/MontiCore/monticore */
+
+package test.de.monticore.lang.testsijava.testsijava;
+
+siclass TestPrintAndValue {
+
+    /**
+     * This method generates the following output
+     * 20030.0m
+     * 2.0h
+     * 2.0
+     * 12.0
+     * 7200.0
+     * 7210.0
+     * 1000.0km/h
+     * 7200010.0ms
+     */
+    void main () {
+        print(20 km + 30m);
+
+        h var = 7200 s;
+        print (var);
+        print (value(var));
+        print (value(var) + 10);
+        print (basevalue(var));
+        print (basevalue(var) + 10);
+        print (2000 km / var);
+        print (var + 10 ms);
+    }
+
+}

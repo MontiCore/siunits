@@ -1,4 +1,4 @@
-package de.monticore.lang.testsijava.testsijava.generator2;
+package de.monticore.lang.testsijava.testsijava.generator;
 
 import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._ast.ASTSIJavaClass;
