@@ -48,13 +48,13 @@ public class MyCommonExpressionsPrettyPrinter extends CommonExpressionsPrettyPri
                 && preDefined.contains(((ASTNameExpression) node.getExpression()).getName())) {
             // callExpression is either print, value or basevalue
 
-            if (node.getArguments().getExpressionsList().size() != 1)
+            if (node.getArguments().getExpressionList().size() != 1)
                 Log.error("0xE5672871 " + node.get_SourcePositionStart() +
                         " invalid arguments number");
 
             String name = ((ASTNameExpression) node.getExpression()).getName();
             SymTypeExpression argumentType =
-                    tc.typeOf(node.getArguments().getExpressions(0));
+                    tc.typeOf(node.getArguments().getExpression(0));
             if (name.equals(print)) {
                 String typePrint = "";
                 if (argumentType instanceof SymTypeOfNumericWithSIUnit) {
@@ -62,10 +62,10 @@ public class MyCommonExpressionsPrettyPrinter extends CommonExpressionsPrettyPri
                     typePrint = " + \"" + UnitPrettyPrinter.printUnit(un) + "\"";
                 }
                 this.getPrinter().print("System.out.println(");
-                node.getArguments().getExpressions(0).accept(getRealThis());
+                node.getArguments().getExpression(0).accept(getRealThis());
                 this.getPrinter().print(typePrint + ")");
             } else if (name.equals(value)) {
-                node.getArguments().getExpressions(0).accept(getRealThis());
+                node.getArguments().getExpression(0).accept(getRealThis());
             } else if (name.equals(basevalue)) {
                 UnitConverter converter = UnitConverter.IDENTITY;
                 if (argumentType instanceof SymTypeOfNumericWithSIUnit) {
@@ -73,7 +73,7 @@ public class MyCommonExpressionsPrettyPrinter extends CommonExpressionsPrettyPri
                     converter = Converter.getConverterFrom(un);
                 }
                 this.getPrinter().print(factorStart(converter));
-                node.getArguments().getExpressions(0).accept(getRealThis());
+                node.getArguments().getExpression(0).accept(getRealThis());
                 this.getPrinter().print(factorEnd(converter));
             }
         } else {
@@ -90,15 +90,15 @@ public class MyCommonExpressionsPrettyPrinter extends CommonExpressionsPrettyPri
                 Log.error("0xE9332411 Overloading of methods is not supported");
             }
             MethodSymbol methodSymbol = methodlist.get(0);
-            if (node.getArguments().getExpressionsList().size() != methodSymbol.getParameterList().size()) {
+            if (node.getArguments().getExpressionList().size() != methodSymbol.getParameterList().size()) {
                 Log.error("0xE9332412 Wrong number of arguments");
             }
 
             DeriveSymTypeOfTestSIJava der = new DeriveSymTypeOfTestSIJava();
             TypeCheck tc = new TypeCheck(null, der);
 
-            for (int i = 0; i < node.getArguments().getExpressionsList().size(); i++) {
-                ASTExpression givenParameter = node.getArguments().getExpressionsList().get(i);
+            for (int i = 0; i < node.getArguments().getExpressionList().size(); i++) {
+                ASTExpression givenParameter = node.getArguments().getExpression(i);
                 SymTypeExpression givenParameterType = tc.typeOf(givenParameter);
                 FieldSymbol methodParameter = methodSymbol.getParameterList().get(i);
                 SymTypeExpression methodParameterType = methodParameter.getType();

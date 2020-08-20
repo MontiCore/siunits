@@ -88,7 +88,7 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
             node.getReturnType().accept(getRealThis());
         }
         {
-            Iterator<ASTSIJavaParameter> iter_sIJavaParameters = node.getSIJavaParametersList().iterator();
+            Iterator<ASTSIJavaParameter> iter_sIJavaParameters = node.getSIJavaParameterList().iterator();
             while (iter_sIJavaParameters.hasNext()) {
                 iter_sIJavaParameters.next().accept(getRealThis());
             }
@@ -97,7 +97,7 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
         ITestSIJavaScope scope = createScope(false);
         putOnStack(scope);
 
-        Iterator<ASTSIJavaMethodStatement> iter_sIJavaMethodStatements = node.getSIJavaMethodStatementsList().iterator();
+        Iterator<ASTSIJavaMethodStatement> iter_sIJavaMethodStatements = node.getSIJavaMethodStatementList().iterator();
         while (iter_sIJavaMethodStatements.hasNext()) {
             iter_sIJavaMethodStatements.next().accept(getRealThis());
         }

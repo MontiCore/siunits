@@ -43,7 +43,7 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
         printer.indent();
         boolean firstStatement = true;
 
-        for (ASTSIJavaClassStatement statement : node.getSIJavaClassStatementsList()) {
+        for (ASTSIJavaClassStatement statement : node.getSIJavaClassStatementList()) {
             if (statement instanceof ASTFieldDeclaration) {
                 statement.accept(getRealThis());
                 printer.println(";");
@@ -89,7 +89,7 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
         printer.print("public " + typePrint + " " + node.getName() + "(");
 
         boolean first = true;
-        for (ASTSIJavaParameter parameter : node.getSIJavaParametersList()) {
+        for (ASTSIJavaParameter parameter : node.getSIJavaParameterList()) {
             if (!first) {
                 printer.print(", ");
             } else {
@@ -101,13 +101,13 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
         printer.indent();
 
         for (ASTSIJavaMethodStatement statement : node
-                .getSIJavaMethodStatementsList()) {
+                .getSIJavaMethodStatementList()) {
             statement.accept(getRealThis());
             printer.println(";");
         }
 
         if (node.isPresentSIJavaMethodReturn()) {
-            if (!node.getSIJavaMethodStatementsList().isEmpty())
+            if (!node.getSIJavaMethodStatementList().isEmpty())
                 printer.println();
 
             UnitConverter converter = UnitConverter.IDENTITY;

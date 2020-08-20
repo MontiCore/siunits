@@ -62,8 +62,8 @@ public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
     @Override
     public void traverse(ASTSIUnitKindGroupWithExponent node) {
         int j = 0;
-        for (int i = 0; i < node.getSIUnitGroupPrimitivesList().size(); i++) {
-            node.getSIUnitGroupPrimitives(i).accept(getRealThis());
+        for (int i = 0; i < node.getSIUnitGroupPrimitiveList().size(); i++) {
+            node.getSIUnitGroupPrimitive(i).accept(getRealThis());
             if (j < node.getExponentList().size())
                 printer.print("^" + node.getExponent(j++).getSource());
         }
