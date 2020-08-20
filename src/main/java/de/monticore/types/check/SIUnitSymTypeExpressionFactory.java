@@ -152,7 +152,7 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
         // Check if the symType is already in the scope and add it otherwise
         // Needed because there can be created new SIUnitType while computing, e.g. varM*varS
         final String name = typeSymbolSurrogate.getName();
-        if (typeSymbolSurrogate.getEnclosingScope().getLocalOOTypeSymbols().stream().filter(x -> x.getName().equals(name)).collect(Collectors.toList()).size() == 0) {
+        if (!typeSymbolSurrogate.getEnclosingScope().resolveOOType(name).isPresent()) {
             OOTypeSymbol newSymbol = DefsSIUnitType.type(name);
             typeSymbolSurrogate.getEnclosingScope().add(newSymbol);
         }
@@ -173,7 +173,7 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
         // Check if the symType is already in the scope and add it otherwise
         // Needed because there can be created new SIUnitType while computing, e.g. varM*varS
         final String name = typeSymbolSurrogate.getName();
-        if (typeSymbolSurrogate.getEnclosingScope().getLocalOOTypeSymbols().stream().filter(x -> x.getName().equals(name)).collect(Collectors.toList()).size() == 0) {
+        if (!typeSymbolSurrogate.getEnclosingScope().resolveOOType(name).isPresent()) {
             OOTypeSymbol newSymbol = DefsSIUnitType.type(name);
             typeSymbolSurrogate.getEnclosingScope().add(newSymbol);
         }
