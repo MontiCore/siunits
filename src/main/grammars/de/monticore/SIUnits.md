@@ -12,6 +12,7 @@
   sowie über die Bedeutung der Funktionen nochmal nachdenken.
  -->
 
+
 # SIUnits
 
 This language introduces SI units and allows language developers to 
@@ -50,10 +51,7 @@ such as `m`, `km`, `km^2` or `km^2/VA^2h`.
 
 There are two PrettyPrinters, the 
 [SIUnitsPrettyPrinter][SIUnitsPrettyPrinter]
-to prettyprint the SIUnits normally ( `kg/m*s` &rarr; `kg/m*s` ) 
-and the [SIUnitsWithBracketsPrettyPrinter][SIUnitsWithBracketsPrettyPrinter]
-to prettyprint the SIUnits with brackets around each expression 
-( `kg/m*s` &rarr; `((kg/m)*s)` ). 
+to prettyprint the SIUnits normally ( `kg/m*s` &rarr; `kg/m*s` ). 
 
 
 ## [SIUnitLiterals.mc4][SIUnitLiteralsGrammar]
@@ -403,7 +401,6 @@ For Variant 2, we provide the following implementation:
 [OOSymbols]: https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/symbols/OOSymbols.mc4
 
 [SIUnitsPrettyPrinter]: ../../../java/de/monticore/siunits/prettyprint/SIUnitsPrettyPrinter.java
-[SIUnitsWithBracketsPrettyPrinter]: ../../../java/de/monticore/siunits/prettyprint/SIUnitsWithBracketsPrettyPrinter.java
 [SIUnitLiteralsPrettyPrinter]: ../../../java/de/monticore/siunitliterals/prettyprint/SIUnitLiteralsPrettyPrinter.java
 [SIUnitTypes4MathPrettyPrinter]: ../../../java/de/monticore/siunittypes4math/prettyprint/SIUnitTypes4MathPrettyPrinter.java
 [SIUnitTypes4ComputingPrettyPrinter]: ../../../java/de/monticore/siunittypes4computing/prettyprint/SIUnitTypes4ComputingPrettyPrinter.java
