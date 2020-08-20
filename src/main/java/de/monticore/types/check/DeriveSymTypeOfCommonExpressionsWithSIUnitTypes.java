@@ -5,7 +5,9 @@ package de.monticore.types.check;
 import de.monticore.expressions.commonexpressions._ast.ASTDivideExpression;
 import de.monticore.expressions.commonexpressions._ast.ASTInfixExpression;
 import de.monticore.expressions.commonexpressions._ast.ASTMultExpression;
+import de.monticore.siunitliterals.utility.Converter;
 
+import javax.measure.unit.Unit;
 import java.util.Optional;
 
 /**
@@ -108,10 +110,22 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
             Optional<SymTypeExpression> rightSIUnitType = getSIUnit(rightResult);
             if (leftSIUnitType.isPresent() && rightSIUnitType.isPresent()
                     && TypeCheck.compatible(leftSIUnitType.get(), rightSIUnitType.get())) {
+
                 Optional<SymTypeExpression> numericType = getBinaryNumericPromotionOfNumeric(leftResult, rightResult);
                 if (numericType.isPresent() && isNumericType(numericType.get())) {
+                    Unit leftUnit = null;
+                    if (isSIUnitType(leftSIUnitType.get()))
+                        leftUnit = ((SymTypeOfSIUnit) leftSIUnitType.get()).getUnit();
+                    Unit rightUnit = null;
+                    if (isSIUnitType(rightSIUnitType.get()))
+                        rightUnit = ((SymTypeOfSIUnit) rightSIUnitType.get()).getUnit();
+                    SymTypeExpression typeOfSIUnit = leftSIUnitType.get();
+                    if (leftUnit != null && rightUnit != null)
+                        if (Converter.convert(1, leftUnit, rightUnit) > 1)
+                            typeOfSIUnit = rightSIUnitType.get();
+
                     return Optional.of(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(
-                            numericType.get(), leftSIUnitType.get(), leftResult.getTypeInfo().getEnclosingScope()));
+                            numericType.get(), typeOfSIUnit, leftResult.getTypeInfo().getEnclosingScope()));
                 }
             }
             // Should not happen, will be handled in traverse
