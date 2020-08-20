@@ -83,7 +83,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         String s = "4.1km/h - 12m/s";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,m/s)", printType(tc.typeOf(astex)));
+        assertEquals("(double,km/h)", printType(tc.typeOf(astex)));
     }
 
     @Test
@@ -209,8 +209,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         assertEquals("int", printType(tc.typeOf(astex)));
 
         // example with siunit
-        // TODO fix 3 m/varM
-        s = "(3 m)/varM";
+        s = "3 m/varM";
         astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
         assertEquals("int", printType(tc.typeOf(astex)));
@@ -636,7 +635,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         String s = "(varS*3 s/(2*varM*varM-4 km^2))";
         ASTExpression astex = p.parse_StringExpression(s).get();
         astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,s^2/km^2)", printType(tc.typeOf(astex)));
+        assertEquals("(int,s^2/m^2)", printType(tc.typeOf(astex)));
     }
 
     /**

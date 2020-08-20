@@ -29,12 +29,12 @@ public class SIUnitTest {
         Log.enableFailQuick(false);
     }
 
-    private void checkSIUnit(String s, String unitAsString, String standardUnitAsString) throws IOException {
+    private void checkSIUnit(String s, String unitAsString, String baseUnitAsString) throws IOException {
         ASTSIUnit lit = parseSIUnit(s);
         String printFromLit = UnitPrettyPrinter.printUnit(lit);
         String printStandardFromLit = UnitPrettyPrinter.printBaseUnit(lit);
         assertEquals(unitAsString, printFromLit);
-        assertEquals(standardUnitAsString, printStandardFromLit);
+        assertEquals(baseUnitAsString, printStandardFromLit);
     }
 
     private ASTSIUnit parseSIUnit(String input) throws IOException {
@@ -65,6 +65,7 @@ public class SIUnitTest {
             checkSIUnit("s^-1","1/s","1/s");
             checkSIUnit("kVA","A*kV","kg*m^2/s^3");
             checkSIUnit("kV^2A^3","A^3*kV^2","A*kg^2*m^4/s^6");
+            checkSIUnit("kVA^3","A^3*kV","A^2*kg*m^2/s^3");
             checkSIUnit("kVAh","A*h*kV","kg*m^2/s^2");
             checkSIUnit("kVAh/°C","A*h*kV/°C","kg*m^2/(K*s^2)");
         }

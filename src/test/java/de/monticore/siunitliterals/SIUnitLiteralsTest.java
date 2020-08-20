@@ -122,6 +122,7 @@ public class SIUnitLiteralsTest {
         TestSIUnitLiteralsParser parser = new TestSIUnitLiteralsParser();
         Optional<ASTLiteral> res = parser.parseLiteral(new StringReader("3.2F"));
         assertTrue(res.isPresent());
+        assertTrue(res.get() instanceof ASTBasicFloatLiteral);
         assertFalse(res.get() instanceof ASTSIUnitLiteral);
     }
 
@@ -130,6 +131,7 @@ public class SIUnitLiteralsTest {
         TestSIUnitLiteralsParser parser = new TestSIUnitLiteralsParser();
         Optional<ASTLiteral> res = parser.parseLiteral(new StringReader("3L"));
         assertTrue(res.isPresent());
+        assertTrue(res.get() instanceof ASTBasicLongLiteral);
         assertFalse(res.get() instanceof ASTSIUnitLiteral);
     }
 
@@ -138,6 +140,14 @@ public class SIUnitLiteralsTest {
         TestSIUnitLiteralsParser parser = new TestSIUnitLiteralsParser();
         Optional<ASTLiteral> res = parser.parseLiteral(new StringReader("3l"));
         assertTrue(res.isPresent());
+        assertTrue(res.get() instanceof ASTBasicLongLiteral);
         assertFalse(res.get() instanceof ASTSIUnitLiteral);
+    }
+
+    @Test
+    public void testInvalid4() throws IOException {
+        TestSIUnitLiteralsParser parser = new TestSIUnitLiteralsParser();
+        Optional<ASTLiteral> res = parser.parseLiteral(new StringReader("3 var"));
+        assertFalse(res.isPresent());
     }
 }
