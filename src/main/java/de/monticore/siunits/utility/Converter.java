@@ -1,7 +1,5 @@
 /* (c) https://github.com/MontiCore/monticore */
-package de.monticore.siunitliterals.utility;
-
-import de.monticore.siunits.utility.UnitFactory;
+package de.monticore.siunits.utility;
 
 import javax.measure.converter.UnitConverter;
 import javax.measure.unit.Unit;
