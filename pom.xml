@@ -76,23 +76,6 @@
     <!-- == PROJECT BUILD SETTINGS =========================================== -->
     <build>
         <plugins>
-            <!-- MontiCore Generation -->
-            <plugin>
-                <groupId>de.monticore.mojo</groupId>
-                <artifactId>monticore-maven-plugin</artifactId>
-                <version>${monticore.version}</version>
-                <configuration>
-                    <skip>false</skip>
-                    <script>de/monticore/monticore_noemf.groovy</script>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
 			
 			<plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -124,10 +107,15 @@
                 </executions>
             </plugin>
 
-
+            <!-- MontiCore Generation -->
             <plugin>
                 <groupId>de.monticore.mojo</groupId>
                 <artifactId>monticore-maven-plugin</artifactId>
+                <version>${monticore.version}</version>
+                <configuration>
+                    <skip>false</skip>
+                    <script>de/monticore/monticore_noemf.groovy</script>
+                </configuration>
                 <executions>
                     <execution>
                         <id>default-generate</id>
