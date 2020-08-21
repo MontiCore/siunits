@@ -8,7 +8,7 @@ import de.monticore.expressions.prettyprint.CommonExpressionsPrettyPrinter;
 import de.monticore.lang.testsijava.testsijava._symboltable.ITestSIJavaScope;
 import de.monticore.prettyprint.CommentPrettyPrinter;
 import de.monticore.prettyprint.IndentPrinter;
-import de.monticore.siunitliterals.utility.Converter;
+import de.monticore.siunits.utility.Converter;
 import de.monticore.siunits.utility.UnitPrettyPrinter;
 import de.monticore.symbols.oosymbols._symboltable.FieldSymbol;
 import de.monticore.symbols.oosymbols._symboltable.MethodSymbol;

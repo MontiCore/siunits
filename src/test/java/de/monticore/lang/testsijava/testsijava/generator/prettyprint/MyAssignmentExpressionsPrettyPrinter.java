@@ -6,7 +6,7 @@ import de.monticore.expressions.expressionsbasis._ast.ASTNameExpression;
 import de.monticore.expressions.prettyprint.AssignmentExpressionsPrettyPrinter;
 import de.monticore.prettyprint.CommentPrettyPrinter;
 import de.monticore.prettyprint.IndentPrinter;
-import de.monticore.siunitliterals.utility.Converter;
+import de.monticore.siunits.utility.Converter;
 import de.monticore.symbols.basicsymbols._symboltable.VariableSymbol;
 import de.monticore.symbols.oosymbols._symboltable.FieldSymbol;
 import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
