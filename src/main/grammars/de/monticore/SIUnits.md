@@ -44,14 +44,13 @@ such as `m`, `km`, `km^2` or `km^2/VA^2h`.
 
 * [UnitPrettyPrinter][UnitPrettyPrinter]
     Prints a Unit in a former and consistent way from an 
-    `ASTSIUnit`,a String or a `javax.measure.Unit`
-        as either BaseUnit, StandardUnit or asIs-Unit.
+    `ASTSIUnit`,a String or a `javax.measure.unit.Unit`
+        as either BaseUnit or asIs-Unit.
 
 ### Generators
 
-There are two PrettyPrinters, the 
-[SIUnitsPrettyPrinter][SIUnitsPrettyPrinter]
-to prettyprint the SIUnits normally ( `kg/m*s` &rarr; `kg/m*s` ). 
+The [SIUnitsPrettyPrinter][SIUnitsPrettyPrinter]
+prettyprints the SIUnits normally from its AST.
 
 
 ## [SIUnitLiterals.mc4][SIUnitLiteralsGrammar]
@@ -167,8 +166,28 @@ prettyprints a SIUnitType`.
  can be derived from a `Literal` or an `Expression` and returns a [SymTypeOfSIUnit][SymTypeOfSIUnit] 
  or a [SymTypeOfNumericWithSIUnit][SymTypeOfNumericWithSIUnit] for expressions
  containing `SIUnits`. Note that only AssignmentExpressions and CommonExpressions
- can result in a SymTypeExpression for `SIUnits`. E.g. the SymTypeExpression for
- `3m / 2.2s` is `(double,m/s)` and `typeOf(3m + 2s)` has no result.
+ can result in a SymTypeExpression for `SIUnits`. The resulting types of expression
+ is defined as follows:
+  * The type of a SIUnitLiteral is a `SymTypeOfNumericWithSIUnit`
+    as a combination of the types of its NumericLiteral and its SIUnit. \
+    E.g. `typeOf(3.2f m) -> (float,m)`
+  * The multiplication of two `SymTypeOfNumericWithSIUnit` results in the 
+    combination of the multiplication of their numeric parts and 
+    of their SI unit parts. \
+    E.g. `typeOf(3 m * 1.5 s) -> (double,m*s)`
+  * The division of two `SymTypeOfNumericWithSIUnit` results in the 
+    combination of the division of their numeric parts 
+    of their SI unit parts. \
+    E.g. `typeOf(3 m / 2l s) -> (long,m/s)`
+  * The addition of two `SymTypeOfNumericWithSIUnit` results in the 
+    combination of the addition of their numeric parts and 
+    their SI unit parts. The addition of the SI unit parts is only
+    defined if the units are compatible (same base units with different prefix)
+    and results in the _smaller_ unit. \
+    E.g. `typeOf(3 m + 2 s) -> undefined` (results in an error) \
+    `typeOf(1.25 h + 30 min) -> (double,min)` \
+    `typeOf(30 min + 1.25 h) -> (double,min)`
+  * Subtraction and modulo are defined in the same way as the addition.
 
 The TypeCheck classes here are:
 
@@ -180,11 +199,11 @@ The TypeCheck classes here are:
 * [SymTypeOfSIUnit][SymTypeOfSIUnit]
     which contains a numerator and denominator list of SymTypeOfSIUnitBasic. 
     It also provides the declared Unit
-    as `javax.measure.Unit`.
+    as `javax.measure.unit.Unit`.
 * [SymTypeOfNumericWithSIUnit][SymTypeOfNumericWithSIUnit]
     which contains a numeric type (SymTypeConstant) and a SymTypeOfSIUnit. 
     It also provides the declared Unit
-    as `javax.measure.Unit`.
+    as `javax.measure.unit.Unit`.
 * [SIUnitSymTypeExpressionFactory][SIUnitSymTypeExpressionFactory]
     which is the only class to create SymTypeOfSIUnitBasic, SymTypeOfSIUnit 
     and SymTypeOfNumericWithSIUnit.
@@ -206,6 +225,7 @@ The TypeCheck classes here are:
     
 For more info see [TypeCheck][Types]
 
+<!--
 To get the TypeCheck mechanic work with your DSL, the language needs to
 1. extend the 
    [de.monticore.symbols.OOSymbols.mc4][OOSymbols]
@@ -232,21 +252,23 @@ Exemplary, this is all done for the
 or have been the same to'dos already without the given SIUnit Extension.
 or is this piece of to do not necessary anymore, becaus we now DO have a concrete syntax and therefore typecheck
 already?))
-Done: Those are always todos when using TypeCheck
-
+Done: Those are always todos when using TypeCheck, does not really belong here
+-->
 
 ## Extensibility
 
 * Additional units can be added directly extending the grammar 
   [SIUnits.mc4][SIUnitsGrammar]
-    * There might be changes necessary in the classes
-        * [UnitFactory][UnitFactory]
-        * [UnitPrettyPrinter][UnitPrettyPrinter]
-        * [DefsSIUnitType][DefsSIUnitType]
+  * There might be changes necessary in the classes
+    * [UnitFactory][UnitFactory]
+    * [UnitPrettyPrinter][UnitPrettyPrinter]
+    * [SIUnitConstants][SIUnitConstants]
+    * [DefsSIUnitType][DefsSIUnitType]
 * An alternative syntax fot the definition of primitive types combined with 
-  SI units can be defined by implementing `MCObjectType` as it is done in
+  SI units can be defined by implementing `SIUnitType4ComputingInt` interface
+  as it is done in
   [CustomSIUnitTypes4Computing][CustomSIUnitTypes4ComputingGrammar]
-    * To include the new custom types to the TypeCheck mechanic, a DSL developer 
+  * To include the new custom types to the TypeCheck mechanic, a DSL developer 
     needs to implement a Synthesize-Class which extends the 
     [SynthesizeSymTypeFromSIUnitTypes4Computing][SynthesizeSymTypeFromSIUnitTypes4Computing]
     class and implements its visitor. For reference have a look on 
@@ -277,24 +299,25 @@ The concrete name and syntax can be adapted when building new DSLs.
 ((TODO: This is still in discussion:
     are those available in the Tool (on the AST) or at runtime?))
 
-The following table contains a set of use cases and examples for the work with SI units on the AST: \
+The following table contains a set of use cases and examples 
+for the work with SI units on the AST: \
 `ASTSIUnitLiteral astLiteral` is `5 km` \
-`javax.measure.Unit sourceUnit` is `km` \
-`javax.measure.Unit targetUnit` is `cm` \
+`javax.measure.unit.Unit sourceUnit` is `km` \
+`javax.measure.unit.Unit targetUnit` is `cm` \
 `d = new SIUnitLiteralDecoder(...);`
 
 | Description | Java-Syntax | Return value |
 | ------ | ------ | ------ |
-| Unit of SIUnitLiteral |  `javax.measure.Unit u = d.getUnit(astLiteral)` | `javax.measure.Unit` km |
-| Base Units of SIUnitLiteral |  `UnitFactory.createBaseUnit(u)` | `javax.measure.Unit` m |
+| Unit of SIUnitLiteral |  `javax.measure.unit.Unit u = d.getUnit(astLiteral)` | `javax.measure.unit.Unit` km |
+| Create Unit | `UnitFactory.createUnit("km/s" / astLiteral.getSIUnit())` | `javax.measure.unit.Unit` |
+| Base Units of SIUnitLiteral |  `UnitFactory.createBaseUnit("mm" / astLiteral.getSIUnit() / u)` | `javax.measure.unit.Unit` m |
 | Literal of SIUnitLiteral | `d.getNumber(astLiteral)` or `d.getDouble(astLiteral)` | `java.lang.Integer` 5 or `double` 5.0 |
 | Literal of SIUnitLiteral as Base Units  | `d.valueOf(astLiteral/*km*/)` | `double` 5000.0 |
 | Literal of SIUnitLiteral as TargetUnit  | `d.valueOf(astLiteral/*km*/, targetUnit/*cm*/); ...` | `double` 500,000.0 |
-| Convert Units | `c = UnitFactory.getConverter(sourceUnit/*km*/, targetUnit/*cm*/); c.convert(5.2);`  | `double` 5,200,000.0 | 
-| Convert to Base Units | `c = UnitFactory.getConverterFrom(u/*km*/); c.convert(5.2);`  | `double` 5,200.0 |
-| Convert from Base Units | `c = UnitFactory.getConverterTo(u/*km*/); c.convert(5200);`  | `double` 5.2 |
-| Create Unit | `UnitFactory.createUnit("km/s")` | `javax.measure.Unit` |
-| Print javax.measure.Unit | `UnitPrettyPrinter.printUnit(javax.measure.Unit / String / ASTSIUnit)` `UnitPrettyPrinter.printBaseUnit(javax.measure.Unit / String / ASTSIUnit)` | `String` |
+| Convert Units | `UnitConverter c = Converter.getConverter(sourceUnit/*km*/, targetUnit/*cm*/); c.convert(5.2);` or `Converter.convert(5.2, sourceUnit/*km*/, targetUnit/*cm*/)` | `double` 5,200,000.0 | 
+| Convert to Base Units | `Converter.convertFrom(5.2, u/*km*/);`  | `double` 5,200.0 |
+| Convert from Base Units | `Converter.convertTo(5200, u/*km*/);`  | `double` 5.2 |
+| Print javax.measure.unit.Unit | `UnitPrettyPrinter.printUnit(javax.measure.unit.Unit / String / ASTSIUnit)` `UnitPrettyPrinter.printBaseUnit(javax.measure.unit.Unit / String / ASTSIUnit)` | `String` |
 
 
 ## Runtime: Executing Calculations
@@ -347,18 +370,23 @@ For Variant 2, we provide the following implementation:
   package is used.
 
 * The main classes that used to handle a 
-  `javax.measure.Unit` are the `UnitFactory` and the 
-  `UnitPrettyPrinter` and can be found in the package 
+  `javax.measure.unit.Unit` are the `UnitFactory`, the 
+  `UnitPrettyPrinter` and the `Converter` and can be found in the package 
   `de.monticore.siunits.utility`.
 
 * [UnitFactory][UnitFactory]
-    * Creates Units from an `ASTSIUnit` or a String
-    * Creates the BaseUnit from an `ASTSIUnit`,a String or a 
-      `javax.measure.Unit`
-    * Creates the StandardUnit from an `ASTSIUnit`,a String or a 
-      `javax.measure.Unit`, standard Units here
-    are: A, lm, C, Sv, F, H, J, K, mol, bit, lx, N, Pa, Gy, S, rad, T, 
-         V, W, kg, sr, kat, cd, Ohm, Wb, m, Bq, Hz, s
+  * Creates Units from an `ASTSIUnit` or a String
+  * Creates the BaseUnit from an `ASTSIUnit`,a String or a 
+    `javax.measure.unit.Unit`
+* [Converter][Converter]
+  * Creates a `javax.measure.converter.UnitConverter` from a
+    source unit to a target unit, to a target unit from its base unit,
+    or from a source unit to its base unit. This converter then can be
+    used to convert a `double`
+  * Directly converts a value from a
+    source unit to a target unit, to a target unit from its base unit,
+    or from a source unit to its base unit.
+
 
 * The 
   [SIUnitLiteralDecoder][SIUnitLiteralDecoder]
@@ -407,6 +435,8 @@ For Variant 2, we provide the following implementation:
 
 [UnitFactory]: ../../../java/de/monticore/siunits/utility/UnitFactory.java
 [UnitPrettyPrinter]: ../../../java/de/monticore/siunits/utility/UnitPrettyPrinter.java 
+[SIUnitConstants]: ../../../java/de/monticore/siunits/utility/SIUnitConstants.java
+[Converter]: ../../../java/de/monticore/siunits/utility/Converter.java
 [SIUnitLiteralDecoder]: ../../../java/de/monticore/siunitliterals/utility/SIUnitLiteralDecoder.java
 [NumberDecoder]: ../../../java/de/monticore/siunitliterals/utility/NumberDecoder.java
 [PrimitiveIsNumericType]: ../../../java/de/monticore/siunittypes4computing/_cocos/PrimitiveIsNumericType.java
