@@ -5,7 +5,7 @@ package de.monticore.types.check;
 import de.monticore.expressions.commonexpressions._ast.ASTDivideExpression;
 import de.monticore.expressions.commonexpressions._ast.ASTInfixExpression;
 import de.monticore.expressions.commonexpressions._ast.ASTMultExpression;
-import de.monticore.siunitliterals.utility.Converter;
+import de.monticore.siunits.utility.Converter;
 
 import javax.measure.unit.Unit;
 import java.util.Optional;
