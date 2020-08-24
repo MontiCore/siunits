@@ -60,6 +60,9 @@ public class SIUnitTest {
 
             checkInvalid("khA");
             checkInvalid("khA");
+            checkInvalid("kvA");
+            checkInvalid("s^0.1");
+            checkInvalid("s^a");
             checkInvalid("kV°C");
 
             checkSIUnit("s^-1","1/s","1/s");
