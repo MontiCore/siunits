@@ -283,9 +283,6 @@ and  is explained in
 
 # Further Functions
 
-((TODO: This is still in discussion:
-    are those available in the Tool (on the AST) or at runtime?))
-
 Two functions should be available in a DSL to work on unit literals and variables with units:
 `baseunit(..)` takes a variable or constant and returns the value of the expression
 after converting it to base units, e.g. `baseunit(5km)` returns `5000`.
@@ -296,8 +293,6 @@ The concrete name and syntax can be adapted when building new DSLs.
 
 
 # Library Functions
-((TODO: This is still in discussion:
-    are those available in the Tool (on the AST) or at runtime?))
 
 The following table contains a set of use cases and examples 
 for the work with SI units on the AST: \
