@@ -22,7 +22,7 @@ public class MultDivTest {
 
         CombineExpressionsWithLiteralsParser parser = new CombineExpressionsWithLiteralsParser();
 
-        String s = "3 m/varM";
+        String s = "3 mAh^2V/varM";
         Optional<ASTExpression> astExpression = parser.parse_StringExpression(s);
         assert(astExpression.isPresent());
         assert(astExpression.get() instanceof ASTDivideExpression);
