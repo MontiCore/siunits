@@ -77,4 +77,10 @@ public class SIJavaCoCoTest {
         String model = "test/de/monticore/lang/testsijava/testsijava/Main.sijava";
         typeCheckCoCo(model, false);
     }
+
+    @Test
+    public void testTestPrintAndValue() {
+        String model = "test/de/monticore/lang/testsijava/testsijava/TestPrintAndValue.sijava";
+        typeCheckCoCo(model, false);
+    }
 }

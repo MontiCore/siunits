@@ -40,11 +40,11 @@ public class DeriveSymTypeOfAssignmentExpressionTest {
     // Setting up a Scope Infrastructure (without a global Scope)
     DefsTypeBasic.setup();
     scope =
-        CombineExpressionsWithLiteralsMill.combineExpressionsWithLiteralsScopeBuilder()
-            .setEnclosingScope(null)       // No enclosing Scope: Search ending here
-            .setExportingSymbols(true)
-            .setAstNode(null)
-            .setName("Phantasy2").build();     // hopefully unused
+            CombineExpressionsWithLiteralsMill.combineExpressionsWithLiteralsScopeBuilder()
+                    .setEnclosingScope(null)       // No enclosing Scope: Search ending here
+                    .setExportingSymbols(true)
+                    .setAstNode(null)
+                    .setName("Phantasy2").build();     // hopefully unused
     // we add a variety of TypeSymbols to the same scope (which in reality doesn't happen)
     add2scope(scope, DefsTypeBasic._int);
     add2scope(scope, DefsTypeBasic._char);
@@ -59,12 +59,12 @@ public class DeriveSymTypeOfAssignmentExpressionTest {
 
     // some FieldSymbols (ie. Variables, Attributes)
     OOTypeSymbol p = new OOTypeSymbol("Person");
-    scope.add(p);
+    add2scope(scope,p);
     OOTypeSymbol s = new OOTypeSymbol("Student");
-    scope.add(s);
+    add2scope(scope,s);
     s.setSuperTypesList(Lists.newArrayList(SymTypeExpressionFactory.createTypeObject("Person", scope)));
     OOTypeSymbol f = new OOTypeSymbol("FirstSemesterStudent");
-    scope.add(f);
+    add2scope(scope,f);
     f.setSuperTypesList(Lists.newArrayList(SymTypeExpressionFactory.createTypeObject("Student", scope)));
     add2scope(scope, field("foo", _intSymType));
     add2scope(scope, field("bar2", _booleanSymType));

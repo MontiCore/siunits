@@ -10,7 +10,7 @@ import de.monticore.prettyprint.CommentPrettyPrinter;
 import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.siunits.utility.Converter;
 import de.monticore.siunits.utility.UnitPrettyPrinter;
-import de.monticore.symbols.oosymbols._symboltable.FieldSymbol;
+import de.monticore.symbols.basicsymbols._symboltable.VariableSymbol;
 import de.monticore.symbols.oosymbols._symboltable.MethodSymbol;
 import de.monticore.types.check.*;
 import de.se_rwth.commons.logging.Log;
@@ -100,7 +100,7 @@ public class MyCommonExpressionsPrettyPrinter extends CommonExpressionsPrettyPri
             for (int i = 0; i < node.getArguments().getExpressionList().size(); i++) {
                 ASTExpression givenParameter = node.getArguments().getExpression(i);
                 SymTypeExpression givenParameterType = tc.typeOf(givenParameter);
-                FieldSymbol methodParameter = methodSymbol.getParameterList().get(i);
+                VariableSymbol methodParameter = methodSymbol.getParameterList().get(i);
                 SymTypeExpression methodParameterType = methodParameter.getType();
 
                 UnitConverter converter = UnitConverter.IDENTITY;

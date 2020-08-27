@@ -55,7 +55,7 @@ grammar TestSIJava extends de.monticore.SIUnitLiterals,
 
 // TODO: Variable statt Field? (ganz neu rausgekommen)
 // TODO: Funktioniert im TypeCheck (noch) nicht? calculateNameExpression unterstützt nur Fields
-    SIJavaParameter implements Field =
+    SIJavaParameter implements Variable =
         MCType Name;
 
     interface SIJavaMethodStatement;

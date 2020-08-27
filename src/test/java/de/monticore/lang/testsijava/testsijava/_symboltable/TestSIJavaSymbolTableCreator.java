@@ -5,8 +5,10 @@ package de.monticore.lang.testsijava.testsijava._symboltable;
 import de.monticore.lang.testsijava.testsijava._ast.*;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
 import de.monticore.siunittypes4math._ast.ASTSIUnitType;
-import de.monticore.symbols.oosymbols._symboltable.FieldSymbol;
+import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
+import de.monticore.symbols.basicsymbols._symboltable.VariableSymbol;
 import de.monticore.symbols.oosymbols._symboltable.MethodSymbol;
+import de.monticore.symboltable.modifiers.AccessModifier;
 import de.monticore.types.check.*;
 import de.monticore.types.mcbasictypes._ast.ASTMCPrimitiveType;
 import de.monticore.types.mcbasictypes._ast.ASTMCQualifiedType;
@@ -43,40 +45,45 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
         SymTypeOfNumericWithSIUnit _superNumericUnitType = SymTypeOfNumericWithSIUnit.getSuperNumericUnitType();
         SymTypeVoid _void = SymTypeExpressionFactory.createTypeVoid();
 
+        VariableSymbol _superNumericTypeVariable = BasicSymbolsMill.variableSymbolBuilder()
+                .setName(_superNumericUnitType.getTypeInfo().getName())
+                .setFullName(_superNumericUnitType.getTypeInfo().getName())
+                .setAccessModifier(AccessModifier.ALL_INCLUSION)
+                .setType(_superNumericUnitType)
+                .build();
+        VariableSymbol _doubleVariable = BasicSymbolsMill.variableSymbolBuilder()
+                .setName(_double.getTypeInfo().getName())
+                .setFullName(_double.getTypeInfo().getName())
+                .setAccessModifier(AccessModifier.ALL_INCLUSION)
+                .setType(_double)
+                .build();
 
         MethodSymbol printSIUnitMethod = DefsTypeBasic.method("print", _void);
-        FieldSymbol field = DefsSIUnitType.field(_superNumericUnitType.getTypeInfo().getName(), _superNumericUnitType);
-        printSIUnitMethod.getSpannedScope().add(field);
+        printSIUnitMethod.getSpannedScope().add(_superNumericTypeVariable);
         node.getSpannedScope().add(printSIUnitMethod);
 
-
         MethodSymbol printNumericMethod = DefsTypeBasic.method("print", _void);
-        field = DefsSIUnitType.field("double", _double);
-        printNumericMethod.getSpannedScope().add(field);
+        printNumericMethod.getSpannedScope().add(_doubleVariable);
         node.getSpannedScope().add(printNumericMethod);
 
 
         MethodSymbol sivalueMethod = DefsTypeBasic.method("value", _double);
-        field = DefsSIUnitType.field(_superNumericUnitType.getTypeInfo().getName(), _superNumericUnitType);
-        sivalueMethod.getSpannedScope().add(field);
+        sivalueMethod.getSpannedScope().add(_superNumericTypeVariable);
         node.getSpannedScope().add(sivalueMethod);
 
 
         MethodSymbol valueMethod = DefsTypeBasic.method("value", _double);
-        field = DefsSIUnitType.field("double", _double);
-        valueMethod.getSpannedScope().add(field);
+        valueMethod.getSpannedScope().add(_doubleVariable);
         node.getSpannedScope().add(valueMethod);
 
 
         MethodSymbol sibasevalueMethod = DefsTypeBasic.method("basevalue", _double);
-        field = DefsSIUnitType.field(_superNumericUnitType.getTypeInfo().getName(), _superNumericUnitType);
-        sibasevalueMethod.getSpannedScope().add(field);
+        sibasevalueMethod.getSpannedScope().add(_superNumericTypeVariable);
         node.getSpannedScope().add(sibasevalueMethod);
 
 
         MethodSymbol basevalueMethod = DefsTypeBasic.method("basevalue", _double);
-        field = DefsSIUnitType.field("double", _double);
-        basevalueMethod.getSpannedScope().add(field);
+        basevalueMethod.getSpannedScope().add(_doubleVariable);
         node.getSpannedScope().add(basevalueMethod);
     }
 
