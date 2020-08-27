@@ -52,11 +52,11 @@ The generator presented here takes a valid model and _prettyprints_ it to a java
 are a few conversions to be done:
 * Variable declaration and assignment
     * `km varKM = 3 km;` &rarr; `double varKM = 3`
-        * `3 km` are converted to type `km`
-    * `km varKM = 3 m;` &rarr; to `double varKM = 3 / 1000;`
-        * `3 m` are converted to type `km`
+        * `3 km` is converted to type `km`
+    * `km varKM = 3 m;` &rarr; `double varKM = 3 / 1000;`
+        * `3 m` is converted to type `km`
     * `varKM = 4500 mm;` &rarr; `varKM = 4500 / 1000000;`
-        * `4500 mm` are converted to type `km`
+        * `4500 mm` is converted to type `km`
     * `m varM = varKM;` &rarr; `double varM = varKM * 1000;`
         * `varKM` is converted to type `m`
 * Method calls
