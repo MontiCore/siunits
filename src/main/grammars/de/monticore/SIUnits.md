@@ -203,7 +203,9 @@ The TypeCheck classes here are:
 * [SymTypeOfNumericWithSIUnit][SymTypeOfNumericWithSIUnit]
     which contains a numeric type (SymTypeConstant) and a SymTypeOfSIUnit. 
     It also provides the declared Unit
-    as `javax.measure.unit.Unit`.
+    as `javax.measure.unit.Unit`. Note that every [SymTypeOfNumericWithSIUnit][SymTypeOfNumericWithSIUnit]
+    has the same super type which can be utilized for declaring methods which should take any
+    [SymTypeOfNumericWithSIUnit][SymTypeOfNumericWithSIUnit] as parameter.
 * [SIUnitSymTypeExpressionFactory][SIUnitSymTypeExpressionFactory]
     which is the only class to create SymTypeOfSIUnitBasic, SymTypeOfSIUnit 
     and SymTypeOfNumericWithSIUnit.
