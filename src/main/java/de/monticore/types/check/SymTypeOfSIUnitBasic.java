@@ -15,7 +15,7 @@
 package de.monticore.types.check;
 
 import de.monticore.siunits.utility.UnitFactory;
-import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbolSurrogate;
+import de.monticore.symbols.basicsymbols._symboltable.TypeSymbol;
 import de.monticore.symboltable.serialization.JsonDeSers;
 import de.monticore.symboltable.serialization.JsonPrinter;
 
@@ -32,19 +32,19 @@ public class SymTypeOfSIUnitBasic extends SymTypeExpression {
     protected Optional<Integer> exponent = Optional.of(Integer.valueOf(1));
     protected Optional<String> prefix = Optional.of("");
 
-    public SymTypeOfSIUnitBasic(OOTypeSymbolSurrogate typeSymbolSurrogate) {
-        this.typeSymbolSurrogate = typeSymbolSurrogate;
+    public SymTypeOfSIUnitBasic(TypeSymbol typeSymbol) {
+        this.typeSymbol = typeSymbol;
         this.getTypeInfo().setSuperTypesList(new ArrayList<>());
     }
 
-    public SymTypeOfSIUnitBasic(OOTypeSymbolSurrogate typeSymbolSurrogate, Integer exponent) {
-        this.typeSymbolSurrogate = typeSymbolSurrogate;
+    public SymTypeOfSIUnitBasic(TypeSymbol typeSymbol, Integer exponent) {
+        this.typeSymbol = typeSymbol;
         this.exponent = Optional.ofNullable(exponent);
         this.getTypeInfo().setSuperTypesList(new ArrayList<>());
     }
 
     public String getName() {
-        return typeSymbolSurrogate.getName();
+        return typeSymbol.getName();
     }
 
     public String getExponentString() {
@@ -75,8 +75,8 @@ public class SymTypeOfSIUnitBasic extends SymTypeExpression {
 
     @Override
     public SymTypeOfSIUnitBasic deepClone() {
-        OOTypeSymbolSurrogate newTypeSymbolLoader = new OOTypeSymbolSurrogate(typeSymbolSurrogate.getName());
-        newTypeSymbolLoader.setEnclosingScope(typeSymbolSurrogate.getEnclosingScope());
+        TypeSymbol newTypeSymbolLoader = new TypeSymbol(typeSymbol.getName());
+        newTypeSymbolLoader.setEnclosingScope(typeSymbol.getEnclosingScope());
         SymTypeOfSIUnitBasic clone;
         if (!exponent.isPresent())
             clone = new SymTypeOfSIUnitBasic(newTypeSymbolLoader);
@@ -89,10 +89,10 @@ public class SymTypeOfSIUnitBasic extends SymTypeExpression {
     public boolean deepEquals(SymTypeExpression sym) {
         if (!(sym instanceof SymTypeOfSIUnitBasic))
             return false;
-        if(this.typeSymbolSurrogate== null ||sym.typeSymbolSurrogate==null){
+        if(this.typeSymbol== null ||sym.typeSymbol==null){
             return false;
         }
-        if(!this.typeSymbolSurrogate.getEnclosingScope().equals(sym.typeSymbolSurrogate.getEnclosingScope())){
+        if(!this.typeSymbol.getEnclosingScope().equals(sym.typeSymbol.getEnclosingScope())){
             return false;
         }
         if (!this.getUnit().isCompatible(((SymTypeOfSIUnitBasic) sym).getUnit())) {

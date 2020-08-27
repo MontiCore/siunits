@@ -9,6 +9,7 @@ import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4ComputingInt;
 import de.monticore.siunittypes4computing._symboltable.ISIUnitTypes4ComputingScope;
 import de.monticore.siunittypes4computing._visitor.SIUnitTypes4ComputingVisitor;
+import de.monticore.symbols.basicsymbols._symboltable.IBasicSymbolsScope;
 import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
 import de.se_rwth.commons.logging.Log;
 
@@ -79,7 +80,7 @@ public class SynthesizeSymTypeFromSIUnitTypes4Computing extends SynthesizeSymTyp
                 isByte(type));
     }
 
-    private IOOSymbolsScope getScope(ISIUnitsScope enclosingScope) {
+    private IBasicSymbolsScope getScope(ISIUnitsScope enclosingScope) {
         // is accepted only here, decided on 07.04.2020
         if(!(enclosingScope instanceof IOOSymbolsScope)){
             Log.error("0xAE112 the enclosing scope of the type does not implement the interface IOOSymbolsScope");

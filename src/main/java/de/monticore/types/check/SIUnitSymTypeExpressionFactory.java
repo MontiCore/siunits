@@ -3,9 +3,10 @@
 package de.monticore.types.check;
 
 import de.monticore.siunits.utility.UnitPrettyPrinter;
+import de.monticore.symbols.basicsymbols._symboltable.IBasicSymbolsScope;
+import de.monticore.symbols.basicsymbols._symboltable.TypeSymbol;
 import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
 import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbol;
-import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbolSurrogate;
 import de.se_rwth.commons.logging.Log;
 
 import java.util.ArrayList;
@@ -72,8 +73,8 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
         return symType;
     }
 
-    public static SymTypeOfSIUnitBasic createSIUnitBasic(OOTypeSymbolSurrogate typeSymbolSurrogate) {
-        return new SymTypeOfSIUnitBasic(typeSymbolSurrogate);
+    public static SymTypeOfSIUnitBasic createSIUnitBasic(TypeSymbol typeSymbol) {
+        return new SymTypeOfSIUnitBasic(typeSymbol);
     }
 
     /**
@@ -83,7 +84,7 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
      * @param name           Of form km^2*s/kg, ...
      * @param enclosingScope The node's enclosing scope
      */
-    public static SymTypeExpression createSIUnit(String name, IOOSymbolsScope enclosingScope) {
+    public static SymTypeExpression createSIUnit(String name, IBasicSymbolsScope enclosingScope) {
         String formattedStandard = UnitPrettyPrinter.printUnit(name);
         String[] split = formattedStandard.split("\\/");
         List<String> numeratorStringList = Arrays.asList(split[0].split("\\*"));
@@ -92,11 +93,11 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
             denominatorStringList = Arrays.asList(split[1].replace("(", "").replace(")", "")
                     .split("\\*"));
         else if (split.length == 1 && split[0].equals("1")) {// dimensionless, will return int_type in the next function
-            OOTypeSymbolSurrogate loader = new OOTypeSymbolSurrogate("1");
+            TypeSymbol loader = new TypeSymbol("1");
             loader.setEnclosingScope(enclosingScope);
             return createSIUnit(loader, new ArrayList<>(), new ArrayList<>());
         }
-        OOTypeSymbolSurrogate loader = new OOTypeSymbolSurrogate(formattedStandard);
+        TypeSymbol loader = new TypeSymbol(formattedStandard);
         loader.setEnclosingScope(enclosingScope);
         return createSIUnit(numeratorStringList, denominatorStringList, loader);
     }
@@ -117,12 +118,12 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
         if (denominator.size() > 1)
             denominatorString = "(" + numeratorString + ")";
         String name = numeratorString + ((denominator.size() >= 1) ? "/" + denominatorString : "");
-        OOTypeSymbolSurrogate loader = new OOTypeSymbolSurrogate(name);
+        TypeSymbol loader = new TypeSymbol(name);
         loader.setEnclosingScope(enclosingScope);
         return createSIUnit(loader, numerator, denominator);
     }
 
-    // Method signature clashes with the before, so the typeSymbolSurrogate is the last argument
+    // Method signature clashes with the before, so the typeSymbol is the last argument
 
     /**
      * createSIUnit: for SIUnitTypes from Strings
@@ -131,14 +132,14 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
      * @param numerator   List of the numerator SIBasicTypes as Strings
      * @param denominator List of the denominator SIBasicTypes as Strings
      */
-    public static SymTypeExpression createSIUnit(List<String> numerator, List<String> denominator, OOTypeSymbolSurrogate typeSymbolSurrogate) {
+    public static SymTypeExpression createSIUnit(List<String> numerator, List<String> denominator, TypeSymbol typeSymbol) {
         List<SymTypeOfSIUnitBasic> numeratorSymTypes = new ArrayList<>();
         List<SymTypeOfSIUnitBasic> denominatorSymTypes = new ArrayList<>();
         for (String num : numerator)
             numeratorSymTypes.add(createSIUnitBasic(num));
         for (String den : denominator)
             denominatorSymTypes.add(createSIUnitBasic(den));
-        return createSIUnit(typeSymbolSurrogate, numeratorSymTypes, denominatorSymTypes);
+        return createSIUnit(typeSymbol, numeratorSymTypes, denominatorSymTypes);
     }
 
     /**
@@ -148,23 +149,23 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
      * @param numerator   List of the numerator SIBasicTypes
      * @param denominator List of the denominator SIBasicTypes
      */
-    public static SymTypeExpression createSIUnit(OOTypeSymbolSurrogate typeSymbolSurrogate, List<SymTypeOfSIUnitBasic> numerator, List<SymTypeOfSIUnitBasic> denominator) {
+    public static SymTypeExpression createSIUnit(TypeSymbol typeSymbol, List<SymTypeOfSIUnitBasic> numerator, List<SymTypeOfSIUnitBasic> denominator) {
         // Check if the symType is already in the scope and add it otherwise
         // Needed because there can be created new SIUnitType while computing, e.g. varM*varS
-        final String name = typeSymbolSurrogate.getName();
+        final String name = typeSymbol.getName();
         if (name.contains("ms*s")) {
             int a = 1;
         }
-        if (!typeSymbolSurrogate.getEnclosingScope().resolveOOTypeLocally(name).isPresent()) {
+        if (!typeSymbol.getEnclosingScope().resolveTypeLocally(name).isPresent()) {
             OOTypeSymbol newSymbol = DefsSIUnitType.type(name);
-            typeSymbolSurrogate.getEnclosingScope().add(newSymbol);
+            typeSymbol.getEnclosingScope().add(newSymbol);
         }
 
         SymTypeExpression result;
-        if (numerator.size() == 0 && denominator.size() == 0 || typeSymbolSurrogate.getName().equals("1"))
+        if (numerator.size() == 0 && denominator.size() == 0 || typeSymbol.getName().equals("1"))
             result = createTypeConstant("int");
         else
-            result = new SymTypeOfSIUnit(typeSymbolSurrogate, numerator, denominator);
+            result = new SymTypeOfSIUnit(typeSymbol, numerator, denominator);
 
         return result;
     }
@@ -172,13 +173,13 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
     /**
      * creates a numeric with siunit type
      */
-    public static SymTypeExpression createNumericWithSIUnitType(SymTypeExpression numericType, SymTypeExpression siunitType, OOTypeSymbolSurrogate typeSymbolSurrogate) {
+    public static SymTypeExpression createNumericWithSIUnitType(SymTypeExpression numericType, SymTypeExpression siunitType, TypeSymbol typeSymbol) {
         // Check if the symType is already in the scope and add it otherwise
         // Needed because there can be created new SIUnitType while computing, e.g. varM*varS
-        final String name = typeSymbolSurrogate.getName();
-        if (!typeSymbolSurrogate.getEnclosingScope().resolveOOTypeLocally(name).isPresent()) {
+        final String name = typeSymbol.getName();
+        if (!typeSymbol.getEnclosingScope().resolveTypeLocally(name).isPresent()) {
             OOTypeSymbol newSymbol = DefsSIUnitType.type(name);
-            typeSymbolSurrogate.getEnclosingScope().add(newSymbol);
+            typeSymbol.getEnclosingScope().add(newSymbol);
         }
 
         SymTypeExpression result;
@@ -187,7 +188,7 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
         if (!(siunitType instanceof SymTypeOfSIUnit))
             result = numericType;
         else
-            result = new SymTypeOfNumericWithSIUnit(typeSymbolSurrogate, numericType, siunitType);
+            result = new SymTypeOfNumericWithSIUnit(typeSymbol, numericType, siunitType);
 
         return result;
     }
@@ -195,10 +196,10 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
     /**
      * creates a numeric with siunit type
      */
-    public static SymTypeExpression createNumericWithSIUnitType(SymTypeExpression numericType, SymTypeExpression siunitType, IOOSymbolsScope enclosingScope) {
+    public static SymTypeExpression createNumericWithSIUnitType(SymTypeExpression numericType, SymTypeExpression siunitType, IBasicSymbolsScope enclosingScope) {
         String siUnitPrint = siunitType.print();
         String name = "(" + numericType.print() + "," + siUnitPrint + ")";
-        OOTypeSymbolSurrogate loader = new OOTypeSymbolSurrogate(name);
+        TypeSymbol loader = new TypeSymbol(name);
         loader.setEnclosingScope(enclosingScope);
         return createNumericWithSIUnitType(numericType, siunitType, loader);
     }
