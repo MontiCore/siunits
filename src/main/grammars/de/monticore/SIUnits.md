@@ -86,7 +86,7 @@ MCCommonLiterals grammar:
 The [SIUnitLiteralDecoder][SIUnitLiteralDecoder]
 extracts the number of an SIUnitLiteral as either a java `double` or a java 
 `java.lang.Number` and calculates the value of
-a SIUnitLiteral (`3 km` has value3000` and `3 km` in
+a SIUnitLiteral (`3 km` has value `3000` and `3 km` in
 `mm` has value `3000000`). 
 
 ### Generators
