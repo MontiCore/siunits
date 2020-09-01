@@ -25,14 +25,14 @@ grammar SIUnits extends de.monticore.literals.MCCommonLiterals {
 
 
   /**
-   * The SIUnit is either a SIUnitPrimitive,
-   * the devision of two SIUnitPrimitives,
-   * or the devision of "1" and a SIUnitPrimitive.
+   * The SIUnit is either a SIUnitPrimitive, e.g. "km"
+   * the division of two SIUnitPrimitives, e.g. "km/h"
+   * or the division of "1" and a SIUnitPrimitive, e.g. "1/h"
    *
-   * The lookahead is needed for the parser to
-   * know which alternative to take.
    */
   SIUnit =
+   // The lookahead is needed for the parser to
+   // decide which alternative to take.
     { isSIOneDiv() }?
       one:NatLiteral "/" denominator:SIUnitPrimitive |
     { isSIDiv() }?

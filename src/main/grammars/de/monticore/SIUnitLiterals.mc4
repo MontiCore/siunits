@@ -37,4 +37,5 @@ component grammar SIUnitLiterals extends
   // The signed SI unit literals
   SignedSIUnitLiteral implements SignedLiteral <10> =
     SignedNumericLiteral SIUnit ;
+
 }
