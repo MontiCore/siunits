@@ -6,7 +6,7 @@ import de.monticore.io.paths.ModelPath;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes.TestSIJavaWithCustomTypesMill;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._ast.ASTSIJavaClass;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._cocos.TestSIJavaWithCustomTypesCoCoChecker;
-import de.monticore.lang.testsijava.testsijavawithcustomtypes._cocos.TypeCheckCoCo;
+import de.monticore.lang.testsijava.testsijavawithcustomtypes._cocos.TestSIJavaWithCustomTypesTypeCheckCoCo;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._parser.TestSIJavaWithCustomTypesParser;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.ITestSIJavaWithCustomTypesScope;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.TestSIJavaWithCustomTypesGlobalScope;
@@ -35,7 +35,7 @@ public class SIJavaWithCustomTypesCoCoTest {
         ASTSIJavaClass model = parseModel(input);
         ITestSIJavaWithCustomTypesScope globalScope = buildScope(model);
         TestSIJavaWithCustomTypesCoCoChecker checker = new TestSIJavaWithCustomTypesCoCoChecker();
-        checker.addCoCo(new TypeCheckCoCo());
+        checker.addCoCo(TestSIJavaWithCustomTypesTypeCheckCoCo.getCoCo());
 
         try {
             checker.checkAll(model);

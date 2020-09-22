@@ -12,5 +12,6 @@ siclass MyClass_WithError {
         int in h varS = 3s;
         int in dm varM = 10 m;
         var = varS * varM;
+        return varM;
     }
 }

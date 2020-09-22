@@ -15,33 +15,29 @@ grammar TestSIJavaWithCustomTypes extends de.monticore.SIUnitLiterals,
     symbol scope SIJavaClass =
     "package" package:(Name& || ".")+ ";"
     "siclass" Name "{"
-        statement:SIJavaClassStatement*
+        SIJavaClassStatement*
     "}";
 
     interface SIJavaClassStatement;
 
-    interface FieldOrVariableDeclaration extends Field =
-        MCType Name ("=" assignment:Expression)? ";";
+    FieldDeclaration implements Field, SIJavaClassStatement, SIJavaMethodStatement =
+        MCType Name ("=" Expression)? ";";
 
-    FieldDeclaration implements FieldOrVariableDeclaration, SIJavaClassStatement =
-        MCType Name ("=" assignment:Expression)? ";";
-
-    symbol scope MethodDeclaration implements SIJavaClassStatement =
-        MethodSignature "{"
-            statement:SIJavaMethodStatement*
+    MethodDeclaration implements Method, SIJavaClassStatement =
+        returnType:MCReturnType Name "(" (SIJavaParameter||",")* ")" "{"
+            SIJavaMethodStatement*
+            SIJavaMethodReturn?
         "}";
 
-    MethodSignature =
-        returnType:MCReturnType Name "(" (SIJavaParameter||",")* ")";
-
-    SIJavaParameter implements Field =
+    SIJavaParameter implements Variable =
         MCType Name;
 
     interface SIJavaMethodStatement;
 
-    VariableDeclaration implements FieldOrVariableDeclaration, SIJavaMethodStatement <100> =
-        MCType Name ("=" assignment:Expression)? ";";
+    // Here only AssignmentExpressions are allowed
+    SIJavaMethodExpression implements SIJavaMethodStatement =
+        Expression ";";
 
-    SIJavaMethodExpression implements SIJavaMethodStatement <10> =
-        expression:Expression ";";
+    SIJavaMethodReturn =
+        "return" Expression ";";
 }
