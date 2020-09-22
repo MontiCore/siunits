@@ -10,6 +10,7 @@ import de.monticore.prettyprint.CommentPrettyPrinter;
 import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.siunits.utility.Converter;
 import de.monticore.siunits.utility.UnitPrettyPrinter;
+import de.monticore.symbols.basicsymbols._symboltable.FunctionSymbol;
 import de.monticore.symbols.basicsymbols._symboltable.VariableSymbol;
 import de.monticore.symbols.oosymbols._symboltable.MethodSymbol;
 import de.monticore.types.check.*;
@@ -17,7 +18,9 @@ import de.se_rwth.commons.logging.Log;
 
 import javax.measure.converter.UnitConverter;
 import javax.measure.unit.Unit;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static de.monticore.lang.testsijava.testsijava.generator.prettyprint.TestSIJavaPrettyPrinter.*;
 
@@ -82,15 +85,18 @@ public class MyCommonExpressionsPrettyPrinter extends CommonExpressionsPrettyPri
             NameToCallExpressionVisitor visitor = new NameToCallExpressionVisitor();
             node.accept(visitor);
 
-            Collection<MethodSymbol> methodcollection = ((ITestSIJavaScope) node.getEnclosingScope())
+            List<FunctionSymbol> functionSymbols = ((ITestSIJavaScope) node.getEnclosingScope())
+                    .resolveFunctionMany(node.getName());
+            List<MethodSymbol> methodSymbols = ((ITestSIJavaScope) node.getEnclosingScope())
                     .resolveMethodMany(node.getName());
-            List<MethodSymbol> methodlist = new ArrayList<>(methodcollection);
+            functionSymbols.addAll(methodSymbols);
 
-            if (methodlist.size() != 1) {
+            if (functionSymbols.size() != 1) {
                 Log.error("0xE9332411 Overloading of methods is not supported");
             }
-            MethodSymbol methodSymbol = methodlist.get(0);
-            if (node.getArguments().getExpressionList().size() != methodSymbol.getParameterList().size()) {
+
+            FunctionSymbol function = functionSymbols.get(0);
+            if (node.getArguments().getExpressionList().size() != function.getParameterList().size()) {
                 Log.error("0xE9332412 Wrong number of arguments");
             }
 
@@ -100,15 +106,15 @@ public class MyCommonExpressionsPrettyPrinter extends CommonExpressionsPrettyPri
             for (int i = 0; i < node.getArguments().getExpressionList().size(); i++) {
                 ASTExpression givenParameter = node.getArguments().getExpression(i);
                 SymTypeExpression givenParameterType = tc.typeOf(givenParameter);
-                VariableSymbol methodParameter = methodSymbol.getParameterList().get(i);
-                SymTypeExpression methodParameterType = methodParameter.getType();
+                VariableSymbol functionParameter = function.getParameterList().get(i);
+                SymTypeExpression functionParameterType = functionParameter.getType();
 
                 UnitConverter converter = UnitConverter.IDENTITY;
 
-                if (methodParameterType instanceof SymTypeOfNumericWithSIUnit
+                if (functionParameterType instanceof SymTypeOfNumericWithSIUnit
                         && givenParameterType instanceof SymTypeOfNumericWithSIUnit) {
                     converter = Converter.getConverter(((SymTypeOfNumericWithSIUnit) givenParameterType).getUnit(),
-                            ((SymTypeOfNumericWithSIUnit) methodParameterType).getUnit());
+                            ((SymTypeOfNumericWithSIUnit) functionParameterType).getUnit());
                 }
 
                 if (i > 0)

@@ -89,6 +89,7 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
 
 
 
+    // Add subscope for parameters
     @Override
     public void traverse(ASTMethodDeclaration node) {
         if (null != node.getReturnType()) {

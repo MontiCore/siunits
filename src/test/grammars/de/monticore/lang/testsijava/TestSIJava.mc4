@@ -26,41 +26,18 @@ grammar TestSIJava extends de.monticore.SIUnitLiterals,
     FieldDeclaration implements Field, SIJavaClassStatement, SIJavaMethodStatement =
         MCType Name ("=" Expression)? ";";
 
-// TODO: solche extra "fields" braucht es nicht, das macht aus meiner
-// Done: ja sehe ich ein. Das war ein Versuch den "normalen" SIUnitType
-//      ohne numeric-Teil einzubringen. Es gibt aus meiner Sicht sonst
-//      nämlich keinen Sinn dafür.
-//
-// Sicht keinen Sinn. Hab mir die Beispiele angesehen (Die modelle sehen an sich gut aus)
-/* Aber das ist in seiner Allgemeinheit nicht zur Compilezeit typsicher berechenbar:
-           si varM = m;
-        si varS = s;
-        si varSomething = varM * varS;
-        m*s<int> varI_MS = varSomething * 3;
-    Bleibt dabei: Typen sind keine Werte in unseren Sprachen.
-*/
-// Done:
-//    SIFieldDeclaration implements Field, SIJavaClassStatement, SIJavaMethodStatement =
-//        "si" Name "=" (SIUnitType | Expression) ";";
-
-// TODO: da kann man "method" auch weglassen?
-// Done: ja das funktioniert
-// TODO: Function statt Method? (ganz neu rausgekommen)
-// TODO: Funktioniert im TypeCheck (noch) nicht? Er findet die Funktion nicht
-    MethodDeclaration implements Method, SIJavaClassStatement =
+    MethodDeclaration implements Function, SIJavaClassStatement =
         returnType:MCReturnType Name "(" (SIJavaParameter||",")* ")" "{"
             SIJavaMethodStatement*
             SIJavaMethodReturn?
         "}";
 
-// TODO: Variable statt Field? (ganz neu rausgekommen)
-// TODO: Funktioniert im TypeCheck (noch) nicht? calculateNameExpression unterstützt nur Fields
     SIJavaParameter implements Variable =
         MCType Name;
 
     interface SIJavaMethodStatement;
 
-    // Here only AssignmentExpressions are allowed
+    // Here only AssignmentExpressions and CallExpressions are allowed (CoCo)
     SIJavaMethodExpression implements SIJavaMethodStatement =
         Expression ";";
 
