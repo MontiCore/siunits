@@ -4,9 +4,9 @@ package de.monticore.lang.testsijava;
 
 import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._ast.ASTSIJavaClass;
-import de.monticore.lang.testsijava.testsijava._cocos.MethodExpressionIsAllowedCoCo;
+import de.monticore.lang.testsijava.testsijava._cocos.OnlyAssignmentAndCallExpressionCoCo;
 import de.monticore.lang.testsijava.testsijava._cocos.TestSIJavaCoCoChecker;
-import de.monticore.lang.testsijava.testsijava._cocos.TypeCheckCoCo;
+import de.monticore.lang.testsijava.testsijava._cocos.TestSIJavaTypeCheckCoCo;
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
 import de.se_rwth.commons.logging.Log;
 import org.junit.BeforeClass;
@@ -30,8 +30,8 @@ public class SIJavaCoCoTest {
         ASTSIJavaClass model = parseModel(input);
         model.accept(TestSIJavaMill.testSIJavaSymbolTableCreatorBuilder().build());
         TestSIJavaCoCoChecker checker = new TestSIJavaCoCoChecker();
-        checker.addCoCo(new TypeCheckCoCo());
-        checker.addCoCo(new MethodExpressionIsAllowedCoCo());
+        checker.addCoCo(TestSIJavaTypeCheckCoCo.getCoCo());
+        checker.addCoCo(new OnlyAssignmentAndCallExpressionCoCo());
 
         try {
             checker.checkAll(model);
