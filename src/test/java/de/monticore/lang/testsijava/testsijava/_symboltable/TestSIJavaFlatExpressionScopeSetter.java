@@ -12,7 +12,7 @@ public class TestSIJavaFlatExpressionScopeSetter extends FlatExpressionScopeSett
 
     @Override
     protected ITestSIJavaScope getScope() {
-        return (TestSIJavaScope) scope;
+        return (ITestSIJavaScope) scope;
     }
 
     // ************************* Visitor *************************
