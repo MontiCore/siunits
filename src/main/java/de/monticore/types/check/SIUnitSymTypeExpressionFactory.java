@@ -153,9 +153,6 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
         // Check if the symType is already in the scope and add it otherwise
         // Needed because there can be created new SIUnitType while computing, e.g. varM*varS
         final String name = typeSymbol.getName();
-        if (name.contains("ms*s")) {
-            int a = 1;
-        }
         if (!typeSymbol.getEnclosingScope().resolveTypeLocally(name).isPresent()) {
             OOTypeSymbol newSymbol = DefsSIUnitType.type(name);
             typeSymbol.getEnclosingScope().add(newSymbol);
