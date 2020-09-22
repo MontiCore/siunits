@@ -14,12 +14,12 @@ import de.monticore.types.check.TypeCheck;
 import de.se_rwth.commons.logging.Log;
 
 /**
- * Provides methods to check for incompatible type in assignment expressions,
+ * Provides methods to check for incompatible types in assignment expressions,
  *  Field or Variable declarations, and Method or Function declarations.
  * Take note, that this CoCo requires the SymbolTableCreator to set the following:
- *  1. The enclosing scope of each Expression,
+ *  1. The enclosing scope for each Expression,
  *   Literal, SignedLiteral, MCType and MCReturnType
- *  2. The {@link SymTypeExpression} of each VariableSymbol, FieldSymbol, FunctionSymbol, and MethodSymbol
+ *  2. The {@link SymTypeExpression} for each VariableSymbol, FieldSymbol, FunctionSymbol, and MethodSymbol
  */
 public abstract class TypeCheckCoCo {
 
@@ -27,8 +27,8 @@ public abstract class TypeCheckCoCo {
 
     /**
      * Creates an instance of TypeCheckCoCo
-     * @param typeCheck a {@link TypeCheck} class instantiated with the correct
-     *                  {@link ISynthesize} and {@link ITypesCalculator} classes of
+     * @param typeCheck a {@link TypeCheck} object instantiated with the correct
+     *                  {@link ISynthesize} and {@link ITypesCalculator} objects of
      *                  the current language
      */
     public TypeCheckCoCo(TypeCheck typeCheck) {
