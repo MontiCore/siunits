@@ -1,108 +1,175 @@
-// (c) https://github.com/MontiCore/monticore
-
-/* ============================================================ */
-/* ========================= Plugins ========================== */
-/* ============================================================ */
-
+/* (c) https://github.com/MontiCore/monticore */
 plugins {
-    id 'java'
-    id "monticore" version "6.3.0-SNAPSHOT"
-    id 'maven-publish'
+    id "java"
+    id "monticore" version "6.3.0" // MontiCore Plugin
+    id "maven-publish"
     id "com.github.johnrengelman.shadow" version "6.0.0"
-    id "de.set.ecj" version "1.4.1" // Eclipse compiler as it's much faster than javac
-    id 'org.unbroken-dome.test-sets' version '3.0.1'
+//    id 'cz.malohlava.visteg' version '1.0.5'
+    id 'org.ec4j.editorconfig' version "0.0.3"
 }
 
-/* ============================================================ */
-/* ========================= Project ========================== */
-/* ============================================================ */
-
-group = 'de.monticore'
-version = '6.3.0-SNAPSHOT'
-description = 'siunits'
-sourceCompatibility = '1.8'
-
-/* ============================================================ */
-/* ========================= Versions ========================= */
-/* ============================================================ */
-
-def monticore_version = "6.3.0-SNAPSHOT"
-def jscience_version = "4.3.1"
-def junit_version = "4.12"
-def commons_cli_version = "1.4"
+def mc_version = "6.3.0"
+def commons_version = "1.7.9"
 def grammar_classifier = "grammars"
 def grammarDir = "src/main/grammars"
+def testGrammarDir = "src/test/grammars"
+def jscience_version = "4.3.1"
 
+group = "de.monticore"
+version = "6.3.1-SNAPSHOT"
+description = "SI Units"
+sourceCompatibility = "1.8"
 
-/* ============================================================ */
-/* ======================= Configuration ====================== */
-/* ============================================================ */
 
 // configure non-standard source sets
 sourceSets {
-    main.java.srcDirs += [ "$projectDir/target/generated-sources/monticore/sourcecode"]
-
+    main {
+        java.srcDirs += ["$projectDir/target/generated-sources/monticore/sourcecode"]
+    }
     test {
-        java.srcDir "$projectDir/src/test/java"
-        resources.srcDir "$projectDir/src/test/resources"
+        java.srcDirs += ["$projectDir/target/generated-test-sources/monticore/sourcecode"]
+    }
+}
+subprojects {
+    apply plugin: 'idea'
+    idea {
+        module {
+            testSourceDirs += file("$projectDir/target/generated-test-sources/monticore/sourcecode")
+        }
     }
 }
 buildDir = file("$projectDir/target")
 
-configurations {grammar}
+configurations { grammar }
 
-test {
-    useJUnit()
+dependencies {
+    implementation "de.se_rwth.commons:se-commons-logging:$commons_version"
+    implementation "de.se_rwth.commons:se-commons-utilities:$commons_version"
+    implementation "com.google.guava:guava:23.0"
+    implementation "org.antlr:antlr4-runtime:4.7.1"
+    implementation "de.monticore:monticore-runtime:$mc_version"
+    implementation "de.monticore:monticore-grammar:$mc_version"
+    implementation "de.monticore:monticore-grammar:$mc_version:$grammar_classifier"
+	implementation "org.jscience:jscience:$jscience_version"
+    grammar "de.monticore:monticore-grammar:$mc_version:$grammar_classifier"
+    implementation "ch.qos.logback:logback-classic:1.1.7"
+
+    // libraries for sd diff
+    implementation("de.se_rwth:automata-library:1.0-SNAPSHOT") {
+      exclude group: "com.google.guava", module: "guava"
+    }
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    testImplementation "junit:junit:4.11"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:5.6.2"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:5.6.2"
+    testImplementation "org.junit.vintage:junit-vintage-engine:5.6.2"
 }
 
-/* ============================================================ */
-/* ======================= Dependencies ======================= */
-/* ============================================================ */
-
 repositories {
-    mavenLocal()
-    mavenCentral()
     maven {
         credentials.username mavenUser
         credentials.password mavenPassword
-      url repo
+        url repo
+    }
+    mavenLocal()
+}
+
+def grammarDependencies = ext {
+    SIUnits = []
+    SIUnitLiterals = ["SIUnits"]
+	SIUnitTypes4Math = ["SIUnitLiterals"]
+	SIUnitTypes4Computing = ["SIUnitTypes4Math"]
+	CombineExpressionsWithLiterals = []
+	TestSIJava = []
+	TestSIJavaWithCustomTypes = ["CustomSIUnitTypes4Computing"]
+	CustomSIUnitTypes4Computing  = []
+	TestSIUnitLiterals = []
+	TestSIUnitTypes  = []
+}
+
+/*
+def grammarPhase = ext {
+	SIUnits = "main"
+    SIUnitLiterals = "main"
+	SIUnitTypes4Math = "main"
+	SIUnitTypes4Computing = "main"
+	CombineExpressionsWithLiterals = "test"
+	TestSIJava = "test"
+	TestSIJavaWithCustomTypes = "test"
+	CustomSIUnitTypes4Computing  = "test"
+	TestSIUnitLiterals = "test"
+	TestSIUnitTypes = "test"
+}*/
+
+createGrammarTasksForDir(grammarDir, "main")
+createGrammarTasksForDir(testGrammarDir, "test")
+def createGrammarTasksForDir(dir, mt) {
+// one task per grammar file
+fileTree(dir).matching { include '**/*.mc4' }.each {
+    def g = it
+    def grammarName = it.getName().substring(0, it.getName().lastIndexOf('.'))
+
+    task "generate${mt}Grammar${grammarName}"(type: MCTask) {
+        grammar = file g
+		if(mt=="main")
+			outputDir = file "$buildDir/generated-sources/monticore/sourcecode"
+		else
+			outputDir = file "$buildDir/generated-test-sources/monticore/sourcecode"
+
+		handcodedPath file("$projectDir/src/main/java"), file("$projectDir/src/test/java")
+		modelPath file("$projectDir/src/main/grammars"), file("$projectDir/src/test/grammars")
+        def grammarIncludingPackage = file(dir).toURI().relativize(g.toURI()).toString()
+        def uptoDate = incCheck(grammarIncludingPackage)
+        outputs.upToDateWhen { uptoDate }
+    }
+}
+}
+
+compileJava {
+    tasks.findAll { task -> task.name.startsWith("generatemainGrammar") }.each {
+        def grammarName = it.getName().substring('generatemainGrammar'.length())
+        def dependsOnGrammars = grammarDependencies[grammarName].collect { name -> tasks["generatemainGrammar${name}"] }
+        it.dependsOn dependsOnGrammars
+        /*it.outputs.upToDateWhen {
+            it.outputs.upToDateWhen && !dependsOnGrammars.any { !it.outputs.upToDateWhen }
+        }*/
+    }
+
+    dependsOn project.collect { it.tasks.findAll { task -> task.name.startsWith("generatemainGrammar") } }
+}
+
+compileTestJava {
+	tasks.findAll { task -> task.name.startsWith("generatetestGrammar") }.each {
+        def grammarName = it.getName().substring('generatetestGrammar'.length())
+        def dependsOnGrammars = grammarDependencies[grammarName].collect { name -> tasks["generatetestGrammar${name}"] }
+        it.dependsOn dependsOnGrammars
+        //it.outputs.upToDateWhen {
+        //    it.outputs.upToDateWhen && !dependsOnGrammars.any { !it.outputs.upToDateWhen }
+        //}
+    }
+    //dependsOn project.collect { it.tasks.withType(MCTask) }
+	dependsOn project.collect { it.tasks.findAll { task -> task.name.startsWith("generatetestGrammar") } }
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        exceptionFormat = 'full'
+        showStackTraces = true
+        showStandardStreams = true
+    }
+
+    // listen to standard out and standard error of the test JVM(s)
+    onOutput { descriptor, event ->
+        logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message)
     }
 }
 
-dependencies {
-    grammar "de.monticore:monticore-grammar:$monticore_version:$grammar_classifier"
-    implementation "org.antlr:antlr4-runtime:4.7.1"
-    implementation "de.monticore:monticore-generator:$monticore_version"
-    implementation "de.monticore:monticore-runtime:$monticore_version"
-    implementation "de.monticore:monticore-grammar:$monticore_version"
-    implementation "org.assertj:assertj-core:3.7.0"
-    implementation "commons-cli:commons-cli:$commons_cli_version"
-	implementation "org.jscience:jscience:$jscience_version"
-    testImplementation "junit:junit:$junit_version"
-    compileOnly "de.monticore:monticore-grammar:$monticore_version"
-}
-
-/* ============================================================ */
-/* ========================== Tasks =========================== */
-/* ============================================================ */
-
-task generateSIUnits(type: MCTask) {
-    grammar = file "$projectDir/$grammarDir/de/monticore/SIUnits.mc4"
-    outputDir = file "$buildDir/generated-sources/monticore/sourcecode"
-    handcodedPath file("$projectDir/src/main/java")
-    def uptoDate = incCheck("de/monticore/SIUnits.mc4")
-    outputs.upToDateWhen { uptoDate }
-}
-
-compileJava.dependsOn(generateSIUnits)
-
-// Fixes issue with java plugin in projects without resources
-compileTestJava.doFirst { mkdir sourceSets.main.output.resourcesDir }
-
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
-    options.deprecation = false
-	options.warnings = false
 }
 
 // build sources jar in addition
@@ -117,6 +184,13 @@ task javadocJar(type: Jar) {
     archiveClassifier = "javadoc"
 }
 
+//shadowJar { // all in one jar
+//    manifest {
+//        attributes "Main-Class": "de.monticore.umlcd4a.CD4ACLI"
+//    }
+//    archiveClassifier = "cli"
+//}
+
 // generated java doc contains errors, disable for now
 javadoc.failOnError(false)
 
@@ -126,21 +200,13 @@ task grammarJar(type: Jar) {
     archiveClassifier = "grammars"
 }
 
-// all in one cli-jar
-//shadowJar {
-//    manifest {
-//        attributes "Main-Class": "de.monticore.${archiveBaseName.get().capitalize()}CLI"
-//    }
-//    archiveFileName = "${archiveBaseName.get()}-cli.${archiveExtension.get()}"
-//    minimize()
-//}
+task testReport(type: TestReport) {
+    destinationDir = file("$buildDir/reports/allTests")
+    // Include the results from the 'test' task
+    reportOn tasks.withType(Test)
+}
 
-//jar.dependsOn shadowJar
-
-/* ============================================================ */
-/* ======================= Publishing ========================= */
-/* ============================================================ */
-
+// configure deployment
 publishing {
     // configure what artifacts to publish
     publications {
@@ -149,12 +215,9 @@ publishing {
             from components.java
             artifact sourcesJar
             artifact javadocJar
+            // artifact shadowJar
             artifact grammarJar
         }
-//        cli(MavenPublication) {
-//            artifactId = "$project.name"
-//            artifact shadowJar
-//        }
     }
     repositories.maven {
         credentials.username mavenUser
