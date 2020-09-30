@@ -197,7 +197,7 @@ javadoc.failOnError(false)
 // build grammar jar as well
 task grammarJar(type: Jar) {
     from("$projectDir/src/main/grammars/") { include "**/*.mc4" }
-	from("$projectDir/test/main/grammars/") { include "**/*.mc4" }
+	from("$projectDir/src/test/grammars/") { include "**/*.mc4" }
     archiveClassifier = "grammars"
 }
 
