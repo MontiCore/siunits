@@ -28,6 +28,12 @@ build:
     paths:
       - "."
     expire_in: 1 week
+  except:
+    changes:
+    - pom.xml
+    - .gitignore
+    - README.md
+    - .giltab-ci.yml
 
 test:
   stage: test
@@ -35,6 +41,12 @@ test:
     - build
   script:
     - "./gradlew check $GRADLE_OPTS $ARGS2"
+  except:
+    changes:
+    - pom.xml
+    - .gitignore
+    - README.md
+    - .giltab-ci.yml
 
 deploy:
   stage: deploy
@@ -45,3 +57,9 @@ deploy:
   only:
     - master
     - dev
+  except:
+    changes:
+    - pom.xml
+    - .gitignore
+    - README.md
+    - .giltab-ci.yml
