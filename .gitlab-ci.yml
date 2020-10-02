@@ -33,7 +33,7 @@ build:
     - pom.xml
     - .gitignore
     - README.md
-    - .giltab-ci.yml
+    - .gitlab-ci.yml
 
 test:
   stage: test
@@ -46,7 +46,7 @@ test:
     - pom.xml
     - .gitignore
     - README.md
-    - .giltab-ci.yml
+    - .gitlab-ci.yml
 
 deploy:
   stage: deploy
@@ -62,4 +62,4 @@ deploy:
     - pom.xml
     - .gitignore
     - README.md
-    - .giltab-ci.yml
+    - .gitlab-ci.yml
