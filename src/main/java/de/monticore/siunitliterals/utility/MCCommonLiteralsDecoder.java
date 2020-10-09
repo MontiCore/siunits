@@ -7,7 +7,7 @@ import de.monticore.prettyprint.IndentPrinter;
 import de.se_rwth.commons.logging.Log;
 
 /**
- * This class is intended to decode the {@link java.lang.Number} and double value
+ * This class is intended to getNumber the {@link java.lang.Number} and double value
  * from a {@link de.monticore.literals.mccommonliterals._ast.ASTNumericLiteral} or
  * a {@link de.monticore.literals.mccommonliterals._ast.ASTSignedNumericLiteral}
  * from the de.monticore.literals.MCCommonLiterals grammar.
@@ -15,22 +15,35 @@ import de.se_rwth.commons.logging.Log;
  * your own custom {@link de.monticore.literals.mccommonliterals._ast.ASTNumericLiteral} or
  * {@link de.monticore.literals.mccommonliterals._ast.ASTSignedNumericLiteral}.
  */
-public class NumberDecoder {
+public class MCCommonLiteralsDecoder {
 
     private MCCommonLiteralsPrettyPrinter prettyPrinter;
+    private static MCCommonLiteralsPrettyPrinter prettyPrinter_ = new MCCommonLiteralsPrettyPrinter(new IndentPrinter());
 
     /**
      * Constructor with the standard {@link de.monticore.MCCommonLiteralsPrettyPrinter}
      */
-    public NumberDecoder() {
-        this.prettyPrinter = new MCCommonLiteralsPrettyPrinter(new IndentPrinter());
+    public MCCommonLiteralsDecoder() {
+        this(prettyPrinter_);
     }
 
     /**
      * Constructor with the PrettyPrinter which extends the standard {@link de.monticore.MCCommonLiteralsPrettyPrinter}
      */
-    public NumberDecoder(MCCommonLiteralsPrettyPrinter prettyPrinter) {
+    public MCCommonLiteralsDecoder(MCCommonLiteralsPrettyPrinter prettyPrinter) {
         this.prettyPrinter = prettyPrinter;
+    }
+
+    public static void setPrettyPrinter(MCCommonLiteralsPrettyPrinter prettyPrinter) {
+        MCCommonLiteralsDecoder.prettyPrinter_ = prettyPrinter;
+    }
+
+    /**
+     * Extract the double value of a
+     * {@link de.monticore.literals.mccommonliterals._ast.ASTNumericLiteral}.
+     */
+    public static double doubleOf(ASTNumericLiteral lit) {
+        return (new MCCommonLiteralsDecoder()).getDouble(lit);
     }
 
     /**
@@ -38,7 +51,15 @@ public class NumberDecoder {
      * {@link de.monticore.literals.mccommonliterals._ast.ASTNumericLiteral}.
      */
     public double getDouble(ASTNumericLiteral lit) {
-        return getDouble(decode(lit));
+        return getDouble(getNumber(lit));
+    }
+
+    /**
+     * Extract the double value of a
+     * {@link de.monticore.literals.mccommonliterals._ast.ASTSignedNumericLiteral}.
+     */
+    public static double doubleOf(ASTSignedNumericLiteral lit) {
+        return (new MCCommonLiteralsDecoder()).getDouble(lit);
     }
 
     /**
@@ -46,14 +67,22 @@ public class NumberDecoder {
      * {@link de.monticore.literals.mccommonliterals._ast.ASTSignedNumericLiteral}.
      */
     public double getDouble(ASTSignedNumericLiteral lit) {
-        return getDouble(decode(lit));
+        return getDouble(getNumber(lit));
     }
 
     /**
      * Extract the {@link java.lang.Number} of a
      * {@link de.monticore.literals.mccommonliterals._ast.ASTNumericLiteral}.
      */
-    public Number decode(ASTNumericLiteral lit) {
+    public static Number numberOf(ASTNumericLiteral lit) {
+        return (new MCCommonLiteralsDecoder()).getNumber(lit);
+    }
+
+    /**
+     * Extract the {@link java.lang.Number} of a
+     * {@link de.monticore.literals.mccommonliterals._ast.ASTNumericLiteral}.
+     */
+    public Number getNumber(ASTNumericLiteral lit) {
         if (lit instanceof ASTBasicLongLiteral) {
             return (((ASTBasicLongLiteral) lit).getValue());
         } else if (lit instanceof ASTBasicFloatLiteral) {
@@ -78,7 +107,15 @@ public class NumberDecoder {
      * Extract the {@link java.lang.Number} of a
      * {@link de.monticore.literals.mccommonliterals._ast.ASTSignedNumericLiteral}.
      */
-    public Number decode(ASTSignedNumericLiteral lit) {
+    public static Number numberOf(ASTSignedNumericLiteral lit) {
+        return (new MCCommonLiteralsDecoder()).getNumber(lit);
+    }
+
+    /**
+     * Extract the {@link java.lang.Number} of a
+     * {@link de.monticore.literals.mccommonliterals._ast.ASTSignedNumericLiteral}.
+     */
+    public Number getNumber(ASTSignedNumericLiteral lit) {
         if (lit instanceof ASTSignedBasicLongLiteral) {
             return (((ASTSignedBasicLongLiteral) lit).getValue());
         } else if (lit instanceof ASTSignedBasicFloatLiteral) {
