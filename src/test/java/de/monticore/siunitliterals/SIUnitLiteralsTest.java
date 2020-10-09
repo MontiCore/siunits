@@ -33,11 +33,10 @@ public class SIUnitLiteralsTest {
         ASTLiteral lit = parseLiteral(s);
         assertTrue(lit instanceof ASTSIUnitLiteral);
 
-        SIUnitLiteralDecoder decoder = new SIUnitLiteralDecoder();
         String unitAsString = SIUnitsPrettyPrinter.prettyprint(((ASTSIUnitLiteral) lit).getSIUnit());
 
-        assertEquals(number, decoder.doubleOf((ASTSIUnitLiteral) lit), 0.0001);
-        assertEquals(value, decoder.valueOf((ASTSIUnitLiteral) lit), 0.0001);
+        assertEquals(number, SIUnitLiteralDecoder.doubleOf((ASTSIUnitLiteral) lit), 0.0001);
+        assertEquals(value, SIUnitLiteralDecoder.valueOf((ASTSIUnitLiteral) lit), 0.0001);
         assertEquals(unit, unitAsString);
         assertEquals(baseUnit, UnitPrettyPrinter.printBaseUnit(unitAsString));
     }
