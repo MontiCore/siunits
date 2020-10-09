@@ -2,7 +2,9 @@
 package de.monticore.types.check;
 
 import de.monticore.siunits.utility.UnitFactory;
+import de.monticore.symbols.basicsymbols._symboltable.IBasicSymbolsScope;
 import de.monticore.symbols.basicsymbols._symboltable.TypeSymbol;
+import de.monticore.symbols.basicsymbols._symboltable.TypeSymbolSurrogate;
 import de.monticore.symbols.oosymbols._symboltable.OOSymbolsScope;
 import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbol;
 import de.monticore.symboltable.serialization.JsonDeSers;
@@ -49,7 +51,7 @@ public class SymTypeOfSIUnit extends SymTypeExpression {
         setSuperType();
     }
 
-    public SymTypeOfSIUnit(OOSymbolsScope enclosingScope, List<SymTypeOfSIUnitBasic> numerator, List<SymTypeOfSIUnitBasic> denominator) {
+    public SymTypeOfSIUnit(IBasicSymbolsScope enclosingScope, List<SymTypeOfSIUnitBasic> numerator, List<SymTypeOfSIUnitBasic> denominator) {
         this.numerator = numerator;
         this.denominator = denominator;
         this.typeSymbol = new TypeSymbol(print());
@@ -131,7 +133,7 @@ public class SymTypeOfSIUnit extends SymTypeExpression {
      */
     @Override
     public SymTypeOfSIUnit deepClone() {
-        TypeSymbol loader = new TypeSymbol(typeSymbol.getName());
+        TypeSymbol loader = new TypeSymbolSurrogate(typeSymbol.getName());
         loader.setEnclosingScope(this.typeSymbol.getEnclosingScope());
         return new SymTypeOfSIUnit(loader, getNumeratorList(), getDenominatorList());
     }
@@ -140,7 +142,7 @@ public class SymTypeOfSIUnit extends SymTypeExpression {
     public boolean deepEquals(SymTypeExpression sym) {
         if (!(sym instanceof SymTypeOfSIUnit))
             return false;
-        if(this.typeSymbol== null ||sym.typeSymbol==null){
+        if (this.typeSymbol== null || sym.typeSymbol==null){
             return false;
         }
 //        if(!this.typeSymbol.getEnclosingScope().equals(sym.typeSymbol.getEnclosingScope())){

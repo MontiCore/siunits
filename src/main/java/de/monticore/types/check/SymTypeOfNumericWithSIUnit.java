@@ -2,6 +2,7 @@
 
 package de.monticore.types.check;
 
+import de.monticore.symbols.basicsymbols._symboltable.IBasicSymbolsScope;
 import de.monticore.symbols.basicsymbols._symboltable.TypeSymbol;
 import de.monticore.symbols.oosymbols.OOSymbolsMill;
 import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
@@ -49,7 +50,7 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
         setSuperType();
     }
 
-    public SymTypeOfNumericWithSIUnit(IOOSymbolsScope enclosingScope, SymTypeConstant numericType, SymTypeExpression siunitType) {
+    public SymTypeOfNumericWithSIUnit(IBasicSymbolsScope enclosingScope, SymTypeConstant numericType, SymTypeExpression siunitType) {
         this.numericType = numericType;
         this.siunitType = siunitType;
         this.typeSymbol = new TypeSymbol(print());

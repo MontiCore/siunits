@@ -89,7 +89,7 @@ public class SynthesizeSymTypeFromSIUnitTypes4Computing extends SynthesizeSymTyp
         return (IOOSymbolsScope) enclosingScope;
     }
 
-    private IOOSymbolsScope getScope(ISIUnitTypes4ComputingScope enclosingScope) {
+    private IBasicSymbolsScope getScope(ISIUnitTypes4ComputingScope enclosingScope) {
         // is accepted only here, decided on 07.04.2020
         if(!(enclosingScope instanceof IOOSymbolsScope)){
             Log.error("0xAE106 the enclosing scope of the type does not implement the interface IOOSymbolsScope");
