@@ -6,6 +6,7 @@ import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.siunittypes4math._ast.ASTSIUnitType;
 import de.monticore.siunittypes4math.prettyprint.SIUnitTypes4MathPrettyPrinter;
 import de.monticore.testsiunittypes._parser.TestSIUnitTypesParser;
+import de.monticore.types.mcbasictypes._ast.ASTMCType;
 import de.se_rwth.commons.logging.Log;
 import de.se_rwth.commons.logging.LogStub;
 import org.junit.Before;
@@ -29,13 +30,23 @@ public class SIUnitTypesTest {
     }
 
     @Test
-    public void test() {
-        test("km/h", "km/h", false);
-        test("km/int", "km/int", true);
-        test("int", "int", true);
+    public void testSIUnitTypes() {
+        testSIUnitType("km/h", "km/h", false);
+        testSIUnitType("km/int", "km/int", true);
+        testSIUnitType("int", "int", true);
     }
 
-    private void test(String control, String s, boolean expectedParseError) {
+    @Test
+    public void testMCTypes() {
+        testMCType("s");
+        testMCType("km/h");
+        testMCType("int");
+        testMCType("double");
+        testMCType("D");
+        testMCType("S1");
+    }
+
+    private void testSIUnitType(String control, String s, boolean expectedParseError) {
         Optional<ASTSIUnitType> astOpt = Optional.empty();
         prettyPrinter = new SIUnitTypes4MathPrettyPrinter(new IndentPrinter());
         try {
@@ -50,5 +61,16 @@ public class SIUnitTypesTest {
             astOpt.get().accept(prettyPrinter);
             assertEquals(control, prettyPrinter.getPrinter().getContent());
         }
+    }
+
+    private void testMCType(String s) {
+        Optional<ASTMCType> astOpt = Optional.empty();
+        prettyPrinter = new SIUnitTypes4MathPrettyPrinter(new IndentPrinter());
+        try {
+            astOpt = parser.parseMCType(new StringReader(s));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assertTrue(astOpt.isPresent());
     }
 }
