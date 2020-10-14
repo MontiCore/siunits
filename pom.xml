@@ -20,7 +20,7 @@
         <mc.grammars.assembly.version>0.0.11-SNAPSHOT</mc.grammars.assembly.version>
 
         <!-- .. Libraries .................................................. -->
-        <guava.version>18.0</guava.version>
+        <guava.version>25.1-jre</guava.version>
         <junit.version>4.13.1</junit.version>
         <logback.version>1.1.2</logback.version>
         <jscience.version>4.3.1</jscience.version>
