@@ -45,7 +45,7 @@ configurations { grammar }
 dependencies {
     implementation "de.se_rwth.commons:se-commons-logging:$commons_version"
     implementation "de.se_rwth.commons:se-commons-utilities:$commons_version"
-    implementation "com.google.guava:guava:23.0"
+    implementation "com.google.guava:guava:25.1-jre"
     implementation "org.antlr:antlr4-runtime:4.7.1"
     implementation "de.monticore:monticore-runtime:$mc_version"
     implementation "de.monticore:monticore-grammar:$mc_version"
@@ -54,7 +54,7 @@ dependencies {
     grammar "de.monticore:monticore-grammar:$mc_version:$grammar_classifier"
     implementation "ch.qos.logback:logback-classic:1.1.7"
 
-    testImplementation "junit:junit:4.11"
+    testImplementation "junit:junit:4.13.1"
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
     testImplementation "org.junit.jupiter:junit-jupiter-engine:5.6.2"
     testImplementation "org.junit.jupiter:junit-jupiter-params:5.6.2"
