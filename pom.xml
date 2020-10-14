@@ -21,7 +21,7 @@
 
         <!-- .. Libraries .................................................. -->
         <guava.version>18.0</guava.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <logback.version>1.1.2</logback.version>
         <jscience.version>4.3.1</jscience.version>
 
