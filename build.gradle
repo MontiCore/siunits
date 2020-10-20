@@ -53,7 +53,7 @@ dependencies {
     grammar "de.monticore:monticore-grammar:${project.properties['mc_version']}:$grammar_classifier"
     implementation "ch.qos.logback:logback-classic:1.1.7"
 
-    testImplementation "junit:junit:4.13.1"
+//    testImplementation "junit:junit:4.13.1"
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
     testImplementation "org.junit.jupiter:junit-jupiter-engine:5.6.2"
     testImplementation "org.junit.jupiter:junit-jupiter-params:5.6.2"
