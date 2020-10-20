@@ -8,7 +8,6 @@ plugins {
     id 'org.ec4j.editorconfig' version "0.0.3"
 }
 
-def mc_version = "6.4.0-SNAPSHOT"
 def commons_version = "1.7.9"
 def grammar_classifier = "grammars"
 def grammarDir = "src/main/grammars"
@@ -47,11 +46,11 @@ dependencies {
     implementation "de.se_rwth.commons:se-commons-utilities:$commons_version"
     implementation "com.google.guava:guava:25.1-jre"
     implementation "org.antlr:antlr4-runtime:4.7.1"
-    implementation "de.monticore:monticore-runtime:$mc_version"
-    implementation "de.monticore:monticore-grammar:$mc_version"
-    implementation "de.monticore:monticore-grammar:$mc_version:$grammar_classifier"
+    implementation "de.monticore:monticore-runtime:${project.properties['mc_version']}"
+    implementation "de.monticore:monticore-grammar:${project.properties['mc_version']}"
+    implementation "de.monticore:monticore-grammar:${project.properties['mc_version']}:$grammar_classifier"
 	implementation "org.jscience:jscience:$jscience_version"
-    grammar "de.monticore:monticore-grammar:$mc_version:$grammar_classifier"
+    grammar "de.monticore:monticore-grammar:${project.properties['mc_version']}:$grammar_classifier"
     implementation "ch.qos.logback:logback-classic:1.1.7"
 
     testImplementation "junit:junit:4.13.1"
