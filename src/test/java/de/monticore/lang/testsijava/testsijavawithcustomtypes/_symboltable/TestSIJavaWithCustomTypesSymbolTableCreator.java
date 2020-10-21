@@ -174,20 +174,20 @@ public class TestSIJavaWithCustomTypesSymbolTableCreator extends TestSIJavaWithC
         super.visit(node);
         // Add the enclosing scope to the assignment
         if (node.isPresentExpression())
-            node.getExpression().accept(new TestSIJavaWithCustomTypesFlatExpressionScopeSetter(node.getEnclosingScope()));
+            node.getExpression().accept(new FlatExpressionScopeSetter(node.getEnclosingScope()));
     }
 
     public void visit(ASTSIJavaMethodExpression node) {
         super.visit(node);
         // Add the enclosing scope to the expression
-        node.getExpression().accept(new TestSIJavaWithCustomTypesFlatExpressionScopeSetter(scopeStack.getLast()));
+        node.getExpression().accept(new FlatExpressionScopeSetter(scopeStack.getLast()));
     }
 
     @Override
     public void visit(ASTSIJavaMethodReturn node) {
         super.visit(node);
         // Add the enclosing scope to the expression
-        node.getExpression().accept(new TestSIJavaWithCustomTypesFlatExpressionScopeSetter(scopeStack.getLast()));
+        node.getExpression().accept(new FlatExpressionScopeSetter(scopeStack.getLast()));
     }
 
     @Override

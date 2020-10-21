@@ -2,19 +2,19 @@
 package de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable;
 
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._visitor.TestSIJavaWithCustomTypesVisitor;
-import de.monticore.types.check.FlatExpressionScopeSetterAbs;
+import de.monticore.types.check.FlatExpressionScopeSetter;
 
-public class TestSIJavaWithCustomTypesFlatExpressionScopeSetter extends FlatExpressionScopeSetterAbs
+public class TestSIJavaWithCustomTypesFlatExpressionScopeSetter extends FlatExpressionScopeSetter
         implements TestSIJavaWithCustomTypesVisitor {
 
     public TestSIJavaWithCustomTypesFlatExpressionScopeSetter(ITestSIJavaWithCustomTypesScope scope) {
         super(scope);
     }
 
-    @Override
-    protected ITestSIJavaWithCustomTypesScope getScope() {
-        return (ITestSIJavaWithCustomTypesScope) scope;
-    }
+//    @Override
+//    protected ITestSIJavaWithCustomTypesScope getScope() {
+//        return (ITestSIJavaWithCustomTypesScope) scope;
+//    }
 
     // ************************* Visitor *************************
 

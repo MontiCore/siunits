@@ -2,24 +2,23 @@
 
 package de.monticore.types.check;
 
+import de.monticore.expressions.combineexpressionswithliterals._parser.CombineExpressionsWithLiteralsParser;
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
-import de.se_rwth.commons.logging.Log;
-import org.junit.Before;
+import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
 import org.junit.Test;
 
 import java.io.IOException;
 
 import static de.monticore.types.check.DefsTypeBasic.add2scope;
 import static de.monticore.types.check.DefsTypeBasic.field;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends DeriveSymTypeOfAssignmentExpressionTest {
 
-    @Before
     @Override
-    public void setupForEach() {
-        super.setupForEach();
+    public void setupScope() {
+        super.setupScope();
+        IOOSymbolsScope scope = getAsOOSymbolsScope();
+
         // SIUnits
         SymTypeExpression s = SIUnitSymTypeExpressionFactory.createSIUnit("s", scope);
         SymTypeExpression m = SIUnitSymTypeExpressionFactory.createSIUnit("m", scope);
@@ -27,9 +26,9 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         SymTypeExpression kMe2perHMSe4 = SIUnitSymTypeExpressionFactory.createSIUnit("km^2/(h*ms^4)", scope);
 
         // Constants
-        SymTypeConstant d = SIUnitSymTypeExpressionFactory.createTypeConstant("double");
-        SymTypeConstant i = SIUnitSymTypeExpressionFactory.createTypeConstant("int");
-        SymTypeConstant l = SIUnitSymTypeExpressionFactory.createTypeConstant("long");
+        SymTypeConstant d = SymTypeExpressionFactory.createTypeConstant("double");
+        SymTypeConstant i = SymTypeExpressionFactory.createTypeConstant("int");
+        SymTypeConstant l = SymTypeExpressionFactory.createTypeConstant("long");
 
         // SIUnitLiterals
         add2scope(scope, field("varD_S", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(d, s, scope)));
@@ -44,766 +43,411 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         add2scope(scope, field("varKMe2perHMSe4", kMe2perHMSe4));
     }
 
+    // Parser used for convenience:
+    // (may be any other Parser that understands CommonExpressions)
+    private CombineExpressionsWithLiteralsParser p = new CombineExpressionsWithLiteralsParser();
+    @Override
+    protected ASTExpression parseExpression(String expression) throws IOException {
+        return p.parse_StringExpression(expression).get();
+    }
+
+    @Override
+    protected void setupTypeCheck() {
+        // This is an auxiliary
+        ITypesCalculator derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator();
+
+        // other arguments not used (and therefore deliberately null)
+        tc = new TypeCheck(null, derLit);
+    }
+
     /*--------------------------------------------------- TESTS ---------------------------------------------------------*/
 
     /**
      * test IncSuffixExpression
      */
     @Test
-    public void deriveFromIncSuffixExpression() throws IOException {
+    public void deriveFromIncSuffixExpressionWithSIUnits() throws IOException {
         //example with siunit literal
-        String s = "4km++";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,km)", printType(tc.typeOf(astex)));
+        check("4km++", "(int,km)");
     }
 
     @Test
-    public void testInvalidIncSuffixExpression() throws IOException {
+    public void testInvalidIncSuffixExpressionWithSIUnits() throws IOException {
         //not possible because ++ is not defined for siunits
-        String s = "varS++";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0170", getFirstErrorCode());
-        }
+        checkError("varS++", "0xA0170");
     }
 
     /**
      * test DecSuffixExpression
      */
     @Test
-    public void deriveFromDecSuffixExpression() throws IOException {
+    public void deriveFromDecSuffixExpressionWithSIUnits() throws IOException {
         //example with siunit literal
-        String s = "4.2km--";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,km)", printType(tc.typeOf(astex)));
+        check("4.2km--", "(double,km)");
     }
 
     @Test
-    public void testInvalidDecSuffixExpression() throws IOException {
+    public void testInvalidDecSuffixExpressionWithSIUnits() throws IOException {
         //not possible because -- is not defined for siunits
-        String s = "varS--";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0171", getFirstErrorCode());
-        }
+        checkError("varS--", "0xA0171");
     }
 
     /**
      * test IncPrefixExpression
      */
     @Test
-    public void deriveFromIncPrefixExpression() throws IOException {
+    public void deriveFromIncPrefixExpressionWithSIUnits() throws IOException {
         //example with siunit literal
-        String s = "++4km";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,km)", printType(tc.typeOf(astex)));
+        check("++4km", "(int,km)");
     }
 
     @Test
-    public void testInvalidIncPrefixExpression() throws IOException {
+    public void testInvalidIncPrefixExpressionWithSIUnits() throws IOException {
         //not possible because ++ is not defined for siunits
-        String s = "++varS";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0172", getFirstErrorCode());
-        }
+        checkError("++varS", "0xA0172");
     }
 
     /**
      * test DecPrefixExpression
      */
     @Test
-    public void deriveFromDecPrefixExpression() throws IOException {
+    public void deriveFromDecPrefixExpressionWithSIUnits() throws IOException {
         //example with siunit literal
-        String s = "--4.1km";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,km)", printType(tc.typeOf(astex)));
+        check("--4.1km", "(double,km)");
     }
 
     @Test
-    public void testInvalidDecPrefixExpression() throws IOException {
+    public void testInvalidDecPrefixExpressionWithSIUnits() throws IOException {
         //not possible because -- is not defined for siunits
-        String s = "--varS";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0173", getFirstErrorCode());
-        }
+        checkError("--varS", "0xA0173");
     }
 
     /**
      * test MinusPrefixExpression
      */
     @Test
-    public void deriveFromMinusPrefixExpression() throws IOException {
+    public void deriveFromMinusPrefixExpressionWithSIUnits() throws IOException {
         //example with siunit literal
-        String s = "-4.3km";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,km)", printType(tc.typeOf(astex)));
+        check("-4.3km", "(double,km)");
     }
 
     @Test
-    public void testInvalidMinusPrefixExpression() throws IOException {
+    public void testInvalidMinusPrefixExpressionWithSIUnits() throws IOException {
         //not possible because - is not defined for siunits
-        String s = "-varS";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0175", getFirstErrorCode());
-        }
+        checkError("-varS", "0xA0175");
     }
 
     /**
      * test PlusPrefixExpression
      */
     @Test
-    public void deriveFromPlusPrefixExpression() throws IOException {
+    public void deriveFromPlusPrefixExpressionWithSIUnits() throws IOException {
         //example with siunit literal
-        String s = "+4km";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,km)", printType(tc.typeOf(astex)));
+        check("+4km", "(int,km)");
     }
 
     @Test
-    public void testInvalidPlusPrefixExpression() throws IOException {
+    public void testInvalidPlusPrefixExpressionWithSIUnits() throws IOException {
         //not possible because + is not defined for siunits
-        String s = "+varS";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0174", getFirstErrorCode());
-        }
+        checkError("+varS", "0xA0174");
     }
 
     /**
      * test PlusAssignmentExpression
      */
     @Test
-    public void deriveFromPlusAssignmentExpression() throws IOException {
+    public void deriveFromPlusAssignmentExpressionWithSIUnits() throws IOException {
         //example with double m += int m
-        String s = "varD_M+=4km";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,m)", printType(tc.typeOf(astex)));
+        check("varD_M+=4km", "(double,m)");
 
         //example with int m += double m
-        s = "varI_M+=4.2km";
-        astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", printType(tc.typeOf(astex)));
+        check("varI_M+=4.2km", "(int,m)");
 
         //example with double m += int m
-        s = "varI_M+=4km";
-        astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", printType(tc.typeOf(astex)));
+        check("varI_M+=4km", "(int,m)");
     }
 
 
     @Test
-    public void testInvalidPlusAssignmentExpression1() throws IOException {
+    public void testInvalidPlusAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because s = s + m cannot be calculated
-        String s = "varD_S+=4km";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0176", getFirstErrorCode());
-        }
+        checkError("varD_S+=4km", "0xA0176");
     }
 
     @Test
-    public void testInvalidPlusAssignmentExpression2() throws IOException {
+    public void testInvalidPlusAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because += is not defined for siunits
-        String s = "varS+=4km";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0176", getFirstErrorCode());
-        }
+        checkError("varS+=4km", "0xA0176");
     }
 
     /**
      * test MinusAssignmentExpression
      */
     @Test
-    public void deriveFromMinusAssignmentExpression() throws IOException {
+    public void deriveFromMinusAssignmentExpressionWithSIUnits() throws IOException {
         //example with siunit literal long m^2/s -= int m^2/s
-        String s = "varL_KMe2perH-=4m^2/s";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(long,km^2/h)", printType(tc.typeOf(astex)));
+        check("varL_KMe2perH-=4m^2/s", "(long,km^2/h)");
     }
 
     @Test
-    public void testInvalidMinusAssignmentExpression1() throws IOException {
+    public void testInvalidMinusAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because s = s - m cannot be calculated
-        String s = "varD_S-=4km";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0177", getFirstErrorCode());
-        }
+        checkError("varD_S-=4km", "0xA0177");
     }
 
     @Test
-    public void testInvalidMinusAssignmentExpression2() throws IOException {
+    public void testInvalidMinusAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because -= is not defined for siunits
-        String s = "varS-=4km";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0177", getFirstErrorCode());
-        }
+        checkError("varS-=4km", "0xA0177");
     }
 
     /**
      * test MultAssignmentExpression
      */
     @Test
-    public void deriveFromMultAssignmentExpression() throws IOException {
+    public void deriveFromMultAssignmentExpressionWithSIUnits() throws IOException {
         //example with siunit literal int m * double
-        String s = "varI_M*=5.3";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", printType(tc.typeOf(astex)));
+        check("varI_M*=5.3", "(int,m)");
 
         //example with siunit literal double m * double
-        s = "varD_M*=5.3";
-        astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,m)", printType(tc.typeOf(astex)));
+        check("varD_M*=5.3", "(double,m)");
 
         //example with siunit literal double m * int
-        s = "varD_M*=5";
-        astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,m)", printType(tc.typeOf(astex)));
+        check("varD_M*=5", "(double,m)");
     }
 
     @Test
-    public void testInvalidMultAssignmentExpression1() throws IOException {
+    public void testInvalidMultAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because int m = int m * (int m) String returns a casting error
-        String s = "varI_M*=\"Hello\"";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0178", getFirstErrorCode());
-        }
+        checkError("varI_M*=\"Hello\"", "0xA0178");
     }
 
     @Test
-    public void testInvalidMultAssignmentExpression2() throws IOException {
+    public void testInvalidMultAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because m != m * m
-        String s = "varI_M*=varI_M";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0178", getFirstErrorCode());
-        }
+        checkError("varI_M*=varI_M", "0xA0178");
     }
 
     @Test
-    public void testInvalidMultAssignmentExpression3() throws IOException {
+    public void testInvalidMultAssignmentExpressionWithSIUnits3() throws IOException {
         //not possible because m != m * m
-        String s = "varM*=varM";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0178", getFirstErrorCode());
-        }
+        checkError("varM*=varM", "0xA0178");
     }
 
     /**
      * test DivideAssignmentExpression
      */
     @Test
-    public void deriveFromDivideAssignmentExpression() throws IOException {
+    public void deriveFromDivideAssignmentExpressionWithSIUnits() throws IOException {
         //example with siunit literal int m / int
-        String s = "varI_M/=5";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", printType(tc.typeOf(astex)));
+        check("varI_M/=5", "(int,m)");
 
         //example with siunit literal int m / double
-        s = "varI_M/=5.2";
-        astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", printType(tc.typeOf(astex)));
+        check("varI_M/=5.2", "(int,m)");
 
         //example with siunit literal double m / int
-        s = "varD_M/=5";
-        astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,m)", printType(tc.typeOf(astex)));
+        check("varD_M/=5", "(double,m)");
     }
 
     @Test
-    public void testInvalidDivideAssignmentExpression1() throws IOException {
+    public void testInvalidDivideAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because int m = int m / (int m) String returns a casting error
-        String s = "varI_M/=\"Hello\"";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0179", getFirstErrorCode());
-        }
+        checkError("varI_M/=\"Hello\"", "0xA0179");
     }
 
     @Test
-    public void testInvalidDivideAssignmentExpression2() throws IOException {
+    public void testInvalidDivideAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because m != m / m
-        String s = "varI_M/=varI_M";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0179", getFirstErrorCode());
-        }
+        checkError("varI_M/=varI_M", "0xA0179");
     }
 
     @Test
-    public void testInvalidDivideAssignmentExpression3() throws IOException {
+    public void testInvalidDivideAssignmentExpressionWithSIUnits3() throws IOException {
         //not possible because m != m / m
-        String s = "varM/=varM";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0179", getFirstErrorCode());
-        }
+        checkError("varM/=varM", "0xA0179");
     }
 
     /**
      * test ModuloAssignmentExpression
      */
     @Test
-    public void deriveFromModuloAssignmentExpression() throws IOException {
+    public void deriveFromModuloAssignmentExpressionWithSIUnits() throws IOException {
         //example with siunit literal int m %= double m
-        String s = "varI_M%=9.2 m";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", printType(tc.typeOf(astex)));
+        check("varI_M%=9.2 m", "(int,m)");
 
         //example with siunit literal double m %= int m
-        s = "varD_M%=9 m";
-        astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,m)", printType(tc.typeOf(astex)));
+        check("varD_M%=9 m", "(double,m)");
     }
 
     @Test
-    public void testInvalidModuloAssignmentExpression1() throws IOException {
+    public void testInvalidModuloAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because s = s % m cannot be calculated
-        String s = "varD_S%=3m";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0189", getFirstErrorCode());
-        }
+        checkError("varD_S%=3m", "0xA0189");
     }
 
     @Test
-    public void testInvalidModuloAssignmentExpression2() throws IOException {
+    public void testInvalidModuloAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because s = s % int cannot be calculated
-        String s = "varD_S%=3";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0189", getFirstErrorCode());
-        }
+        checkError("varD_S%=3", "0xA0189");
     }
 
     @Test
-    public void testInvalidModuloAssignmentExpression3() throws IOException {
+    public void testInvalidModuloAssignmentExpressionWithSIUnits3() throws IOException {
         //not possible because s = s % int cannot be calculated
-        String s = "varS%=3";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0189", getFirstErrorCode());
-        }
+        checkError("varS%=3", "0xA0189");
     }
 
     @Test
-    public void deriveFromAndAssignmentExpression() throws IOException {
+    public void deriveFromAndAssignmentExpressionWithSIUnits() throws IOException {
         //example with int m &= int
-        String s = "varI_M&=9";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", printType(tc.typeOf(astex)));
+        check("varI_M&=9", "(int,m)");
         //example with long m &= int
-        s = "varL_KMe2perH&=9";
-        astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(long,km^2/h)", printType(tc.typeOf(astex)));
+        check("varL_KMe2perH&=9", "(long,km^2/h)");
     }
 
     @Test
-    public void testInvalidAndAssignmentExpression1() throws IOException {
+    public void testInvalidAndAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because int m = int m & int m cannot be calculated
-        String s = "varI_M&=varI_M";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0183", getFirstErrorCode());
-        }
+        checkError("varI_M&=varI_M", "0xA0183");
     }
 
     @Test
-    public void testInvalidAndAssignmentExpression2() throws IOException {
+    public void testInvalidAndAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because int m = int m & int m cannot be calculated
-        String s = "varM&=2";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0183", getFirstErrorCode());
-        }
+        checkError("varM&=2", "0xA0183");
     }
 
     @Test
-    public void deriveFromOrAssignmentExpression() throws IOException {
+    public void deriveFromOrAssignmentExpressionWithSIUnits() throws IOException {
         //example with int m &= int
-        String s = "varI_M|=9";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", printType(tc.typeOf(astex)));
+        check("varI_M|=9", "(int,m)");
         //example with long m &= int
-        s = "varL_KMe2perH|=9";
-        astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(long,km^2/h)", printType(tc.typeOf(astex)));
+        check("varL_KMe2perH|=9", "(long,km^2/h)");
     }
 
 
     @Test
-    public void testInvalidOrAssignmentExpression1() throws IOException {
+    public void testInvalidOrAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because int m = int m | int m cannot be calculated
-        String s = "varI_M|=3 m";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0184", getFirstErrorCode());
-        }
+        checkError("varI_M|=3 m", "0xA0184");
     }
 
 
     @Test
-    public void testInvalidOrAssignmentExpression2() throws IOException {
+    public void testInvalidOrAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because int m = int m | int m cannot be calculated
-        String s = "varM|=3";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0184", getFirstErrorCode());
-        }
+        checkError("varM|=3", "0xA0184");
     }
 
     @Test
-    public void deriveFromBinaryXorAssignmentExpression() throws IOException {
+    public void deriveFromBinaryXorAssignmentExpressionWithSIUnits() throws IOException {
         //example with int m &= int
-        String s = "varI_M^=9";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", printType(tc.typeOf(astex)));
+        check("varI_M^=9", "(int,m)");
         //example with long m &= int
-        s = "varL_KMe2perH^=9";
-        astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(long,km^2/h)", printType(tc.typeOf(astex)));
+        check("varL_KMe2perH^=9", "(long,km^2/h)");
     }
 
     @Test
-    public void testInvalidBinaryXorAssignmentExpression1() throws IOException {
+    public void testInvalidBinaryXorAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because int m = int m ^ int m cannot be calculated
-        String s = "varI_M^=3 m";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0185", getFirstErrorCode());
-        }
+        checkError("varI_M^=3 m", "0xA0185");
     }
 
     @Test
-    public void testInvalidBinaryXorAssignmentExpression2() throws IOException {
+    public void testInvalidBinaryXorAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because int m = int m ^ int m cannot be calculated
-        String s = "varM^=3 m";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0185", getFirstErrorCode());
-        }
+        checkError("varM^=3 m", "0xA0185");
     }
 
     @Test
-    public void deriveFromDoubleLeftAssignmentExpression() throws IOException {
+    public void deriveFromDoubleLeftAssignmentExpressionWithSIUnits() throws IOException {
         //example with int m - int
-        String s = "varI_M<<=9";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", printType(tc.typeOf(astex)));
+        check("varI_M<<=9", "(int,m)");
         //example with int m - char
-        s = "varI_M<<=\'c\'";
-        astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", printType(tc.typeOf(astex)));
+        check("varI_M<<=\'c\'", "(int,m)");
     }
 
     @Test
-    public void testInvalidDoubleLeftAssignmentExpression1() throws IOException {
+    public void testInvalidDoubleLeftAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because int m = int m << int m cannot be calculated
-        String s = "varI_M<<=3 m";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0187", getFirstErrorCode());
-        }
+        checkError("varI_M<<=3 m", "0xA0187");
     }
 
     @Test
-    public void testInvalidDoubleLeftAssignmentExpression2() throws IOException {
+    public void testInvalidDoubleLeftAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because int m = int m << int m cannot be calculated
-        String s = "varM<<=3";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0187", getFirstErrorCode());
-        }
+        checkError("varM<<=3", "0xA0187");
     }
 
     /**
      * test DoubleRightAssignmentExpression
      */
     @Test
-    public void deriveFromDoubleRightAssignmentExpression() throws IOException {
+    public void deriveFromDoubleRightAssignmentExpressionWithSIUnits() throws IOException {
         //example with int m - int
-        String s = "varI_M>>=9";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", printType(tc.typeOf(astex)));
+        check("varI_M>>=9", "(int,m)");
         //example with int m - char
-        s = "varI_M>>=\'c\'";
-        astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", printType(tc.typeOf(astex)));
+        check("varI_M>>=\'c\'", "(int,m)");
     }
 
     @Test
-    public void testInvalidDoubleRightAssignmentExpression1() throws IOException {
+    public void testInvalidDoubleRightAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because int m = int m >> int m cannot be calculated
-        String s = "varI_M>>=3m";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0186", getFirstErrorCode());
-        }
+        checkError("varI_M>>=3m", "0xA0186");
     }
 
     @Test
-    public void testInvalidDoubleRightAssignmentExpression2() throws IOException {
+    public void testInvalidDoubleRightAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because int m = int m >> int m cannot be calculated
-        String s = "varM>>=varM";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0186", getFirstErrorCode());
-        }
+        checkError("varM>>=varM", "0xA0186");
     }
 
     /**
      * test LogicalRightAssignmentExpression
      */
     @Test
-    public void deriveFromLogicalRightAssignmentExpression() throws IOException {
+    public void deriveFromLogicalRightAssignmentExpressionWithSIUnits() throws IOException {
         //example with int - int
-        String s = "varI_M>>>=9";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", printType(tc.typeOf(astex)));
+        check("varI_M>>>=9", "(int,m)");
         //example with char - char
-        s = "varI_M>>>=\'3\'";
-        astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(int,m)", printType(tc.typeOf(astex)));
+        check("varI_M>>>=\'3\'", "(int,m)");
     }
 
     @Test
-    public void testInvalidLogicalRightAssignmentExpression1() throws IOException {
+    public void testInvalidLogicalRightAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because int m = int m >>> int m cannot be calculated
-        String s = "varI_M>>>=varI_M";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0188", getFirstErrorCode());
-        }
+        checkError("varI_M>>>=varI_M", "0xA0188");
     }
 
     @Test
-    public void testInvalidLogicalRightAssignmentExpression2() throws IOException {
+    public void testInvalidLogicalRightAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because int m = int m >>> int m cannot be calculated
-        String s = "varM>>>=2";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0188", getFirstErrorCode());
-        }
+        checkError("varM>>>=2", "0xA0188");
     }
 
     /**
      * test RegularAssignmentExpression
      */
     @Test
-    public void deriveFromRegularAssignmentExpression() throws IOException {
+    public void deriveFromRegularAssignmentExpressionWithSIUnits() throws IOException {
         //example with km - km
-        String s = "varD_KMe2perHmSe4 = 3 mm^2/ks^3h^2";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,km^2/(h*ms^4))", printType(tc.typeOf(astex)));
+        check("varD_KMe2perHmSe4 = 3 mm^2/ks^3h^2", "(double,km^2/(h*ms^4))");
 
 
         //example with m^2/s
-        s = "varKMe2perH = varM*varM/varS";
-        astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("km^2/h", printType(tc.typeOf(astex)));
+        check("varKMe2perH = varM*varM/varS", "km^2/h");
     }
 
 
     @Test
-    public void testInvalidRegularAssignmentExpression1() throws IOException {
+    public void testInvalidRegularAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because m^2/s^5 and m/s^5 are incompatible types
-        String s = "varD_KMe2perHmSe4 = 3 mm/ks^3h^2";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0182", getFirstErrorCode());
-        }
+        checkError("varD_KMe2perHmSe4 = 3 mm/ks^3h^2", "0xA0182");
     }
 
     @Test
-    public void testInvalidRegularAssignmentExpression2() throws IOException {
+    public void testInvalidRegularAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because m^2/s^5 and m/s^5 are incompatible types
-        String s = "varM = 3 m";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        try {
-            tc.typeOf(astex);
-            fail("Exception not thrown");
-        } catch (RuntimeException e) {
-            assertEquals("0xA0182", getFirstErrorCode());
-        }
-    }
-
-    private String getFirstErrorCode() {
-        if (Log.getFindings().size() > 0) {
-            String firstFinding = Log.getFindings().get(0).getMsg();
-            return firstFinding.split(" ")[0];
-        }
-        return "";
-    }
-
-    protected String printType(SymTypeExpression symType) {
-        return symType.print();
+        checkError("varM = 3 m", "0xA0182");
     }
 }
