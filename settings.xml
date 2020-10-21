@@ -1,83 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- (c) https://github.com/MontiCore/monticore -->
-
-
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+          xsi:schemaLocation="http:/maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd ">
 
-    <pluginGroups>
-        <pluginGroup>org.mortbay.jetty</pluginGroup>
-        <pluginGroup>de.topobyte</pluginGroup>
-    </pluginGroups>
 
-    <proxies>
-    </proxies>
+  <servers>
+    <server>
+      <id>se-nexus</id>
+      <username>${username}</username>
+      <password>${password}</password>
+    </server>
 
-    <servers>
+        <!-- insert any other requried servers (e.g. webdavs, application servers, etc. -->
+
+        <!-- for example:
         <server>
-            <id>se-nexus</id>
-            <username>cibuild</username>
-            <password>${env.cibuild}</password>
+          <id>some-webdav</id>
+          <username>username</username>
+          <password>password</password>
         </server>
+        -->
+  </servers>
 
-        <server>
-            <id>github</id>
-            <username>travisbuilduser</username>
-            <password>${env.travisbuilduserpassword}</password>
-        </server>
-    </servers>
+  <mirrors>
+    <mirror>
+            <!-- this sends everything except repositories named se-nexus-p2 -->
+            <!-- to our single nexus super repository -->
+      <id>se-nexus</id>
+      <mirrorOf>central,!se-nexus-p2</mirrorOf>
+      <url>https://nexus.se.rwth-aachen.de/content/groups/public</url>
+    </mirror>
+  </mirrors>
 
-    <mirrors>
-        <mirror>
-            <id>se-nexus</id>
-            <mirrorOf>external:*</mirrorOf>
-            <url>https://nexus.se.rwth-aachen.de/content/groups/public</url>
-        </mirror>
-    </mirrors>
+  <profiles>
+    <profile>
+      <id>se-nexus</id>
+            <!-- enable snapshots for the built in central repo to direct -->
+            <!-- all requests to nexus via the mirror -->
+      <repositories>
+        <repository>
+          <id>central</id>
+          <url>http://central</url>
+          <releases><enabled>true</enabled></releases>
+          <snapshots><enabled>true</enabled></snapshots>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>central</id>
+          <url>http://central</url>
+          <releases><enabled>true</enabled></releases>
+          <snapshots><enabled>true</enabled></snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
 
-    <profiles>
-        <profile>
-            <id>sonar</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <!-- Optional URL to server. Default value is http://localhost:9000 -->
-                <sonar.host.url>
-                    https://metric.se.rwth-aachen.de
-                </sonar.host.url>
-                <sonar.login>
-                    jenkins
-                </sonar.login>
-                <sonar.password>
-                    ${env.sonar}
-                </sonar.password>
-            </properties>
-        </profile>
+  <activeProfiles>
+        <!-- make the profile active by default -->
+    <activeProfile>se-nexus</activeProfile>
+  </activeProfiles>
 
-        <profile>
-            <id>se-nexus</id>
-            <repositories>
-                <repository>
-                    <id>central</id>
-                    <url>http://central</url>
-                    <releases><enabled /></releases>
-                    <snapshots><enabled /></snapshots>
-                </repository>
-            </repositories>
-            <pluginRepositories>
-                <pluginRepository>
-                    <id>central</id>
-                    <url>http://central</url>
-                    <releases><enabled /></releases>
-                    <snapshots><enabled /></snapshots>
-                </pluginRepository>
-            </pluginRepositories>
-        </profile>
-    </profiles>
-
-    <activeProfiles>
-        <activeProfile>se-nexus</activeProfile>
-    </activeProfiles>
 </settings>
