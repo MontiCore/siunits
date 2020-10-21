@@ -28,12 +28,12 @@ build:
     paths:
       - "."
     expire_in: 1 week
-  except:
-    changes:
-    - pom.xml
-    - .gitignore
-    - README.md
-    - .gitlab-ci.yml
+#  except:
+#    changes:
+#    - pom.xml
+#    - .gitignore
+#    - README.md
+#    - .gitlab-ci.yml
 
 test:
   stage: test
