@@ -28,9 +28,9 @@ build:
     paths:
       - "."
     expire_in: 1 week
-#  except:
-#    changes:
-#    - pom.xml
+  except:
+    changes:
+    - pom.xml
 #    - .gitignore
 #    - README.md
 #    - .gitlab-ci.yml
