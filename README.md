@@ -1,6 +1,6 @@
 # siunits
 
-TODO
+A detailed description on the si units project can be found [here](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/master/src/main/grammars/de/monticore/SIUnits.md)
 
 ## Further Information
 
