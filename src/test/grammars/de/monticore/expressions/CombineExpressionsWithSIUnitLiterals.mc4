@@ -1,0 +1,10 @@
+/* (c) https://github.com/MontiCore/monticore */
+
+package de.monticore.expressions;
+
+grammar CombineExpressionsWithSIUnitLiterals extends
+          de.monticore.expressions.CombineExpressionsWithLiterals,
+          de.monticore.SIUnitLiterals,
+          de.monticore.SIUnitTypes4Computing,
+          de.monticore.SIUnitTypes4Math {
+}

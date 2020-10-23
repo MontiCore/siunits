@@ -19,15 +19,13 @@ import de.monticore.types.mcbasictypes._ast.ASTMCQualifiedType;
 import de.monticore.types.mcbasictypes._ast.ASTMCReturnType;
 
 public abstract class FlatExpressionScopeSetterAbs implements ExpressionsBasisVisitor {
-
     protected IExpressionsBasisScope scope;
-
-    protected abstract IExpressionsBasisScope getScope();
 
     public FlatExpressionScopeSetterAbs(IExpressionsBasisScope scope) {
         this.scope = scope;
     }
 
+    // ************************* Visitor *************************
 
     private ExpressionsBasisVisitor realThis = this;
 
@@ -42,273 +40,269 @@ public abstract class FlatExpressionScopeSetterAbs implements ExpressionsBasisVi
     }
 
     /*************************************************ASSIGNMENT EXPRESSIONS****************************************************/
+
     public void visit(ASTAssignmentExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTMinusPrefixExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTPlusPrefixExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTDecPrefixExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTDecSuffixExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTIncPrefixExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTIncSuffixExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
     /*************************************************COMMON EXPRESSIONS****************************************************/
 
-    
     public void visit(ASTGreaterEqualExpression expr) {
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTLessEqualExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTGreaterThanExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTLessThanExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTPlusExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTMinusExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTMultExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTDivideExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTModuloExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTEqualsExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTNotEqualsExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTFieldAccessExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTCallExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTLogicalNotExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTBooleanAndOpExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTBooleanOrOpExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTBooleanNotExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTBracketExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTConditionalExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTArguments expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
     /*************************************************BIT EXPRESSIONS****************************************************/
 
-    
     public void visit(ASTLogicalRightShiftExpression expr) {
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTRightShiftExpression expr) {
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTLeftShiftExpression expr) {
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTBinaryOrOpExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTBinaryAndExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTBinaryXorExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
     /*************************************************SET EXPRESSIONS****************************************************/
 
-    
     public void visit(ASTIsInExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTSetInExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTUnionExpressionInfix expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTIntersectionExpressionInfix expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
     /*************************************************EXPRESSIONS BASIS****************************************************/
 
-    
     public void visit(ASTLiteralExpression expr){
-        expr.setEnclosingScope(getScope());
-        expr.getLiteral().setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
+        expr.getLiteral().setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTNameExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
     /*************************************************JAVA CLASS EXPRESSIONS****************************************************/
 
-    
     public void visit(ASTPrimarySuperExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTPrimaryThisExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTSuperExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTThisExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTArrayExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTInstanceofExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTTypeCastExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTPrimaryGenericInvocationExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTGenericInvocationExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTClassExpression expr){
-        expr.setEnclosingScope(getScope());
+        expr.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTMCQualifiedType type){
-        type.setEnclosingScope(getScope());
+        type.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTMCQualifiedName name) {
-        name.setEnclosingScope(getScope());
+        name.setEnclosingScope(scope);
     }
 
-    
+
     public void visit(ASTMCReturnType type){
-        type.setEnclosingScope(getScope());
+        type.setEnclosingScope(scope);
     }
 }

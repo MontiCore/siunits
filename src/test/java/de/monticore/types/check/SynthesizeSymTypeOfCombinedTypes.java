@@ -2,11 +2,11 @@
 
 package de.monticore.types.check;
 
-import de.monticore.expressions.combineexpressionswithliterals._visitor.CombineExpressionsWithLiteralsDelegatorVisitor;
+import de.monticore.expressions.combineexpressionswithsiunitliterals._visitor.CombineExpressionsWithSIUnitLiteralsDelegatorVisitor;
 
 import java.util.Optional;
 
-public class SynthesizeSymTypeOfCombinedTypes extends CombineExpressionsWithLiteralsDelegatorVisitor
+public class SynthesizeSymTypeOfCombinedTypes extends CombineExpressionsWithSIUnitLiteralsDelegatorVisitor
         implements ISynthesize {
 
     private SynthesizeSymTypeFromMCSimpleGenericTypes symTypeFromMCSimpleGenericTypes;
@@ -15,7 +15,7 @@ public class SynthesizeSymTypeOfCombinedTypes extends CombineExpressionsWithLite
 
     private SynthesizeSymTypeFromSIUnitTypes4Math symTypeFromSIUnitTypes4Math;
 
-    private CombineExpressionsWithLiteralsDelegatorVisitor realThis = this;
+    private CombineExpressionsWithSIUnitLiteralsDelegatorVisitor realThis = this;
 
     private TypeCheckResult typeCheckResult = new TypeCheckResult();
 
@@ -43,7 +43,7 @@ public class SynthesizeSymTypeOfCombinedTypes extends CombineExpressionsWithLite
     }
 
     @Override
-    public CombineExpressionsWithLiteralsDelegatorVisitor getRealThis(){
+    public CombineExpressionsWithSIUnitLiteralsDelegatorVisitor getRealThis(){
         return realThis;
     }
 }

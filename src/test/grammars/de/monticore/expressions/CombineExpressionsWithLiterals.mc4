@@ -4,15 +4,13 @@ package de.monticore.expressions;
 
 grammar CombineExpressionsWithLiterals extends
           de.monticore.expressions.AssignmentExpressions,
-	        de.monticore.expressions.CommonExpressions,
-	          de.monticore.expressions.BitExpressions,
-		        de.monticore.SIUnitLiterals,
-		         de.monticore.expressions.JavaClassExpressions,
-		           de.monticore.expressions.SetExpressions,
-		            de.monticore.types.MCSimpleGenericTypes,
-		             de.monticore.SIUnitTypes4Computing,
-		              de.monticore.SIUnitTypes4Math,
-		               de.monticore.symbols.OOSymbols {
+          de.monticore.expressions.CommonExpressions,
+          de.monticore.expressions.BitExpressions,
+          de.monticore.literals.MCCommonLiterals,
+          de.monticore.expressions.JavaClassExpressions,
+          de.monticore.expressions.SetExpressions,
+          de.monticore.types.MCSimpleGenericTypes,
+          de.monticore.symbols.OOSymbols {
 
     Foo="bar" Expression;
 

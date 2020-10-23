@@ -28,12 +28,12 @@ build:
     paths:
       - "."
     expire_in: 1 week
-  except:
-    changes:
-    - pom.xml
-    - .gitignore
-    - README.md
-    - .gitlab-ci.yml
+#  except:
+#    changes:
+#    - pom.xml
+#    - .gitignore
+#    - README.md
+#    - .gitlab-ci.yml
 
 test:
   stage: test
@@ -41,12 +41,12 @@ test:
     - build
   script:
     - "./gradlew check $GRADLE_OPTS $ARGS2"
-  except:
-    changes:
-    - pom.xml
-    - .gitignore
-    - README.md
-    - .gitlab-ci.yml
+#  except:
+#    changes:
+#    - pom.xml
+#    - .gitignore
+#    - README.md
+#    - .gitlab-ci.yml
 
 deploy:
   stage: deploy
@@ -57,9 +57,9 @@ deploy:
   only:
     - master
     - dev
-  except:
-    changes:
-    - pom.xml
-    - .gitignore
-    - README.md
-    - .gitlab-ci.yml
+#  except:
+#    changes:
+#    - pom.xml
+#    - .gitignore
+#    - README.md
+#    - .gitlab-ci.yml

@@ -11,11 +11,6 @@ public class TestSIJavaWithCustomTypesFlatExpressionScopeSetter extends FlatExpr
         super(scope);
     }
 
-    @Override
-    protected ITestSIJavaWithCustomTypesScope getScope() {
-        return (ITestSIJavaWithCustomTypesScope) scope;
-    }
-
     // ************************* Visitor *************************
 
     private TestSIJavaWithCustomTypesVisitor realThis = this;

@@ -11,7 +11,7 @@ import java.util.Optional;
 public class DeriveSymTypeOfCombineExpressions extends DeriveSymTypeOfExpression implements CombineExpressionsWithLiteralsVisitor {
 
   private CombineExpressionsWithLiteralsVisitor realThis;
-  private SynthesizeSymTypeOfCombinedTypes synthesizer;
+  private SynthesizeSymTypeFromMCBasicTypes synthesizer;
 
   @Override
   public void setRealThis(CombineExpressionsWithLiteralsVisitor realThis) {
@@ -23,7 +23,7 @@ public class DeriveSymTypeOfCombineExpressions extends DeriveSymTypeOfExpression
     return realThis;
   }
 
-  public DeriveSymTypeOfCombineExpressions(SynthesizeSymTypeOfCombinedTypes synthesizer){
+  public DeriveSymTypeOfCombineExpressions(SynthesizeSymTypeFromMCBasicTypes synthesizer){
     this.realThis=this;
     this.synthesizer = synthesizer;
   }
