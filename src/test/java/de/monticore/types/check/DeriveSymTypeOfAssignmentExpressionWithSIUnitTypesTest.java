@@ -2,22 +2,37 @@
 
 package de.monticore.types.check;
 
-import de.monticore.expressions.combineexpressionswithliterals._parser.CombineExpressionsWithLiteralsParser;
-import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
-import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
+import de.monticore.expressions.combineexpressionswithsiunitliterals.CombineExpressionsWithSIUnitLiteralsMill;
+import de.monticore.expressions.combineexpressionswithsiunitliterals._symboltable.ICombineExpressionsWithSIUnitLiteralsScope;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 
 import java.io.IOException;
 
 import static de.monticore.types.check.DefsTypeBasic.add2scope;
 import static de.monticore.types.check.DefsTypeBasic.field;
 
-public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends DeriveSymTypeOfAssignmentExpressionTest {
+public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends DeriveSymTypeAbstractTest {
 
     @Override
-    public void setupScope() {
-        super.setupScope();
-        IOOSymbolsScope scope = getAsOOSymbolsScope();
+    public void setupTypeCheck() {
+        // This is an auxiliary
+        ITypesCalculator derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator();
+
+        // other arguments not used (and therefore deliberately null)
+        setTypeCheck(new TypeCheck(null, derLit));
+    }
+
+    private ICombineExpressionsWithSIUnitLiteralsScope scope;
+
+    @BeforeAll
+    public void setupForEach() {
+        scope = CombineExpressionsWithSIUnitLiteralsMill
+                .combineExpressionsWithSIUnitLiteralsScopeBuilder()
+                .setEnclosingScope(null)       // No enclosing Scope: Search ending here
+                .setExportingSymbols(true)
+                .setAstNode(null)
+                .build();
 
         // SIUnits
         SymTypeExpression s = SIUnitSymTypeExpressionFactory.createSIUnit("s", scope);
@@ -41,23 +56,8 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         add2scope(scope, field("varM", m));
         add2scope(scope, field("varKMe2perH", kMe2perH));
         add2scope(scope, field("varKMe2perHMSe4", kMe2perHMSe4));
-    }
 
-    // Parser used for convenience:
-    // (may be any other Parser that understands CommonExpressions)
-    private CombineExpressionsWithLiteralsParser p = new CombineExpressionsWithLiteralsParser();
-    @Override
-    protected ASTExpression parseExpression(String expression) throws IOException {
-        return p.parse_StringExpression(expression).get();
-    }
-
-    @Override
-    protected void setupTypeCheck() {
-        // This is an auxiliary
-        ITypesCalculator derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator();
-
-        // other arguments not used (and therefore deliberately null)
-        tc = new TypeCheck(null, derLit);
+        setFlatExpressionScopeSetter(new CombineExpressionWithSIUnitLiteralsFlatScopeSetter(scope));
     }
 
     /*--------------------------------------------------- TESTS ---------------------------------------------------------*/

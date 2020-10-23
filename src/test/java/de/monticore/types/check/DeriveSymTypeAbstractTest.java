@@ -1,18 +1,17 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.types.check;
 
+import de.monticore.expressions.combineexpressionswithsiunitliterals._parser.CombineExpressionsWithSIUnitLiteralsParser;
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
-import de.monticore.expressions.expressionsbasis._symboltable.IExpressionsBasisScope;
-import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
 import de.se_rwth.commons.logging.Log;
 import de.se_rwth.commons.logging.LogStub;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.jupiter.api.BeforeAll;
 
 import java.io.IOException;
+import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public abstract class DeriveSymTypeAbstractTest {
 
@@ -23,50 +22,59 @@ public abstract class DeriveSymTypeAbstractTest {
         Log.enableFailQuick(false);
     }
 
-    @BeforeAll
-    public void setupForAll() {
-        setupTypeCheck();
-    }
-
     @Before
     public void setupForEach() {
-        initScope();
-        setupScope();
-        flatExpressionScopeSetter = new FlatExpressionScopeSetter(getAsExpressionBasisScope());
+        LogStub.init();         // replace log by a sideffect free variant
     }
 
-    protected TypeCheck tc;
+    private TypeCheck tc;
+
+    protected void setTypeCheck(TypeCheck tc) {
+        this.tc = tc;
+    }
 
     protected abstract void setupTypeCheck();
 
-    protected abstract void initScope();
 
-    protected abstract void setupScope();
+    // Parser used for convenience:
+    // (may be any other Parser that understands CommonExpressions)
+    private CombineExpressionsWithSIUnitLiteralsParser p = new CombineExpressionsWithSIUnitLiteralsParser();
 
-    protected abstract IExpressionsBasisScope getAsExpressionBasisScope();
+    protected ASTExpression parseExpression(String expression) throws IOException {
+        Optional<ASTExpression> astExpression = p.parse_StringExpression(expression);
+        assertTrue(astExpression.isPresent());
+        return astExpression.get();
+    }
 
-    protected abstract IOOSymbolsScope getAsOOSymbolsScope();
+    private FlatExpressionScopeSetterAbs flatExpressionScopeSetter;
 
-
-    protected abstract ASTExpression parseExpression(String expression) throws IOException;
-
-    protected FlatExpressionScopeSetter flatExpressionScopeSetter;
+    protected void setFlatExpressionScopeSetter(FlatExpressionScopeSetterAbs flatExpressionScopeSetter) {
+        this.flatExpressionScopeSetter = flatExpressionScopeSetter;
+    }
 
     protected void check(String expression, String expectedType) throws IOException {
+        setupTypeCheck();
         ASTExpression astex = parseExpression(expression);
-        astex.accept(flatExpressionScopeSetter);
+        if (flatExpressionScopeSetter != null)
+            astex.accept(flatExpressionScopeSetter);
+
         assertEquals(expectedType, tc.typeOf(astex).print());
     }
 
     protected void checkError(String expression, String expectedError) throws IOException {
+        setupTypeCheck();
         ASTExpression astex = parseExpression(expression);
-        astex.accept(flatExpressionScopeSetter);
+        if (flatExpressionScopeSetter != null)
+            astex.accept(flatExpressionScopeSetter);
+
         Log.getFindings().clear();
         try {
             tc.typeOf(astex);
         } catch(RuntimeException e) {
             assertEquals(expectedError, getFirstErrorCode());
+            return;
         }
+        fail();
     }
 
     private String getFirstErrorCode() {

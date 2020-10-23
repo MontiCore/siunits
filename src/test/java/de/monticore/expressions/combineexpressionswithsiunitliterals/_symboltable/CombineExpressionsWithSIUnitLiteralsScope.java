@@ -1,5 +1,5 @@
 /* (c) https://github.com/MontiCore/monticore */
-package de.monticore.expressions.combineexpressionswithliterals._symboltable;
+package de.monticore.expressions.combineexpressionswithsiunitliterals._symboltable;
 
 import de.monticore.symbols.basicsymbols._symboltable.FunctionSymbol;
 import de.monticore.symbols.basicsymbols._symboltable.TypeSymbol;
@@ -11,21 +11,21 @@ import de.monticore.types.check.SymTypeExpression;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class CombineExpressionsWithLiteralsScope extends CombineExpressionsWithLiteralsScopeTOP {
+public class CombineExpressionsWithSIUnitLiteralsScope extends CombineExpressionsWithSIUnitLiteralsScopeTOP {
 
-  public CombineExpressionsWithLiteralsScope() {
+  public CombineExpressionsWithSIUnitLiteralsScope() {
     super();
   }
 
-  public CombineExpressionsWithLiteralsScope(boolean isShadowingScope) {
+  public CombineExpressionsWithSIUnitLiteralsScope(boolean isShadowingScope) {
     super(isShadowingScope);
   }
 
-  public CombineExpressionsWithLiteralsScope(ICombineExpressionsWithLiteralsScope enclosingScope) {
+  public CombineExpressionsWithSIUnitLiteralsScope(ICombineExpressionsWithSIUnitLiteralsScope enclosingScope) {
     this(enclosingScope, false);
   }
 
-  public CombineExpressionsWithLiteralsScope(ICombineExpressionsWithLiteralsScope enclosingScope, boolean isShadowingScope) {
+  public CombineExpressionsWithSIUnitLiteralsScope(ICombineExpressionsWithSIUnitLiteralsScope enclosingScope, boolean isShadowingScope) {
     super(enclosingScope,isShadowingScope);
   }
 
@@ -37,7 +37,7 @@ public class CombineExpressionsWithLiteralsScope extends CombineExpressionsWithL
    */
   @Override
   public List<FunctionSymbol> resolveFunctionLocallyMany(boolean foundSymbols, String name, AccessModifier modifier,
-                                                       Predicate<FunctionSymbol> predicate) {
+          Predicate<FunctionSymbol> predicate) {
     //resolve methods by using overridden method
     List<FunctionSymbol> set = super.resolveFunctionLocallyMany(foundSymbols,name,modifier,predicate);
     if(this.isPresentSpanningSymbol()){

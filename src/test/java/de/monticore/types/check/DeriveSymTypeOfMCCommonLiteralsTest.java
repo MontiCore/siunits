@@ -4,7 +4,9 @@ package de.monticore.types.check;
 import de.monticore.literals.mccommonliterals.MCCommonLiteralsMill;
 import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
 import de.se_rwth.commons.logging.Log;
+import de.se_rwth.commons.logging.LogStub;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -20,12 +22,13 @@ public class DeriveSymTypeOfMCCommonLiteralsTest {
   
   @BeforeClass
   public static void setup() {
-    Log.init();
+    LogStub.init();         // replace log by a sideffect free variant
+    // LogStub.initPlusLog();  // for manual testing purpose only
     Log.enableFailQuick(false);
   }
   
   // This is the core Visitor under Test (but rather empty)
-  DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator();
+  DeriveSymTypeOfCombineExpressionsDelegator derLit = new DeriveSymTypeOfCombineExpressionsDelegator();
   
   // other arguments not used (and therefore deliberately null)
   
@@ -34,6 +37,13 @@ public class DeriveSymTypeOfMCCommonLiteralsTest {
   
   // ------------------------------------------------------  Tests for Function 2b
 
+  // Mill used ... alternative would be a Parser for Literals
+  @Test
+  @Ignore
+  public void deriveTFromLiteral1Null() throws IOException {
+    ASTLiteral lit = MCCommonLiteralsMill.nullLiteralBuilder().build();
+    assertEquals("null", tc.typeOf(lit).print());
+  }
 
   @Test
   public void deriveTFromLiteral1Boolean() throws IOException {

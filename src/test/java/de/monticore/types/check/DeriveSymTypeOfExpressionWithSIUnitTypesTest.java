@@ -1,7 +1,8 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.types.check;
 
-import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
+import de.monticore.expressions.combineexpressionswithsiunitliterals.CombineExpressionsWithSIUnitLiteralsMill;
+import de.monticore.expressions.combineexpressionswithsiunitliterals._symboltable.ICombineExpressionsWithSIUnitLiteralsScope;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,16 +10,34 @@ import java.io.IOException;
 
 import static de.monticore.types.check.DefsTypeBasic.add2scope;
 import static de.monticore.types.check.DefsTypeBasic.field;
-import static org.junit.Assert.assertEquals;
 
-public class DeriveSymTypeOfExpressionWithSIUnitTypesTest extends DeriveSymTypeOfExpressionTest {
+public class DeriveSymTypeOfExpressionWithSIUnitTypesTest extends DeriveSymTypeAbstractTest {
+
+
+    @Override
+    protected void setupTypeCheck() {
+        // This is an auxiliary
+        ITypesCalculator derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator();
+
+        // other arguments not used (and therefore deliberately null)
+        setTypeCheck(new TypeCheck(null, derLit));
+    }
 
     @Before
     public void setupForEach() {
-        super.setupForEach();
+        // No enclosing Scope: Search ending here
+        ICombineExpressionsWithSIUnitLiteralsScope scope = CombineExpressionsWithSIUnitLiteralsMill
+                .combineExpressionsWithSIUnitLiteralsScopeBuilder()
+                .setEnclosingScope(null)       // No enclosing Scope: Search ending here
+                .setExportingSymbols(true)
+                .setAstNode(null)
+                .build();
+
         add2scope(scope, field("varM", SIUnitSymTypeExpressionFactory.createSIUnit("m", scope)));
         add2scope(scope, field("varKM", SIUnitSymTypeExpressionFactory.createSIUnit("km", scope)));
         add2scope(scope, field("varS", SIUnitSymTypeExpressionFactory.createSIUnit("s", scope)));
+
+        setFlatExpressionScopeSetter(new CombineExpressionWithSIUnitLiteralsFlatScopeSetter(scope));
     }
 
     // ------------------------------------------------------  Tests for Function 2
@@ -26,24 +45,16 @@ public class DeriveSymTypeOfExpressionWithSIUnitTypesTest extends DeriveSymTypeO
 
     @Test
     public void deriveTFromASTNameExpression6() throws IOException {
-        String s = "varM";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("m", printType(tc.typeOf(astex)));
+        check("varM", "m");
     }
 
     @Test
     public void deriveTFromASTNameExpression7() throws IOException {
-        String s = "varKM";
-        ASTExpression astex = p.parse_StringExpression(s).get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("km", printType(tc.typeOf(astex)));
+        check("varKM", "km");
     }
 
     @Test
     public void deriveTFromSIUnitLiteral() throws IOException {
-        ASTExpression astex = p.parse_StringExpression("42.3 km").get();
-        astex.accept(flatExpressionScopeSetter);
-        assertEquals("(double,km)", printType(tc.typeOf(astex)));
+        check("42.3 km", "(double,km)");
     }
 }

@@ -1,7 +1,7 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.siunits;
 
-import de.monticore.expressions.combineexpressionswithliterals._parser.CombineExpressionsWithLiteralsParser;
+import de.monticore.expressions.combineexpressionswithsiunitliterals._parser.CombineExpressionsWithSIUnitLiteralsParser;
 import de.monticore.expressions.commonexpressions._ast.ASTDivideExpression;
 import de.monticore.expressions.commonexpressions._ast.ASTMultExpression;
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
@@ -20,7 +20,7 @@ public class MultDivTest {
     public void testDiv() throws IOException {
         Log.init();
 
-        CombineExpressionsWithLiteralsParser parser = new CombineExpressionsWithLiteralsParser();
+        CombineExpressionsWithSIUnitLiteralsParser parser = new CombineExpressionsWithSIUnitLiteralsParser();
 
         String s = "3 mAh^2V/varM";
         Optional<ASTExpression> astExpression = parser.parse_StringExpression(s);
@@ -36,7 +36,7 @@ public class MultDivTest {
     public void testMult() throws IOException {
         Log.init();
 
-        CombineExpressionsWithLiteralsParser parser = new CombineExpressionsWithLiteralsParser();
+        CombineExpressionsWithSIUnitLiteralsParser parser = new CombineExpressionsWithSIUnitLiteralsParser();
 
         String s = "3 m*varM";
         Optional<ASTExpression> astExpression = parser.parse_StringExpression(s);
