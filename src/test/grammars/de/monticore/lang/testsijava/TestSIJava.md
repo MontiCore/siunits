@@ -113,8 +113,8 @@ which come with the SIUnit language.
 * [Project root: MontiCore @github](https://github.com/MontiCore/monticore)
 * [MontiCore documentation](http://www.monticore.de/)
 
-* [**List of languages**](https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/docs/Languages.md)
-* [**MontiCore Core Grammar Library**](https://git.rwth-aachen.de/monticore/monticore/blob/dev/monticore-grammar/src/main/grammars/de/monticore/Grammars.md)
+* [**List of languages**](https://github.com/MontiCore/monticore/blob/dev/docs/Languages.md)
+* [**MontiCore Core Grammar Library**](https://github.com/MontiCore/monticore/blob/dev/monticore-grammar/src/main/grammars/de/monticore/Grammars.md)
 * [Best Practices](BestPractices.md)
 * [Publications about MBSE and MontiCore](https://www.se-rwth.de/publications/)
 
@@ -135,22 +135,22 @@ which come with the SIUnit language.
 [TestSIJavaWithCustomTypesGrammar]: TestSIJavaWithCustomTypes.mc4
 [CustomSIUnitTypes4ComputingGrammar]: ../../CustomSIUnitTypes4Computing.mc4
 [SIUnitTypes4ComputingGrammar]: ../../../../../../main/grammars/de/monticore/SIUnitTypes4Computing.mc4
-[BasicSymbolsGrammar]: https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/grammars/de/monticore/symbols/BasicSymbols.mc4
+[BasicSymbolsGrammar]: https://github.com/MontiCore/monticore/blob/dev/monticore-grammar/src/main/grammars/de/monticore/symbols/BasicSymbols.mc4
 
 [TestSIJavaScope]: ../../../../../java/de/monticore/lang/testsijava/testsijava/_symboltable/TestSIJavaScope.java
 [TestSIJavaSymbolTableCreator]: ../../../../../java/de/monticore/lang/testsijava/testsijava/_symboltable/TestSIJavaSymbolTableCreator.java
 [TestSIJavaFlatExpressionScopeSetter]: ../../../../../java/de/monticore/lang/testsijava/testsijava/_symboltable/TestSIJavaFlatExpressionScopeSetter.java
 [FlatExpressionScopeSetterAbs]: ../../../../../java/de/monticore/types/check/FlatExpressionScopeSetterAbs.java
 [SynthesizeSymTypeFromTestSIJava]: ../../../../../java/de/monticore/types/check/SynthesizeSymTypeFromTestSIJava.java
-[TypeCheckResult]: https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/java/de/monticore/types/check/TypeCheckResult.java
+[TypeCheckResult]: https://github.com/MontiCore/monticore/blob/dev/monticore-grammar/src/main/java/de/monticore/types/check/TypeCheckResult.java
 [DeriveSymTypeOfTestSIJava]: ../../../../../java/de/monticore/types/check/DeriveSymTypeOfTestSIJava.java
-[SymTypeExpression]: https://git.rwth-aachen.de/monticore/monticore/-/blob/dev/monticore-grammar/src/main/java/de/monticore/types/check/SymTypeExpression.java
+[SymTypeExpression]: https://github.com/MontiCore/monticore/blob/dev/monticore-grammar/src/main/java/de/monticore/types/check/SymTypeExpression.java
 
 [MyClass]: ../../../../../resources/test/de/monticore/lang/testsijava/testsijava/MyClass.sijava
 [ValidModels]: ../../../../../resources/test/de/monticore/lang/testsijava/testsijava
 
 [TypeCheckCoCo]: ../../../../../java/de/monticore/lang/testsijava/testsijava/_cocos/TypeCheckCoCo.java
-[TypeCheck]: https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/java/de/monticore/types/check/TypeCheck.java
+[TypeCheck]: https://github.com/MontiCore/monticore/blob/dev/monticore-grammar/src/main/java/de/monticore/types/check/TypeCheck.java
 
 [SIUnitsDoc]: ../../../../../../main/grammars/de/monticore/SIUnits.md
-[Types]: https://git.rwth-aachen.de/monticore/monticore/-/blob/master/monticore-grammar/src/main/java/de/monticore/types/check/Types.md
+[Types]: https://github.com/MontiCore/monticore/blob/dev/monticore-grammar/src/main/grammars/de/monticore/types/Types.md
