@@ -111,8 +111,8 @@ fileTree(dir).matching { include '**/*.mc4' }.each {
 		else
 			outputDir = file "$buildDir/generated-test-sources/monticore/sourcecode"
 
-		handcodedPath file("$projectDir/src/main/java"), file("$projectDir/src/test/java")
-		modelPath file("$projectDir/src/main/grammars"), file("$projectDir/src/test/grammars")
+		handcodedPath "$projectDir/src/main/java", file("$projectDir/src/test/java"
+		modelPath "$projectDir/src/main/grammars", file("$projectDir/src/test/grammars"
         def grammarIncludingPackage = file(dir).toURI().relativize(g.toURI()).toString()
         def uptoDate = incCheck(grammarIncludingPackage)
         outputs.upToDateWhen { uptoDate }
