@@ -34,6 +34,11 @@ public class TestSIJavaWithCustomTypesSymbolTableCreator extends TestSIJavaWithC
         initTypeCheck();
     }
 
+    public TestSIJavaWithCustomTypesSymbolTableCreator(){
+        super();
+        initTypeCheck();
+    }
+
     @Override
     public void visit(ASTSIJavaClass node) {
         super.visit(node);

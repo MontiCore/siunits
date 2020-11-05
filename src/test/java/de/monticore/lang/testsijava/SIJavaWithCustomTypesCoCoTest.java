@@ -18,6 +18,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayDeque;
 import java.util.Optional;
 
 import static junit.framework.TestCase.*;
@@ -51,7 +52,10 @@ public class SIJavaWithCustomTypesCoCoTest {
         ITestSIJavaWithCustomTypesScope globalScope = new TestSIJavaWithCustomTypesGlobalScope(new ModelPath(Paths.get(path)), "sijava");
 
         TestSIJavaWithCustomTypesSymbolTableCreator TestSIJavaSymbolTableCreator
-                = TestSIJavaWithCustomTypesMill.testSIJavaWithCustomTypesSymbolTableCreatorBuilder().addToScopeStack(globalScope).build();
+                = TestSIJavaWithCustomTypesMill.testSIJavaWithCustomTypesSymbolTableCreator();
+        ArrayDeque<ITestSIJavaWithCustomTypesScope> deque = new ArrayDeque<>();
+        deque.add(globalScope);
+        TestSIJavaSymbolTableCreator.setScopeStack(deque);
         TestSIJavaSymbolTableCreator.createFromAST(model);
 
         return globalScope;

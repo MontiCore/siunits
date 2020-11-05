@@ -33,6 +33,11 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
         initTypeCheck();
     }
 
+    public TestSIJavaSymbolTableCreator(){
+        super();
+        initTypeCheck();
+    }
+
     @Override
     public void visit(ASTSIJavaClass node) {
         super.visit(node);

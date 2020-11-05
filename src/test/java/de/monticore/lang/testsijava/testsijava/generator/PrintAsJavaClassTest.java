@@ -33,7 +33,7 @@ public class PrintAsJavaClassTest {
 
     public void printAsJavaClass(String model) {
         ASTSIJavaClass astsiJavaClass = parseModel(model);
-        astsiJavaClass.accept(TestSIJavaMill.testSIJavaSymbolTableCreatorBuilder().build());
+        astsiJavaClass.accept(TestSIJavaMill.testSIJavaSymbolTableCreator());
         String print = PrintAsJavaClass.printAsJavaClass(astsiJavaClass);
         System.out.println(print);
     }

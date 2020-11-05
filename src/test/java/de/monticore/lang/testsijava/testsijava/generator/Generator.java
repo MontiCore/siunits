@@ -21,7 +21,7 @@ public class Generator {
                 + ".sijava";
         ASTSIJavaClass ast = parseModel(modelPath, name);
         try {
-            ast.accept(TestSIJavaMill.testSIJavaSymbolTableCreatorBuilder().build());
+            ast.accept(TestSIJavaMill.testSIJavaSymbolTableCreator());
         } catch (Exception e) {
             e.printStackTrace();
             Log.error("0xE6548322 Cannot build symbol table");

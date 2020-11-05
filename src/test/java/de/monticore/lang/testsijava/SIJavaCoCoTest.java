@@ -28,7 +28,7 @@ public class SIJavaCoCoTest {
     private void typeCheckCoCo(String input, boolean expectedError) {
         Log.getFindings().clear();
         ASTSIJavaClass model = parseModel(input);
-        model.accept(TestSIJavaMill.testSIJavaSymbolTableCreatorBuilder().build());
+        model.accept(TestSIJavaMill.testSIJavaSymbolTableCreator());
         TestSIJavaCoCoChecker checker = new TestSIJavaCoCoChecker();
         checker.addCoCo(TestSIJavaTypeCheckCoCo.getCoCo());
         checker.addCoCo(new OnlyAssignmentAndCallExpressionCoCo());
