@@ -2,12 +2,13 @@
 package de.monticore.siunits.prettyprint;
 
 import de.monticore.prettyprint.IndentPrinter;
+import de.monticore.siunits.SIUnitsMill;
 import de.monticore.siunits._ast.*;
-import de.monticore.siunits._visitor.SIUnitsVisitor;
+import de.monticore.siunits._visitor.SIUnitsHandler;
+import de.monticore.siunits._visitor.SIUnitsTraverser;
+import de.monticore.siunits._visitor.SIUnitsVisitor2;
 
-public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
-
-    private SIUnitsVisitor realThis = this;
+public class SIUnitsPrettyPrinter implements SIUnitsVisitor2, SIUnitsHandler {
 
     // printer to use
     protected IndentPrinter printer;
@@ -33,12 +34,12 @@ public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
         if (node.isPresentOne())
             printer.print("1");
         else if (node.isPresentNumerator())
-            node.getNumerator().accept(getRealThis());
+            node.getNumerator().accept(getTraverser());
         else if (node.isPresentSIUnitPrimitive())
-            node.getSIUnitPrimitive().accept(getRealThis());
+            node.getSIUnitPrimitive().accept(getTraverser());
         if (node.isPresentDenominator()) {
             printer.print("/");
-            node.getDenominator().accept(getRealThis());
+            node.getDenominator().accept(getTraverser());
         }
     }
 
@@ -63,7 +64,7 @@ public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
     public void traverse(ASTSIUnitKindGroupWithExponent node) {
         int j = 0;
         for (int i = 0; i < node.getSIUnitGroupPrimitiveList().size(); i++) {
-            node.getSIUnitGroupPrimitive(i).accept(getRealThis());
+            node.getSIUnitGroupPrimitive(i).accept(getTraverser());
             if (j < node.getExponentList().size())
                 printer.print("^" + node.getExponent(j++).getSource());
         }
@@ -97,24 +98,14 @@ public class SIUnitsPrettyPrinter implements SIUnitsVisitor {
      * @return String representation.
      */
     public static String prettyprint(ASTSIUnitsNode node) {
-        SIUnitsPrettyPrinter pp = new SIUnitsPrettyPrinter(new IndentPrinter());
-        node.accept(pp);
-        return pp.getPrinter().getContent();
-    }
+        SIUnitsTraverser traverser = SIUnitsMill.traverser();
 
-    /**
-     * @see SIUnitsVisitor#setRealThis(SIUnitsVisitor)
-     */
-    @Override
-    public void setRealThis(SIUnitsVisitor realThis) {
-        this.realThis = realThis;
-    }
+        SIUnitsPrettyPrinter siUnitsPrettyPrinter = new SIUnitsPrettyPrinter(new IndentPrinter());
 
-    /**
-     * @see SIUnitsVisitor#getRealThis()
-     */
-    @Override
-    public SIUnitsVisitor getRealThis() {
-        return realThis;
+        traverser.setSIUnitsHandler(siUnitsPrettyPrinter);
+        traverser.setSIUnitsVisitor(siUnitsPrettyPrinter);
+
+        node.accept(traverser);
+        return siUnitsPrettyPrinter.getPrinter().getContent();
     }
 }
