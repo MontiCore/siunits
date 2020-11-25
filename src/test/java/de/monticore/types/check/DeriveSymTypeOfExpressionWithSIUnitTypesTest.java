@@ -3,6 +3,7 @@ package de.monticore.types.check;
 
 import de.monticore.expressions.combineexpressionswithsiunitliterals.CombineExpressionsWithSIUnitLiteralsMill;
 import de.monticore.expressions.combineexpressionswithsiunitliterals._symboltable.ICombineExpressionsWithSIUnitLiteralsScope;
+import de.monticore.expressions.expressionsbasis._visitor.ExpressionsBasisTraverser;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,6 +14,10 @@ import static de.monticore.types.check.DefsTypeBasic.field;
 
 public class DeriveSymTypeOfExpressionWithSIUnitTypesTest extends DeriveSymTypeAbstractTest {
 
+    @Override
+    ExpressionsBasisTraverser getTraverser() {
+        return CombineExpressionsWithSIUnitLiteralsMill.traverser();
+    }
 
     @Override
     protected void setupTypeCheck() {
@@ -26,18 +31,16 @@ public class DeriveSymTypeOfExpressionWithSIUnitTypesTest extends DeriveSymTypeA
     @Before
     public void setupForEach() {
         // No enclosing Scope: Search ending here
-        ICombineExpressionsWithSIUnitLiteralsScope scope = CombineExpressionsWithSIUnitLiteralsMill
-                .combineExpressionsWithSIUnitLiteralsScopeBuilder()
-                .setEnclosingScope(null)       // No enclosing Scope: Search ending here
-                .setExportingSymbols(true)
-                .setAstNode(null)
-                .build();
+        ICombineExpressionsWithSIUnitLiteralsScope scope = CombineExpressionsWithSIUnitLiteralsMill.scope();
+        scope.setEnclosingScope(null);       // No enclosing Scope: Search ending here
+        scope.setExportingSymbols(true);
+        scope .setAstNode(null);
 
         add2scope(scope, field("varM", SIUnitSymTypeExpressionFactory.createSIUnit("m", scope)));
         add2scope(scope, field("varKM", SIUnitSymTypeExpressionFactory.createSIUnit("km", scope)));
         add2scope(scope, field("varS", SIUnitSymTypeExpressionFactory.createSIUnit("s", scope)));
 
-        setFlatExpressionScopeSetter(new CombineExpressionWithSIUnitLiteralsFlatScopeSetter(scope));
+        setFlatExpressionScopeSetter(scope);
     }
 
     // ------------------------------------------------------  Tests for Function 2

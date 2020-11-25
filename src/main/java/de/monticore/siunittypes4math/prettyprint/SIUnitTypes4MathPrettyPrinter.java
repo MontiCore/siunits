@@ -21,7 +21,7 @@ public class SIUnitTypes4MathPrettyPrinter {
         SIUnitsPrettyPrinter siUnitsPrettyPrinter = new SIUnitsPrettyPrinter(new IndentPrinter());
 
         traverser.setSIUnitsHandler(siUnitsPrettyPrinter);
-        traverser.setSIUnitsVisitor(siUnitsPrettyPrinter);
+        traverser.addSIUnitsVisitor(siUnitsPrettyPrinter);
 
         node.accept(traverser);
         return siUnitsPrettyPrinter.getPrinter().getContent();

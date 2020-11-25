@@ -1,8 +1,8 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.siunitliterals.utility;
 
-import de.monticore.MCCommonLiteralsPrettyPrinter;
 import de.monticore.literals.mccommonliterals._ast.*;
+import de.monticore.literals.prettyprint.MCCommonLiteralsFullPrettyPrinter;
 import de.monticore.prettyprint.IndentPrinter;
 import de.se_rwth.commons.logging.Log;
 
@@ -11,31 +11,32 @@ import de.se_rwth.commons.logging.Log;
  * from a {@link de.monticore.literals.mccommonliterals._ast.ASTNumericLiteral} or
  * a {@link de.monticore.literals.mccommonliterals._ast.ASTSignedNumericLiteral}
  * from the de.monticore.literals.MCCommonLiterals grammar.
- * This class can be initialized with a {@link de.monticore.MCCommonLiteralsPrettyPrinter} to prettyprint
+ * This class can be initialized with a {@link de.monticore.literals.prettyprint.MCCommonLiteralsPrettyPrinter} to prettyprint
  * your own custom {@link de.monticore.literals.mccommonliterals._ast.ASTNumericLiteral} or
  * {@link de.monticore.literals.mccommonliterals._ast.ASTSignedNumericLiteral}.
  */
 public class MCCommonLiteralsDecoder {
 
-    private MCCommonLiteralsPrettyPrinter prettyPrinter;
-    private static MCCommonLiteralsPrettyPrinter prettyPrinter_ = new MCCommonLiteralsPrettyPrinter(new IndentPrinter());
+    private static MCCommonLiteralsFullPrettyPrinter mcCommonLiteralsPrettyPrinter_ = new MCCommonLiteralsFullPrettyPrinter(new IndentPrinter());
+
+    private MCCommonLiteralsFullPrettyPrinter mcCommonLiteralsPrettyPrinter;
 
     /**
-     * Constructor with the standard {@link de.monticore.MCCommonLiteralsPrettyPrinter}
+     * Constructor with the standard {@link de.monticore.literals.prettyprint.MCCommonLiteralsPrettyPrinter}
      */
     public MCCommonLiteralsDecoder() {
-        this(prettyPrinter_);
+        this(mcCommonLiteralsPrettyPrinter_);
     }
 
     /**
-     * Constructor with the PrettyPrinter which extends the standard {@link de.monticore.MCCommonLiteralsPrettyPrinter}
+     * Constructor with the PrettyPrinter which extends the standard {@link de.monticore.literals.prettyprint.MCCommonLiteralsPrettyPrinter}
      */
-    public MCCommonLiteralsDecoder(MCCommonLiteralsPrettyPrinter prettyPrinter) {
-        this.prettyPrinter = prettyPrinter;
+    public MCCommonLiteralsDecoder(MCCommonLiteralsFullPrettyPrinter mcCommonLiteralsPrettyPrinter) {
+        this.mcCommonLiteralsPrettyPrinter = mcCommonLiteralsPrettyPrinter;
     }
 
-    public static void setPrettyPrinter(MCCommonLiteralsPrettyPrinter prettyPrinter) {
-        MCCommonLiteralsDecoder.prettyPrinter_ = prettyPrinter;
+    public static void setPrettyPrinter(MCCommonLiteralsFullPrettyPrinter mcCommonLiteralsPrettyPrinter) {
+        MCCommonLiteralsDecoder.mcCommonLiteralsPrettyPrinter_ = mcCommonLiteralsPrettyPrinter;
     }
 
     /**
@@ -92,7 +93,7 @@ public class MCCommonLiteralsDecoder {
         } else if (lit instanceof ASTNatLiteral) {
             return ((ASTNatLiteral) lit).getValue();
         } else {
-            String numberAsString = prettyPrinter.prettyprint(lit);
+            String numberAsString = mcCommonLiteralsPrettyPrinter.prettyprint(lit);
             Number res = null;
             try {
                 res = Double.valueOf(numberAsString);
@@ -125,7 +126,7 @@ public class MCCommonLiteralsDecoder {
         } else if (lit instanceof ASTSignedNatLiteral) {
             return ((ASTSignedNatLiteral) lit).getValue();
         } else {
-            String numberAsString = prettyPrinter.prettyprint(lit);
+            String numberAsString = mcCommonLiteralsPrettyPrinter.prettyprint(lit);
             Number res = null;
             try {
                 res = Double.valueOf(numberAsString);

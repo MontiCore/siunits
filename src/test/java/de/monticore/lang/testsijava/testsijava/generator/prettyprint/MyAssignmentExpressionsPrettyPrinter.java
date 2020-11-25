@@ -104,7 +104,7 @@ public class MyAssignmentExpressionsPrettyPrinter extends AssignmentExpressionsP
                 type.get().print();
         this.getPrinter().print(" (" + typePrint + ") (" + factorStartSimple(converter));
 
-        node.getRight().accept(this.getRealThis());
+        node.getRight().accept(this.getTraverser());
         this.getPrinter().print(factorEndSimple(converter) + ")");
 
         CommentPrettyPrinter.printPostComments(node, this.getPrinter());

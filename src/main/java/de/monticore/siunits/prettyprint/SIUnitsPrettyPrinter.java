@@ -10,6 +10,18 @@ import de.monticore.siunits._visitor.SIUnitsVisitor2;
 
 public class SIUnitsPrettyPrinter implements SIUnitsVisitor2, SIUnitsHandler {
 
+    protected SIUnitsTraverser traverser;
+
+    @Override
+    public SIUnitsTraverser getTraverser() {
+        return traverser;
+    }
+
+    @Override
+    public void setTraverser(SIUnitsTraverser traverser) {
+        this.traverser = traverser;
+    }
+
     // printer to use
     protected IndentPrinter printer;
 
@@ -103,7 +115,7 @@ public class SIUnitsPrettyPrinter implements SIUnitsVisitor2, SIUnitsHandler {
         SIUnitsPrettyPrinter siUnitsPrettyPrinter = new SIUnitsPrettyPrinter(new IndentPrinter());
 
         traverser.setSIUnitsHandler(siUnitsPrettyPrinter);
-        traverser.setSIUnitsVisitor(siUnitsPrettyPrinter);
+        traverser.addSIUnitsVisitor(siUnitsPrettyPrinter);
 
         node.accept(traverser);
         return siUnitsPrettyPrinter.getPrinter().getContent();

@@ -9,9 +9,22 @@ import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitTypes4ComputingNode;
 import de.monticore.siunittypes4computing._visitor.SIUnitTypes4ComputingHandler;
 import de.monticore.siunittypes4computing._visitor.SIUnitTypes4ComputingTraverser;
+import de.monticore.types.prettyprint.MCBasicTypesPrettyPrinter;
 
 public class SIUnitTypes4ComputingPrettyPrinter
         implements SIUnitTypes4ComputingHandler {
+
+    protected SIUnitTypes4ComputingTraverser traverser;
+
+    @Override
+    public SIUnitTypes4ComputingTraverser getTraverser() {
+        return traverser;
+    }
+
+    @Override
+    public void setTraverser(SIUnitTypes4ComputingTraverser traverser) {
+        this.traverser = traverser;
+    }
 
     private IndentPrinter printer;
 
@@ -39,11 +52,11 @@ public class SIUnitTypes4ComputingPrettyPrinter
         IndentPrinter printer = new IndentPrinter();
         SIUnitTypes4ComputingPrettyPrinter siUnitTypes4ComputingPrettyPrinter = new SIUnitTypes4ComputingPrettyPrinter(printer);
         SIUnitsPrettyPrinter siUnitsPrettyPrinter = new SIUnitsPrettyPrinter(printer);
-        MyMCBasicTypesPrettyPrinter mCBasicTypesPrettyPrinter = new MyMCBasicTypesPrettyPrinter(printer);
+        MCBasicTypesPrettyPrinter mCBasicTypesPrettyPrinter = new MCBasicTypesPrettyPrinter(printer);
 
         traverser.setSIUnitTypes4ComputingHandler(siUnitTypes4ComputingPrettyPrinter);
         traverser.setSIUnitsHandler(siUnitsPrettyPrinter);
-        traverser.setSIUnitsVisitor(siUnitsPrettyPrinter);
+        traverser.addSIUnitsVisitor(siUnitsPrettyPrinter);
         traverser.setMCBasicTypesHandler(mCBasicTypesPrettyPrinter);
 
         node.accept(traverser);

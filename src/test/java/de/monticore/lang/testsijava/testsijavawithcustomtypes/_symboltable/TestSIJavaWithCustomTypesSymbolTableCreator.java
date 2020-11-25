@@ -3,7 +3,10 @@
 package de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable;
 
 import de.monticore.customsiunittypes4computing._ast.ASTCustomSIUnitType4Computing;
+import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
+import de.monticore.lang.testsijava.testsijavawithcustomtypes.TestSIJavaWithCustomTypesMill;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._ast.*;
+import de.monticore.lang.testsijava.testsijavawithcustomtypes._visitor.TestSIJavaWithCustomTypesTraverser;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
 import de.monticore.siunittypes4math._ast.ASTSIUnitType;
 import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
@@ -174,25 +177,31 @@ public class TestSIJavaWithCustomTypesSymbolTableCreator extends TestSIJavaWithC
 
     // ************************* Set enclosing scope ***********************
 
+    private void setFlat(ASTExpression expression, ITestSIJavaWithCustomTypesScope enclosingScope) {
+        TestSIJavaWithCustomTypesTraverser traverser = TestSIJavaWithCustomTypesMill.traverser();
+        FlatExpressionScopeSetter.addToTraverser(traverser, enclosingScope);
+        expression.accept(traverser);
+    }
+
     @Override
     public void visit(ASTFieldDeclaration node) {
         super.visit(node);
         // Add the enclosing scope to the assignment
         if (node.isPresentExpression())
-            node.getExpression().accept(new TestSIJavaWithCustomTypesFlatExpressionScopeSetter(node.getEnclosingScope()));
+            setFlat(node.getExpression(), node.getEnclosingScope());
     }
 
     public void visit(ASTSIJavaMethodExpression node) {
         super.visit(node);
         // Add the enclosing scope to the expression
-        node.getExpression().accept(new TestSIJavaWithCustomTypesFlatExpressionScopeSetter(scopeStack.getLast()));
+        setFlat(node.getExpression(), scopeStack.getLast());
     }
 
     @Override
     public void visit(ASTSIJavaMethodReturn node) {
         super.visit(node);
         // Add the enclosing scope to the expression
-        node.getExpression().accept(new TestSIJavaWithCustomTypesFlatExpressionScopeSetter(scopeStack.getLast()));
+        setFlat(node.getExpression(), scopeStack.getLast());
     }
 
     @Override

@@ -22,7 +22,7 @@ public class SynthesizeSymTypeFromSIUnitTypes4ComputingTest {
 
     private TestSIJavaParser parser = new TestSIJavaParser();
     // This is the TypeChecker under Test:
-    private TypeCheck tc = new TypeCheck(new SynthesizeSymTypeFromSIUnitTypes4Computing(), null);;
+    private TypeCheck tc = new TypeCheck(new SynthesizeSymTypeOfCombinedTypes(), null);
 
     @BeforeClass
     public static void setup() {
@@ -34,11 +34,10 @@ public class SynthesizeSymTypeFromSIUnitTypes4ComputingTest {
 
     @Before
     public void setupForEach() {
-        scope = TestSIJavaMill.testSIJavaScopeBuilder()
-                .setEnclosingScope(null)       // No enclosing Scope: Search ending here
-                .setExportingSymbols(true)
-                .setAstNode(null)
-                .setName("Phantasy2").build();     // hopefully unused
+        scope = TestSIJavaMill.scope();
+        scope.setEnclosingScope(null);     // No enclosing Scope: Search ending here
+        scope.setExportingSymbols(true);
+        scope.setAstNode(null);     // hopefully unused
     }
 
     // ------------------------------------------------------  Tests for Function 1, 1b, 1c

@@ -3,7 +3,8 @@
 package de.monticore.types.check;
 
 import de.monticore.customsiunittypes4computing._ast.ASTCustomSIUnitType4Computing;
-import de.monticore.customsiunittypes4computing._visitor.CustomSIUnitTypes4ComputingVisitor;
+import de.monticore.customsiunittypes4computing._visitor.CustomSIUnitTypes4ComputingHandler;
+import de.monticore.customsiunittypes4computing._visitor.CustomSIUnitTypes4ComputingTraverser;
 
 /**
  * Visitor for Derivation of SymType from SIUnitTypes4Computing
@@ -11,18 +12,18 @@ import de.monticore.customsiunittypes4computing._visitor.CustomSIUnitTypes4Compu
  * types/SIUnitTypes4Computing.mc4
  */
 public class SynthesizeSymTypeFromCustomSIUnitTypes4Computing extends SynthesizeSymTypeFromSIUnitTypes4Computing
-        implements CustomSIUnitTypes4ComputingVisitor {
+        implements CustomSIUnitTypes4ComputingHandler {
 
-    CustomSIUnitTypes4ComputingVisitor realThis = this;
+    protected CustomSIUnitTypes4ComputingTraverser traverser;
 
     @Override
-    public void setRealThis(CustomSIUnitTypes4ComputingVisitor realThis) {
-        this.realThis = realThis;
+    public CustomSIUnitTypes4ComputingTraverser getTraverser() {
+        return traverser;
     }
 
     @Override
-    public CustomSIUnitTypes4ComputingVisitor getRealThis() {
-        return realThis;
+    public void setTraverser(CustomSIUnitTypes4ComputingTraverser traverser) {
+        this.traverser = traverser;
     }
 
     @Override

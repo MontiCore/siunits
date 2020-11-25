@@ -2,6 +2,7 @@
 
 package de.monticore.siunitliterals.prettyprint;
 
+import de.monticore.literals.prettyprint.MCCommonLiteralsPrettyPrinter;
 import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.siunitliterals.SIUnitLiteralsMill;
 import de.monticore.siunitliterals._ast.ASTSIUnitLiteral;
@@ -12,6 +13,18 @@ import de.monticore.siunitliterals._visitor.SIUnitLiteralsTraverser;
 import de.monticore.siunits.prettyprint.SIUnitsPrettyPrinter;
 
 public class SIUnitLiteralsPrettyPrinter implements SIUnitLiteralsHandler {
+
+    protected SIUnitLiteralsTraverser traverser;
+
+    @Override
+    public SIUnitLiteralsTraverser getTraverser() {
+        return traverser;
+    }
+
+    @Override
+    public void setTraverser(SIUnitLiteralsTraverser traverser) {
+        this.traverser = traverser;
+    }
 
     // printer to use
     protected IndentPrinter printer;
@@ -64,12 +77,12 @@ public class SIUnitLiteralsPrettyPrinter implements SIUnitLiteralsHandler {
         IndentPrinter printer = new IndentPrinter();
         SIUnitsPrettyPrinter siUnitsPrettyPrinter = new SIUnitsPrettyPrinter(printer);
         SIUnitLiteralsPrettyPrinter siUnitLiteralsPrettyPrinter = new SIUnitLiteralsPrettyPrinter(printer);
-        MyMCCommonLiteralsPrettyPrinter mcCommonLiteralsPrettyPrinter = new MyMCCommonLiteralsPrettyPrinter(printer);
+        MCCommonLiteralsPrettyPrinter mcCommonLiteralsPrettyPrinter = new MCCommonLiteralsPrettyPrinter(printer);
 
         traverser.setSIUnitsHandler(siUnitsPrettyPrinter);
-        traverser.setSIUnitsVisitor(siUnitsPrettyPrinter);
+        traverser.addSIUnitsVisitor(siUnitsPrettyPrinter);
         traverser.setSIUnitLiteralsHandler(siUnitLiteralsPrettyPrinter);
-        traverser.setMCCommonLiteralsVisitor(mcCommonLiteralsPrettyPrinter);
+        traverser.addMCCommonLiteralsVisitor(mcCommonLiteralsPrettyPrinter);
 
         node.accept(traverser);
         return printer.getContent();

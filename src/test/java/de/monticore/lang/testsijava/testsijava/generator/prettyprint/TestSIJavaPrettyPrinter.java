@@ -2,7 +2,9 @@
 package de.monticore.lang.testsijava.testsijava.generator.prettyprint;
 
 import de.monticore.lang.testsijava.testsijava._ast.*;
-import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaVisitor;
+import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaHandler;
+import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaTraverser;
+import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaVisitor2;
 import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.siunits.utility.Converter;
 import de.monticore.types.check.DeriveSymTypeOfTestSIJava;
@@ -13,24 +15,24 @@ import de.monticore.types.check.TypeCheck;
 import javax.measure.converter.UnitConverter;
 import javax.measure.unit.Unit;
 
-public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
+public class TestSIJavaPrettyPrinter implements TestSIJavaHandler, TestSIJavaVisitor2 {
 
-    TestSIJavaVisitor realThis;
+    protected TestSIJavaTraverser traverser;
+
+    @Override
+    public TestSIJavaTraverser getTraverser() {
+        return traverser;
+    }
+
+    @Override
+    public void setTraverser(TestSIJavaTraverser traverser) {
+        this.traverser = traverser;
+    }
+
     IndentPrinter printer;
 
     public TestSIJavaPrettyPrinter(IndentPrinter printer) {
-        realThis = this;
         this.printer = printer;
-    }
-
-    @Override
-    public TestSIJavaVisitor getRealThis() {
-        return realThis;
-    }
-
-    @Override
-    public void setRealThis(TestSIJavaVisitor realThis) {
-        this.realThis = realThis;
     }
 
     @Override
@@ -45,7 +47,7 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
 
         for (ASTSIJavaClassStatement statement : node.getSIJavaClassStatementList()) {
             if (statement instanceof ASTFieldDeclaration) {
-                statement.accept(getRealThis());
+                statement.accept(getTraverser());
                 printer.println(";");
                 firstStatement = false;
             } else if (statement instanceof ASTMethodDeclaration) {
@@ -53,7 +55,7 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
                     printer.println();
                     printer.println();
                 }
-                statement.accept(getRealThis());
+                statement.accept(getTraverser());
                 firstStatement = false;
             }
         }
@@ -78,7 +80,7 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
             }
 
             printer.print(" = (" + typePrint + ") (" + factorStartSimple(converter));
-            node.getExpression().accept(getRealThis());
+            node.getExpression().accept(getTraverser());
             printer.print(factorEndSimple(converter) + ")");
         }
     }
@@ -95,14 +97,14 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
             } else {
                 first = false;
             }
-            parameter.accept(getRealThis());
+            parameter.accept(getTraverser());
         }
         printer.println(") {");
         printer.indent();
 
         for (ASTSIJavaMethodStatement statement : node
                 .getSIJavaMethodStatementList()) {
-            statement.accept(getRealThis());
+            statement.accept(getTraverser());
             printer.println(";");
         }
 
@@ -120,7 +122,7 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaVisitor {
             }
 
             printer.print("return (" + typePrint + ") (" + factorStartSimple(converter));
-            node.getSIJavaMethodReturn().accept(getRealThis());
+            node.getSIJavaMethodReturn().accept(getTraverser());
             printer.println(factorEndSimple(converter) + ");");
         }
 
