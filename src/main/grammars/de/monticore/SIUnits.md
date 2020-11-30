@@ -1,18 +1,4 @@
 <!-- (c) https://github.com/MontiCore/monticore -->
-
-<!-- 
-  TODO:  Links so anpassen, dass die Übertragung nach Github klappen wird
-  (relative Links only)
-  Done:
-  TODO:  Die MontiCore Links sind alle noch absolut
-  
-  TODO:
-  Wir müssen über die Umsetzung (mit oder ohne explizites Mitschleppen 
-  der Einheiten zur Laufzeit)
-  sowie über die Bedeutung der Funktionen nochmal nachdenken.
- -->
-
-
 # SIUnits
 
 This language introduces SI units and allows language developers to 

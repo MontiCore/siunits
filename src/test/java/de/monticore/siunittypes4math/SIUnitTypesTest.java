@@ -2,7 +2,6 @@
 
 package de.monticore.siunittypes4math;
 
-import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.siunittypes4math._ast.ASTSIUnitType;
 import de.monticore.siunittypes4math.prettyprint.SIUnitTypes4MathPrettyPrinter;
 import de.monticore.testsiunittypes._parser.TestSIUnitTypesParser;
@@ -21,7 +20,6 @@ import static org.junit.Assert.*;
 public class SIUnitTypesTest {
 
     TestSIUnitTypesParser parser = new TestSIUnitTypesParser();
-    SIUnitTypes4MathPrettyPrinter prettyPrinter = new SIUnitTypes4MathPrettyPrinter(new IndentPrinter());
 
     @Before
     public void init() {
@@ -48,7 +46,6 @@ public class SIUnitTypesTest {
 
     private void testSIUnitType(String control, String s, boolean expectedParseError) {
         Optional<ASTSIUnitType> astOpt = Optional.empty();
-        prettyPrinter = new SIUnitTypes4MathPrettyPrinter(new IndentPrinter());
         try {
             astOpt = parser.parseSIUnitType(new StringReader(s));
         } catch (IOException e) {
@@ -58,14 +55,12 @@ public class SIUnitTypesTest {
             assertFalse("Should not be able to parse " + s, astOpt.isPresent());
         } else {
             assertTrue(astOpt.isPresent());
-            astOpt.get().accept(prettyPrinter);
-            assertEquals(control, prettyPrinter.getPrinter().getContent());
+            assertEquals(control, SIUnitTypes4MathPrettyPrinter.prettyprint(astOpt.get()));
         }
     }
 
     private void testMCType(String s) {
         Optional<ASTMCType> astOpt = Optional.empty();
-        prettyPrinter = new SIUnitTypes4MathPrettyPrinter(new IndentPrinter());
         try {
             astOpt = parser.parseMCType(new StringReader(s));
         } catch (IOException e) {

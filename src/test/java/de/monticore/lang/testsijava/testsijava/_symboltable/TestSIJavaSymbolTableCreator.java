@@ -2,7 +2,10 @@
 
 package de.monticore.lang.testsijava.testsijava._symboltable;
 
+import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
+import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._ast.*;
+import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaTraverser;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
 import de.monticore.siunittypes4math._ast.ASTSIUnitType;
 import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
@@ -174,25 +177,31 @@ public class TestSIJavaSymbolTableCreator extends TestSIJavaSymbolTableCreatorTO
 
     // ************************* Set enclosing scope ***********************
 
+    private void setFlat(ASTExpression expression, ITestSIJavaScope enclosingScope) {
+        TestSIJavaTraverser traverser = TestSIJavaMill.traverser();
+        FlatExpressionScopeSetter.addToTraverser(traverser, enclosingScope);
+        expression.accept(traverser);
+    }
+
     @Override
     public void visit(ASTFieldDeclaration node) {
         super.visit(node);
         // Add the enclosing scope to the assignment
         if (node.isPresentExpression())
-            node.getExpression().accept(new TestSIJavaFlatExpressionScopeSetter(node.getEnclosingScope()));
+            setFlat(node.getExpression(), node.getEnclosingScope());
     }
 
     public void visit(ASTSIJavaMethodExpression node) {
         super.visit(node);
         // Add the enclosing scope to the expression
-        node.getExpression().accept(new TestSIJavaFlatExpressionScopeSetter(scopeStack.getLast()));
+        setFlat(node.getExpression(), scopeStack.getLast());
     }
 
     @Override
     public void visit(ASTSIJavaMethodReturn node) {
         super.visit(node);
         // Add the enclosing scope to the expression
-        node.getExpression().accept(new TestSIJavaFlatExpressionScopeSetter(scopeStack.getLast()));
+        setFlat(node.getExpression(), scopeStack.getLast());
     }
 
     @Override

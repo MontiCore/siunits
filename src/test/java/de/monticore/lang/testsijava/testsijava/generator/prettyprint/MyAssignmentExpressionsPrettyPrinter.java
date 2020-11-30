@@ -2,6 +2,7 @@
 package de.monticore.lang.testsijava.testsijava.generator.prettyprint;
 
 import de.monticore.expressions.assignmentexpressions._ast.ASTAssignmentExpression;
+import de.monticore.expressions.assignmentexpressions._visitor.AssignmentExpressionsHandler;
 import de.monticore.expressions.expressionsbasis._ast.ASTNameExpression;
 import de.monticore.expressions.prettyprint.AssignmentExpressionsPrettyPrinter;
 import de.monticore.prettyprint.CommentPrettyPrinter;
@@ -23,7 +24,8 @@ import java.util.Optional;
 import static de.monticore.lang.testsijava.testsijava.generator.prettyprint.TestSIJavaPrettyPrinter.factorEndSimple;
 import static de.monticore.lang.testsijava.testsijava.generator.prettyprint.TestSIJavaPrettyPrinter.factorStartSimple;
 
-public class MyAssignmentExpressionsPrettyPrinter extends AssignmentExpressionsPrettyPrinter {
+public class MyAssignmentExpressionsPrettyPrinter extends AssignmentExpressionsPrettyPrinter
+        implements AssignmentExpressionsHandler {
     public MyAssignmentExpressionsPrettyPrinter(IndentPrinter printer) {
         super(printer);
     }
@@ -102,7 +104,7 @@ public class MyAssignmentExpressionsPrettyPrinter extends AssignmentExpressionsP
                 type.get().print();
         this.getPrinter().print(" (" + typePrint + ") (" + factorStartSimple(converter));
 
-        node.getRight().accept(this.getRealThis());
+        node.getRight().accept(this.getTraverser());
         this.getPrinter().print(factorEndSimple(converter) + ")");
 
         CommentPrettyPrinter.printPostComments(node, this.getPrinter());

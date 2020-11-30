@@ -2,30 +2,42 @@
 
 package de.monticore.customsiunittypes4computing.prettyprint;
 
+import de.monticore.customsiunittypes4computing.CustomSIUnitTypes4ComputingMill;
 import de.monticore.customsiunittypes4computing._ast.ASTCustomSIUnitType4Computing;
 import de.monticore.customsiunittypes4computing._ast.ASTCustomSIUnitTypes4ComputingNode;
-import de.monticore.customsiunittypes4computing._visitor.CustomSIUnitTypes4ComputingVisitor;
+import de.monticore.customsiunittypes4computing._visitor.CustomSIUnitTypes4ComputingHandler;
+import de.monticore.customsiunittypes4computing._visitor.CustomSIUnitTypes4ComputingTraverser;
 import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.siunits.prettyprint.SIUnitsPrettyPrinter;
+import de.monticore.siunittypes4computing.prettyprint.SIUnitTypes4ComputingPrettyPrinter;
 import de.monticore.types.prettyprint.MCBasicTypesPrettyPrinter;
 
-public class CustomSIUnitTypes4ComputingPrettyPrinter extends MCBasicTypesPrettyPrinter
-        implements CustomSIUnitTypes4ComputingVisitor {
-    private CustomSIUnitTypes4ComputingVisitor realThis;
+public class CustomSIUnitTypes4ComputingPrettyPrinter
+        implements CustomSIUnitTypes4ComputingHandler {
+
+    protected CustomSIUnitTypes4ComputingTraverser traverser;
 
     @Override
-    public void setRealThis(CustomSIUnitTypes4ComputingVisitor realThis) {
-        this.realThis = realThis;
+    public CustomSIUnitTypes4ComputingTraverser getTraverser() {
+        return traverser;
     }
 
     @Override
-    public CustomSIUnitTypes4ComputingVisitor getRealThis() {
-        return realThis;
+    public void setTraverser(CustomSIUnitTypes4ComputingTraverser traverser) {
+        this.traverser = traverser;
     }
+
+    private IndentPrinter printer;
 
     public CustomSIUnitTypes4ComputingPrettyPrinter(IndentPrinter printer) {
-        super(printer);
-        realThis = this;
+        this.printer = printer;
+    }
+
+    @Override
+    public void traverse(ASTCustomSIUnitType4Computing node) {
+        node.getMCPrimitiveType().accept(getTraverser());
+        printer.print(" in ");
+        node.getSIUnit().accept(getTraverser());
     }
 
     /**
@@ -35,16 +47,21 @@ public class CustomSIUnitTypes4ComputingPrettyPrinter extends MCBasicTypesPretty
      * @return String representation.
      */
     public static String prettyprint(ASTCustomSIUnitTypes4ComputingNode node) {
-        CustomSIUnitTypes4ComputingPrettyPrinter pp = new CustomSIUnitTypes4ComputingPrettyPrinter(new IndentPrinter());
-        node.accept(pp);
-        return pp.getPrinter().getContent();
-    }
+        CustomSIUnitTypes4ComputingTraverser traverser = CustomSIUnitTypes4ComputingMill.traverser();
 
-    @Override
-    public void traverse(ASTCustomSIUnitType4Computing node) {
-        node.getMCPrimitiveType().accept(getRealThis());
-        printer.print(" in ");
-        SIUnitsPrettyPrinter sipp = new SIUnitsPrettyPrinter(printer);
-        node.getSIUnit().accept(sipp);
+        IndentPrinter printer = new IndentPrinter();
+        CustomSIUnitTypes4ComputingPrettyPrinter customSIUnitTypes4ComputingPrettyPrinter = new CustomSIUnitTypes4ComputingPrettyPrinter(printer);
+        SIUnitTypes4ComputingPrettyPrinter siUnitTypes4ComputingPrettyPrinter = new SIUnitTypes4ComputingPrettyPrinter(printer);
+        SIUnitsPrettyPrinter siUnitsPrettyPrinter = new SIUnitsPrettyPrinter(printer);
+        MCBasicTypesPrettyPrinter mCBasicTypesPrettyPrinter = new MCBasicTypesPrettyPrinter(printer);
+
+        traverser.setCustomSIUnitTypes4ComputingHandler(customSIUnitTypes4ComputingPrettyPrinter);
+        traverser.setSIUnitTypes4ComputingHandler(siUnitTypes4ComputingPrettyPrinter);
+        traverser.setSIUnitsHandler(siUnitsPrettyPrinter);
+        traverser.addSIUnitsVisitor(siUnitsPrettyPrinter);
+        traverser.setMCBasicTypesHandler(mCBasicTypesPrettyPrinter);
+
+        node.accept(traverser);
+        return printer.getContent();
     }
 }

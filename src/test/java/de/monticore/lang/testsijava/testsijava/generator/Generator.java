@@ -27,7 +27,6 @@ public class Generator {
             Log.error("0xE6548322 Cannot build symbol table");
         }
         String print = PrintAsJavaClass.printAsJavaClass(ast);
-        print = "/* (c) https://github.com/MontiCore/monticore */\n\n" + print;
 
         String filePath = outputPath;
         String className = "";

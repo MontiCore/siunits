@@ -4,6 +4,7 @@ package de.monticore.types.check;
 import com.google.common.collect.Lists;
 import de.monticore.expressions.combineexpressionswithliterals.CombineExpressionsWithLiteralsMill;
 import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICombineExpressionsWithLiteralsScope;
+import de.monticore.expressions.expressionsbasis._visitor.ExpressionsBasisTraverser;
 import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbol;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,12 +27,10 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
         // Setting up a Scope Infrastructure (without a global Scope)
         DefsTypeBasic.setup();
         // we add a variety of TypeSymbols to the same scope (which in reality doesn't happen)
-        scope = CombineExpressionsWithLiteralsMill
-                .combineExpressionsWithLiteralsScopeBuilder()
-                .setEnclosingScope(null)       // No enclosing Scope: Search ending here
-                .setExportingSymbols(true)
-                .setAstNode(null)
-                .build();
+        scope = CombineExpressionsWithLiteralsMill.scope();
+        scope.setExportingSymbols(true);
+        scope.setEnclosingScope(null);       // No enclosing Scope: Search ending here
+        scope.setAstNode(null);
         add2scope(scope, DefsTypeBasic._int);
         add2scope(scope, DefsTypeBasic._char);
         add2scope(scope, DefsTypeBasic._boolean);
@@ -66,16 +65,21 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
         add2scope(scope, field("student2", SymTypeExpressionFactory.createTypeObject("Student", scope)));
         add2scope(scope, field("firstsemester", SymTypeExpressionFactory.createTypeObject("FirstSemesterStudent", scope)));
 
-        setFlatExpressionScopeSetter(new CombineExpressionWithLiteralsFlatScopeSetter(scope));
+        setFlatExpressionScopeSetter(scope);
     }
 
     @Override
     public void setupTypeCheck() {
         // This is an auxiliary
-        ITypesCalculator derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator();
+        ITypesCalculator derLit = new DeriveSymTypeOfCombineExpressionsDelegator();
 
         // other arguments not used (and therefore deliberately null)
         setTypeCheck(new TypeCheck(null, derLit));
+    }
+
+    @Override
+    ExpressionsBasisTraverser getTraverser() {
+        return CombineExpressionsWithLiteralsMill.traverser();
     }
 
 

@@ -1,7 +1,9 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.lang.testsijava.testsijava.generator.prettyprint;
 
+import de.monticore.expressions.commonexpressions.CommonExpressionsMill;
 import de.monticore.expressions.commonexpressions._ast.*;
+import de.monticore.expressions.commonexpressions._visitor.CommonExpressionsTraverser;
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.expressions.expressionsbasis._ast.ASTNameExpression;
 import de.monticore.expressions.prettyprint.CommonExpressionsPrettyPrinter;
@@ -65,10 +67,10 @@ public class MyCommonExpressionsPrettyPrinter extends CommonExpressionsPrettyPri
                     typePrint = " + \"" + UnitPrettyPrinter.printUnit(un) + "\"";
                 }
                 this.getPrinter().print("System.out.println(");
-                node.getArguments().getExpression(0).accept(getRealThis());
+                node.getArguments().getExpression(0).accept(getTraverser());
                 this.getPrinter().print(typePrint + ")");
             } else if (name.equals(value)) {
-                node.getArguments().getExpression(0).accept(getRealThis());
+                node.getArguments().getExpression(0).accept(getTraverser());
             } else if (name.equals(basevalue)) {
                 UnitConverter converter = UnitConverter.IDENTITY;
                 if (argumentType instanceof SymTypeOfNumericWithSIUnit) {
@@ -76,14 +78,19 @@ public class MyCommonExpressionsPrettyPrinter extends CommonExpressionsPrettyPri
                     converter = Converter.getConverterFrom(un);
                 }
                 this.getPrinter().print(factorStart(converter));
-                node.getArguments().getExpression(0).accept(getRealThis());
+                node.getArguments().getExpression(0).accept(getTraverser());
                 this.getPrinter().print(factorEnd(converter));
             }
         } else {
-            node.getExpression().accept(getRealThis());
+            node.getExpression().accept(getTraverser());
             printer.print("(");
             NameToCallExpressionVisitor visitor = new NameToCallExpressionVisitor();
-            node.accept(visitor);
+            CommonExpressionsTraverser traverser = CommonExpressionsMill.traverser();
+            traverser.setCommonExpressionsHandler(visitor);
+            traverser.addCommonExpressionsVisitor(visitor);
+            traverser.setExpressionsBasisHandler(visitor);
+            traverser.addExpressionsBasisVisitor(visitor);
+            node.accept(traverser);
 
             List<FunctionSymbol> functionSymbols = ((ITestSIJavaScope) node.getEnclosingScope())
                     .resolveFunctionMany(node.getName());
@@ -120,7 +127,7 @@ public class MyCommonExpressionsPrettyPrinter extends CommonExpressionsPrettyPri
                 if (i > 0)
                     printer.print(", ");
                 printer.print(factorStartSimple(converter));
-                givenParameter.accept(getRealThis());
+                givenParameter.accept(getTraverser());
                 printer.print(factorEndSimple(converter));
             }
             printer.print(")");
@@ -173,11 +180,11 @@ public class MyCommonExpressionsPrettyPrinter extends CommonExpressionsPrettyPri
         }
 
         getPrinter().print(factorStart(leftConverter));
-        node.getLeft().accept(this.getRealThis());
+        node.getLeft().accept(this.getTraverser());
         getPrinter().print(factorEnd(leftConverter));
         this.getPrinter().print(" " + operator + " ");
         getPrinter().print(factorStart(rightConverter));
-        node.getRight().accept(this.getRealThis());
+        node.getRight().accept(this.getTraverser());
         getPrinter().print(factorEnd(rightConverter));
 
         CommentPrettyPrinter.printPostComments(node, this.getPrinter());

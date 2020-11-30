@@ -1,5 +1,4 @@
 /* (c) https://github.com/MontiCore/monticore */
-
 package test.de.monticore.lang.testsijava.testsijava;
 
 public class Main {

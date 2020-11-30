@@ -1,9 +1,21 @@
 /* (c) https://github.com/MontiCore/monticore */
-
 package test.de.monticore.lang.testsijava.testsijava;
 
 public class TestPrintAndValue {
 
+    /**
+         * This method generates the following output
+         * 20030.0m
+         * 2.0h
+         * 2.0
+         * 12.0
+         * 150.0
+         * 7200.0
+         * 7210.0
+         * 9000.0
+         * 1000.0km/h
+         * 7200010.0ms
+         */
     public void main() {
         double var = (double) ((7200.0) / 3600.0);
         System.out.println(((20.0) * 1000.0) + 30.0 + "m");

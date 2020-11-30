@@ -3,11 +3,10 @@
 package de.monticore.types.check;
 
 import de.monticore.siunits.utility.UnitPrettyPrinter;
+import de.monticore.siunittypes4math.SIUnitTypes4MathMill;
 import de.monticore.siunittypes4math._ast.ASTSIUnitType;
-import de.monticore.siunittypes4math._visitor.SIUnitTypes4MathVisitor;
-import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
-import de.monticore.types.mcbasictypes._symboltable.IMCBasicTypesScope;
-import de.se_rwth.commons.logging.Log;
+import de.monticore.siunittypes4math._visitor.SIUnitTypes4MathHandler;
+import de.monticore.siunittypes4math._visitor.SIUnitTypes4MathTraverser;
 
 import java.util.Optional;
 
@@ -16,26 +15,22 @@ import java.util.Optional;
  * i.e. for
  * types/SIUnitTypes.mc4
  */
-public class SynthesizeSymTypeFromSIUnitTypes4Math implements ISynthesize, SIUnitTypes4MathVisitor {
+public class SynthesizeSymTypeFromSIUnitTypes4Math extends AbstractSynthesizeFromType
+        implements SIUnitTypes4MathHandler, ISynthesize {
     /**
      * Using the visitor functionality to calculate the SymType Expression
      */
 
-    // ----------------------------------------------------------  realThis start
-    // setRealThis, getRealThis are necessary to make the visitor compositional
-    //
-    // (the Vistors are then composed using theRealThis Pattern)
-    //
-    SIUnitTypes4MathVisitor realThis = this;
+    protected SIUnitTypes4MathTraverser traverser;
 
     @Override
-    public void setRealThis(SIUnitTypes4MathVisitor realThis) {
-        this.realThis = realThis;
+    public SIUnitTypes4MathTraverser getTraverser() {
+        return traverser;
     }
 
     @Override
-    public SIUnitTypes4MathVisitor getRealThis() {
-        return realThis;
+    public void setTraverser(SIUnitTypes4MathTraverser traverser) {
+        this.traverser = traverser;
     }
 
     // ---------------------------------------------------------- Storage result
@@ -51,6 +46,8 @@ public class SynthesizeSymTypeFromSIUnitTypes4Math implements ISynthesize, SIUni
     }
 
     public void init() {
+        if (traverser == null)
+            traverser = SIUnitTypes4MathMill.traverser();
         typeCheckResult = new TypeCheckResult();
     }
 
@@ -67,14 +64,5 @@ public class SynthesizeSymTypeFromSIUnitTypes4Math implements ISynthesize, SIUni
                 UnitPrettyPrinter.printUnit(node.getSIUnit()), getScope(node.getEnclosingScope()));
 
         typeCheckResult.setCurrentResult(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(numericType, siunitType, getScope(node.getEnclosingScope())));
-    }
-
-    public IOOSymbolsScope getScope (IMCBasicTypesScope mcBasicTypesScope){
-        // is accepted only here, decided on 07.04.2020
-        if(!(mcBasicTypesScope instanceof IOOSymbolsScope)){
-            Log.error("0xAE107 the enclosing scope of the type does not implement the interface IOOSymbolsScope");
-        }
-        // is accepted only here, decided on 07.04.2020
-        return (IOOSymbolsScope) mcBasicTypesScope;
     }
 }

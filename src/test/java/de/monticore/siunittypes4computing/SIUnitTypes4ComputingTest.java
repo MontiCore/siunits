@@ -3,7 +3,6 @@
 package de.monticore.siunittypes4computing;
 
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
-import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
 import de.monticore.siunittypes4computing.prettyprint.SIUnitTypes4ComputingPrettyPrinter;
 import de.se_rwth.commons.logging.Log;
@@ -39,7 +38,6 @@ public class SIUnitTypes4ComputingTest {
 
     private void test(String control, String s, boolean expectedParseError) {
         Optional<ASTSIUnitType4Computing> astOpt = Optional.empty();
-        prettyPrinter = new SIUnitTypes4ComputingPrettyPrinter(new IndentPrinter());
         try {
             astOpt = parser.parseSIUnitType4Computing(new StringReader(s));
         } catch (IOException e) {
@@ -49,8 +47,7 @@ public class SIUnitTypes4ComputingTest {
             assertFalse("Should not be able to parse " + s, astOpt.isPresent());
         } else {
             assertTrue(astOpt.isPresent());
-            astOpt.get().accept(prettyPrinter);
-            assertEquals(control, prettyPrinter.getPrinter().getContent());
+            assertEquals(control, SIUnitTypes4ComputingPrettyPrinter.prettyprint(astOpt.get()));
         }
     }
 }

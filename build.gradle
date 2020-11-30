@@ -1,7 +1,7 @@
 /* (c) https://github.com/MontiCore/monticore */
 plugins {
     id "java"
-    id "monticore" version "6.5.0-SNAPSHOT" // MontiCore Plugin
+    id "monticore" version "6.6.0-SNAPSHOT" // MontiCore Plugin
     id "maven-publish"
     id "com.github.johnrengelman.shadow" version "6.0.0"
 //    id 'cz.malohlava.visteg' version '1.0.5'
@@ -60,12 +60,12 @@ dependencies {
 }
 
 repositories {
+    mavenLocal()
     maven {
         credentials.username mavenUser
         credentials.password mavenPassword
         url repo
     }
-    mavenLocal()
 }
 
 def grammarDependencies = ext {

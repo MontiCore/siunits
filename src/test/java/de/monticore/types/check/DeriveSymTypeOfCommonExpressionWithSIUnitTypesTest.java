@@ -4,6 +4,7 @@ package de.monticore.types.check;
 
 import de.monticore.expressions.combineexpressionswithsiunitliterals.CombineExpressionsWithSIUnitLiteralsMill;
 import de.monticore.expressions.combineexpressionswithsiunitliterals._symboltable.ICombineExpressionsWithSIUnitLiteralsScope;
+import de.monticore.expressions.expressionsbasis._visitor.ExpressionsBasisTraverser;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,6 +27,11 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
 
         // other arguments not used (and therefore deliberately null)
         setTypeCheck(new TypeCheck(null, derLit));
+    }
+
+    @Override
+    ExpressionsBasisTraverser getTraverser() {
+        return CombineExpressionsWithSIUnitLiteralsMill.traverser();
     }
 
     /*--------------------------------------------------- TESTS ---------------------------------------------------------*/
@@ -235,12 +241,10 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
      */
     @Before
     public void init_basic() {
-        scope = CombineExpressionsWithSIUnitLiteralsMill
-                .combineExpressionsWithSIUnitLiteralsScopeBuilder()
-                .setEnclosingScope(null)       // No enclosing Scope: Search ending here
-                .setExportingSymbols(true)
-                .setAstNode(null)
-                .build();
+        scope = CombineExpressionsWithSIUnitLiteralsMill.scope();
+        scope.setEnclosingScope(null);     // No enclosing Scope: Search ending here
+        scope.setExportingSymbols(true);
+        scope.setAstNode(null);
 
         // SIUnits
         SymTypeExpression s = SIUnitSymTypeExpressionFactory.createSIUnit("s", scope);
@@ -265,7 +269,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         add2scope(scope, field("varKMe2perH", kMe2perH));
         add2scope(scope, field("varKMe2perHMSe4", kMe2perHMSe4));
 
-        setFlatExpressionScopeSetter(new CombineExpressionWithSIUnitLiteralsFlatScopeSetter(scope));
+        setFlatExpressionScopeSetter(scope);
     }
 
     /**
