@@ -5,6 +5,7 @@ import de.monticore.lang.testsijava.testsijava._ast.*;
 import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaHandler;
 import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaTraverser;
 import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaVisitor2;
+import de.monticore.prettyprint.CommentPrettyPrinter;
 import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.siunits.utility.Converter;
 import de.monticore.types.check.DeriveSymTypeOfTestSIJava;
@@ -37,6 +38,7 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaHandler, TestSIJavaVis
 
     @Override
     public void traverse(ASTSIJavaClass node) {
+        CommentPrettyPrinter.printPreComments(node, printer);
         printer.println(
                 "package " + String.join(".", node.getPackageList()) + ";");
         printer.println();
@@ -62,10 +64,12 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaHandler, TestSIJavaVis
 
         printer.unindent();
         printer.println("}");
+        CommentPrettyPrinter.printPostComments(node, printer);
     }
 
     @Override
     public void traverse(ASTFieldDeclaration node) {
+        CommentPrettyPrinter.printPreComments(node, printer);
         String typePrint = printNumericType(node.getSymbol().getType());
         printer.print(typePrint);
         printer.print(" " + node.getName());
@@ -83,10 +87,12 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaHandler, TestSIJavaVis
             node.getExpression().accept(getTraverser());
             printer.print(factorEndSimple(converter) + ")");
         }
+        CommentPrettyPrinter.printPostComments(node, printer);
     }
 
     @Override
     public void traverse(ASTMethodDeclaration node) {
+        CommentPrettyPrinter.printPreComments(node, printer);
         String typePrint = printNumericType(node.getSymbol().getReturnType());
         printer.print("public " + typePrint + " " + node.getName() + "(");
 
@@ -128,57 +134,15 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaHandler, TestSIJavaVis
 
         printer.unindent();
         printer.println("}");
+        CommentPrettyPrinter.printPostComments(node, printer);
     }
 
     @Override
     public void traverse(ASTSIJavaParameter node) {
+        CommentPrettyPrinter.printPreComments(node, printer);
         printer.print(printNumericType(node.getSymbol().getType()) + " " +
                 node.getName());
-    }
-
-    @Override
-    public void endVisit(ASTSIJavaParameter node) {
-
-    }
-
-    @Override
-    public void visit(ASTSIJavaMethodExpression node) {
-
-    }
-
-    @Override
-    public void endVisit(ASTSIJavaMethodExpression node) {
-
-    }
-
-    @Override
-    public void visit(ASTSIJavaMethodReturn node) {
-
-    }
-
-    @Override
-    public void endVisit(ASTSIJavaMethodReturn node) {
-
-    }
-
-    @Override
-    public void visit(ASTSIJavaClassStatement node) {
-
-    }
-
-    @Override
-    public void endVisit(ASTSIJavaClassStatement node) {
-
-    }
-
-    @Override
-    public void visit(ASTSIJavaMethodStatement node) {
-
-    }
-
-    @Override
-    public void endVisit(ASTSIJavaMethodStatement node) {
-
+        CommentPrettyPrinter.printPostComments(node, printer);
     }
 
     private String printNumericType(SymTypeExpression symTypeExpression) {

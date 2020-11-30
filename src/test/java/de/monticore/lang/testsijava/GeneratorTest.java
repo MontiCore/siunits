@@ -9,6 +9,8 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 
+import static org.junit.Assert.assertEquals;
+
 public class GeneratorTest {
 
     private String modelPath = "src/test/resources";
@@ -21,7 +23,8 @@ public class GeneratorTest {
         File generatedFile = new File(outputPath + "/" + javaModelName);
         File compareFile = new File(compareModelPath + "/" + javaModelName);
         assert (generatedFile.exists());
-        assert (FileUtils.contentEquals(compareFile, generatedFile));
+        assertEquals ( FileUtils.readFileToString(compareFile, "utf-8"),
+                FileUtils.readFileToString(generatedFile, "utf-8"));
     }
 
     @Before
