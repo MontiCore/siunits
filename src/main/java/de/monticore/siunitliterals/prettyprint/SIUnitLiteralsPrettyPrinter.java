@@ -80,9 +80,9 @@ public class SIUnitLiteralsPrettyPrinter implements SIUnitLiteralsHandler {
         MCCommonLiteralsPrettyPrinter mcCommonLiteralsPrettyPrinter = new MCCommonLiteralsPrettyPrinter(printer);
 
         traverser.setSIUnitsHandler(siUnitsPrettyPrinter);
-        traverser.addSIUnitsVisitor(siUnitsPrettyPrinter);
+        traverser.add4SIUnits(siUnitsPrettyPrinter);
         traverser.setSIUnitLiteralsHandler(siUnitLiteralsPrettyPrinter);
-        traverser.addMCCommonLiteralsVisitor(mcCommonLiteralsPrettyPrinter);
+        traverser.add4MCCommonLiterals(mcCommonLiteralsPrettyPrinter);
 
         node.accept(traverser);
         return printer.getContent();

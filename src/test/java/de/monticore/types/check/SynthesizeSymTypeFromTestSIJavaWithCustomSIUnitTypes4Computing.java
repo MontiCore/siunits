@@ -26,7 +26,7 @@ public class SynthesizeSymTypeFromTestSIJavaWithCustomSIUnitTypes4Computing
         symTypeFromSIUnitTypes4Computing = new SynthesizeSymTypeFromCustomSIUnitTypes4Computing();
         symTypeFromCustomSIUnitTypes4Computing = new SynthesizeSymTypeFromCustomSIUnitTypes4Computing();
 
-        traverser.addMCBasicTypesVisitor(symTypeFromMCBasicTypes);
+        traverser.add4MCBasicTypes(symTypeFromMCBasicTypes);
         traverser.setMCBasicTypesHandler(symTypeFromMCBasicTypes);
         traverser.setSIUnitTypes4MathHandler(symTypeFromSIUnitTypes4Math);
         traverser.setSIUnitTypes4ComputingHandler(symTypeFromSIUnitTypes4Computing);

@@ -40,19 +40,19 @@ public class FlatExpressionScopeSetter implements AssignmentExpressionsVisitor2,
 
     public static void addToTraverser(ExpressionsBasisTraverser traverser, IExpressionsBasisScope enclosingScope) {
         FlatExpressionScopeSetter flatExpressionScopeSetter = new FlatExpressionScopeSetter(enclosingScope);
-        traverser.addExpressionsBasisVisitor(flatExpressionScopeSetter);
+        traverser.add4ExpressionsBasis(flatExpressionScopeSetter);
         if (traverser instanceof AssignmentExpressionsTraverser)
-            ((AssignmentExpressionsTraverser) traverser).addAssignmentExpressionsVisitor(flatExpressionScopeSetter);
+            ((AssignmentExpressionsTraverser) traverser).add4AssignmentExpressions(flatExpressionScopeSetter);
         if (traverser instanceof CommonExpressionsTraverser)
-            ((CommonExpressionsTraverser) traverser).addCommonExpressionsVisitor(flatExpressionScopeSetter);
+            ((CommonExpressionsTraverser) traverser).add4CommonExpressions(flatExpressionScopeSetter);
         if (traverser instanceof JavaClassExpressionsTraverser)
-            ((JavaClassExpressionsTraverser) traverser).addJavaClassExpressionsVisitor(flatExpressionScopeSetter);
+            ((JavaClassExpressionsTraverser) traverser).add4JavaClassExpressions(flatExpressionScopeSetter);
         if (traverser instanceof BitExpressionsTraverser)
-            ((BitExpressionsTraverser) traverser).addBitExpressionsVisitor(flatExpressionScopeSetter);
+            ((BitExpressionsTraverser) traverser).add4BitExpressions(flatExpressionScopeSetter);
         if (traverser instanceof SetExpressionsTraverser)
-            ((SetExpressionsTraverser) traverser).addSetExpressionsVisitor(flatExpressionScopeSetter);
+            ((SetExpressionsTraverser) traverser).add4SetExpressions(flatExpressionScopeSetter);
         if (traverser instanceof MCBasicTypesTraverser)
-            ((MCBasicTypesTraverser) traverser).addMCBasicTypesVisitor(flatExpressionScopeSetter);
+            ((MCBasicTypesTraverser) traverser).add4MCBasicTypes(flatExpressionScopeSetter);
     }
 
     protected IExpressionsBasisScope scope;

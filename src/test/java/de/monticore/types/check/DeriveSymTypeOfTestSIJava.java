@@ -72,22 +72,22 @@ public class DeriveSymTypeOfTestSIJava implements ITypesCalculator {
         this.traverser = TestSIJavaMill.traverser();
 
         deriveSymTypeOfCommonExpressions = new DeriveSymTypeOfCommonExpressionsWithSIUnitTypes();
-        traverser.addCommonExpressionsVisitor(deriveSymTypeOfCommonExpressions);
+        traverser.add4CommonExpressions(deriveSymTypeOfCommonExpressions);
         traverser.setCommonExpressionsHandler(deriveSymTypeOfCommonExpressions);
 
         deriveSymTypeOfAssignmentExpressions = new DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes();
-        traverser.addAssignmentExpressionsVisitor(deriveSymTypeOfAssignmentExpressions);
+        traverser.add4AssignmentExpressions(deriveSymTypeOfAssignmentExpressions);
         traverser.setAssignmentExpressionsHandler(deriveSymTypeOfAssignmentExpressions);
 
         deriveSymTypeOfExpression = new DeriveSymTypeOfExpression();
-        traverser.addExpressionsBasisVisitor(deriveSymTypeOfExpression);
+        traverser.add4ExpressionsBasis(deriveSymTypeOfExpression);
         traverser.setExpressionsBasisHandler(deriveSymTypeOfExpression);
 
         deriveSymTypeOfLiterals = new DeriveSymTypeOfLiterals();
-        traverser.addMCLiteralsBasisVisitor(deriveSymTypeOfLiterals);
+        traverser.add4MCLiteralsBasis(deriveSymTypeOfLiterals);
 
         deriveSymTypeOfMCCommonLiterals = new DeriveSymTypeOfMCCommonLiterals();
-        traverser.addMCCommonLiteralsVisitor(deriveSymTypeOfMCCommonLiterals);
+        traverser.add4MCCommonLiterals(deriveSymTypeOfMCCommonLiterals);
 
         deriveSymTypeOfSIUnitLiterals = new DeriveSymTypeOfSIUnitLiterals();
         traverser.setSIUnitLiteralsHandler(deriveSymTypeOfSIUnitLiterals);

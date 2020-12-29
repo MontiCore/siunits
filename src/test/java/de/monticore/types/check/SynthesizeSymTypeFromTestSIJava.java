@@ -26,7 +26,7 @@ public class SynthesizeSymTypeFromTestSIJava implements ISynthesize {
         symTypeFromSIUnitTypes4Math = new SynthesizeSymTypeFromSIUnitTypes4Math();
         symTypeFromSIUnitTypes4Computing = new SynthesizeSymTypeFromSIUnitTypes4Computing();
 
-        traverser.addMCBasicTypesVisitor(symTypeFromMCBasicTypes);
+        traverser.add4MCBasicTypes(symTypeFromMCBasicTypes);
         traverser.setMCBasicTypesHandler(symTypeFromMCBasicTypes);
         traverser.setSIUnitTypes4MathHandler(symTypeFromSIUnitTypes4Math);
         traverser.setSIUnitTypes4ComputingHandler(symTypeFromSIUnitTypes4Computing);

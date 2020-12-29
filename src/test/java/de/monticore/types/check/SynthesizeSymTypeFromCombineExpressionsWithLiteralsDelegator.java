@@ -32,17 +32,17 @@ public class SynthesizeSymTypeFromCombineExpressionsWithLiteralsDelegator implem
 
     SynthesizeSymTypeFromMCBasicTypes symTypeFromMCBasicTypes = new SynthesizeSymTypeFromMCBasicTypes();
     symTypeFromMCBasicTypes.setTypeCheckResult(typeCheckResult);
-    traverser.addMCBasicTypesVisitor(symTypeFromMCBasicTypes);
+    traverser.add4MCBasicTypes(symTypeFromMCBasicTypes);
     traverser.setMCBasicTypesHandler(symTypeFromMCBasicTypes);
 
     SynthesizeSymTypeFromMCCollectionTypes symTypeFromMCCollectionTypes = new SynthesizeSymTypeFromMCCollectionTypes();
     symTypeFromMCCollectionTypes.setTypeCheckResult(typeCheckResult);
-    traverser.addMCCollectionTypesVisitor(symTypeFromMCCollectionTypes);
+    traverser.add4MCCollectionTypes(symTypeFromMCCollectionTypes);
     traverser.setMCCollectionTypesHandler(symTypeFromMCCollectionTypes);
 
     SynthesizeSymTypeFromMCSimpleGenericTypes symTypeFromMCSimpleGenericTypes = new SynthesizeSymTypeFromMCSimpleGenericTypes();
     symTypeFromMCSimpleGenericTypes.setTypeCheckResult(typeCheckResult);
-    traverser.addMCSimpleGenericTypesVisitor(symTypeFromMCSimpleGenericTypes);
+    traverser.add4MCSimpleGenericTypes(symTypeFromMCSimpleGenericTypes);
     traverser.setMCSimpleGenericTypesHandler(symTypeFromMCSimpleGenericTypes);
   }
 

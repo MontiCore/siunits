@@ -17,30 +17,30 @@ public class PrintAsJavaClass {
         traverser = TestSIJavaMill.traverser();
 
         MyAssignmentExpressionsPrettyPrinter assignmentExpressionsPrettyPrinter = new MyAssignmentExpressionsPrettyPrinter(printer);
-        traverser.addAssignmentExpressionsVisitor(assignmentExpressionsPrettyPrinter);
+        traverser.add4AssignmentExpressions(assignmentExpressionsPrettyPrinter);
         traverser.setAssignmentExpressionsHandler(assignmentExpressionsPrettyPrinter);
 
         MyCommonExpressionsPrettyPrinter commonExpressionsPrettyPrinter = new MyCommonExpressionsPrettyPrinter(printer);
-        traverser.addCommonExpressionsVisitor(commonExpressionsPrettyPrinter);
+        traverser.add4CommonExpressions(commonExpressionsPrettyPrinter);
         traverser.setCommonExpressionsHandler(commonExpressionsPrettyPrinter);
 
         MyExpressionsBasisPrettyPrinter expressionsBasisPrettyPrinter = new MyExpressionsBasisPrettyPrinter(printer);
-        traverser.addExpressionsBasisVisitor(expressionsBasisPrettyPrinter);
+        traverser.add4ExpressionsBasis(expressionsBasisPrettyPrinter);
         traverser.setExpressionsBasisHandler(expressionsBasisPrettyPrinter);
 
         TestSIJavaPrettyPrinter testSIJavaPrettyPrinter = new TestSIJavaPrettyPrinter(printer);
-        traverser.addTestSIJavaVisitor(testSIJavaPrettyPrinter);
+        traverser.add4TestSIJava(testSIJavaPrettyPrinter);
         traverser.setTestSIJavaHandler(testSIJavaPrettyPrinter);
 
         MCBasicTypesPrettyPrinter mcBasicTypesPrettyPrinter = new MCBasicTypesPrettyPrinter(printer);
-        traverser.addMCBasicTypesVisitor(mcBasicTypesPrettyPrinter);
+        traverser.add4MCBasicTypes(mcBasicTypesPrettyPrinter);
         traverser.setMCBasicTypesHandler(mcBasicTypesPrettyPrinter);
 
         MySIUnitLiteralsPrettyPrinter siUnitLiteralsPrettyPrinter = new MySIUnitLiteralsPrettyPrinter(printer);
         traverser.setSIUnitLiteralsHandler(siUnitLiteralsPrettyPrinter);
 
         MCCommonLiteralsPrettyPrinter mcCommonLiteralsPrettyPrinter = new MCCommonLiteralsPrettyPrinter(printer);
-        traverser.addMCCommonLiteralsVisitor(mcCommonLiteralsPrettyPrinter);
+        traverser.add4MCCommonLiterals(mcCommonLiteralsPrettyPrinter);
         traverser.setMCCommonLiteralsHandler(mcCommonLiteralsPrettyPrinter);
     }
 

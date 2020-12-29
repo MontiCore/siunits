@@ -58,7 +58,7 @@ public class CustomSIUnitTypes4ComputingPrettyPrinter
         traverser.setCustomSIUnitTypes4ComputingHandler(customSIUnitTypes4ComputingPrettyPrinter);
         traverser.setSIUnitTypes4ComputingHandler(siUnitTypes4ComputingPrettyPrinter);
         traverser.setSIUnitsHandler(siUnitsPrettyPrinter);
-        traverser.addSIUnitsVisitor(siUnitsPrettyPrinter);
+        traverser.add4SIUnits(siUnitsPrettyPrinter);
         traverser.setMCBasicTypesHandler(mCBasicTypesPrettyPrinter);
 
         node.accept(traverser);

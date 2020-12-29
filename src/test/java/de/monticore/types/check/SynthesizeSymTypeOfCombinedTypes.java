@@ -35,15 +35,15 @@ public class SynthesizeSymTypeOfCombinedTypes implements ISynthesize {
         traverser = CombineExpressionsWithSIUnitLiteralsMill.traverser();
 
         symTypeFromMCBasicTypes = new SynthesizeSymTypeFromMCBasicTypes();
-        traverser.addMCBasicTypesVisitor(symTypeFromMCBasicTypes);
+        traverser.add4MCBasicTypes(symTypeFromMCBasicTypes);
         traverser.setMCBasicTypesHandler(symTypeFromMCBasicTypes);
 
         symTypeFromMCCollectionTypes = new SynthesizeSymTypeFromMCCollectionTypes();
-        traverser.addMCCollectionTypesVisitor(symTypeFromMCCollectionTypes);
+        traverser.add4MCCollectionTypes(symTypeFromMCCollectionTypes);
         traverser.setMCCollectionTypesHandler(symTypeFromMCCollectionTypes);
 
         symTypeFromMCSimpleGenericTypes = new SynthesizeSymTypeFromMCSimpleGenericTypes();
-        traverser.addMCSimpleGenericTypesVisitor(symTypeFromMCSimpleGenericTypes);
+        traverser.add4MCSimpleGenericTypes(symTypeFromMCSimpleGenericTypes);
         traverser.setMCSimpleGenericTypesHandler(symTypeFromMCSimpleGenericTypes);
 
         symTypeFromSIUnitTypes4Computing = new SynthesizeSymTypeFromSIUnitTypes4Computing();

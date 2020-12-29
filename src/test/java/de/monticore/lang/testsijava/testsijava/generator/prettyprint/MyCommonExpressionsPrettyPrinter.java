@@ -87,9 +87,9 @@ public class MyCommonExpressionsPrettyPrinter extends CommonExpressionsPrettyPri
             NameToCallExpressionVisitor visitor = new NameToCallExpressionVisitor();
             CommonExpressionsTraverser traverser = CommonExpressionsMill.traverser();
             traverser.setCommonExpressionsHandler(visitor);
-            traverser.addCommonExpressionsVisitor(visitor);
+            traverser.add4CommonExpressions(visitor);
             traverser.setExpressionsBasisHandler(visitor);
-            traverser.addExpressionsBasisVisitor(visitor);
+            traverser.add4ExpressionsBasis(visitor);
             node.accept(traverser);
 
             List<FunctionSymbol> functionSymbols = ((ITestSIJavaScope) node.getEnclosingScope())
