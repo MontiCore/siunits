@@ -3,12 +3,15 @@
 package de.monticore.lang.testsijava.testsijava._cocos;
 
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
+import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._ast.ASTFieldDeclaration;
 import de.monticore.lang.testsijava.testsijava._ast.ASTMethodDeclaration;
 import de.monticore.lang.testsijava.testsijava._ast.ASTSIJavaClass;
 import de.monticore.lang.testsijava.testsijava._ast.ASTSIJavaMethodExpression;
 import de.monticore.lang.testsijava.testsijava._symboltable.TestSIJavaSymbolTableCreator;
+import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaTraverser;
 import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaVisitor;
+import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaVisitor2;
 import de.monticore.types.check.DeriveSymTypeOfTestSIJava;
 import de.monticore.types.check.SynthesizeSymTypeFromTestSIJava;
 import de.monticore.types.check.TypeCheck;
@@ -22,7 +25,7 @@ import de.monticore.types.check.cocos.TypeCheckCoCo;
  *  @see TestSIJavaSymbolTableCreator
  */
 public class TestSIJavaTypeCheckCoCo extends TypeCheckCoCo
-    implements TestSIJavaASTSIJavaClassCoCo, TestSIJavaVisitor{
+    implements TestSIJavaASTSIJavaClassCoCo, TestSIJavaVisitor2 {
 
     public static TestSIJavaTypeCheckCoCo getCoCo() {
         TypeCheck typeCheck = new TypeCheck(new SynthesizeSymTypeFromTestSIJava(), new DeriveSymTypeOfTestSIJava());
@@ -35,7 +38,6 @@ public class TestSIJavaTypeCheckCoCo extends TypeCheckCoCo
 
     @Override
     public void check(ASTSIJavaClass node) {
-        node.accept(this);
     }
 
     @Override

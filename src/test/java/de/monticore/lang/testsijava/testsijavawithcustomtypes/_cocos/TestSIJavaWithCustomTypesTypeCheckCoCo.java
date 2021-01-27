@@ -4,12 +4,15 @@ package de.monticore.lang.testsijava.testsijavawithcustomtypes._cocos;
 
 
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
+import de.monticore.lang.testsijava.testsijavawithcustomtypes.TestSIJavaWithCustomTypesMill;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._ast.ASTFieldDeclaration;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._ast.ASTMethodDeclaration;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._ast.ASTSIJavaClass;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._ast.ASTSIJavaMethodExpression;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.TestSIJavaWithCustomTypesSymbolTableCreator;
+import de.monticore.lang.testsijava.testsijavawithcustomtypes._visitor.TestSIJavaWithCustomTypesTraverser;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._visitor.TestSIJavaWithCustomTypesVisitor;
+import de.monticore.lang.testsijava.testsijavawithcustomtypes._visitor.TestSIJavaWithCustomTypesVisitor2;
 import de.monticore.types.check.DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing;
 import de.monticore.types.check.SynthesizeSymTypeFromTestSIJavaWithCustomSIUnitTypes4Computing;
 import de.monticore.types.check.TypeCheck;
@@ -22,7 +25,7 @@ import de.monticore.types.check.cocos.TypeCheckCoCo;
  *  @see TestSIJavaWithCustomTypesSymbolTableCreator#visit(ASTFieldDeclaration node)
  */
 public class TestSIJavaWithCustomTypesTypeCheckCoCo extends TypeCheckCoCo
-        implements TestSIJavaWithCustomTypesASTSIJavaClassCoCo, TestSIJavaWithCustomTypesVisitor {
+        implements TestSIJavaWithCustomTypesASTSIJavaClassCoCo, TestSIJavaWithCustomTypesVisitor2 {
 
     public static TestSIJavaWithCustomTypesTypeCheckCoCo getCoCo() {
         TypeCheck typeCheck = new TypeCheck(new SynthesizeSymTypeFromTestSIJavaWithCustomSIUnitTypes4Computing(),
@@ -36,7 +39,6 @@ public class TestSIJavaWithCustomTypesTypeCheckCoCo extends TypeCheckCoCo
 
     @Override
     public void check(ASTSIJavaClass node) {
-        node.accept(this);
     }
 
     @Override
