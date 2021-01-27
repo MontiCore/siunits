@@ -47,9 +47,13 @@ dependencies {
     implementation "org.antlr:antlr4-runtime:4.7.1"
     implementation "de.monticore:monticore-runtime:${project.properties['mc_version']}"
     implementation "de.monticore:monticore-grammar:${project.properties['mc_version']}"
-    implementation "de.monticore:monticore-grammar:${project.properties['mc_version']}:$grammar_classifier"
+    implementation ("de.monticore:monticore-grammar:$mc_version") {capabilities {
+      requireCapability("de.monticore:monticore-grammar-grammars") }
+    }
 	implementation "org.jscience:jscience:$jscience_version"
-    grammar "de.monticore:monticore-grammar:${project.properties['mc_version']}:$grammar_classifier"
+    grammar implementation ("de.monticore:monticore-grammar:$mc_version") {capabilities {
+      requireCapability("de.monticore:monticore-grammar-grammars") }
+    }
     implementation "ch.qos.logback:logback-classic:1.1.7"
 
 //    testImplementation "junit:junit:4.13.1"
