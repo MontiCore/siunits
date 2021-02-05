@@ -1,5 +1,7 @@
 <!-- (c) https://github.com/MontiCore/monticore -->
 
+<!-- This is a MontiCore stable explanation. -->
+
 <!-- 
   TODO:  Links so anpassen, dass die Übertragung nach Github klappen wird
   (relative Links only)
