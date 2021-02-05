@@ -31,7 +31,6 @@ public class DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator implement
 
   private DeriveSymTypeOfJavaClassExpressions deriveSymTypeOfJavaClassExpressions;
 
-  private DeriveSymTypeOfSetExpressions deriveSymTypeOfSetExpressions;
 
   private DeriveSymTypeOfLiterals deriveSymTypeOfLiterals;
 
@@ -77,11 +76,6 @@ public class DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator implement
     traverser.add4JavaClassExpressions(deriveSymTypeOfJavaClassExpressions);
     traverser.setJavaClassExpressionsHandler(deriveSymTypeOfJavaClassExpressions);
 
-    deriveSymTypeOfSetExpressions = new DeriveSymTypeOfSetExpressions();
-    deriveSymTypeOfSetExpressions.setTypeCheckResult(typeCheckResult);
-    traverser.add4SetExpressions(deriveSymTypeOfSetExpressions);
-    traverser.setSetExpressionsHandler(deriveSymTypeOfSetExpressions);
-
     deriveSymTypeOfLiterals = new DeriveSymTypeOfLiterals();
     deriveSymTypeOfLiterals.setTypeCheckResult(typeCheckResult);
     traverser.add4MCLiteralsBasis(deriveSymTypeOfLiterals);
@@ -126,7 +120,6 @@ public class DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator implement
     deriveSymTypeOfLiterals.setTypeCheckResult(typeCheckResult);
     deriveSymTypeOfBitExpressions.setTypeCheckResult(typeCheckResult);
     deriveSymTypeOfJavaClassExpressions.setTypeCheckResult(typeCheckResult);
-    deriveSymTypeOfSetExpressions.setTypeCheckResult(typeCheckResult);
     deriveSymTypeOfCombineExpressions.setTypeCheckResult(typeCheckResult);
     deriveSymTypeOfSIUnitLiterals.setTypeCheckResult(typeCheckResult);
   }
@@ -143,7 +136,6 @@ public class DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator implement
     deriveSymTypeOfLiterals = new DeriveSymTypeOfLiterals();
     deriveSymTypeOfBitExpressions = new DeriveSymTypeOfBitExpressions();
     deriveSymTypeOfJavaClassExpressions = new DeriveSymTypeOfJavaClassExpressions();
-    deriveSymTypeOfSetExpressions = new DeriveSymTypeOfSetExpressions();
     deriveSymTypeOfCombineExpressions = new DeriveSymTypeOfCombineExpressions(symTypeFromCombineExpressionsWithLiteralsDelegator);
     deriveSymTypeOfSIUnitLiterals = new DeriveSymTypeOfSIUnitLiterals();
     setTypeCheckResult(typeCheckResult);

@@ -26,8 +26,6 @@ public class DeriveSymTypeOfCombineExpressionsDelegator implements ITypesCalcula
 
   private DeriveSymTypeOfJavaClassExpressions deriveSymTypeOfJavaClassExpressions;
 
-  private DeriveSymTypeOfSetExpressions deriveSymTypeOfSetExpressions;
-
   private DeriveSymTypeOfLiterals deriveSymTypeOfLiterals;
 
   private DeriveSymTypeOfMCCommonLiterals deriveSymTypeOfMCCommonLiterals;
@@ -74,7 +72,6 @@ public class DeriveSymTypeOfCombineExpressionsDelegator implements ITypesCalcula
     deriveSymTypeOfLiterals.setTypeCheckResult(typeCheckResult);
     deriveSymTypeOfBitExpressions.setTypeCheckResult(typeCheckResult);
     deriveSymTypeOfJavaClassExpressions.setTypeCheckResult(typeCheckResult);
-    deriveSymTypeOfSetExpressions.setTypeCheckResult(typeCheckResult);
     deriveSymTypeOfCombineExpressions.setTypeCheckResult(typeCheckResult);
   }
 
@@ -92,7 +89,6 @@ public class DeriveSymTypeOfCombineExpressionsDelegator implements ITypesCalcula
     deriveSymTypeOfLiterals = new DeriveSymTypeOfLiterals();
     deriveSymTypeOfBitExpressions = new DeriveSymTypeOfBitExpressions();
     deriveSymTypeOfJavaClassExpressions = new DeriveSymTypeOfJavaClassExpressions();
-    deriveSymTypeOfSetExpressions = new DeriveSymTypeOfSetExpressions();
     synthesizer = new SynthesizeSymTypeFromCombineExpressionsWithLiteralsDelegator();
     deriveSymTypeOfCombineExpressions = new DeriveSymTypeOfCombineExpressions(synthesizer);
     setTypeCheckResult(typeCheckResult);
@@ -103,14 +99,11 @@ public class DeriveSymTypeOfCombineExpressionsDelegator implements ITypesCalcula
     traverser.setAssignmentExpressionsHandler(deriveSymTypeOfAssignmentExpressions);
     traverser.add4MCCommonLiterals(deriveSymTypeOfMCCommonLiterals);
     traverser.add4ExpressionsBasis(deriveSymTypeOfExpression);
-    traverser.setExpressionsBasisHandler(deriveSymTypeOfExpression);
     traverser.add4MCLiteralsBasis(deriveSymTypeOfLiterals);
     traverser.add4BitExpressions(deriveSymTypeOfBitExpressions);
     traverser.setBitExpressionsHandler(deriveSymTypeOfBitExpressions);
     traverser.add4JavaClassExpressions(deriveSymTypeOfJavaClassExpressions);
     traverser.setJavaClassExpressionsHandler(deriveSymTypeOfJavaClassExpressions);
-    traverser.add4SetExpressions(deriveSymTypeOfSetExpressions);
-    traverser.setSetExpressionsHandler(deriveSymTypeOfSetExpressions);
     traverser.add4CombineExpressionsWithLiterals(deriveSymTypeOfCombineExpressions);
     traverser.setCombineExpressionsWithLiteralsHandler(deriveSymTypeOfCombineExpressions);
   }

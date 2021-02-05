@@ -20,12 +20,6 @@ import de.monticore.expressions.expressionsbasis._visitor.ExpressionsBasisVisito
 import de.monticore.expressions.javaclassexpressions._ast.*;
 import de.monticore.expressions.javaclassexpressions._visitor.JavaClassExpressionsTraverser;
 import de.monticore.expressions.javaclassexpressions._visitor.JavaClassExpressionsVisitor2;
-import de.monticore.expressions.setexpressions._ast.ASTIntersectionExpressionInfix;
-import de.monticore.expressions.setexpressions._ast.ASTIsInExpression;
-import de.monticore.expressions.setexpressions._ast.ASTSetInExpression;
-import de.monticore.expressions.setexpressions._ast.ASTUnionExpressionInfix;
-import de.monticore.expressions.setexpressions._visitor.SetExpressionsTraverser;
-import de.monticore.expressions.setexpressions._visitor.SetExpressionsVisitor2;
 import de.monticore.symboltable.IScope;
 import de.monticore.symboltable.ISymbol;
 import de.monticore.types.mcbasictypes._ast.ASTMCQualifiedName;
@@ -35,7 +29,7 @@ import de.monticore.types.mcbasictypes._visitor.MCBasicTypesTraverser;
 import de.monticore.types.mcbasictypes._visitor.MCBasicTypesVisitor2;
 
 public class FlatExpressionScopeSetter implements AssignmentExpressionsVisitor2, CommonExpressionsVisitor2,
-        JavaClassExpressionsVisitor2, SetExpressionsVisitor2, BitExpressionsVisitor2, ExpressionsBasisVisitor2,
+        JavaClassExpressionsVisitor2, BitExpressionsVisitor2, ExpressionsBasisVisitor2,
         MCBasicTypesVisitor2 {
 
     public static void addToTraverser(ExpressionsBasisTraverser traverser, IExpressionsBasisScope enclosingScope) {
@@ -49,8 +43,6 @@ public class FlatExpressionScopeSetter implements AssignmentExpressionsVisitor2,
             ((JavaClassExpressionsTraverser) traverser).add4JavaClassExpressions(flatExpressionScopeSetter);
         if (traverser instanceof BitExpressionsTraverser)
             ((BitExpressionsTraverser) traverser).add4BitExpressions(flatExpressionScopeSetter);
-        if (traverser instanceof SetExpressionsTraverser)
-            ((SetExpressionsTraverser) traverser).add4SetExpressions(flatExpressionScopeSetter);
         if (traverser instanceof MCBasicTypesTraverser)
             ((MCBasicTypesTraverser) traverser).add4MCBasicTypes(flatExpressionScopeSetter);
     }
@@ -247,28 +239,6 @@ public class FlatExpressionScopeSetter implements AssignmentExpressionsVisitor2,
 
     @Override
     public void visit(ASTBinaryXorExpression expr){
-        expr.setEnclosingScope(scope);
-    }
-
-    /*************************************************SET EXPRESSIONS****************************************************/
-
-    @Override
-    public void visit(ASTIsInExpression expr){
-        expr.setEnclosingScope(scope);
-    }
-
-    @Override
-    public void visit(ASTSetInExpression expr){
-        expr.setEnclosingScope(scope);
-    }
-
-    @Override
-    public void visit(ASTUnionExpressionInfix expr){
-        expr.setEnclosingScope(scope);
-    }
-
-    @Override
-    public void visit(ASTIntersectionExpressionInfix expr){
         expr.setEnclosingScope(scope);
     }
 
