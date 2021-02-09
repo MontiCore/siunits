@@ -99,6 +99,7 @@ public class DeriveSymTypeOfCombineExpressionsDelegator implements ITypesCalcula
     traverser.setAssignmentExpressionsHandler(deriveSymTypeOfAssignmentExpressions);
     traverser.add4MCCommonLiterals(deriveSymTypeOfMCCommonLiterals);
     traverser.add4ExpressionsBasis(deriveSymTypeOfExpression);
+    traverser.setExpressionsBasisHandler(deriveSymTypeOfExpression);
     traverser.add4MCLiteralsBasis(deriveSymTypeOfLiterals);
     traverser.add4BitExpressions(deriveSymTypeOfBitExpressions);
     traverser.setBitExpressionsHandler(deriveSymTypeOfBitExpressions);
