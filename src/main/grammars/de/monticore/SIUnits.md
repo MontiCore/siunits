@@ -236,7 +236,10 @@ Exemplary, this is all done for the
   [TestSIJava][TestSIJavaGrammar]
   language. For further explanation, see the documentation for the 
   [TestSIJava][TestSIJavaDoc] language.
+<<<<<<< src/main/grammars/de/monticore/SIUnits.md
+=======
 
+>>>>>>> src/main/grammars/de/monticore/SIUnits.md
 -->
 
 ## Extensibility
@@ -374,7 +377,6 @@ For Variant 2, we provide the following implementation:
   [NumberDecoder][NumberDecoder]
   which extracts the number of a NumericLiteral or SignedNumericLiteral as 
   either a java `double` or a java `java.lang.Number`.
-
 
 [SIUnitGrammar]: SIUnits.mc4
 [SIUnitLiteralsGrammar]: SIUnitLiterals.mc4
