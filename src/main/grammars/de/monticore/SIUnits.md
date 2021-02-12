@@ -235,12 +235,6 @@ Exemplary, this is all done for the
   [TestSIJava][TestSIJavaGrammar]
   language. For further explanation, see the documentation for the 
   [TestSIJava][TestSIJavaDoc] language.
-
-((TODO: I would like to understand, whether the above two dues are completely new
-or have been the same to'dos already without the given SIUnit Extension.
-or is this piece of to do not necessary anymore, becaus we now DO have a concrete syntax and therefore typecheck
-already?))
-Done: Those are always todos when using TypeCheck, does not really belong here
 -->
 
 ## Extensibility
@@ -390,16 +384,6 @@ For Variant 2, we provide the following implementation:
 * [Publications about MBSE and MontiCore](https://www.se-rwth.de/publications/)
 
 * [Licence definition](https://github.com/MontiCore/monticore/blob/master/00.org/Licenses/LICENSE-MONTICORE-3-LEVEL.md)
-
-<!--   
-    TODO:  Die MontiCore Links sind alle noch absolut:
-    MCCommonLiteralsGrammar
-    MCBasicTypesGrammar
-    OOSymbols
-    DeriveSymTypeOfAssignmentExpressions
-    DeriveSymTypeOfCommonExpressions
-    Types
--->
 
 [SIUnitGrammar]: SIUnits.mc4
 [SIUnitLiteralsGrammar]: SIUnitLiterals.mc4
