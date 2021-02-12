@@ -2,12 +2,19 @@
 
 package de.monticore.types.check;
 
-import de.monticore.expressions.combineexpressionswithsiunitliterals._visitor.CombineExpressionsWithSIUnitLiteralsDelegatorVisitor;
+import de.monticore.expressions.combineexpressionswithsiunitliterals.CombineExpressionsWithSIUnitLiteralsMill;
+import de.monticore.expressions.combineexpressionswithsiunitliterals._visitor.CombineExpressionsWithSIUnitLiteralsTraverser;
+import de.monticore.types.mcbasictypes._visitor.MCBasicTypesTraverser;
 
 import java.util.Optional;
 
-public class SynthesizeSymTypeOfCombinedTypes extends CombineExpressionsWithSIUnitLiteralsDelegatorVisitor
-        implements ISynthesize {
+public class SynthesizeSymTypeOfCombinedTypes implements ISynthesize {
+
+    CombineExpressionsWithSIUnitLiteralsTraverser traverser;
+
+    private SynthesizeSymTypeFromMCBasicTypes symTypeFromMCBasicTypes;
+
+    private SynthesizeSymTypeFromMCCollectionTypes symTypeFromMCCollectionTypes;
 
     private SynthesizeSymTypeFromMCSimpleGenericTypes symTypeFromMCSimpleGenericTypes;
 
@@ -15,9 +22,8 @@ public class SynthesizeSymTypeOfCombinedTypes extends CombineExpressionsWithSIUn
 
     private SynthesizeSymTypeFromSIUnitTypes4Math symTypeFromSIUnitTypes4Math;
 
-    private CombineExpressionsWithSIUnitLiteralsDelegatorVisitor realThis = this;
-
     private TypeCheckResult typeCheckResult = new TypeCheckResult();
+
 
     @Override
     public Optional<SymTypeExpression> getResult() {
@@ -26,24 +32,40 @@ public class SynthesizeSymTypeOfCombinedTypes extends CombineExpressionsWithSIUn
 
     @Override
     public void init() {
+        traverser = CombineExpressionsWithSIUnitLiteralsMill.traverser();
+
+        symTypeFromMCBasicTypes = new SynthesizeSymTypeFromMCBasicTypes();
+        traverser.add4MCBasicTypes(symTypeFromMCBasicTypes);
+        traverser.setMCBasicTypesHandler(symTypeFromMCBasicTypes);
+
+        symTypeFromMCCollectionTypes = new SynthesizeSymTypeFromMCCollectionTypes();
+        traverser.add4MCCollectionTypes(symTypeFromMCCollectionTypes);
+        traverser.setMCCollectionTypesHandler(symTypeFromMCCollectionTypes);
+
         symTypeFromMCSimpleGenericTypes = new SynthesizeSymTypeFromMCSimpleGenericTypes();
+        traverser.add4MCSimpleGenericTypes(symTypeFromMCSimpleGenericTypes);
+        traverser.setMCSimpleGenericTypesHandler(symTypeFromMCSimpleGenericTypes);
+
         symTypeFromSIUnitTypes4Computing = new SynthesizeSymTypeFromSIUnitTypes4Computing();
+        traverser.setSIUnitTypes4ComputingHandler(symTypeFromSIUnitTypes4Computing);
+
         symTypeFromSIUnitTypes4Math = new SynthesizeSymTypeFromSIUnitTypes4Math();
+        traverser.setSIUnitTypes4MathHandler(symTypeFromSIUnitTypes4Math);
 
-        setMCSimpleGenericTypesVisitor(symTypeFromMCSimpleGenericTypes);
-        setMCCollectionTypesVisitor(symTypeFromMCSimpleGenericTypes);
-        setMCBasicTypesVisitor(symTypeFromMCSimpleGenericTypes);
-        setSIUnitTypes4ComputingVisitor(symTypeFromSIUnitTypes4Computing);
-        setSIUnitTypes4MathVisitor(symTypeFromSIUnitTypes4Math);
-
-        typeCheckResult = new TypeCheckResult();
-        symTypeFromMCSimpleGenericTypes.setTypeCheckResult(typeCheckResult);
-        symTypeFromSIUnitTypes4Computing.setTypeCheckResult(typeCheckResult);
-        symTypeFromSIUnitTypes4Math.setTypeCheckResult(typeCheckResult);
+        setTypeCheckResult(new TypeCheckResult());
     }
 
     @Override
-    public CombineExpressionsWithSIUnitLiteralsDelegatorVisitor getRealThis(){
-        return realThis;
+    public MCBasicTypesTraverser getTraverser() {
+        return traverser;
+    }
+
+    public void setTypeCheckResult(TypeCheckResult typeCheckResult) {
+        this.typeCheckResult = typeCheckResult;
+        this.symTypeFromMCBasicTypes.setTypeCheckResult(typeCheckResult);
+        this.symTypeFromMCCollectionTypes.setTypeCheckResult(typeCheckResult);
+        this.symTypeFromMCSimpleGenericTypes.setTypeCheckResult(typeCheckResult);
+        this.symTypeFromSIUnitTypes4Math.setTypeCheckResult(typeCheckResult);
+        this.symTypeFromSIUnitTypes4Computing.setTypeCheckResult(typeCheckResult);
     }
 }

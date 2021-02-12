@@ -1,8 +1,10 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.types.check;
 
+import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICombineExpressionsWithLiteralsScope;
 import de.monticore.expressions.combineexpressionswithsiunitliterals._parser.CombineExpressionsWithSIUnitLiteralsParser;
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
+import de.monticore.expressions.expressionsbasis._visitor.ExpressionsBasisTraverser;
 import de.se_rwth.commons.logging.Log;
 import de.se_rwth.commons.logging.LogStub;
 import org.junit.Before;
@@ -46,17 +48,20 @@ public abstract class DeriveSymTypeAbstractTest {
         return astExpression.get();
     }
 
-    private FlatExpressionScopeSetterAbs flatExpressionScopeSetter;
+    private ExpressionsBasisTraverser flatExpressionScopeSetterTraverser;
 
-    protected void setFlatExpressionScopeSetter(FlatExpressionScopeSetterAbs flatExpressionScopeSetter) {
-        this.flatExpressionScopeSetter = flatExpressionScopeSetter;
+    abstract ExpressionsBasisTraverser getTraverser();
+
+    protected void setFlatExpressionScopeSetter(ICombineExpressionsWithLiteralsScope enclosingScope) {
+        flatExpressionScopeSetterTraverser = getTraverser();
+        FlatExpressionScopeSetter.addToTraverser(flatExpressionScopeSetterTraverser, enclosingScope);
     }
 
     protected void check(String expression, String expectedType) throws IOException {
         setupTypeCheck();
         ASTExpression astex = parseExpression(expression);
-        if (flatExpressionScopeSetter != null)
-            astex.accept(flatExpressionScopeSetter);
+        if (flatExpressionScopeSetterTraverser != null)
+            astex.accept(flatExpressionScopeSetterTraverser);
 
         assertEquals(expectedType, tc.typeOf(astex).print());
     }
@@ -64,13 +69,13 @@ public abstract class DeriveSymTypeAbstractTest {
     protected void checkError(String expression, String expectedError) throws IOException {
         setupTypeCheck();
         ASTExpression astex = parseExpression(expression);
-        if (flatExpressionScopeSetter != null)
-            astex.accept(flatExpressionScopeSetter);
+        if (flatExpressionScopeSetterTraverser != null)
+            astex.accept(flatExpressionScopeSetterTraverser);
 
         Log.getFindings().clear();
         try {
             tc.typeOf(astex);
-        } catch(RuntimeException e) {
+        } catch (RuntimeException e) {
             assertEquals(expectedError, getFirstErrorCode());
             return;
         }

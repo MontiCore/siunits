@@ -2,64 +2,59 @@
 
 package de.monticore.types.check;
 
-import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaDelegatorVisitor;
-import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaVisitor;
-import de.monticore.lang.testsijava.testsijava.visitor.TestSIJavaBasicVisitor;
+import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
+import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaTraverser;
 
 import java.util.Optional;
 
-public class SynthesizeSymTypeFromTestSIJava extends TestSIJavaDelegatorVisitor
-        implements ISynthesize {
+public class SynthesizeSymTypeFromTestSIJava implements ISynthesize {
+
+    protected TestSIJavaTraverser traverser;
 
     private SynthesizeSymTypeFromMCBasicTypes symTypeFromMCBasicTypes;
     private SynthesizeSymTypeFromSIUnitTypes4Math symTypeFromSIUnitTypes4Math;
     private SynthesizeSymTypeFromSIUnitTypes4Computing symTypeFromSIUnitTypes4Computing;
 
+    public SynthesizeSymTypeFromTestSIJava() {
+        init();
+    }
+
     public void init() {
-        typeCheckResult = new TypeCheckResult();
+        traverser = TestSIJavaMill.traverser();
 
         symTypeFromMCBasicTypes = new SynthesizeSymTypeFromMCBasicTypes();
         symTypeFromSIUnitTypes4Math = new SynthesizeSymTypeFromSIUnitTypes4Math();
         symTypeFromSIUnitTypes4Computing = new SynthesizeSymTypeFromSIUnitTypes4Computing();
 
-        symTypeFromMCBasicTypes.setTypeCheckResult(typeCheckResult);
-        symTypeFromSIUnitTypes4Math.setTypeCheckResult(typeCheckResult);
-        symTypeFromSIUnitTypes4Computing.setTypeCheckResult(typeCheckResult);
-
-        setMCBasicTypesVisitor(symTypeFromMCBasicTypes);
-        setSIUnitTypes4MathVisitor(symTypeFromSIUnitTypes4Math);
-        setSIUnitTypes4ComputingVisitor(symTypeFromSIUnitTypes4Computing);
-        setTestSIJavaVisitor(new TestSIJavaBasicVisitor());
+        traverser.add4MCBasicTypes(symTypeFromMCBasicTypes);
+        traverser.setMCBasicTypesHandler(symTypeFromMCBasicTypes);
+        traverser.setSIUnitTypes4MathHandler(symTypeFromSIUnitTypes4Math);
+        traverser.setSIUnitTypes4ComputingHandler(symTypeFromSIUnitTypes4Computing);
 
         setTypeCheckResult(new TypeCheckResult());
     }
 
-    public SynthesizeSymTypeFromTestSIJava() {
-        init();
-    }
-
-    // ----------------------------------------------------------  realThis start
-    // setRealThis, getRealThis are necessary to make the visitor compositional
-    //
-    // (the Vistors are then composed using theRealThis Pattern)
-    //
-    TestSIJavaVisitor realThis = this;
-
     @Override
-    public void setRealThis(TestSIJavaVisitor realThis) {
-        this.realThis = realThis;
+    public TestSIJavaTraverser getTraverser() {
+        return traverser;
     }
 
-    // ---------------------------------------------------------- Storage result
+
+    // ---------------------------------------------------------- Storage typeCheckResult
 
     /**
-     * Storage in the Visitor: result of the last endVisit.
+     * Storage in the Visitor: typeCheckResult of the last endVisit.
      * This attribute is synthesized upward.
      */
-    public TypeCheckResult typeCheckResult;
+    protected TypeCheckResult typeCheckResult;
 
+    @Override
     public Optional<SymTypeExpression> getResult() {
-        return Optional.of(typeCheckResult.getCurrentResult());
+        if(typeCheckResult.isPresentCurrentResult()){
+            return Optional.of(typeCheckResult.getCurrentResult());
+        }else{
+            return Optional.empty();
+        }
     }
 
     public void setTypeCheckResult(TypeCheckResult typeCheckResult){

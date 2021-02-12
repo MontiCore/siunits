@@ -21,13 +21,12 @@ public class Generator {
                 + ".sijava";
         ASTSIJavaClass ast = parseModel(modelPath, name);
         try {
-            ast.accept(TestSIJavaMill.testSIJavaSymbolTableCreatorBuilder().build());
+          TestSIJavaMill.scopesGenitorDelegator().createFromAST(ast);
         } catch (Exception e) {
             e.printStackTrace();
             Log.error("0xE6548322 Cannot build symbol table");
         }
         String print = PrintAsJavaClass.printAsJavaClass(ast);
-        print = "/* (c) https://github.com/MontiCore/monticore */\n\n" + print;
 
         String filePath = outputPath;
         String className = "";

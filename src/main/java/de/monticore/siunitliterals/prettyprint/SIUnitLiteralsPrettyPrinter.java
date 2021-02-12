@@ -2,24 +2,39 @@
 
 package de.monticore.siunitliterals.prettyprint;
 
-import de.monticore.MCCommonLiteralsPrettyPrinter;
+import de.monticore.literals.prettyprint.MCCommonLiteralsPrettyPrinter;
 import de.monticore.prettyprint.IndentPrinter;
+import de.monticore.siunitliterals.SIUnitLiteralsMill;
 import de.monticore.siunitliterals._ast.ASTSIUnitLiteral;
+import de.monticore.siunitliterals._ast.ASTSIUnitLiteralsNode;
 import de.monticore.siunitliterals._ast.ASTSignedSIUnitLiteral;
-import de.monticore.siunitliterals._visitor.SIUnitLiteralsVisitor;
+import de.monticore.siunitliterals._visitor.SIUnitLiteralsHandler;
+import de.monticore.siunitliterals._visitor.SIUnitLiteralsTraverser;
 import de.monticore.siunits.prettyprint.SIUnitsPrettyPrinter;
 
-public class SIUnitLiteralsPrettyPrinter extends MCCommonLiteralsPrettyPrinter
-                                        implements SIUnitLiteralsVisitor {
+public class SIUnitLiteralsPrettyPrinter implements SIUnitLiteralsHandler {
 
-    private SIUnitLiteralsVisitor realThis = this;
+    protected SIUnitLiteralsTraverser traverser;
+
+    @Override
+    public SIUnitLiteralsTraverser getTraverser() {
+        return traverser;
+    }
+
+    @Override
+    public void setTraverser(SIUnitLiteralsTraverser traverser) {
+        this.traverser = traverser;
+    }
+
+    // printer to use
+    protected IndentPrinter printer;
 
     /**
      * Constructor
      * @param printer
      */
     public SIUnitLiteralsPrettyPrinter(IndentPrinter printer) {
-        super(printer);
+        this.printer = printer;
     }
 
     /**
@@ -37,53 +52,39 @@ public class SIUnitLiteralsPrettyPrinter extends MCCommonLiteralsPrettyPrinter
      */
     @Override
     public void traverse(ASTSIUnitLiteral node) {
-        node.getNumericLiteral().accept(getRealThis());
+        node.getNumericLiteral().accept(getTraverser());
         printer.print(" ");
-        node.getSIUnit().accept(new SIUnitsPrettyPrinter(printer));
+        node.getSIUnit().accept(getTraverser());
     }
 
     @Override
     public void traverse(ASTSignedSIUnitLiteral node) {
-        node.getSignedNumericLiteral().accept(getRealThis());
+        node.getSignedNumericLiteral().accept(getTraverser());
         printer.print(" ");
-        node.getSIUnit().accept(new SIUnitsPrettyPrinter(printer));
+        node.getSIUnit().accept(getTraverser());
     }
 
+
     /**
-     * This method prettyprints a given SIUnitLiteral.
+     * This method prettyprints a given node from SIUnitLiterals grammar.
      *
-     * @param node A SIUnitLiteral.
+     * @param node A node from SIUnitLiterals grammar.
      * @return String representation.
      */
-    public String prettyprint(ASTSIUnitLiteral node) {
-        node.accept(getRealThis());
+    public static String prettyprint(ASTSIUnitLiteralsNode node) {
+        SIUnitLiteralsTraverser traverser = SIUnitLiteralsMill.traverser();
+
+        IndentPrinter printer = new IndentPrinter();
+        SIUnitsPrettyPrinter siUnitsPrettyPrinter = new SIUnitsPrettyPrinter(printer);
+        SIUnitLiteralsPrettyPrinter siUnitLiteralsPrettyPrinter = new SIUnitLiteralsPrettyPrinter(printer);
+        MCCommonLiteralsPrettyPrinter mcCommonLiteralsPrettyPrinter = new MCCommonLiteralsPrettyPrinter(printer);
+
+        traverser.setSIUnitsHandler(siUnitsPrettyPrinter);
+        traverser.add4SIUnits(siUnitsPrettyPrinter);
+        traverser.setSIUnitLiteralsHandler(siUnitLiteralsPrettyPrinter);
+        traverser.add4MCCommonLiterals(mcCommonLiteralsPrettyPrinter);
+
+        node.accept(traverser);
         return printer.getContent();
-    }
-
-    /**
-     * This method prettyprints a given SignedSIUnitLiterals.
-     *
-     * @param node A SignedSIUnitLiterals.
-     * @return String representation.
-     */
-    public String prettyprint(ASTSignedSIUnitLiteral node) {
-        node.accept(getRealThis());
-        return printer.getContent();
-    }
-
-    /**
-     * @see SIUnitLiteralsVisitor#setRealThis(SIUnitLiteralsVisitor)
-     */
-    @Override
-    public void setRealThis(SIUnitLiteralsVisitor realThis) {
-        this.realThis = realThis;
-    }
-
-    /**
-     * @see SIUnitLiteralsVisitor#getRealThis()
-     */
-    @Override
-    public SIUnitLiteralsVisitor getRealThis() {
-        return realThis;
     }
 }

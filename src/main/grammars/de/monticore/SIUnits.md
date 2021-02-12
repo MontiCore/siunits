@@ -1,20 +1,5 @@
 <!-- (c) https://github.com/MontiCore/monticore -->
 
-<!-- This is a MontiCore stable explanation. -->
-
-<!-- 
-  TODO:  Links so anpassen, dass die Übertragung nach Github klappen wird
-  (relative Links only)
-  Done:
-  TODO:  Die MontiCore Links sind alle noch absolut
-  
-  TODO:
-  Wir müssen über die Umsetzung (mit oder ohne explizites Mitschleppen 
-  der Einheiten zur Laufzeit)
-  sowie über die Bedeutung der Funktionen nochmal nachdenken.
- -->
-
-
 # SIUnits
 
 This language introduces SI units and allows language developers to 
@@ -252,11 +237,6 @@ Exemplary, this is all done for the
   language. For further explanation, see the documentation for the 
   [TestSIJava][TestSIJavaDoc] language.
 
-((TODO: I would like to understand, whether the above two dues are completely new
-or have been the same to'dos already without the given SIUnit Extension.
-or is this piece of to do not necessary anymore, becaus we now DO have a concrete syntax and therefore typecheck
-already?))
-Done: Those are always todos when using TypeCheck, does not really belong here
 -->
 
 ## Extensibility
@@ -395,15 +375,6 @@ For Variant 2, we provide the following implementation:
   which extracts the number of a NumericLiteral or SignedNumericLiteral as 
   either a java `double` or a java `java.lang.Number`.
 
-<!--   
-    TODO:  Die MontiCore Links sind alle noch absolut:
-    MCCommonLiteralsGrammar
-    MCBasicTypesGrammar
-    OOSymbols
-    DeriveSymTypeOfAssignmentExpressions
-    DeriveSymTypeOfCommonExpressions
-    Types
--->
 
 [SIUnitGrammar]: SIUnits.mc4
 [SIUnitLiteralsGrammar]: SIUnitLiterals.mc4

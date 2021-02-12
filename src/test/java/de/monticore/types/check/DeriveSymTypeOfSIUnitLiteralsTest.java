@@ -32,11 +32,10 @@ public class DeriveSymTypeOfSIUnitLiteralsTest {
 
     @Before
     public void setupForEach() {
-        scope = TestSIUnitLiteralsMill.testSIUnitLiteralsScopeBuilder()
-                .setEnclosingScope(null)       // No enclosing Scope: Search ending here
-                .setExportingSymbols(true)
-                .setAstNode(null)
-                .setName("Phantasy2").build();     // hopefully unused
+        scope = TestSIUnitLiteralsMill.scope();
+        scope.setEnclosingScope(null);       // No enclosing Scope: Search ending here
+        scope.setExportingSymbols(true);
+        scope.setAstNode(null);     // hopefully unused
     }
 
     // This is the core Visitor under Test (but rather empty)

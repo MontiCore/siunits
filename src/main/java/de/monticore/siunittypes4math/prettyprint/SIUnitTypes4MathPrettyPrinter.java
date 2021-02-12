@@ -4,28 +4,11 @@ package de.monticore.siunittypes4math.prettyprint;
 
 import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.siunits.prettyprint.SIUnitsPrettyPrinter;
+import de.monticore.siunittypes4math.SIUnitTypes4MathMill;
 import de.monticore.siunittypes4math._ast.ASTSIUnitTypes4MathNode;
-import de.monticore.siunittypes4math._visitor.SIUnitTypes4MathVisitor;
+import de.monticore.siunittypes4math._visitor.SIUnitTypes4MathTraverser;
 
-public class SIUnitTypes4MathPrettyPrinter extends SIUnitsPrettyPrinter implements SIUnitTypes4MathVisitor {
-
-    private SIUnitTypes4MathVisitor realThis;
-
- @Override
-    public void setRealThis(SIUnitTypes4MathVisitor realThis) {
-        this.realThis = realThis;
-    }
-
-    @Override
-    public SIUnitTypes4MathVisitor getRealThis() {
-        return realThis;
-    }
-
-    public SIUnitTypes4MathPrettyPrinter(IndentPrinter printer) {
-        super(printer);
-        realThis = this;
-    }
-
+public class SIUnitTypes4MathPrettyPrinter {
     /**
      * This method prettyprints a given node from SIUnitTypes grammar.
      *
@@ -33,8 +16,14 @@ public class SIUnitTypes4MathPrettyPrinter extends SIUnitsPrettyPrinter implemen
      * @return String representation.
      */
     public static String prettyprint(ASTSIUnitTypes4MathNode node) {
-        SIUnitTypes4MathPrettyPrinter pp = new SIUnitTypes4MathPrettyPrinter(new IndentPrinter());
-        node.accept(pp);
-        return pp.getPrinter().getContent();
+        SIUnitTypes4MathTraverser traverser = SIUnitTypes4MathMill.traverser();
+
+        SIUnitsPrettyPrinter siUnitsPrettyPrinter = new SIUnitsPrettyPrinter(new IndentPrinter());
+
+        traverser.setSIUnitsHandler(siUnitsPrettyPrinter);
+        traverser.add4SIUnits(siUnitsPrettyPrinter);
+
+        node.accept(traverser);
+        return siUnitsPrettyPrinter.getPrinter().getContent();
     }
 }

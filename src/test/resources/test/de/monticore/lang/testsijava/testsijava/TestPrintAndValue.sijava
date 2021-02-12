@@ -19,16 +19,36 @@ siclass TestPrintAndValue {
      */
     void main () {
         h var = 7200 s;
-        print(20 km + 30m);               // 20030.0m
-        print (var);                      // 2.0h
-        print (value(var));               // 2.0
-        print (value(var) + 10);          // 12.0
-        print (value(var + 30 min));      // 150.0
-        print (basevalue(var));           // 7200.0
-        print (basevalue(var) + 10);      // 7210.0
-        print (basevalue(var + 30 min));  // 9000.0
-        print (2000 km / var);            // 1000.0km/h
-        print (var + 10 ms);              // 7200010.0ms
+
+        // 20030.0m
+        print(20 km + 30m);
+
+        // 2.0h
+        print (var);
+
+        // 2.0
+        print (value(var));
+
+        // 12.0
+        print (value(var) + 10);
+
+        // 150.0
+        print (value(var + 30 min));
+
+        // 7200.0
+        print (basevalue(var));
+
+        // 7210.0
+        print (basevalue(var) + 10);
+
+        // 9000.0
+        print (basevalue(var + 30 min));
+
+        // 1000.0km/h
+        print (2000 km / var);
+
+        // 7200010.0ms
+        print (var + 10 ms);
     }
 
 }

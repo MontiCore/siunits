@@ -2,14 +2,15 @@
 
 package de.monticore.types.check;
 
-import de.monticore.lang.testsijava.testsijavawithcustomtypes._visitor.TestSIJavaWithCustomTypesDelegatorVisitor;
-import de.monticore.lang.testsijava.testsijavawithcustomtypes._visitor.TestSIJavaWithCustomTypesVisitor;
-import de.monticore.lang.testsijava.testsijavawithcustomtypes.visitor.TestSIJavaWithCustomTypesBasicVisitor;
+import de.monticore.lang.testsijava.testsijavawithcustomtypes.TestSIJavaWithCustomTypesMill;
+import de.monticore.lang.testsijava.testsijavawithcustomtypes._visitor.TestSIJavaWithCustomTypesTraverser;
 
 import java.util.Optional;
 
-public class SynthesizeSymTypeFromTestSIJavaWithCustomSIUnitTypes4Computing extends TestSIJavaWithCustomTypesDelegatorVisitor
+public class SynthesizeSymTypeFromTestSIJavaWithCustomSIUnitTypes4Computing
         implements ISynthesize {
+
+    protected TestSIJavaWithCustomTypesTraverser traverser;
 
     private SynthesizeSymTypeFromMCBasicTypes symTypeFromMCBasicTypes;
     private SynthesizeSymTypeFromSIUnitTypes4Math symTypeFromSIUnitTypes4Math;
@@ -18,52 +19,45 @@ public class SynthesizeSymTypeFromTestSIJavaWithCustomSIUnitTypes4Computing exte
 
 
     public void init() {
-        typeCheckResult = new TypeCheckResult();
+        traverser = TestSIJavaWithCustomTypesMill.traverser();
 
         symTypeFromMCBasicTypes = new SynthesizeSymTypeFromMCBasicTypes();
         symTypeFromSIUnitTypes4Math = new SynthesizeSymTypeFromSIUnitTypes4Math();
         symTypeFromSIUnitTypes4Computing = new SynthesizeSymTypeFromCustomSIUnitTypes4Computing();
         symTypeFromCustomSIUnitTypes4Computing = new SynthesizeSymTypeFromCustomSIUnitTypes4Computing();
 
-        symTypeFromMCBasicTypes.setTypeCheckResult(typeCheckResult);
-        symTypeFromSIUnitTypes4Math.setTypeCheckResult(typeCheckResult);
-        symTypeFromSIUnitTypes4Computing.setTypeCheckResult(typeCheckResult);
-        symTypeFromCustomSIUnitTypes4Computing.setTypeCheckResult(typeCheckResult);
-
-        setMCBasicTypesVisitor(symTypeFromMCBasicTypes);
-        setSIUnitTypes4ComputingVisitor(symTypeFromSIUnitTypes4Computing);
-        setCustomSIUnitTypes4ComputingVisitor(symTypeFromCustomSIUnitTypes4Computing);
-        setTestSIJavaWithCustomTypesVisitor(new TestSIJavaWithCustomTypesBasicVisitor());
+        traverser.add4MCBasicTypes(symTypeFromMCBasicTypes);
+        traverser.setMCBasicTypesHandler(symTypeFromMCBasicTypes);
+        traverser.setSIUnitTypes4MathHandler(symTypeFromSIUnitTypes4Math);
+        traverser.setSIUnitTypes4ComputingHandler(symTypeFromSIUnitTypes4Computing);
+        traverser.setCustomSIUnitTypes4ComputingHandler(symTypeFromCustomSIUnitTypes4Computing);
 
         setTypeCheckResult(new TypeCheckResult());
+    }
+
+    @Override
+    public TestSIJavaWithCustomTypesTraverser getTraverser() {
+        return traverser;
     }
 
     public SynthesizeSymTypeFromTestSIJavaWithCustomSIUnitTypes4Computing() {
         init();
     }
 
-    // ----------------------------------------------------------  realThis start
-    // setRealThis, getRealThis are necessary to make the visitor compositional
-    //
-    // (the Vistors are then composed using theRealThis Pattern)
-    //
-    TestSIJavaWithCustomTypesVisitor realThis = this;
-
-    @Override
-    public void setRealThis(TestSIJavaWithCustomTypesVisitor realThis) {
-        this.realThis = realThis;
-    }
-
-    // ---------------------------------------------------------- Storage result
+    // ---------------------------------------------------------- Storage typeCheckResult
 
     /**
-     * Storage in the Visitor: result of the last endVisit.
+     * Storage in the Visitor: typeCheckResult of the last endVisit.
      * This attribute is synthesized upward.
      */
-    public TypeCheckResult typeCheckResult = new TypeCheckResult();
+    protected TypeCheckResult typeCheckResult = new TypeCheckResult();
 
     public Optional<SymTypeExpression> getResult() {
-        return Optional.of(typeCheckResult.getCurrentResult());
+        if(typeCheckResult.isPresentCurrentResult()){
+            return Optional.of(typeCheckResult.getCurrentResult());
+        }else{
+            return Optional.empty();
+        }
     }
 
     public void setTypeCheckResult(TypeCheckResult typeCheckResult){

@@ -1,11 +1,10 @@
 /* (c) https://github.com/MontiCore/monticore */
 
-package de.monticore.siunits.customsiunittypes4computing;
+package de.monticore.customsiunittypes4computing;
 
 import de.monticore.customsiunittypes4computing._ast.ASTCustomSIUnitType4Computing;
 import de.monticore.customsiunittypes4computing.prettyprint.CustomSIUnitTypes4ComputingPrettyPrinter;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._parser.TestSIJavaWithCustomTypesParser;
-import de.monticore.prettyprint.IndentPrinter;
 import de.se_rwth.commons.logging.Log;
 import de.se_rwth.commons.logging.LogStub;
 import org.junit.Before;
@@ -39,7 +38,6 @@ public class CustomSIUnitTypes4ComputingTest {
 
     private void test(String control, String s, boolean expectedParseError) {
         Optional<ASTCustomSIUnitType4Computing> astOpt = Optional.empty();
-        prettyPrinter = new CustomSIUnitTypes4ComputingPrettyPrinter(new IndentPrinter());
         try {
             astOpt = parser.parseCustomSIUnitType4Computing(new StringReader(s));
         } catch (IOException e) {
@@ -49,8 +47,7 @@ public class CustomSIUnitTypes4ComputingTest {
             assertFalse("Should not be able to parse " + s, astOpt.isPresent());
         } else {
             assertTrue(astOpt.isPresent());
-            astOpt.get().accept(prettyPrinter);
-            assertEquals(control, prettyPrinter.getPrinter().getContent());
+            assertEquals(control, CustomSIUnitTypes4ComputingPrettyPrinter.prettyprint(astOpt.get()));
         }
     }
 }

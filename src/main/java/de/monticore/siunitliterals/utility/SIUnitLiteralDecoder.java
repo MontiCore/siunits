@@ -1,8 +1,7 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.siunitliterals.utility;
 
-import de.monticore.MCCommonLiteralsPrettyPrinter;
-import de.monticore.prettyprint.IndentPrinter;
+import de.monticore.literals.prettyprint.MCCommonLiteralsFullPrettyPrinter;
 import de.monticore.siunitliterals._ast.ASTSIUnitLiteral;
 import de.monticore.siunitliterals._ast.ASTSignedSIUnitLiteral;
 import de.monticore.siunits.utility.UnitFactory;
@@ -16,7 +15,7 @@ import javax.measure.unit.Unit;
  * a {@link de.monticore.siunitliterals._ast.ASTSignedSIUnitLiteral}
  * from the de.monticore.SIUnitLiterals grammar. It is also meant to
  * calculate the value of a SIUnitLiteral, meaning valueOf(1 km) = 1000.
- * This class can be initialized with a {@link de.monticore.MCCommonLiteralsPrettyPrinter} to prettyprint
+ * This class can be initialized with a {@link de.monticore.literals.prettyprint.MCCommonLiteralsFullPrettyPrinter} to prettyprint
  * your own custom {@link de.monticore.literals.mccommonliterals._ast.ASTNumericLiteral} or
  * {@link de.monticore.literals.mccommonliterals._ast.ASTSignedNumericLiteral}.
  *
@@ -26,24 +25,24 @@ import javax.measure.unit.Unit;
 public class SIUnitLiteralDecoder {
 
     private MCCommonLiteralsDecoder decoder;
-    private static MCCommonLiteralsPrettyPrinter prettyPrinter_ = new MCCommonLiteralsPrettyPrinter(new IndentPrinter());
 
     /**
-     * Constructor with the standard {@link de.monticore.MCCommonLiteralsPrettyPrinter}
+     * Constructor with the standard {@link de.monticore.literals.prettyprint.MCCommonLiteralsFullPrettyPrinter}
      */
     public SIUnitLiteralDecoder() {
-        this.decoder = new MCCommonLiteralsDecoder(prettyPrinter_);
+        this.decoder = new MCCommonLiteralsDecoder();
     }
 
     /**
-     * Constructor with the PrettyPrinter which extends the standard {@link de.monticore.MCCommonLiteralsPrettyPrinter}
+     * Constructor with the PrettyPrinter which extends the standard {@link de.monticore.literals.prettyprint.MCCommonLiteralsFullPrettyPrinter}
+     * @param mcCommonLiteralsFullPrettyPrinter
      */
-    public SIUnitLiteralDecoder(MCCommonLiteralsPrettyPrinter prettyPrinter) {
-        this.decoder = new MCCommonLiteralsDecoder(prettyPrinter);
+    public SIUnitLiteralDecoder(MCCommonLiteralsFullPrettyPrinter mcCommonLiteralsFullPrettyPrinter) {
+        this.decoder = new MCCommonLiteralsDecoder(mcCommonLiteralsFullPrettyPrinter);
     }
 
-    public static void setPrettyPrinter(MCCommonLiteralsPrettyPrinter prettyPrinter) {
-        SIUnitLiteralDecoder.prettyPrinter_ = prettyPrinter;
+    public static void setPrettyPrinter(MCCommonLiteralsFullPrettyPrinter prettyPrinter) {
+        SIUnitLiteralDecoder.setPrettyPrinter(prettyPrinter);
     }
 
     /**

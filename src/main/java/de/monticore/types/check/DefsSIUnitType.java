@@ -4,7 +4,8 @@ package de.monticore.types.check;
 
 import de.monticore.siunits.utility.SIUnitConstants;
 import de.monticore.symbols.basicsymbols._symboltable.TypeSymbol;
-import de.monticore.symbols.oosymbols._symboltable.OOSymbolsScope;
+import de.monticore.symbols.oosymbols.OOSymbolsMill;
+import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
 import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbol;
 
 import java.util.HashMap;
@@ -33,14 +34,14 @@ public class DefsSIUnitType extends DefsTypeBasic {
 
         List<String> baseUnits = SIUnitConstants.getAllUnits();
 
-        OOSymbolsScope scope = new OOSymbolsScope();
+        IOOSymbolsScope scope = OOSymbolsMill.scope();
         for (String currentType : baseUnits)
             createSIUnitBasicTypeAndAddToScope(currentType, scope);
         createSIUnitBasicTypeAndAddToScope("°", scope);
         createSIUnitBasicTypeAndAddToScope("1", scope);
     }
 
-    private static void createSIUnitBasicTypeAndAddToScope(String name, OOSymbolsScope scope) {
+    private static void createSIUnitBasicTypeAndAddToScope(String name, IOOSymbolsScope scope) {
         if (sIUnitBasicTypes.get(name) != null) return;
         OOTypeSymbol newSymbol = type(name);
         scope.add(newSymbol);

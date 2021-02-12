@@ -1,5 +1,4 @@
 /* (c) https://github.com/MontiCore/monticore */
-
 package test.de.monticore.lang.testsijava.testsijava;
 
 public class MyClass {
@@ -12,6 +11,7 @@ public class MyClass {
 
 
     public int method1(int varInt2) {
+        // Hier könnte 0 bei rauskommen double -> int
         int var2 = (int) ((4.0) * 1.0E9);
         var2 = (int) ((5.0 / (2.0 * 5.0)) / 1000000.0);
         var2 = (int) ((5.0) / 1.0E12);

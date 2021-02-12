@@ -23,7 +23,7 @@ public class SynthesizeSymTypeFromSIUnitTypes4MathTest {
 
     private TestSIJavaParser parser = new TestSIJavaParser();
     // This is the TypeChecker under Test:
-    private TypeCheck tc = new TypeCheck(new SynthesizeSymTypeFromSIUnitTypes4Math());
+    private TypeCheck tc = new TypeCheck(new SynthesizeSymTypeOfCombinedTypes());
 
     @BeforeClass
     public static void setup() {
@@ -35,11 +35,10 @@ public class SynthesizeSymTypeFromSIUnitTypes4MathTest {
 
     @Before
     public void setupForEach() {
-        scope = TestSIJavaMill.testSIJavaScopeBuilder()
-                .setEnclosingScope(null)       // No enclosing Scope: Search ending here
-                .setExportingSymbols(true)
-                .setAstNode(null)
-                .setName("Phantasy2").build();     // hopefully unused
+        scope = TestSIJavaMill.scope();
+        scope.setEnclosingScope(null);     // No enclosing Scope: Search ending here
+        scope.setExportingSymbols(true);
+        scope.setAstNode(null);     // hopefully unused
     }
 
     // ------------------------------------------------------  Tests for Function 1, 1b, 1c
@@ -67,7 +66,7 @@ public class SynthesizeSymTypeFromSIUnitTypes4MathTest {
 
     @Test
     public void testAll() throws IOException {
-        for (String s: SIUnitConstants.getAllUnits()) {
+        for (String s : SIUnitConstants.getAllUnits()) {
             check(s);
         }
     }

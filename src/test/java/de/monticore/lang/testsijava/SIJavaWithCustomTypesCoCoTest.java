@@ -10,7 +10,8 @@ import de.monticore.lang.testsijava.testsijavawithcustomtypes._cocos.TestSIJavaW
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._parser.TestSIJavaWithCustomTypesParser;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.ITestSIJavaWithCustomTypesScope;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.TestSIJavaWithCustomTypesGlobalScope;
-import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.TestSIJavaWithCustomTypesSymbolTableCreator;
+import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.TestSIJavaWithCustomTypesScopesGenitor;
+import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.TestSIJavaWithCustomTypesScopesGenitorDelegator;
 import de.se_rwth.commons.logging.Log;
 import de.se_rwth.commons.logging.LogStub;
 import org.junit.BeforeClass;
@@ -18,6 +19,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayDeque;
 import java.util.Optional;
 
 import static junit.framework.TestCase.*;
@@ -27,6 +29,7 @@ public class SIJavaWithCustomTypesCoCoTest {
     @BeforeClass
     public static void init() {
         LogStub.init();
+        TestSIJavaWithCustomTypesMill.init();
         Log.enableFailQuick(false);
     }
 
@@ -48,13 +51,12 @@ public class SIJavaWithCustomTypesCoCoTest {
 
     private ITestSIJavaWithCustomTypesScope buildScope(ASTSIJavaClass model) {
         String path = "src/test/resources/";
-        ITestSIJavaWithCustomTypesScope globalScope = new TestSIJavaWithCustomTypesGlobalScope(new ModelPath(Paths.get(path)), "sijava");
+      TestSIJavaWithCustomTypesMill.globalScope().clear();
+      TestSIJavaWithCustomTypesMill.globalScope().setModelPath(new ModelPath(Paths.get(path)));
 
-        TestSIJavaWithCustomTypesSymbolTableCreator TestSIJavaSymbolTableCreator
-                = TestSIJavaWithCustomTypesMill.testSIJavaWithCustomTypesSymbolTableCreatorBuilder().addToScopeStack(globalScope).build();
-        TestSIJavaSymbolTableCreator.createFromAST(model);
+      TestSIJavaWithCustomTypesMill.scopesGenitorDelegator().createFromAST(model);
 
-        return globalScope;
+        return  TestSIJavaWithCustomTypesMill.globalScope();
     }
 
     private ASTSIJavaClass parseModel(String input) {
