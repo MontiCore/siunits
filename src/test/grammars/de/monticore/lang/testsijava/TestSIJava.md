@@ -1,7 +1,3 @@
-<!--   
-    TODO: Add generator description
--->
-
 # TestSIJava
 The TestSIJava language serves as an example on how to integrate [SIUnits][SIUnitGrammar], 
 [SIUnitLiterals][SIUnitLiteralsGrammar], [SIUnitTypes4Math][SIUnitTypes4MathGrammar] and 
@@ -107,13 +103,6 @@ This package also contains models which can be parsed but do not fulfil the Type
 This grammar has a similar purpose as the [TestSIJava](#testsijavamc4) grammar, but uses [CustomSIUnitTypes4Computing][CustomSIUnitTypes4ComputingGrammar] 
 instead of the given [SIUnitTypes4Computing][SIUnitTypes4ComputingGrammar] 
 which come with the SIUnit language.
-
-<!--   
-    TODO:  Die MontiCore Links sind alle noch absolut:
-    TypeCheckResult
-    TypeCheck
-    Types
--->
 
 [SIUnitGrammar]: ../../../../../../main/grammars/de/monticore/SIUnits.mc4
 [SIUnitLiteralsGrammar]: ../../../../../../main/grammars/de/monticore/SIUnitLiterals.mc4
