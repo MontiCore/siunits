@@ -238,10 +238,6 @@ Exemplary, this is all done for the
   [TestSIJava][TestSIJavaGrammar]
   language. For further explanation, see the documentation for the 
   [TestSIJava][TestSIJavaDoc] language.
-<<<<<<< src/main/grammars/de/monticore/SIUnits.md
-=======
-
->>>>>>> src/main/grammars/de/monticore/SIUnits.md
 -->
 
 ## Extensibility
