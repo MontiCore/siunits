@@ -1,5 +1,7 @@
 <!-- (c) https://github.com/MontiCore/monticore -->
 
+<!-- This is a MontiCore stable explanation. -->
+
 # SIUnits
 
 This language introduces SI units and allows language developers to 
