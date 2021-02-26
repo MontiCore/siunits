@@ -3,12 +3,17 @@ package de.monticore.types.check;
 
 import com.google.common.collect.Lists;
 import de.monticore.expressions.combineexpressionswithliterals.CombineExpressionsWithLiteralsMill;
+import de.monticore.expressions.combineexpressionswithliterals._parser.CombineExpressionsWithLiteralsParser;
 import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICombineExpressionsWithLiteralsScope;
+import de.monticore.expressions.combineexpressionswithsiunitliterals.CombineExpressionsWithSIUnitLiteralsMill;
+import de.monticore.expressions.combineexpressionswithsiunitliterals._parser.CombineExpressionsWithSIUnitLiteralsParser;
+import de.monticore.expressions.combineexpressionswithsiunitliterals._visitor.CombineExpressionsWithSIUnitLiteralsTraverser;
+import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.expressions.expressionsbasis._visitor.ExpressionsBasisTraverser;
 import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbol;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
-
+import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 
 import static de.monticore.types.check.DefsTypeBasic.*;
@@ -21,6 +26,8 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
      */
 
     private ICombineExpressionsWithLiteralsScope scope;
+    private FlatExpressionScopeSetter flatExpressionScopeSetter;
+    private CombineExpressionsWithSIUnitLiteralsTraverser traverser;
 
     @BeforeAll
     public void setupForEach() {
@@ -66,7 +73,23 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
         add2scope(scope, field("firstsemester", SymTypeExpressionFactory.createTypeObject("FirstSemesterStudent", scope)));
 
         setFlatExpressionScopeSetter(scope);
+        flatExpressionScopeSetter = new FlatExpressionScopeSetter(scope);
+        traverser = getTraverser(flatExpressionScopeSetter);
+
     }
+
+    // Parer used for convenience:
+    // (may be any other Parser that understands CommonExpressions)
+    CombineExpressionsWithSIUnitLiteralsParser p = new CombineExpressionsWithSIUnitLiteralsParser();
+
+    // This is an auxiliary
+    DeriveSymTypeOfCombineExpressionsDelegator derLit = new DeriveSymTypeOfCombineExpressionsDelegator();
+
+    // other arguments not used (and therefore deliberately null)
+
+    // This is the TypeChecker under Test:
+    TypeCheck tc = new TypeCheck(null, derLit);
+
 
     @Override
     public void setupTypeCheck() {
@@ -335,13 +358,16 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     @Test
     public void deriveFromBinaryXorAssignmentExpression() throws IOException {
         //example with int - int
-        check("varint^=9", "int");
-
+        String s = "varint^=9";
+        ASTExpression astex = p.parse_StringExpression(s).get();
+        astex.accept(traverser);
+        assertEquals("int", tc.typeOf(astex).print());
         //example with boolean - boolean
-        check("bar2^=false", "boolean");
+        s = "bar2^=false";
+        astex = p.parse_StringExpression(s).get();
+        astex.accept(traverser);
+        assertEquals("boolean", tc.typeOf(astex).print());
 
-        // TODO should throw an error
-//        check("true^=false", "boolean");
     }
 
     @Test
@@ -433,4 +459,16 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
         //test with no field on the left side of the assignment
         checkError("3=4", "0xA0180");
     }
+    private CombineExpressionsWithSIUnitLiteralsTraverser getTraverser(FlatExpressionScopeSetter flatExpressionScopeSetter){
+        CombineExpressionsWithSIUnitLiteralsTraverser traverser = CombineExpressionsWithSIUnitLiteralsMill.traverser();
+        traverser.add4AssignmentExpressions(flatExpressionScopeSetter);
+        traverser.add4BitExpressions(flatExpressionScopeSetter);
+        traverser.add4CommonExpressions(flatExpressionScopeSetter);
+        traverser.add4ExpressionsBasis(flatExpressionScopeSetter);
+        traverser.add4JavaClassExpressions(flatExpressionScopeSetter);
+        traverser.add4MCBasicTypes(flatExpressionScopeSetter);
+        return traverser;
+    }
+
+
 }
