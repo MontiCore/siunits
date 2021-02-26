@@ -23,8 +23,8 @@ public class GeneratorTest {
         File generatedFile = new File(outputPath + "/" + javaModelName);
         File compareFile = new File(compareModelPath + "/" + javaModelName);
         assert (generatedFile.exists());
-        assertEquals ( FileUtils.readFileToString(compareFile, "utf-8"),
-                FileUtils.readFileToString(generatedFile, "utf-8"));
+        assertEquals ( FileUtils.readFileToString(compareFile, "utf-8").replace("\r", ""),
+                FileUtils.readFileToString(generatedFile, "utf-8").replace("\r", ""));
     }
 
     @Before
