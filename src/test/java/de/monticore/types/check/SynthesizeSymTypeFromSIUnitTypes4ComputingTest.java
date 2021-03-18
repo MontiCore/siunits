@@ -5,6 +5,7 @@ package de.monticore.types.check;
 import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
 import de.monticore.lang.testsijava.testsijava._symboltable.ITestSIJavaScope;
+import de.monticore.siunits.SIUnitsMill;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
 import de.se_rwth.commons.logging.Log;
 import org.junit.Before;
@@ -34,6 +35,9 @@ public class SynthesizeSymTypeFromSIUnitTypes4ComputingTest {
 
     @Before
     public void setupForEach() {
+        TestSIJavaMill.reset();
+        TestSIJavaMill.init();
+        SIUnitsMill.initializeSIUnits();
         scope = TestSIJavaMill.scope();
         scope.setEnclosingScope(null);     // No enclosing Scope: Search ending here
         scope.setExportingSymbols(true);

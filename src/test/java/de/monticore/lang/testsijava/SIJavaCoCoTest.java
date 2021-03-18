@@ -8,8 +8,9 @@ import de.monticore.lang.testsijava.testsijava._cocos.OnlyAssignmentAndCallExpre
 import de.monticore.lang.testsijava.testsijava._cocos.TestSIJavaCoCoChecker;
 import de.monticore.lang.testsijava.testsijava._cocos.TestSIJavaTypeCheckCoCo;
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
+import de.monticore.siunits.SIUnitsMill;
 import de.se_rwth.commons.logging.Log;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -19,10 +20,13 @@ import static junit.framework.TestCase.*;
 
 public class SIJavaCoCoTest {
 
-    @BeforeClass
-    public static void init() {
+    @Before
+    public void init() {
         Log.init();
         Log.enableFailQuick(false);
+        TestSIJavaMill.reset();
+        TestSIJavaMill.init();
+        SIUnitsMill.initializeSIUnits();
     }
 
     private void typeCheckCoCo(String input, boolean expectedError) {

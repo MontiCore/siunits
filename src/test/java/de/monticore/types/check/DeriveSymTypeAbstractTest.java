@@ -1,10 +1,13 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.types.check;
 
+import de.monticore.expressions.combineexpressionswithliterals.CombineExpressionsWithLiteralsMill;
 import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICombineExpressionsWithLiteralsScope;
+import de.monticore.expressions.combineexpressionswithsiunitliterals.CombineExpressionsWithSIUnitLiteralsMill;
 import de.monticore.expressions.combineexpressionswithsiunitliterals._parser.CombineExpressionsWithSIUnitLiteralsParser;
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.expressions.expressionsbasis._visitor.ExpressionsBasisTraverser;
+import de.monticore.siunits.SIUnitsMill;
 import de.se_rwth.commons.logging.Log;
 import de.se_rwth.commons.logging.LogStub;
 import org.junit.Before;
@@ -27,6 +30,10 @@ public abstract class DeriveSymTypeAbstractTest {
     @Before
     public void setupForEach() {
         LogStub.init();         // replace log by a sideffect free variant
+        CombineExpressionsWithSIUnitLiteralsMill.reset();
+        CombineExpressionsWithSIUnitLiteralsMill.init();
+        CombineExpressionsWithSIUnitLiteralsMill.globalScope();
+        SIUnitsMill.initializeSIUnits();
     }
 
     private TypeCheck tc;

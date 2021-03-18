@@ -30,6 +30,7 @@ public class DeriveSymTypeOfExpressionWithSIUnitTypesTest extends DeriveSymTypeA
 
     @Before
     public void setupForEach() {
+        super.setupForEach();
         // No enclosing Scope: Search ending here
         ICombineExpressionsWithSIUnitLiteralsScope scope = CombineExpressionsWithSIUnitLiteralsMill.scope();
         scope.setEnclosingScope(null);       // No enclosing Scope: Search ending here

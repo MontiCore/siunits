@@ -5,6 +5,8 @@ package de.monticore.types.check;
 import de.monticore.expressions.combineexpressionswithsiunitliterals.CombineExpressionsWithSIUnitLiteralsMill;
 import de.monticore.expressions.combineexpressionswithsiunitliterals._symboltable.ICombineExpressionsWithSIUnitLiteralsScope;
 import de.monticore.expressions.expressionsbasis._visitor.ExpressionsBasisTraverser;
+import de.monticore.siunits.SIUnitsMill;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -31,8 +33,13 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
 
     private ICombineExpressionsWithSIUnitLiteralsScope scope;
 
-    @BeforeAll
+    @Before
     public void setupForEach() {
+        CombineExpressionsWithSIUnitLiteralsMill.reset();
+        CombineExpressionsWithSIUnitLiteralsMill.init();
+        CombineExpressionsWithSIUnitLiteralsMill.globalScope();
+        SIUnitsMill.initializeSIUnits();
+
         scope = CombineExpressionsWithSIUnitLiteralsMill.scope();
         scope.setEnclosingScope(null)  ;     // No enclosing Scope: Search ending here
         scope.setExportingSymbols(true);

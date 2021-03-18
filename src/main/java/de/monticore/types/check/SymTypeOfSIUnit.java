@@ -2,11 +2,11 @@
 package de.monticore.types.check;
 
 import de.monticore.siunits.utility.UnitFactory;
+import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
+import de.monticore.symbols.basicsymbols._symboltable.IBasicSymbolsGlobalScope;
 import de.monticore.symbols.basicsymbols._symboltable.IBasicSymbolsScope;
 import de.monticore.symbols.basicsymbols._symboltable.TypeSymbol;
 import de.monticore.symbols.basicsymbols._symboltable.TypeSymbolSurrogate;
-import de.monticore.symbols.oosymbols._symboltable.OOSymbolsScope;
-import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbol;
 import de.monticore.symboltable.serialization.JsonDeSers;
 import de.monticore.symboltable.serialization.JsonPrinter;
 
@@ -31,8 +31,10 @@ public class SymTypeOfSIUnit extends SymTypeExpression {
     public static SymTypeOfSIUnit getSuperUnitType() {
         if (superUnitType == null) {
             String name = "SuperUnit";
-            OOSymbolsScope enclosingScope = new OOSymbolsScope();
-            OOTypeSymbol newSymbol =  de.monticore.types.check.DefsTypeBasic.type(name);
+            IBasicSymbolsGlobalScope enclosingScope = BasicSymbolsMill.globalScope();
+            TypeSymbol newSymbol = BasicSymbolsMill.typeSymbolBuilder().
+                    setName(name).
+                    setEnclosingScope(enclosingScope).build();
             enclosingScope.add(newSymbol);
             TypeSymbol loader = (new TypeSymbol(name));
             loader.setEnclosingScope(enclosingScope);

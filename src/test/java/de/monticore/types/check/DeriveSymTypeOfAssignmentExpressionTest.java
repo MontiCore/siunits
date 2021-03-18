@@ -3,20 +3,21 @@ package de.monticore.types.check;
 
 import com.google.common.collect.Lists;
 import de.monticore.expressions.combineexpressionswithliterals.CombineExpressionsWithLiteralsMill;
-import de.monticore.expressions.combineexpressionswithliterals._parser.CombineExpressionsWithLiteralsParser;
 import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICombineExpressionsWithLiteralsScope;
 import de.monticore.expressions.combineexpressionswithsiunitliterals.CombineExpressionsWithSIUnitLiteralsMill;
 import de.monticore.expressions.combineexpressionswithsiunitliterals._parser.CombineExpressionsWithSIUnitLiteralsParser;
 import de.monticore.expressions.combineexpressionswithsiunitliterals._visitor.CombineExpressionsWithSIUnitLiteralsTraverser;
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.expressions.expressionsbasis._visitor.ExpressionsBasisTraverser;
+import de.monticore.siunits.SIUnitsMill;
 import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbol;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
-import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 
 import static de.monticore.types.check.DefsTypeBasic.*;
+import static org.junit.Assert.assertEquals;
 
 public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstractTest {
 
@@ -29,21 +30,18 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     private FlatExpressionScopeSetter flatExpressionScopeSetter;
     private CombineExpressionsWithSIUnitLiteralsTraverser traverser;
 
-    @BeforeAll
+    @Before
     public void setupForEach() {
         // Setting up a Scope Infrastructure (without a global Scope)
-        DefsTypeBasic.setup();
+        CombineExpressionsWithSIUnitLiteralsMill.reset();
+        CombineExpressionsWithLiteralsMill.init();
+        SIUnitsMill.initializeSIUnits();
+
         // we add a variety of TypeSymbols to the same scope (which in reality doesn't happen)
         scope = CombineExpressionsWithLiteralsMill.scope();
         scope.setExportingSymbols(true);
         scope.setEnclosingScope(null);       // No enclosing Scope: Search ending here
         scope.setAstNode(null);
-        add2scope(scope, DefsTypeBasic._int);
-        add2scope(scope, DefsTypeBasic._char);
-        add2scope(scope, DefsTypeBasic._boolean);
-        add2scope(scope, DefsTypeBasic._double);
-        add2scope(scope, DefsTypeBasic._float);
-        add2scope(scope, DefsTypeBasic._long);
 
         add2scope(scope, DefsTypeBasic._array);
         add2scope(scope, DefsTypeBasic._Object);

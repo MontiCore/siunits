@@ -1,6 +1,8 @@
 package de.monticore.lang.testsijava;
 
+import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava.generator.Generator;
+import de.monticore.siunits.SIUnitsMill;
 import de.se_rwth.commons.logging.Log;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
@@ -30,6 +32,10 @@ public class GeneratorTest {
     @Before
     public void init() {
         Log.init();
+        Log.enableFailQuick(false);
+        TestSIJavaMill.reset();
+        TestSIJavaMill.init();
+        SIUnitsMill.initializeSIUnits();
     }
 
     @Test

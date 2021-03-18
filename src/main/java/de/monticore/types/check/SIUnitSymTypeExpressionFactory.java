@@ -2,16 +2,18 @@
 
 package de.monticore.types.check;
 
+import com.google.common.collect.Lists;
 import de.monticore.siunits.utility.UnitPrettyPrinter;
+import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
 import de.monticore.symbols.basicsymbols._symboltable.IBasicSymbolsScope;
 import de.monticore.symbols.basicsymbols._symboltable.TypeSymbol;
 import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
-import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbol;
 import de.se_rwth.commons.logging.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static de.monticore.types.check.TypeCheck.*;
@@ -60,11 +62,15 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
             exponent = exponentTemp * (exponent == null ? 1 : exponent);
             nameWithOutPrefix = nameWithOutPrefixTemp;
         }
-
-        if (DefsSIUnitType.getSIUnitBasicTypes().containsKey(nameWithOutPrefix)) // Then there is no prefix
-            symType = DefsSIUnitType.getSIUnitBasicTypes().get(nameWithOutPrefix);
-        else
-            Log.error("0x893F63 Internal Error: No siunit type " + nameWithOutPrefix + " stored as constant.");
+        Optional<TypeSymbol> t = BasicSymbolsMill.globalScope().resolveTypeLocally(nameWithOutPrefix);
+        if (t.isPresent()) // Then there is no prefix
+            symType = new SymTypeOfSIUnitBasic(t.get());
+        else {
+            TypeSymbol type = BasicSymbolsMill.typeSymbolBuilder().setName(nameWithOutPrefix).
+                    setEnclosingScope(BasicSymbolsMill.globalScope()).build();
+            BasicSymbolsMill.globalScope().add(type);
+            symType = new SymTypeOfSIUnitBasic(type);
+        }
 
         if (exponent != null && exponent.intValue() > 0) {
             symType = symType.deepClone();
@@ -93,13 +99,19 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
             denominatorStringList = Arrays.asList(split[1].replace("(", "").replace(")", "")
                     .split("\\*"));
         else if (split.length == 1 && split[0].equals("1")) {// dimensionless, will return int_type in the next function
-            TypeSymbol loader = new TypeSymbol("1");
-            loader.setEnclosingScope(enclosingScope);
-            return createSIUnit(loader, new ArrayList<>(), new ArrayList<>());
+            formattedStandard = "1";
+            numeratorStringList = Lists.newArrayList();
+            denominatorStringList =Lists.newArrayList();
         }
-        TypeSymbol loader = new TypeSymbol(formattedStandard);
-        loader.setEnclosingScope(enclosingScope);
-        return createSIUnit(numeratorStringList, denominatorStringList, loader);
+        Optional<TypeSymbol> type = BasicSymbolsMill.globalScope().resolveTypeLocally(formattedStandard);
+        if (type.isPresent()) {
+            return createSIUnit(numeratorStringList, denominatorStringList, type.get());
+        } else {
+            TypeSymbol loader = BasicSymbolsMill.typeSymbolBuilder().setName(formattedStandard).
+                    setEnclosingScope(enclosingScope).build();
+            BasicSymbolsMill.globalScope().add(loader);
+            return createSIUnit(numeratorStringList, denominatorStringList, loader);
+        }
     }
 
     /**
@@ -118,9 +130,15 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
         if (denominator.size() > 1)
             denominatorString = "(" + numeratorString + ")";
         String name = numeratorString + ((denominator.size() >= 1) ? "/" + denominatorString : "");
-        TypeSymbol loader = new TypeSymbol(name);
-        loader.setEnclosingScope(enclosingScope);
-        return createSIUnit(loader, numerator, denominator);
+        Optional<TypeSymbol> type = BasicSymbolsMill.globalScope().resolveTypeLocally(name);
+        if (type.isPresent()) {
+            return createSIUnit(type.get(), numerator, denominator);
+        } else {
+            TypeSymbol loader = BasicSymbolsMill.typeSymbolBuilder().setName(name).
+                    setEnclosingScope(BasicSymbolsMill.globalScope()).build();
+            BasicSymbolsMill.globalScope().add(loader);
+            return createSIUnit(loader, numerator, denominator);
+        }
     }
 
     // Method signature clashes with the before, so the typeSymbol is the last argument
@@ -154,7 +172,7 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
         // Needed because there can be created new SIUnitType while computing, e.g. varM*varS
         final String name = typeSymbol.getName();
         if (!typeSymbol.getEnclosingScope().resolveTypeLocally(name).isPresent()) {
-            OOTypeSymbol newSymbol = DefsSIUnitType.type(name);
+            TypeSymbol newSymbol = BasicSymbolsMill.typeSymbolBuilder().setName(name).build();
             typeSymbol.getEnclosingScope().add(newSymbol);
         }
 
@@ -175,7 +193,7 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
         // Needed because there can be created new SIUnitType while computing, e.g. varM*varS
         final String name = typeSymbol.getName();
         if (!typeSymbol.getEnclosingScope().resolveTypeLocally(name).isPresent()) {
-            OOTypeSymbol newSymbol = DefsSIUnitType.type(name);
+            TypeSymbol newSymbol = BasicSymbolsMill.typeSymbolBuilder().setName(name).build();
             typeSymbol.getEnclosingScope().add(newSymbol);
         }
 
@@ -196,9 +214,15 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
     public static SymTypeExpression createNumericWithSIUnitType(SymTypeExpression numericType, SymTypeExpression siunitType, IBasicSymbolsScope enclosingScope) {
         String siUnitPrint = siunitType.print();
         String name = "(" + numericType.print() + "," + siUnitPrint + ")";
-        TypeSymbol loader = new TypeSymbol(name);
-        loader.setEnclosingScope(enclosingScope);
-        return createNumericWithSIUnitType(numericType, siunitType, loader);
+        Optional<TypeSymbol> type = BasicSymbolsMill.globalScope().resolveTypeLocally(name);
+        if (type.isPresent()) {
+            return createNumericWithSIUnitType(numericType, siunitType, type.get());
+        } else {
+            TypeSymbol newType = BasicSymbolsMill.typeSymbolBuilder().setName(name).
+                    setEnclosingScope(BasicSymbolsMill.globalScope()).build();
+            BasicSymbolsMill.globalScope().add(newType);
+            return createNumericWithSIUnitType(numericType, siunitType, newType);
+        }
     }
 
     /**

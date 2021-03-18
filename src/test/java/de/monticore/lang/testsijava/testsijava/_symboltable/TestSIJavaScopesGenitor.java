@@ -6,15 +6,11 @@ import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._ast.*;
 import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaTraverser;
-import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
-import de.monticore.siunittypes4math._ast.ASTSIUnitType;
 import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
 import de.monticore.symbols.basicsymbols._symboltable.VariableSymbol;
 import de.monticore.symbols.oosymbols._symboltable.MethodSymbol;
 import de.monticore.symboltable.modifiers.AccessModifier;
 import de.monticore.types.check.*;
-import de.monticore.types.mcbasictypes._ast.ASTMCPrimitiveType;
-import de.monticore.types.mcbasictypes._ast.ASTMCQualifiedType;
 import de.monticore.types.mcbasictypes._ast.ASTMCReturnType;
 import de.monticore.types.mcbasictypes._ast.ASTMCType;
 
