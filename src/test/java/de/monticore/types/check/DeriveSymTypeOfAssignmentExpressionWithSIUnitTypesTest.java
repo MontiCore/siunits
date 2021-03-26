@@ -8,7 +8,6 @@ import de.monticore.expressions.expressionsbasis._visitor.ExpressionsBasisTraver
 import de.monticore.siunits.SIUnitsMill;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 
 import java.io.IOException;
 
@@ -20,7 +19,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Override
     public void setupTypeCheck() {
         // This is an auxiliary
-        ITypesCalculator derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator();
+        IDerive derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator();
 
         // other arguments not used (and therefore deliberately null)
         setTypeCheck(new TypeCheck(null, derLit));

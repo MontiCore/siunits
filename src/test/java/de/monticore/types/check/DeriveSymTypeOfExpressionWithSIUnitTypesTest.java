@@ -22,7 +22,7 @@ public class DeriveSymTypeOfExpressionWithSIUnitTypesTest extends DeriveSymTypeA
     @Override
     protected void setupTypeCheck() {
         // This is an auxiliary
-        ITypesCalculator derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator();
+        IDerive derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator();
 
         // other arguments not used (and therefore deliberately null)
         setTypeCheck(new TypeCheck(null, derLit));

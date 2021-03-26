@@ -12,7 +12,7 @@ import java.util.Optional;
 /**
  * Delegator Visitor to test the combination of the grammars
  */
-public class DeriveSymTypeOfCombineExpressionsDelegator implements ITypesCalculator {
+public class DeriveSymTypeOfCombineExpressionsDelegator implements IDerive {
 
   private CombineExpressionsWithLiteralsTraverser traverser;
 

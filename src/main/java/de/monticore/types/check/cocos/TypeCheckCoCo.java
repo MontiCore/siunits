@@ -8,7 +8,7 @@ import de.monticore.symbols.basicsymbols._ast.ASTVariable;
 import de.monticore.symbols.oosymbols._ast.ASTField;
 import de.monticore.symbols.oosymbols._ast.ASTMethod;
 import de.monticore.types.check.ISynthesize;
-import de.monticore.types.check.ITypesCalculator;
+import de.monticore.types.check.IDerive;
 import de.monticore.types.check.SymTypeExpression;
 import de.monticore.types.check.TypeCheck;
 import de.se_rwth.commons.logging.Log;
@@ -28,7 +28,7 @@ public abstract class TypeCheckCoCo {
     /**
      * Creates an instance of TypeCheckCoCo
      * @param typeCheck a {@link TypeCheck} object instantiated with the correct
-     *                  {@link ISynthesize} and {@link ITypesCalculator} objects of
+     *                  {@link ISynthesize} and {@link IDerive} objects of
      *                  the current language
      */
     public TypeCheckCoCo(TypeCheck typeCheck) {

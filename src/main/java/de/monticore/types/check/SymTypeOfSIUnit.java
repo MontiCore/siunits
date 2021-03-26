@@ -101,6 +101,22 @@ public class SymTypeOfSIUnit extends SymTypeExpression {
     }
 
     @Override
+    public String printFullName() {
+        List<String> numerators = getNumeratorList().stream().map(SymTypeOfSIUnitBasic::printFullName).collect(Collectors.toList());
+        numerators.sort(String::compareTo);
+        if (getNumeratorList().isEmpty())
+            numerators.add("1");
+        List<String> denominators = getDenominatorList().stream().map(SymTypeOfSIUnitBasic::printFullName).collect(Collectors.toList());
+        denominators.sort(String::compareTo);
+        if (denominators.size() == 0)
+            return String.join("*", numerators);
+        else if (denominators.size() == 1)
+            return String.join("*", numerators) + "/" + String.join("*", denominators);
+        else
+            return String.join("*", numerators) + "/(" + String.join("*", denominators) + ")";
+    }
+
+    @Override
     public String toString() {
         return print();
     }

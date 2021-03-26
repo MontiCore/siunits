@@ -136,7 +136,7 @@ public class TestSIJavaScopesGenitor extends TestSIJavaScopesGenitorTOP {
 
     private void initTypeCheck() {
         ISynthesize synthesize = new SynthesizeSymTypeFromTestSIJava();
-        ITypesCalculator der = new DeriveSymTypeOfTestSIJava();
+        IDerive der = new DeriveSymTypeOfTestSIJava();
         tc = new TypeCheck(synthesize, der);
     }
 

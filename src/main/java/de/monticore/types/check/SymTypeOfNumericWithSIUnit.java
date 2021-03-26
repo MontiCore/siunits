@@ -74,6 +74,11 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
     }
 
     @Override
+    public String printFullName() {
+        return "(" + numericType.printFullName() + "," + siunitType.printFullName() + ")";
+    }
+
+    @Override
     public String toString() {
         return print();
     }

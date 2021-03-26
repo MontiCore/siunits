@@ -10,7 +10,7 @@ import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
 
 import java.util.Optional;
 
-public class DeriveSymTypeOfTestSIJava implements ITypesCalculator {
+public class DeriveSymTypeOfTestSIJava implements IDerive {
 
     private TestSIJavaTraverser traverser;
 
