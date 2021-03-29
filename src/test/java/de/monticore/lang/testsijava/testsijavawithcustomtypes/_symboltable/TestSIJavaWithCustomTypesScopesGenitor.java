@@ -14,8 +14,6 @@ import de.monticore.symbols.basicsymbols._symboltable.VariableSymbol;
 import de.monticore.symbols.oosymbols._symboltable.MethodSymbol;
 import de.monticore.symboltable.modifiers.AccessModifier;
 import de.monticore.types.check.*;
-import de.monticore.types.mcbasictypes._ast.ASTMCPrimitiveType;
-import de.monticore.types.mcbasictypes._ast.ASTMCQualifiedType;
 import de.monticore.types.mcbasictypes._ast.ASTMCReturnType;
 import de.monticore.types.mcbasictypes._ast.ASTMCType;
 
@@ -140,7 +138,7 @@ public class TestSIJavaWithCustomTypesScopesGenitor extends TestSIJavaWithCustom
 
     private void initTypeCheck() {
         ISynthesize synthesize = new SynthesizeSymTypeFromTestSIJavaWithCustomSIUnitTypes4Computing();
-        ITypesCalculator der = new DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing();
+        IDerive der = new DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing();
         tc = new TypeCheck(synthesize, der);
     }
 

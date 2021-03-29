@@ -3,7 +3,9 @@ package de.monticore.types.check;
 
 import com.google.common.collect.Lists;
 import de.monticore.expressions.combineexpressionswithliterals.CombineExpressionsWithLiteralsMill;
+import de.monticore.expressions.combineexpressionswithliterals._parser.CombineExpressionsWithLiteralsParser;
 import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICombineExpressionsWithLiteralsScope;
+import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.expressions.expressionsbasis._visitor.ExpressionsBasisTraverser;
 import de.monticore.siunits.SIUnitsMill;
 import de.monticore.symbols.basicsymbols._symboltable.TypeVarSymbol;
@@ -14,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static de.monticore.types.check.DefsTypeBasic.*;
 
@@ -24,11 +27,6 @@ public class DeriveSymTypeOfExpressionTest extends DeriveSymTypeAbstractTest {
    *    literals/MCLiteralsBasis.mc4
    */
   private ICombineExpressionsWithLiteralsScope scope;
-
-  @Override
-  ExpressionsBasisTraverser getTraverser() {
-    return CombineExpressionsWithLiteralsMill.traverser();
-  }
 
   @Before
   public void setupForEach() {
@@ -103,6 +101,17 @@ public class DeriveSymTypeOfExpressionTest extends DeriveSymTypeAbstractTest {
     // This is the TypeChecker under Test:
     TypeCheck tc = new TypeCheck(null,derLit);
     setTypeCheck(tc);
+  }
+
+  CombineExpressionsWithLiteralsParser p = new CombineExpressionsWithLiteralsParser();
+  @Override
+  protected Optional<ASTExpression> parseStringExpression(String expression) throws IOException {
+    return p.parse_StringExpression(expression);
+  }
+
+  @Override
+  protected ExpressionsBasisTraverser getUsedLanguageTraverser() {
+    return CombineExpressionsWithLiteralsMill.traverser();
   }
 
   // ------------------------------------------------------  Tests for Function 2

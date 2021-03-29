@@ -10,7 +10,7 @@ import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
 
 import java.util.Optional;
 
-public class DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing implements ITypesCalculator {
+public class DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing implements IDerive {
 
     private TestSIJavaWithCustomTypesTraverser traverser;
 
@@ -37,17 +37,9 @@ public class DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing implements
         init();
     }
 
-    /**
-     * main method to calculate the type of an expression
-     */
-    public Optional<SymTypeExpression> calculateType(ASTExpression e) {
-        e.accept(getTraverser());
-        Optional<SymTypeExpression> result = Optional.empty();
-        if (typeCheckResult.isPresentCurrentResult()) {
-            result = Optional.ofNullable(typeCheckResult.getCurrentResult());
-        }
-        typeCheckResult.setCurrentResultAbsent();
-        return result;
+    @Override
+    public Optional<SymTypeExpression> getResult() {
+        return typeCheckResult.isPresentCurrentResult()? Optional.of(typeCheckResult.getCurrentResult()) : Optional.empty();
     }
 
     /**
@@ -91,33 +83,5 @@ public class DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing implements
         traverser.setSIUnitLiteralsHandler(deriveSymTypeOfSIUnitLiterals);
 
         setTypeCheckResult(typeCheckResult);
-    }
-
-    /**
-     * main method to calculate the type of a literal
-     */
-    @Override
-    public Optional<SymTypeExpression> calculateType(ASTLiteral lit) {
-        lit.accept(getTraverser());
-        Optional<SymTypeExpression> result = Optional.empty();
-        if (typeCheckResult.isPresentCurrentResult()) {
-            result = Optional.ofNullable(typeCheckResult.getCurrentResult());
-        }
-        typeCheckResult.setCurrentResultAbsent();
-        return result;
-    }
-
-    /**
-     * main method to calculate the type of a signed literal
-     */
-    @Override
-    public Optional<SymTypeExpression> calculateType(ASTSignedLiteral lit) {
-        lit.accept(getTraverser());
-        Optional<SymTypeExpression> result = Optional.empty();
-        if (typeCheckResult.isPresentCurrentResult()) {
-            result = Optional.ofNullable(typeCheckResult.getCurrentResult());
-        }
-        typeCheckResult.setCurrentResultAbsent();
-        return result;
     }
 }

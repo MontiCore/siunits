@@ -10,7 +10,7 @@ import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
 
 import java.util.Optional;
 
-public class DeriveSymTypeOfTestSIJava implements ITypesCalculator {
+public class DeriveSymTypeOfTestSIJava implements IDerive {
 
     private TestSIJavaTraverser traverser;
 
@@ -39,18 +39,6 @@ public class DeriveSymTypeOfTestSIJava implements ITypesCalculator {
         init();
     }
 
-    /**
-     * main method to calculate the type of an expression
-     */
-    public Optional<SymTypeExpression> calculateType(ASTExpression e) {
-        e.accept(getTraverser());
-        Optional<SymTypeExpression> result = Optional.empty();
-        if (typeCheckResult.isPresentCurrentResult()) {
-            result = Optional.ofNullable(typeCheckResult.getCurrentResult());
-        }
-        typeCheckResult.setCurrentResultAbsent();
-        return result;
-    }
 
     /**
      * set the last typeCheckResult of all calculators to the same object
@@ -62,6 +50,11 @@ public class DeriveSymTypeOfTestSIJava implements ITypesCalculator {
         deriveSymTypeOfExpression.setTypeCheckResult(typeCheckResult);
         deriveSymTypeOfLiterals.setTypeCheckResult(typeCheckResult);
         deriveSymTypeOfSIUnitLiterals.setTypeCheckResult(typeCheckResult);
+    }
+
+    @Override
+    public Optional<SymTypeExpression> getResult() {
+        return typeCheckResult.isPresentCurrentResult()? Optional.of(typeCheckResult.getCurrentResult()) : Optional.empty();
     }
 
     /**
@@ -95,31 +88,4 @@ public class DeriveSymTypeOfTestSIJava implements ITypesCalculator {
         setTypeCheckResult(typeCheckResult);
     }
 
-    /**
-     * main method to calculate the type of a literal
-     */
-    @Override
-    public Optional<SymTypeExpression> calculateType(ASTLiteral lit) {
-        lit.accept(getTraverser());
-        Optional<SymTypeExpression> result = Optional.empty();
-        if (typeCheckResult.isPresentCurrentResult()) {
-            result = Optional.ofNullable(typeCheckResult.getCurrentResult());
-        }
-        typeCheckResult.setCurrentResultAbsent();
-        return result;
-    }
-
-    /**
-     * main method to calculate the type of a signed literal
-     */
-    @Override
-    public Optional<SymTypeExpression> calculateType(ASTSignedLiteral lit) {
-        lit.accept(getTraverser());
-        Optional<SymTypeExpression> result = Optional.empty();
-        if (typeCheckResult.isPresentCurrentResult()) {
-            result = Optional.ofNullable(typeCheckResult.getCurrentResult());
-        }
-        typeCheckResult.setCurrentResultAbsent();
-        return result;
-    }
 }

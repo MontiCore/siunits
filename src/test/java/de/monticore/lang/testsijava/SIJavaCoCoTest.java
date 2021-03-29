@@ -27,6 +27,12 @@ public class SIJavaCoCoTest {
         TestSIJavaMill.reset();
         TestSIJavaMill.init();
         SIUnitsMill.initializeSIUnits();
+        TestSIJavaMill.globalScope().add(TestSIJavaMill.typeSymbolBuilder()
+            .setName("si")
+            .setEnclosingScope(TestSIJavaMill.globalScope())
+            .setSpannedScope(TestSIJavaMill.scope())
+            .build()
+        );
     }
 
     private void typeCheckCoCo(String input, boolean expectedError) {

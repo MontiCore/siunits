@@ -8,7 +8,7 @@ public class DeriveSymTypeOfAssignmentExpressionSIExtended extends DeriveSymType
     @Override
     public void setupTypeCheck() {
         // This is an auxiliary
-        ITypesCalculator derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator();
+        IDerive derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator();
 
         // other arguments not used (and therefore deliberately null)
         setTypeCheck(new TypeCheck(null, derLit));

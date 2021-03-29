@@ -3,10 +3,12 @@ package de.monticore.types.check;
 
 import com.google.common.collect.Lists;
 import de.monticore.expressions.combineexpressionswithliterals.CombineExpressionsWithLiteralsMill;
+import de.monticore.expressions.combineexpressionswithliterals._parser.CombineExpressionsWithLiteralsParser;
 import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICombineExpressionsWithLiteralsArtifactScope;
 import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICombineExpressionsWithLiteralsGlobalScope;
 import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICombineExpressionsWithLiteralsScope;
 import de.monticore.expressions.combineexpressionswithsiunitliterals.CombineExpressionsWithSIUnitLiteralsMill;
+import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.expressions.expressionsbasis._visitor.ExpressionsBasisTraverser;
 import de.monticore.io.paths.ModelPath;
 import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
@@ -19,6 +21,7 @@ import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbol;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static de.monticore.types.check.DefsTypeBasic.*;
 
@@ -32,11 +35,6 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
   private ICombineExpressionsWithLiteralsScope scope;
 
   @Override
-  ExpressionsBasisTraverser getTraverser() {
-    return CombineExpressionsWithSIUnitLiteralsMill.traverser();
-  }
-
-  @Override
   public void setupTypeCheck() {
     // This is the core Visitor under Test (but rather empty)
     DeriveSymTypeOfExpression derEx = new DeriveSymTypeOfExpression();
@@ -47,6 +45,17 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
 
     // other arguments not used (and therefore deliberately null)
     setTypeCheck(new TypeCheck(null, derLit));
+  }
+
+  CombineExpressionsWithLiteralsParser p = new CombineExpressionsWithLiteralsParser();
+  @Override
+  protected Optional<ASTExpression> parseStringExpression(String expression) throws IOException {
+    return p.parse_StringExpression(expression);
+  }
+
+  @Override
+  protected ExpressionsBasisTraverser getUsedLanguageTraverser() {
+    return CombineExpressionsWithLiteralsMill.traverser();
   }
   /*--------------------------------------------------- TESTS ---------------------------------------------------------*/
 
@@ -589,7 +598,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
     check("types.Test.variable", "int");
 
     //test for type with more than one package
-    check("types3.types2.Test", "types3.types2.Test");
+    check("types3.types2.Test", "Test");
 
     //test for variable of type with more than one package
     check("types3.types2.Test.variable", "int");
@@ -1331,7 +1340,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
   public void testStaticType() throws IOException {
     init_static_example();
 
-    check("A.D", "A.D");
+    check("A.D", "D");
   }
 
   @Test
@@ -1387,7 +1396,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
   public void testSubClassesDoNotKnowStaticTypesOfSuperClasses() throws IOException{
     init_static_example();
 
-    parseExpression("C.D");
+    parseStringExpression("C.D");
     //TODO ND: complete when inner types are added
   }
 }

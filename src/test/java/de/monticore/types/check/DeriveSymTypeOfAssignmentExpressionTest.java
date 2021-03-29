@@ -3,6 +3,7 @@ package de.monticore.types.check;
 
 import com.google.common.collect.Lists;
 import de.monticore.expressions.combineexpressionswithliterals.CombineExpressionsWithLiteralsMill;
+import de.monticore.expressions.combineexpressionswithliterals._parser.CombineExpressionsWithLiteralsParser;
 import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICombineExpressionsWithLiteralsScope;
 import de.monticore.expressions.combineexpressionswithsiunitliterals.CombineExpressionsWithSIUnitLiteralsMill;
 import de.monticore.expressions.combineexpressionswithsiunitliterals._parser.CombineExpressionsWithSIUnitLiteralsParser;
@@ -15,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static de.monticore.types.check.DefsTypeBasic.*;
 import static org.junit.Assert.assertEquals;
@@ -76,10 +78,6 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
 
     }
 
-    // Parer used for convenience:
-    // (may be any other Parser that understands CommonExpressions)
-    CombineExpressionsWithSIUnitLiteralsParser p = new CombineExpressionsWithSIUnitLiteralsParser();
-
     // This is an auxiliary
     DeriveSymTypeOfCombineExpressionsDelegator derLit = new DeriveSymTypeOfCombineExpressionsDelegator();
 
@@ -92,14 +90,20 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     @Override
     public void setupTypeCheck() {
         // This is an auxiliary
-        ITypesCalculator derLit = new DeriveSymTypeOfCombineExpressionsDelegator();
+        IDerive derLit = new DeriveSymTypeOfCombineExpressionsDelegator();
 
         // other arguments not used (and therefore deliberately null)
         setTypeCheck(new TypeCheck(null, derLit));
     }
 
+    CombineExpressionsWithLiteralsParser p = new CombineExpressionsWithLiteralsParser();
     @Override
-    ExpressionsBasisTraverser getTraverser() {
+    protected Optional<ASTExpression> parseStringExpression(String expression) throws IOException {
+        return p.parse_StringExpression(expression);
+    }
+
+    @Override
+    protected ExpressionsBasisTraverser getUsedLanguageTraverser() {
         return CombineExpressionsWithLiteralsMill.traverser();
     }
 

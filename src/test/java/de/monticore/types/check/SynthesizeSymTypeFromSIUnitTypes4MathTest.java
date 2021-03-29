@@ -24,7 +24,7 @@ public class SynthesizeSymTypeFromSIUnitTypes4MathTest {
 
     private TestSIJavaParser parser = new TestSIJavaParser();
     // This is the TypeChecker under Test:
-    private TypeCheck tc = new TypeCheck(new SynthesizeSymTypeOfCombinedTypes());
+    private TypeCheck tc = new TypeCheck(new SynthesizeSymTypeOfCombinedTypes(), null);
 
     @BeforeClass
     public static void setup() {
