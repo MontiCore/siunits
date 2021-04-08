@@ -14,7 +14,6 @@ import de.monticore.types.check.*;
 import de.monticore.types.mcbasictypes._ast.ASTMCReturnType;
 import de.monticore.types.mcbasictypes._ast.ASTMCType;
 
-import java.util.Deque;
 import java.util.Iterator;
 
 /**
@@ -22,17 +21,7 @@ import java.util.Iterator;
  */
 public class TestSIJavaScopesGenitor extends TestSIJavaScopesGenitorTOP {
 
-    public TestSIJavaScopesGenitor(ITestSIJavaScope enclosingScope) {
-        super(enclosingScope);
-        initTypeCheck();
-    }
-
-    public TestSIJavaScopesGenitor(Deque<? extends de.monticore.lang.testsijava.testsijava._symboltable.ITestSIJavaScope> scopeStack) {
-        super(scopeStack);
-        initTypeCheck();
-    }
-
-    public TestSIJavaScopesGenitor(){
+   public TestSIJavaScopesGenitor(){
         super();
         initTypeCheck();
     }
