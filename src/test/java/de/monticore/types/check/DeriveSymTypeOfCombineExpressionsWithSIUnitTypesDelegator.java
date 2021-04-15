@@ -12,7 +12,7 @@ import java.util.Optional;
 /**
  * Delegator Visitor to test the combination of the grammars
  */
-public class DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator implements ITypesCalculator {
+public class DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator implements IDerive {
   
   private CombineExpressionsWithSIUnitLiteralsTraverser traverser;
 
@@ -44,9 +44,12 @@ public class DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator implement
 
   private SynthesizeSymTypeFromCombineExpressionsWithLiteralsDelegator symTypeFromCombineExpressionsWithLiteralsDelegator;
 
-
   private TypeCheckResult typeCheckResult = new TypeCheckResult();
 
+  @Override
+  public Optional<SymTypeExpression> getResult() {
+    return typeCheckResult.isPresentCurrentResult()? Optional.of(typeCheckResult.getCurrentResult()) : Optional.empty();
+  }
 
   public DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator(){
     this.traverser= CombineExpressionsWithSIUnitLiteralsMill.traverser();
@@ -96,18 +99,6 @@ public class DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator implement
     traverser.setSIUnitLiteralsHandler(deriveSymTypeOfSIUnitLiterals);
   }
 
-  /**
-   * main method to calculate the type of an expression
-   */
-  public Optional<SymTypeExpression> calculateType(ASTExpression e){
-    e.accept(getTraverser());
-    Optional<SymTypeExpression> result = Optional.empty();
-    if (typeCheckResult.isPresentCurrentResult()) {
-      result = Optional.ofNullable(typeCheckResult.getCurrentResult());
-    }
-    typeCheckResult.reset();
-    return result;
-  }
 
   /**
    * set the last typeCheckResult of all calculators to the same object
@@ -139,30 +130,5 @@ public class DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator implement
     deriveSymTypeOfCombineExpressions = new DeriveSymTypeOfCombineExpressions(symTypeFromCombineExpressionsWithLiteralsDelegator);
     deriveSymTypeOfSIUnitLiterals = new DeriveSymTypeOfSIUnitLiterals();
     setTypeCheckResult(typeCheckResult);
-  }
-
-  /**
-   * main method to calculate the type of a literal
-   */
-  @Override
-  public Optional<SymTypeExpression> calculateType(ASTLiteral lit) {
-    lit.accept(getTraverser());
-    Optional<SymTypeExpression> result = Optional.empty();
-    if (typeCheckResult.isPresentCurrentResult()) {
-      result = Optional.ofNullable(typeCheckResult.getCurrentResult());
-    }
-    typeCheckResult.reset();
-    return result;
-  }
-
-  @Override
-  public Optional<SymTypeExpression> calculateType(ASTSignedLiteral lit) {
-    lit.accept(getTraverser());
-    Optional<SymTypeExpression> result = Optional.empty();
-    if (typeCheckResult.isPresentCurrentResult()) {
-      result = Optional.ofNullable(typeCheckResult.getCurrentResult());
-    }
-    typeCheckResult.reset();
-    return result;
   }
 }

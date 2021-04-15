@@ -2,11 +2,10 @@
 
 package de.monticore.types.check;
 
+import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
+import de.monticore.symbols.basicsymbols._symboltable.IBasicSymbolsGlobalScope;
 import de.monticore.symbols.basicsymbols._symboltable.IBasicSymbolsScope;
 import de.monticore.symbols.basicsymbols._symboltable.TypeSymbol;
-import de.monticore.symbols.oosymbols.OOSymbolsMill;
-import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
-import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbol;
 import de.monticore.symboltable.serialization.JsonDeSers;
 import de.monticore.symboltable.serialization.JsonPrinter;
 
@@ -28,8 +27,8 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
     public static SymTypeOfNumericWithSIUnit getSuperNumericUnitType() {
         if (superNumericUnitType == null) {
             String name = "SuperNumericWithUnit";
-            IOOSymbolsScope enclosingScope = OOSymbolsMill.scope();
-            OOTypeSymbol newSymbol =  de.monticore.types.check.DefsTypeBasic.type(name);
+            IBasicSymbolsGlobalScope enclosingScope = BasicSymbolsMill.globalScope();
+            TypeSymbol newSymbol = BasicSymbolsMill.typeSymbolBuilder().setName(name).build();
             enclosingScope.add(newSymbol);
             TypeSymbol loader = (new TypeSymbol(name));
             loader.setEnclosingScope(enclosingScope);
@@ -72,6 +71,11 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
     @Override
     public String print() {
         return "(" + numericType.print() + "," + siunitType.print() + ")";
+    }
+
+    @Override
+    public String printFullName() {
+        return "(" + numericType.printFullName() + "," + siunitType.printFullName() + ")";
     }
 
     @Override

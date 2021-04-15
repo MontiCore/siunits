@@ -3,6 +3,7 @@ package de.monticore.lang.testsijava.testsijava.generator;
 import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._ast.ASTSIJavaClass;
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
+import de.monticore.siunits.SIUnitsMill;
 import de.se_rwth.commons.logging.Log;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +18,10 @@ public class PrintAsJavaClassTest {
     @Before
     public void init() {
         Log.init();
+        Log.enableFailQuick(false);
+        TestSIJavaMill.reset();
+        TestSIJavaMill.init();
+        SIUnitsMill.initializeSIUnits();
     }
 
     @Test

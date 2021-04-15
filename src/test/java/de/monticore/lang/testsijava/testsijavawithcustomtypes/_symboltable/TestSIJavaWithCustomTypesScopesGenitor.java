@@ -2,40 +2,24 @@
 
 package de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable;
 
-import de.monticore.customsiunittypes4computing._ast.ASTCustomSIUnitType4Computing;
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes.TestSIJavaWithCustomTypesMill;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._ast.*;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._visitor.TestSIJavaWithCustomTypesTraverser;
-import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
-import de.monticore.siunittypes4math._ast.ASTSIUnitType;
 import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
 import de.monticore.symbols.basicsymbols._symboltable.VariableSymbol;
 import de.monticore.symbols.oosymbols._symboltable.MethodSymbol;
 import de.monticore.symboltable.modifiers.AccessModifier;
 import de.monticore.types.check.*;
-import de.monticore.types.mcbasictypes._ast.ASTMCPrimitiveType;
-import de.monticore.types.mcbasictypes._ast.ASTMCQualifiedType;
 import de.monticore.types.mcbasictypes._ast.ASTMCReturnType;
 import de.monticore.types.mcbasictypes._ast.ASTMCType;
 
-import java.util.Deque;
 import java.util.Iterator;
 
 /**
  * The SymType for every field symbol has to be set when creating the symbol table
  */
 public class TestSIJavaWithCustomTypesScopesGenitor extends TestSIJavaWithCustomTypesScopesGenitorTOP {
-
-    public TestSIJavaWithCustomTypesScopesGenitor(ITestSIJavaWithCustomTypesScope enclosingScope) {
-        super(enclosingScope);
-        initTypeCheck();
-    }
-
-    public TestSIJavaWithCustomTypesScopesGenitor(Deque<? extends ITestSIJavaWithCustomTypesScope> scopeStack)  {
-        super(scopeStack);
-        initTypeCheck();
-    }
 
     public TestSIJavaWithCustomTypesScopesGenitor(){
         super();
@@ -140,7 +124,7 @@ public class TestSIJavaWithCustomTypesScopesGenitor extends TestSIJavaWithCustom
 
     private void initTypeCheck() {
         ISynthesize synthesize = new SynthesizeSymTypeFromTestSIJavaWithCustomSIUnitTypes4Computing();
-        ITypesCalculator der = new DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing();
+        IDerive der = new DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing();
         tc = new TypeCheck(synthesize, der);
     }
 

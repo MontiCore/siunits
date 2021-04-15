@@ -2,7 +2,20 @@
 
 package de.monticore.types.check;
 
+import de.monticore.expressions.combineexpressionswithsiunitliterals.CombineExpressionsWithSIUnitLiteralsMill;
+import de.monticore.siunits.SIUnitsMill;
+import org.junit.Before;
+
 public class DeriveSymTypeOfCommonExpressionSIExtended extends DeriveSymTypeOfCommonExpressionTest {
+
+    @Override
+    @Before
+    public void setupForEach() {
+        super.setupForEach();
+        CombineExpressionsWithSIUnitLiteralsMill.reset();
+        CombineExpressionsWithSIUnitLiteralsMill.init();
+        SIUnitsMill.initializeSIUnits();
+    }
 
     /**
      * Focus: Deriving Type of SIUnitLiterals, here:
@@ -12,7 +25,7 @@ public class DeriveSymTypeOfCommonExpressionSIExtended extends DeriveSymTypeOfCo
     @Override
     public void setupTypeCheck() {
         // This is an auxiliary
-        ITypesCalculator derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator();
+        IDerive derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator();
 
         // other arguments not used (and therefore deliberately null)
         setTypeCheck(new TypeCheck(null, derLit));

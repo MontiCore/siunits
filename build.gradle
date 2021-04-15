@@ -56,11 +56,14 @@ dependencies {
     }
     implementation "ch.qos.logback:logback-classic:1.1.7"
 
-//    testImplementation "junit:junit:4.13.1"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
-    testImplementation "org.junit.jupiter:junit-jupiter-engine:5.6.2"
-    testImplementation "org.junit.jupiter:junit-jupiter-params:5.6.2"
+    testImplementation ("de.monticore:monticore-grammar:${project.properties['mc_version']}") {capabilities {
+        requireCapability("de.monticore:monticore-grammar-tests") }
+    }
+//    testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
+//    testImplementation "org.junit.jupiter:junit-jupiter-engine:5.6.2"
+//    testImplementation "org.junit.jupiter:junit-jupiter-params:5.6.2"
     testImplementation "org.junit.vintage:junit-vintage-engine:5.6.2"
+    testImplementation "junit:junit:$junit_version"
 }
 
 repositories {
@@ -153,7 +156,7 @@ compileTestJava {
 }
 
 test {
-    useJUnitPlatform()
+    useJUnit()
     testLogging {
         exceptionFormat = 'full'
         showStackTraces = true

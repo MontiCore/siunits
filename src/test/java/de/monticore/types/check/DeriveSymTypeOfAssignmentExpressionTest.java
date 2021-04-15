@@ -10,13 +10,16 @@ import de.monticore.expressions.combineexpressionswithsiunitliterals._parser.Com
 import de.monticore.expressions.combineexpressionswithsiunitliterals._visitor.CombineExpressionsWithSIUnitLiteralsTraverser;
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.expressions.expressionsbasis._visitor.ExpressionsBasisTraverser;
+import de.monticore.siunits.SIUnitsMill;
 import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbol;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
-import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
+import java.util.Optional;
 
 import static de.monticore.types.check.DefsTypeBasic.*;
+import static org.junit.Assert.assertEquals;
 
 public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstractTest {
 
@@ -29,21 +32,18 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     private FlatExpressionScopeSetter flatExpressionScopeSetter;
     private CombineExpressionsWithSIUnitLiteralsTraverser traverser;
 
-    @BeforeAll
+    @Before
     public void setupForEach() {
         // Setting up a Scope Infrastructure (without a global Scope)
-        DefsTypeBasic.setup();
+        CombineExpressionsWithSIUnitLiteralsMill.reset();
+        CombineExpressionsWithLiteralsMill.init();
+        SIUnitsMill.initializeSIUnits();
+
         // we add a variety of TypeSymbols to the same scope (which in reality doesn't happen)
         scope = CombineExpressionsWithLiteralsMill.scope();
         scope.setExportingSymbols(true);
         scope.setEnclosingScope(null);       // No enclosing Scope: Search ending here
         scope.setAstNode(null);
-        add2scope(scope, DefsTypeBasic._int);
-        add2scope(scope, DefsTypeBasic._char);
-        add2scope(scope, DefsTypeBasic._boolean);
-        add2scope(scope, DefsTypeBasic._double);
-        add2scope(scope, DefsTypeBasic._float);
-        add2scope(scope, DefsTypeBasic._long);
 
         add2scope(scope, DefsTypeBasic._array);
         add2scope(scope, DefsTypeBasic._Object);
@@ -78,10 +78,6 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
 
     }
 
-    // Parer used for convenience:
-    // (may be any other Parser that understands CommonExpressions)
-    CombineExpressionsWithSIUnitLiteralsParser p = new CombineExpressionsWithSIUnitLiteralsParser();
-
     // This is an auxiliary
     DeriveSymTypeOfCombineExpressionsDelegator derLit = new DeriveSymTypeOfCombineExpressionsDelegator();
 
@@ -94,14 +90,20 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     @Override
     public void setupTypeCheck() {
         // This is an auxiliary
-        ITypesCalculator derLit = new DeriveSymTypeOfCombineExpressionsDelegator();
+        IDerive derLit = new DeriveSymTypeOfCombineExpressionsDelegator();
 
         // other arguments not used (and therefore deliberately null)
         setTypeCheck(new TypeCheck(null, derLit));
     }
 
+    CombineExpressionsWithLiteralsParser p = new CombineExpressionsWithLiteralsParser();
     @Override
-    ExpressionsBasisTraverser getTraverser() {
+    protected Optional<ASTExpression> parseStringExpression(String expression) throws IOException {
+        return p.parse_StringExpression(expression);
+    }
+
+    @Override
+    protected ExpressionsBasisTraverser getUsedLanguageTraverser() {
         return CombineExpressionsWithLiteralsMill.traverser();
     }
 

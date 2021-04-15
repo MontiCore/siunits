@@ -3,6 +3,7 @@ package de.monticore.types.check;
 
 import de.monticore.literals.mccommonliterals.MCCommonLiteralsMill;
 import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
+import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
 import de.se_rwth.commons.logging.Log;
 import de.se_rwth.commons.logging.LogStub;
 import org.junit.BeforeClass;
@@ -25,7 +26,9 @@ public class DeriveSymTypeOfMCCommonLiteralsTest {
     LogStub.init();         // replace log by a sideffect free variant
     // LogStub.initPlusLog();  // for manual testing purpose only
     Log.enableFailQuick(false);
-  }
+    BasicSymbolsMill.reset();
+    BasicSymbolsMill.init();
+    BasicSymbolsMill.initializePrimitives();  }
   
   // This is the core Visitor under Test (but rather empty)
   DeriveSymTypeOfCombineExpressionsDelegator derLit = new DeriveSymTypeOfCombineExpressionsDelegator();

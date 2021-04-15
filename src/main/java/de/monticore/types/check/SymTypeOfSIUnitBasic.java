@@ -59,6 +59,11 @@ public class SymTypeOfSIUnitBasic extends SymTypeExpression {
         return getName() + getExponentString();
     }
 
+    @Override
+    public String printFullName() {
+        return typeSymbol.getFullName() + getExponentString();
+    }
+
     /**
      * printAsJson: Umwandlung in einen kompakten Json String
      */

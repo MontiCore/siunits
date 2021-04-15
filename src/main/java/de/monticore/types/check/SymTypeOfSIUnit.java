@@ -2,11 +2,11 @@
 package de.monticore.types.check;
 
 import de.monticore.siunits.utility.UnitFactory;
+import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
+import de.monticore.symbols.basicsymbols._symboltable.IBasicSymbolsGlobalScope;
 import de.monticore.symbols.basicsymbols._symboltable.IBasicSymbolsScope;
 import de.monticore.symbols.basicsymbols._symboltable.TypeSymbol;
 import de.monticore.symbols.basicsymbols._symboltable.TypeSymbolSurrogate;
-import de.monticore.symbols.oosymbols._symboltable.OOSymbolsScope;
-import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbol;
 import de.monticore.symboltable.serialization.JsonDeSers;
 import de.monticore.symboltable.serialization.JsonPrinter;
 
@@ -31,8 +31,10 @@ public class SymTypeOfSIUnit extends SymTypeExpression {
     public static SymTypeOfSIUnit getSuperUnitType() {
         if (superUnitType == null) {
             String name = "SuperUnit";
-            OOSymbolsScope enclosingScope = new OOSymbolsScope();
-            OOTypeSymbol newSymbol =  de.monticore.types.check.DefsTypeBasic.type(name);
+            IBasicSymbolsGlobalScope enclosingScope = BasicSymbolsMill.globalScope();
+            TypeSymbol newSymbol = BasicSymbolsMill.typeSymbolBuilder().
+                    setName(name).
+                    setEnclosingScope(enclosingScope).build();
             enclosingScope.add(newSymbol);
             TypeSymbol loader = (new TypeSymbol(name));
             loader.setEnclosingScope(enclosingScope);
@@ -89,6 +91,22 @@ public class SymTypeOfSIUnit extends SymTypeExpression {
         if (getNumeratorList().isEmpty())
             numerators.add("1");
         List<String> denominators = getDenominatorList().stream().map(SymTypeOfSIUnitBasic::print).collect(Collectors.toList());
+        denominators.sort(String::compareTo);
+        if (denominators.size() == 0)
+            return String.join("*", numerators);
+        else if (denominators.size() == 1)
+            return String.join("*", numerators) + "/" + String.join("*", denominators);
+        else
+            return String.join("*", numerators) + "/(" + String.join("*", denominators) + ")";
+    }
+
+    @Override
+    public String printFullName() {
+        List<String> numerators = getNumeratorList().stream().map(SymTypeOfSIUnitBasic::printFullName).collect(Collectors.toList());
+        numerators.sort(String::compareTo);
+        if (getNumeratorList().isEmpty())
+            numerators.add("1");
+        List<String> denominators = getDenominatorList().stream().map(SymTypeOfSIUnitBasic::printFullName).collect(Collectors.toList());
         denominators.sort(String::compareTo);
         if (denominators.size() == 0)
             return String.join("*", numerators);

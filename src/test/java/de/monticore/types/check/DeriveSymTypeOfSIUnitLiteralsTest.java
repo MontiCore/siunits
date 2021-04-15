@@ -3,6 +3,8 @@
 package de.monticore.types.check;
 
 import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
+import de.monticore.siunits.SIUnitsMill;
+import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
 import de.monticore.testsiunitliterals.TestSIUnitLiteralsMill;
 import de.monticore.testsiunitliterals._parser.TestSIUnitLiteralsParser;
 import de.monticore.testsiunitliterals._symboltable.ITestSIUnitLiteralsScope;
@@ -26,7 +28,9 @@ public class DeriveSymTypeOfSIUnitLiteralsTest {
     public static void setup() {
         Log.init();
         Log.enableFailQuick(false);
-    }
+        TestSIUnitLiteralsMill.reset();
+        TestSIUnitLiteralsMill.init();
+        SIUnitsMill.initializeSIUnits();   }
 
     protected ITestSIUnitLiteralsScope scope;
 

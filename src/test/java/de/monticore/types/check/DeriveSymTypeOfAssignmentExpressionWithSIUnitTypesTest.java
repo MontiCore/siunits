@@ -2,13 +2,19 @@
 
 package de.monticore.types.check;
 
+import de.monticore.expressions.combineexpressionswithliterals.CombineExpressionsWithLiteralsMill;
+import de.monticore.expressions.combineexpressionswithliterals._parser.CombineExpressionsWithLiteralsParser;
 import de.monticore.expressions.combineexpressionswithsiunitliterals.CombineExpressionsWithSIUnitLiteralsMill;
+import de.monticore.expressions.combineexpressionswithsiunitliterals._parser.CombineExpressionsWithSIUnitLiteralsParser;
 import de.monticore.expressions.combineexpressionswithsiunitliterals._symboltable.ICombineExpressionsWithSIUnitLiteralsScope;
+import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.expressions.expressionsbasis._visitor.ExpressionsBasisTraverser;
+import de.monticore.siunits.SIUnitsMill;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static de.monticore.types.check.DefsTypeBasic.add2scope;
 import static de.monticore.types.check.DefsTypeBasic.field;
@@ -18,21 +24,32 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Override
     public void setupTypeCheck() {
         // This is an auxiliary
-        ITypesCalculator derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator();
+        IDerive derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator();
 
         // other arguments not used (and therefore deliberately null)
         setTypeCheck(new TypeCheck(null, derLit));
     }
 
+    CombineExpressionsWithSIUnitLiteralsParser p = new CombineExpressionsWithSIUnitLiteralsParser();
     @Override
-    ExpressionsBasisTraverser getTraverser() {
+    protected Optional<ASTExpression> parseStringExpression(String expression) throws IOException {
+        return p.parse_StringExpression(expression);
+    }
+
+    @Override
+    protected ExpressionsBasisTraverser getUsedLanguageTraverser() {
         return CombineExpressionsWithSIUnitLiteralsMill.traverser();
     }
 
     private ICombineExpressionsWithSIUnitLiteralsScope scope;
 
-    @BeforeAll
+    @Before
     public void setupForEach() {
+        CombineExpressionsWithSIUnitLiteralsMill.reset();
+        CombineExpressionsWithSIUnitLiteralsMill.init();
+        CombineExpressionsWithSIUnitLiteralsMill.globalScope();
+        SIUnitsMill.initializeSIUnits();
+
         scope = CombineExpressionsWithSIUnitLiteralsMill.scope();
         scope.setEnclosingScope(null)  ;     // No enclosing Scope: Search ending here
         scope.setExportingSymbols(true);
