@@ -8,7 +8,7 @@ represent physical quantities such as velocities, forces, electrical currents, e
 modern languages such as Java, C++, or Python do not support physical quantities out of the box.
 The type systems of these languages are strictly focused on the bare representation of numbers, e.g. integers, floats, doubles,
 but they ignore the physical quantities they represent. Hence, developers need to keep track of the
-physical meanings of the varibles they use and perform checks and conversions manually, which is prone to errors and requires
+physical meanings of the variables they use and perform checks and conversions manually, which is prone to errors and requires
 a lot of effort. 
 
 Our si units project tackles this issue by providing grammars introducing si unit enriched types, physical type checking, and unit conversion functionality.
@@ -47,13 +47,12 @@ siclass Main {
 
 While it is still possible to use standard basic types such as doubles, some variables are enriched by physical information,
 e.g. the velocity variable `v` is defined as `km/h<double>`, i.e. `v` is a double variable representing a quantity in kilometers per hour.
-Whenever a variable ora literal is combined with or assigned to an si unit variable like `v`, the compiler checks whether the physical quantities are 
+Whenever a variable or a literal is combined with or assigned to an si unit variable like `v`, the compiler checks whether the physical quantities are 
 compatible and performs an automated conversion if needed. For instance, in the assignment `km/h<double> v = 3 dm/h;` the value of
 `3 dm` needs to be converted to `km/h` first. After a successful conversion, `v` carries the value `0.0003 km/h`. 
 
-Note that units are only needed at compile-time given that we have a static type system. Compatibility checks are conversions are performed
-by the compiler and the unit information is thrown away at runtime. The model given above is generated to the following Java code 
-without explicit unit information:
+Note that units are only needed at compile-time given that we have a static type system. Compatibility checks and conversions are performed
+by the compiler and the unit information is thrown away at runtime. For instance, the model given above is generated to the following Java code without explicit unit information:
 
 ```
 /* (c) https://github.com/MontiCore/monticore */
