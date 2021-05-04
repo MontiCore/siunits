@@ -143,6 +143,25 @@ prettyprints a SIUnitType`.
 
 ## TypeCheck
 
+There are two main approaches how to handle si units: at compile-time 
+or at runtime. The former variant is highly preferrable as all unit-related
+checks and conversions are performed at compile-time and unit information
+can be thrown away completely at runtime. This approach is only feasible
+if our type system is static, i.e. it is not possible to change the unit  
+of a variable at runtime. A variable types as `km/h` will always beinterpreted
+as `km/h`. Assignments of compatible variables, e.g. typed as `m/s` lead
+to an implicit conversion by the compiler or code generator. An example
+of such a statically typed language is given by the [SIJava](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/dev/src/test/grammars/de/monticore/lang/testsijava/TestSIJava.mc4).
+Some examples can be found [here](https://git.rwth-aachen.de/monticore/languages/siunits/-/tree/dev/src/test/resources/test/de/monticore/lang/testsijava/testsijava). 
+The corresponding generated code is found 
+[here](https://git.rwth-aachen.de/monticore/languages/siunits/-/tree/dev/src/test/resources/compare/test/de/monticore/lang/testsijava/testsijava).
+
+If static typing is not desired in an si unit-based language and types can be altered
+dynamically at runtime, type information needs to be carried at runtime.
+Consequently all the compatibility checks and conversions need to be 
+performed by the generated code. This approach is much less efficient and we recommend to 
+prefer static typing instead if possible. 
+
 * The classes for the TypeCheck mechanic can be found in the package 
   `de.monticore.types.check`. Those extend the existing mechanics to 
   work with `SIUnits`. 
