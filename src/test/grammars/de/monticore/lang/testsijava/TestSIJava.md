@@ -23,8 +23,8 @@ Unit-compatible variables are converted to the exact unit of the target type, e.
 `km/h<double> v = 3 m/h` would result in the value 0.003 being assigned to the variable `v`.
 Since unit-related checks and conversions are performed at compile-time, unit information is thrown
 away at runtime, cf. generated code examples in the 
-[generation tests](https://git.rwth-aachen.de/monticore/languages/siunits/-/tree/dev/src/test/resources/compare/test/de/monticore/lang/testsijava/testsijava).
-The corresponding SIJava models can be found [here](https://git.rwth-aachen.de/monticore/languages/siunits/-/tree/dev/src/test/resources/test/de/monticore/lang/testsijava/testsijava).
+[generation tests](https://github.com/MontiCore/siunits/tree/master/src/test/resources/compare/test/de/monticore/lang/testsijava/testsijava).
+The corresponding SIJava models can be found [here](https://github.com/MontiCore/siunits/tree/master/src/test/resources/test/de/monticore/lang/testsijava/testsijava).
 
 
 ### Functionality

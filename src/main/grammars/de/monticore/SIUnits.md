@@ -151,10 +151,10 @@ if our type system is static, i.e. it is not possible to change the unit
 of a variable at runtime. A variable types as `km/h` will always beinterpreted
 as `km/h`. Assignments of compatible variables, e.g. typed as `m/s` lead
 to an implicit conversion by the compiler or code generator. An example
-of such a statically typed language is given by the [SIJava](https://git.rwth-aachen.de/monticore/languages/siunits/-/blob/dev/src/test/grammars/de/monticore/lang/testsijava/TestSIJava.mc4).
-Some examples can be found [here](https://git.rwth-aachen.de/monticore/languages/siunits/-/tree/dev/src/test/resources/test/de/monticore/lang/testsijava/testsijava). 
+of such a statically typed language is given by the [SIJava](https://github.com/MontiCore/siunits/blob/master/src/test/grammars/de/monticore/lang/testsijava/TestSIJava.mc4).
+Some examples can be found [here](https://github.com/MontiCore/siunits/tree/master/src/test/resources/test/de/monticore/lang/testsijava/testsijava). 
 The corresponding generated code is found 
-[here](https://git.rwth-aachen.de/monticore/languages/siunits/-/tree/dev/src/test/resources/compare/test/de/monticore/lang/testsijava/testsijava).
+[here](https://github.com/MontiCore/siunits/tree/master/src/test/resources/compare/test/de/monticore/lang/testsijava/testsijava).
 
 If static typing is not desired in an si unit-based language and types can be altered
 dynamically at runtime, type information needs to be carried at runtime.
