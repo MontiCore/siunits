@@ -10,7 +10,7 @@ import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICom
 import de.monticore.expressions.combineexpressionswithsiunitliterals.CombineExpressionsWithSIUnitLiteralsMill;
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.expressions.expressionsbasis._visitor.ExpressionsBasisTraverser;
-import de.monticore.io.paths.ModelPath;
+import de.monticore.io.paths.MCPath;
 import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
 import de.monticore.symbols.basicsymbols._symboltable.TypeVarSymbol;
 import de.monticore.symbols.oosymbols.OOSymbolsMill;
@@ -223,7 +223,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
     CombineExpressionsWithLiteralsMill.reset();
     CombineExpressionsWithLiteralsMill.init();
     BasicSymbolsMill.initializePrimitives();
-    CombineExpressionsWithLiteralsMill.globalScope().setModelPath(new ModelPath());
+    CombineExpressionsWithLiteralsMill.globalScope().setSymbolPath(new MCPath());
     CombineExpressionsWithLiteralsMill.globalScope().setFileExt("ce");
 
     scope = CombineExpressionsWithLiteralsMill.scope();
@@ -463,7 +463,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
     CombineExpressionsWithLiteralsMill.init();
     BasicSymbolsMill.initializePrimitives();
     ICombineExpressionsWithLiteralsGlobalScope globalScope = CombineExpressionsWithLiteralsMill.globalScope();
-    globalScope.setModelPath(new ModelPath());
+    globalScope.setSymbolPath(new MCPath());
     globalScope.setFileExt("ce");
 
     ICombineExpressionsWithLiteralsArtifactScope artifactScope2 = CombineExpressionsWithLiteralsMill.artifactScope();
@@ -646,7 +646,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
     CombineExpressionsWithLiteralsMill.reset();
     CombineExpressionsWithLiteralsMill.init();
     BasicSymbolsMill.initializePrimitives();
-    CombineExpressionsWithLiteralsMill.globalScope().setModelPath(new ModelPath());
+    CombineExpressionsWithLiteralsMill.globalScope().setSymbolPath(new MCPath());
     CombineExpressionsWithLiteralsMill.globalScope().setFileExt("ce");
     scope = CombineExpressionsWithLiteralsMill.scope();
     scope.setEnclosingScope(null);       // No enclosing Scope: Search ending here
@@ -723,7 +723,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
     CombineExpressionsWithLiteralsMill.reset();
     CombineExpressionsWithLiteralsMill.init();
     BasicSymbolsMill.initializePrimitives();
-    CombineExpressionsWithLiteralsMill.globalScope().setModelPath(new ModelPath());
+    CombineExpressionsWithLiteralsMill.globalScope().setSymbolPath(new MCPath());
     CombineExpressionsWithLiteralsMill.globalScope().setFileExt("ce");
     scope = CombineExpressionsWithLiteralsMill.scope();
     scope.setEnclosingScope(null);       // No enclosing Scope: Search ending here

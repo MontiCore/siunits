@@ -2,7 +2,7 @@
 
 package de.monticore.lang.testsijava;
 
-import de.monticore.io.paths.ModelPath;
+import de.monticore.io.paths.MCPath;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes.TestSIJavaWithCustomTypesMill;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._ast.ASTSIJavaClass;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._cocos.TestSIJavaWithCustomTypesCoCoChecker;
@@ -29,7 +29,7 @@ public class SIJavaWithCustomTypesCoCoTest {
     TestSIJavaWithCustomTypesMill.reset();
     TestSIJavaWithCustomTypesMill.init();
     String path = "src/test/resources/";
-    TestSIJavaWithCustomTypesMill.globalScope().setModelPath(new ModelPath(Paths.get(path)));
+    TestSIJavaWithCustomTypesMill.globalScope().setSymbolPath(new MCPath(Paths.get(path)));
     SIUnitsMill.initializeSIUnits();
   }
 
