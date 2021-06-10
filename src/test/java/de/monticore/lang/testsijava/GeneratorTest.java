@@ -1,3 +1,4 @@
+/* (c) https://github.com/MontiCore/monticore */
 package de.monticore.lang.testsijava;
 
 import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;

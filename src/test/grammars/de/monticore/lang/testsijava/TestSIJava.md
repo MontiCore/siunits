@@ -1,3 +1,4 @@
+<!-- (c) https://github.com/MontiCore/monticore -->
 # TestSIJava
 The TestSIJava language serves as an example on how to integrate [SIUnits][SIUnitGrammar], 
 [SIUnitLiterals][SIUnitLiteralsGrammar], [SIUnitTypes4Math][SIUnitTypes4MathGrammar] and 
