@@ -16,15 +16,15 @@ import static org.junit.Assert.assertEquals;
 
 public class GeneratorTest {
 
-    private String modelPath = "src/test/resources";
+    private String symbolPath = "src/test/resources";
     private String outputPath = "target/generate";
-    private String compareModelPath = "src/test/resources/compare";
+    private String compareSymbolPath = "src/test/resources/compare";
 
     private void test(String model) throws IOException, ClassNotFoundException {
-        Generator.generate(modelPath, model, outputPath);
+        Generator.generate(symbolPath, model, outputPath);
         String javaModelName = model.replace(".sijava", ".java");
         File generatedFile = new File(outputPath + "/" + javaModelName);
-        File compareFile = new File(compareModelPath + "/" + javaModelName);
+        File compareFile = new File(compareSymbolPath + "/" + javaModelName);
         assert (generatedFile.exists());
         assertEquals ( FileUtils.readFileToString(compareFile, "utf-8").replace("\r", ""),
                 FileUtils.readFileToString(generatedFile, "utf-8").replace("\r", ""));
