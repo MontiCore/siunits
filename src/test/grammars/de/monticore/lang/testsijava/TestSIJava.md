@@ -1,3 +1,4 @@
+<!-- (c) https://github.com/MontiCore/monticore -->
 # TestSIJava
 The TestSIJava language serves as an example on how to integrate [SIUnits][SIUnitGrammar], 
 [SIUnitLiterals][SIUnitLiteralsGrammar], [SIUnitTypes4Math][SIUnitTypes4MathGrammar] and 
@@ -12,6 +13,20 @@ TestSIJava is a very limited Java-like grammar which combines expressions with S
 or ReturnType can be a SIUnitType or a SIUnitType4Computing. The language accepts models with a 
 package, a classname and several Field- and Method declarations. A Method can have a return type and a return value and 
 contains expressions which can be used to assign new values to variables.
+
+### Static Type System
+SIJava is designed with a static type system in mind, i.e. the type of a variable is known at compile-time 
+and cannot be changed at runtime (as is possible in languages like PHP or Python). The languages
+supports the basic types provided by MontiCore 6/7. Furthermore, numeric types can be extended
+by si units. For instance, `km/h<int>` is a double variable to be interpreted as a velocity in kilometers per hour.
+Assignments to a unit-based variable need to be of a compatible unit, which is checked by the compiler.
+Unit-compatible variables are converted to the exact unit of the target type, e.g. 
+`km/h<double> v = 3 m/h` would result in the value 0.003 being assigned to the variable `v`.
+Since unit-related checks and conversions are performed at compile-time, unit information is thrown
+away at runtime, cf. generated code examples in the 
+[generation tests](https://github.com/MontiCore/siunits/tree/master/src/test/resources/compare/test/de/monticore/lang/testsijava/testsijava).
+The corresponding SIJava models can be found [here](https://github.com/MontiCore/siunits/tree/master/src/test/resources/test/de/monticore/lang/testsijava/testsijava).
+
 
 ### Functionality
 An important goal of this language was to introduce the [TypeCheck][Types] mechanic to a language which also uses 
