@@ -4,7 +4,6 @@ image: registry.git.rwth-aachen.de/monticore/container-registry/gradle:6.8.2-jdk
 
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
-  MAVEN_CLI_OPTS: "--settings settings.xml --batch-mode"
 
 cache:
   paths:
@@ -31,7 +30,6 @@ build:
     expire_in: 1 week
 #  except:
 #    changes:
-#    - pom.xml
 #    - .gitignore
 #    - README.md
 #    - .gitlab-ci.yml
@@ -44,7 +42,6 @@ test:
     - "gradle check $GRADLE_OPTS $ARGS2"
 #  except:
 #    changes:
-#    - pom.xml
 #    - .gitignore
 #    - README.md
 #    - .gitlab-ci.yml
@@ -60,7 +57,6 @@ deploy:
     - dev
 #  except:
 #    changes:
-#    - pom.xml
 #    - .gitignore
 #    - README.md
 #    - .gitlab-ci.yml
