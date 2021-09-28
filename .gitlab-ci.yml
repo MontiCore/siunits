@@ -53,7 +53,6 @@ deploy:
   script:
     - "gradle publish $GRADLE_OPTS $ARGS3 -PmavenPassword=$password -PmavenUser=$username"
   only:
-    - master
     - dev
 #  except:
 #    changes:
