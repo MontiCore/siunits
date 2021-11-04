@@ -4,7 +4,6 @@ package de.monticore.types.check;
 import com.google.common.collect.Lists;
 import de.monticore.expressions.combineexpressionswithliterals.CombineExpressionsWithLiteralsMill;
 import de.monticore.expressions.combineexpressionswithliterals._parser.CombineExpressionsWithLiteralsParser;
-import de.monticore.expressions.combineexpressionswithliterals._symboltable.CombineExpressionsWithLiteralsScope;
 import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICombineExpressionsWithLiteralsArtifactScope;
 import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICombineExpressionsWithLiteralsGlobalScope;
 import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICombineExpressionsWithLiteralsScope;
@@ -18,31 +17,51 @@ import de.monticore.symbols.oosymbols._symboltable.FieldSymbol;
 import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
 import de.monticore.symbols.oosymbols._symboltable.MethodSymbol;
 import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbol;
-import de.se_rwth.commons.logging.LogStub;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Optional;
 
 import static de.monticore.types.check.DefsTypeBasic.*;
-import static org.junit.Assert.assertTrue;
 
 public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTest {
 
+  /**
+   * Focus: Deriving Type of Literals, here:
+   * literals/MCLiteralsBasis.mc4
+   */
+
+  protected ICombineExpressionsWithLiteralsScope scope;
+
   @Override
-  protected void setupTypeCheck() {
+  public void setupTypeCheck() {
+    // This is the core Visitor under Test (but rather empty)
+    DeriveSymTypeOfExpression derEx = new DeriveSymTypeOfExpression();
+
     // This is an auxiliary
     DeriveSymTypeOfCombineExpressionsDelegator derLit = new DeriveSymTypeOfCombineExpressionsDelegator();
 
+
     // other arguments not used (and therefore deliberately null)
-    // This is the TypeChecker under Test:
     setTypeCheck(new TypeCheck(null, derLit));
   }
 
-  // Parser used for convenience:
-  // (may be any other Parser that understands CommonExpressions)
+  @Override
+  public void setupForEach() {
+    super.setupForEach();
+    // No enclosing Scope: Search ending here
+    CombineExpressionsWithLiteralsMill.reset();
+    CombineExpressionsWithLiteralsMill.init();
+    BasicSymbolsMill.initializePrimitives();
+    CombineExpressionsWithLiteralsMill.globalScope().setSymbolPath(new MCPath());
+    CombineExpressionsWithLiteralsMill.globalScope().setFileExt("ce");
+
+    scope = CombineExpressionsWithLiteralsMill.scope();
+    scope.setEnclosingScope(null);
+    scope.setExportingSymbols(true);
+    scope.setAstNode(null);
+  }
+
   CombineExpressionsWithLiteralsParser p = new CombineExpressionsWithLiteralsParser();
   @Override
   protected Optional<ASTExpression> parseStringExpression(String expression) throws IOException {
@@ -53,27 +72,6 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
   protected ExpressionsBasisTraverser getUsedLanguageTraverser() {
     return CombineExpressionsWithLiteralsMill.traverser();
   }
-
-  /**
-   * Focus: Deriving Type of Literals, here:
-   * literals/MCLiteralsBasis.mc4
-   */
-
-  @BeforeClass
-  public static void setup() {
-    LogStub.enableFailQuick(false);
-  }
-
-  @Before
-  public void doBefore() {
-    LogStub.init();
-    CombineExpressionsWithLiteralsMill.reset();
-    CombineExpressionsWithLiteralsMill.init();
-    BasicSymbolsMill.initializePrimitives();
-    CombineExpressionsWithLiteralsMill.globalScope().setSymbolPath(new MCPath());
-    CombineExpressionsWithLiteralsMill.globalScope().setFileExt("ce");
-  }
-
   /*--------------------------------------------------- TESTS ---------------------------------------------------------*/
 
   /**
@@ -236,13 +234,6 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
    * initialize basic scope and a few symbols for testing
    */
   public void init_basic() {
-    // No enclosing Scope: Search ending here
-
-    ICombineExpressionsWithLiteralsScope scope = CombineExpressionsWithLiteralsMill.scope();
-    scope.setEnclosingScope(null);
-    scope.setExportingSymbols(true);
-    scope.setAstNode(null);
-
     OOTypeSymbol person = OOSymbolsMill.oOTypeSymbolBuilder()
             .setName("Person")
             .setSpannedScope(OOSymbolsMill.scope())
@@ -273,7 +264,6 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
             createTypeObject("FirstSemesterStudent", scope)));
     add2scope(scope, method("isInt", _booleanSymType));
     add2scope(scope, add(method("isInt", _booleanSymType), field("maxLength", _intSymType)));
-
     setFlatExpressionScopeSetter(scope);
   }
 
@@ -473,7 +463,6 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
    */
   public void init_advanced() {
     ICombineExpressionsWithLiteralsGlobalScope globalScope = CombineExpressionsWithLiteralsMill.globalScope();
-
     ICombineExpressionsWithLiteralsArtifactScope artifactScope2 = CombineExpressionsWithLiteralsMill.artifactScope();
     artifactScope2.setEnclosingScope(globalScope);
     artifactScope2.setImportsList(Lists.newArrayList());
@@ -491,7 +480,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
     artifactScope4.setName("types3");
     artifactScope4.setPackageName("types3");
 
-    ICombineExpressionsWithLiteralsScope scope = globalScope;
+    scope = globalScope;
     // No enclosing Scope: Search ending here
 
     ICombineExpressionsWithLiteralsScope scope3 = CombineExpressionsWithLiteralsMill.scope();
@@ -636,6 +625,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
 
     //test for method with qualified name with parameters
     check("types.Test.pay(4)", "void");
+
   }
 
   @Test
@@ -650,12 +640,6 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
    * we only have one scope and the symbols are all in this scope or in subscopes
    */
   public void init_inheritance() {
-    // No enclosing Scope: Search ending here
-    ICombineExpressionsWithLiteralsScope scope = CombineExpressionsWithLiteralsMill.scope();
-    scope.setEnclosingScope(null);       // No enclosing Scope: Search ending here
-    scope.setExportingSymbols(true);
-    scope.setAstNode(null);
-
     //inheritance example
     //super
     MethodSymbol add = add(method("add", _voidSymType), field("element", _StringSymType));
@@ -720,26 +704,10 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
   }
 
   /**
-   * initialize an empty scope
-   * @return
-   */
-  public ICombineExpressionsWithLiteralsScope init_scope() {
-    // No enclosing Scope: Search ending here
-    ICombineExpressionsWithLiteralsScope scope = CombineExpressionsWithLiteralsMill.scope();
-    scope.setEnclosingScope(null);       // No enclosing Scope: Search ending here
-    scope.setExportingSymbols(true);
-    scope.setAstNode(null);
-    CombineExpressionsWithLiteralsMill.globalScope().addSubScope(scope);
-    return scope;
-  }
-
-  /**
    * test the inheritance of a generic type with one type variable
    */
   @Test
   public void testListAndArrayListInheritance() throws IOException {
-    ICombineExpressionsWithLiteralsScope scope = init_scope();
-    //initialize symboltable
     //one generic parameter, supertype List<T>
     TypeVarSymbol t = typeVariable("T");
     add2scope(scope, t);
@@ -797,9 +765,6 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
    */
   @Test
   public void testGenericInheritanceTwoTypeVariables() throws IOException {
-    //initialize symboltable
-    ICombineExpressionsWithLiteralsScope scope = init_scope();
-
     //two generic parameters, supertype GenSup<S,V>, create SymType GenSup<String,int>
     TypeVarSymbol t1 = typeVariable("S");
     TypeVarSymbol t2 = typeVariable("V");
@@ -868,7 +833,6 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
     FieldSymbol genSubSubVar = field("genSubSubVar", genSubSubType);
     add2scope(scope, genSubSubVar);
 
-
     setFlatExpressionScopeSetter(scope);
 
     //supertype: test methods and fields
@@ -899,9 +863,6 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
    */
   @Test
   public void testSubVarSupFix() throws IOException {
-    //initialize symboltable
-    ICombineExpressionsWithLiteralsScope scope = init_scope();
-
     //subtype with variable generic parameter, supertype with fixed generic parameter
     //supertype with fixed generic parameter FixGen<A> and SymType FixGen<int>
     TypeVarSymbol a = typeVariable("A");
@@ -958,9 +919,6 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
    */
   @Test
   public void testSubTypeWithMoreGenericParameters() throws IOException {
-    //initialize symboltable
-    ICombineExpressionsWithLiteralsScope scope = init_scope();
-
     //one generic parameter, supertype List<T>
     TypeVarSymbol t = typeVariable("T");
     add2scope(scope, t);
@@ -1023,9 +981,6 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
    */
   @Test
   public void testSubTypeWithoutGenericParameter() throws IOException {
-    //initialize symboltable
-    ICombineExpressionsWithLiteralsScope scope = init_scope();
-
     //one generic parameter, supertype List<T>
     TypeVarSymbol t = typeVariable("T");
     add2scope(scope, t);
@@ -1073,9 +1028,6 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
    */
   @Test
   public void testMultiInheritance() throws IOException {
-    //initialize symboltable
-    ICombineExpressionsWithLiteralsScope scope = init_scope();
-
     //supertype SupA<T>
     TypeVarSymbol t = typeVariable("T");
     add2scope(scope, t);
@@ -1141,9 +1093,6 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
    */
   @Test
   public void testMultiInheritanceSubTypeMoreGen() throws IOException {
-    //initialize symboltable
-    ICombineExpressionsWithLiteralsScope scope = init_scope();
-
     //supertype SupA<T>
     TypeVarSymbol t = typeVariable("T");
     add2scope(scope, t);
@@ -1210,15 +1159,13 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
    */
   @Test
   public void testMethodScope() throws IOException {
-    ICombineExpressionsWithLiteralsScope scope = init_scope();
-
     //super
     FieldSymbol elementField = field("element", _StringSymType);
     MethodSymbol add = OOSymbolsMill.methodSymbolBuilder()
             .setReturnType(_voidSymType)
             .setName("add")
-            .setSpannedScope(CombineExpressionsWithLiteralsMill.scope())
             .build();
+    add.setSpannedScope(CombineExpressionsWithLiteralsMill.scope());
     add2scope(add.getSpannedScope(), elementField);
     FieldSymbol field = field("field", _booleanSymType);
     OOTypeSymbol superclass = OOSymbolsMill.oOTypeSymbolBuilder()
@@ -1249,8 +1196,8 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
     MethodSymbol myAdd = OOSymbolsMill.methodSymbolBuilder()
             .setName("myAdd")
             .setReturnType(_voidSymType)
-            .setSpannedScope(CombineExpressionsWithLiteralsMill.scope())
             .build();
+    myAdd.setSpannedScope(CombineExpressionsWithLiteralsMill.scope());
     OOTypeSymbol subsubclass = OOSymbolsMill.oOTypeSymbolBuilder()
             .setSpannedScope(CombineExpressionsWithLiteralsMill.scope())
             .setName("MySubList")
@@ -1268,7 +1215,8 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
     add2scope(scope, mySubList);
 
     //set scope of method myAdd as standard resolving scope
-    setFlatExpressionScopeSetter((CombineExpressionsWithLiteralsScope) myAdd.getSpannedScope());
+
+    setFlatExpressionScopeSetter((ICombineExpressionsWithLiteralsScope) myAdd.getSpannedScope());
 
     check("mySubList", "MySubList");
 
@@ -1283,7 +1231,6 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
 
   public void init_static_example(){
     //types A and B
-    ICombineExpressionsWithLiteralsScope scope = init_scope();
     MethodSymbol atest = method("test",_voidSymType);
     atest.setIsStatic(true);
     FieldSymbol afield = field("field",_intSymType);
@@ -1399,8 +1346,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
   public void testSubClassesDoNotKnowStaticTypesOfSuperClasses() throws IOException{
     init_static_example();
 
-    Optional<ASTExpression> sType = p.parse_StringExpression("C.D");
-    assertTrue(sType.isPresent());
+    parseStringExpression("C.D");
     //TODO ND: complete when inner types are added
   }
 }

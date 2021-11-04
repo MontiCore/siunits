@@ -15,6 +15,12 @@ public class DeriveSymTypeOfCommonExpressionSIExtended extends DeriveSymTypeOfCo
         CombineExpressionsWithSIUnitLiteralsMill.reset();
         CombineExpressionsWithSIUnitLiteralsMill.init();
         SIUnitsMill.initializeSIUnits();
+
+
+        scope = CombineExpressionsWithSIUnitLiteralsMill.scope();
+        scope.setEnclosingScope(null);
+        scope.setExportingSymbols(true);
+        scope.setAstNode(null);
     }
 
     /**
