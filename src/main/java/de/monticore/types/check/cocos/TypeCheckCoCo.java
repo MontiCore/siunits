@@ -134,6 +134,6 @@ public abstract class TypeCheckCoCo {
     }
 
     protected void logError(ASTNode node, String msg) {
-        Log.error("0xE3810245 " + node.get_SourcePositionStart() + " " + msg);
+        Log.error("0xE3810 " + node.get_SourcePositionStart() + " " + msg);
     }
 }
