@@ -10,6 +10,7 @@ import de.monticore.lang.testsijava.testsijava._cocos.TestSIJavaTypeCheckCoCo;
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
 import de.monticore.siunits.SIUnitsMill;
 import de.se_rwth.commons.logging.Log;
+import de.se_rwth.commons.logging.LogStub;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,7 +23,7 @@ public class SIJavaCoCoTest {
 
     @Before
     public void init() {
-        Log.init();
+        LogStub.init();
         Log.enableFailQuick(false);
         TestSIJavaMill.reset();
         TestSIJavaMill.init();
