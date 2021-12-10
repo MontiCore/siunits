@@ -26,7 +26,7 @@ sourceSets {
     }
     grammars {
       resources {
-        srcDirs([grammarDir, grammarOutDir])
+        srcDirs([grammarDir])
         include "**/*.mc4"
       }
     }
