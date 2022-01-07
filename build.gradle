@@ -24,10 +24,24 @@ sourceSets {
     main {
         java.srcDirs += ["$projectDir/target/generated-sources/monticore/sourcecode"]
     }
+    grammars {
+      resources {
+        srcDirs([grammarDir])
+        include "**/*.mc4"
+      }
+    }
+
     test {
         java.srcDirs += ["$projectDir/target/generated-test-sources/monticore/sourcecode"]
     }
 }
+
+java {
+    registerFeature('grammars') {
+        usingSourceSet(sourceSets.grammars)
+    }
+}
+
 subprojects {
     apply plugin: 'idea'
     idea {
