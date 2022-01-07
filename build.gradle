@@ -202,12 +202,14 @@ task javadocJar(type: Jar) {
     archiveClassifier = "javadoc"
 }
 
-//shadowJar { // all in one jar
-//    manifest {
-//        attributes "Main-Class": "de.monticore.umlcd4a.CD4ACLI"
-//    }
-//    archiveClassifier = "cli"
-//}
+shadowJar { // all in one jar
+    manifest {
+        attributes "Main-Class": "de.monticore.umlcd4a.CD4ACLI"
+    }
+    archiveClassifier = "cli"
+}
+
+jar.dependsOn(shadowJar)
 
 // generated java doc contains errors, disable for now
 javadoc.failOnError(false)
