@@ -121,12 +121,12 @@ public class TestSIJavaScopesGenitor extends TestSIJavaScopesGenitorTOP {
     /**
      * The TypeCheck is used to derive the type for a SIFieldDeclaration
      */
-    private TypeCheck tc;
+    private TypeCalculator tc;
 
     private void initTypeCheck() {
         ISynthesize synthesize = new SynthesizeSymTypeFromTestSIJava();
         IDerive der = new DeriveSymTypeOfTestSIJava();
-        tc = new TypeCheck(synthesize, der);
+        tc = new TypeCalculator(synthesize, der);
     }
 
     @Override

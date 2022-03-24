@@ -18,19 +18,25 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
 
      @Override
     protected Optional<SymTypeExpression> calculateMultExpression(ASTMultExpression expr) {
-        SymTypeExpression leftResult = acceptThisAndReturnSymTypeExpressionOrLogError(expr.getLeft(), "0xA0491");
-        SymTypeExpression rightResult = acceptThisAndReturnSymTypeExpressionOrLogError(expr.getRight(), "0xA0492");
-        Optional<SymTypeExpression> wholeResult = calculateMultDivideExpression(expr, "*", leftResult, rightResult);
-        if (wholeResult.isPresent())
-            return wholeResult;
-        return super.calculateMultExpression(expr);
+         Optional<SymTypeExpression> wholeResult = Optional.empty();
+         Optional<SymTypeExpression> leftResult = acceptThisAndReturnSymTypeExpressionOrLogError(expr.getLeft(), "0xA0491");
+         Optional<SymTypeExpression> rightResult = acceptThisAndReturnSymTypeExpressionOrLogError(expr.getRight(), "0xA0492");
+         if(leftResult.isPresent() && rightResult.isPresent()) {
+             wholeResult = calculateMultDivideExpression(expr, "*", leftResult.get(), rightResult.get());
+         }
+         if (wholeResult.isPresent())
+             return wholeResult;
+         return super.calculateMultExpression(expr);
     }
 
     @Override
     protected Optional<SymTypeExpression> calculateDivideExpression(ASTDivideExpression expr) {
-        SymTypeExpression leftResult = acceptThisAndReturnSymTypeExpressionOrLogError(expr.getLeft(), "0xA0493");
-        SymTypeExpression rightResult = acceptThisAndReturnSymTypeExpressionOrLogError(expr.getRight(), "0xA0494");
-        Optional<SymTypeExpression> wholeResult = calculateMultDivideExpression(expr, "/", leftResult, rightResult);
+        Optional<SymTypeExpression> wholeResult = Optional.empty();
+        Optional<SymTypeExpression> leftResult = acceptThisAndReturnSymTypeExpressionOrLogError(expr.getLeft(), "0xA0493");
+        Optional<SymTypeExpression> rightResult = acceptThisAndReturnSymTypeExpressionOrLogError(expr.getRight(), "0xA0494");
+        if(leftResult.isPresent() && rightResult.isPresent()) {
+            wholeResult = calculateMultDivideExpression(expr, "*", leftResult.get(), rightResult.get());
+        }
         if (wholeResult.isPresent())
             return wholeResult;
         return super.calculateDivideExpression(expr);

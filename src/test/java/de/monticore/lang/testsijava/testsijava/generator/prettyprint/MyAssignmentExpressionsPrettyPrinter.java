@@ -11,10 +11,7 @@ import de.monticore.siunits.utility.Converter;
 import de.monticore.symbols.basicsymbols._symboltable.VariableSymbol;
 import de.monticore.symbols.oosymbols._symboltable.FieldSymbol;
 import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
-import de.monticore.types.check.DeriveSymTypeOfTestSIJava;
-import de.monticore.types.check.SymTypeExpression;
-import de.monticore.types.check.SymTypeOfNumericWithSIUnit;
-import de.monticore.types.check.TypeCheck;
+import de.monticore.types.check.*;
 import de.se_rwth.commons.logging.Log;
 
 import javax.measure.converter.UnitConverter;
@@ -93,7 +90,7 @@ public class MyAssignmentExpressionsPrettyPrinter extends AssignmentExpressionsP
         UnitConverter converter = UnitConverter.IDENTITY;
         if (type.isPresent() && type.get() instanceof SymTypeOfNumericWithSIUnit) {
             Unit unit = ((SymTypeOfNumericWithSIUnit) type.get()).getUnit();
-            TypeCheck tc = new TypeCheck(null, new DeriveSymTypeOfTestSIJava());
+            TypeCalculator tc = new TypeCalculator(null, new DeriveSymTypeOfTestSIJava());
             SymTypeExpression rightType = tc.typeOf(node.getRight());
             if (rightType instanceof SymTypeOfNumericWithSIUnit)
                 converter = Converter.getConverter(((SymTypeOfNumericWithSIUnit) rightType).getUnit(), unit);

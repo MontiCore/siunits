@@ -14,7 +14,6 @@ public class DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing implements
 
     private TestSIJavaWithCustomTypesTraverser traverser;
 
-    @Override
     public TestSIJavaWithCustomTypesTraverser getTraverser() {
         return traverser;
     }
@@ -37,11 +36,6 @@ public class DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing implements
         init();
     }
 
-    @Override
-    public Optional<SymTypeExpression> getResult() {
-        return typeCheckResult.isPresentCurrentResult()? Optional.of(typeCheckResult.getCurrentResult()) : Optional.empty();
-    }
-
     /**
      * set the last typeCheckResult of all calculators to the same object
      */
@@ -57,7 +51,6 @@ public class DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing implements
     /**
      * initialize the typescalculator
      */
-    @Override
     public void init() {
         traverser = TestSIJavaWithCustomTypesMill.traverser();
 
@@ -83,5 +76,19 @@ public class DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing implements
         traverser.setSIUnitLiteralsHandler(deriveSymTypeOfSIUnitLiterals);
 
         setTypeCheckResult(typeCheckResult);
+    }
+
+    @Override
+    public TypeCheckResult deriveType(ASTExpression expr) {
+        typeCheckResult.reset();
+        expr.accept(getTraverser());
+        return typeCheckResult;
+    }
+
+    @Override
+    public TypeCheckResult deriveType(ASTLiteral lit) {
+        typeCheckResult.reset();
+        lit.accept(getTraverser());
+        return typeCheckResult;
     }
 }

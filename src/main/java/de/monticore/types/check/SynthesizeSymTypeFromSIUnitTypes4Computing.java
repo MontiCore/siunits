@@ -7,6 +7,9 @@ import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4ComputingInt;
 import de.monticore.siunittypes4computing._visitor.SIUnitTypes4ComputingHandler;
 import de.monticore.siunittypes4computing._visitor.SIUnitTypes4ComputingTraverser;
+import de.monticore.types.mcbasictypes._ast.ASTMCQualifiedName;
+import de.monticore.types.mcbasictypes._ast.ASTMCReturnType;
+import de.monticore.types.mcbasictypes._ast.ASTMCType;
 import de.se_rwth.commons.logging.Log;
 
 import static de.monticore.types.check.TypeCheck.*;
@@ -68,5 +71,26 @@ public class SynthesizeSymTypeFromSIUnitTypes4Computing extends AbstractSynthesi
                 isLong(type) || isInt(type) ||
                 isChar(type) || isShort(type) ||
                 isByte(type));
+    }
+
+    @Override
+    public TypeCheckResult synthesizeType(ASTMCType type) {
+        typeCheckResult.reset();
+        type.accept(getTraverser());
+        return typeCheckResult;
+    }
+
+    @Override
+    public TypeCheckResult synthesizeType(ASTMCReturnType type) {
+        typeCheckResult.reset();
+        type.accept(getTraverser());
+        return typeCheckResult;
+    }
+
+    @Override
+    public TypeCheckResult synthesizeType(ASTMCQualifiedName qName) {
+        typeCheckResult.reset();
+        qName.accept(traverser);
+        return typeCheckResult;
     }
 }

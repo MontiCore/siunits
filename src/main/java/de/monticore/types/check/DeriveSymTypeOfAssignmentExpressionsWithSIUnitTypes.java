@@ -77,13 +77,13 @@ public class DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes extends DeriveS
      * e.g. 5 m |= 3 => 7 m
      */
     @Override
-    protected Optional<SymTypeExpression> calculateTypeBinaryOperations(ASTAssignmentExpression expr, SymTypeExpression leftResult, SymTypeExpression rightResult) {
+    protected Optional<SymTypeExpression> calculateTypeBinaryOperations(SymTypeExpression leftResult, SymTypeExpression rightResult) {
         if (isNumericWithSIUnitType(leftResult)
                 && isIntegralType(getNumeric(leftResult).get())
                 && isIntegralType(rightResult)) {
             return Optional.of(leftResult);
         }
-        return super.calculateTypeBinaryOperations(expr, leftResult, rightResult);
+        return super.calculateTypeBinaryOperations(leftResult, rightResult);
     }
 
     /**
@@ -92,14 +92,14 @@ public class DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes extends DeriveS
      * e.g. 4 m >>= 1 => 2 m
      */
     @Override
-    protected Optional<SymTypeExpression> calculateTypeBitOperation(ASTAssignmentExpression expr, SymTypeExpression leftResult, SymTypeExpression rightResult) {
+    protected Optional<SymTypeExpression> calculateTypeBitOperation(SymTypeExpression leftResult, SymTypeExpression rightResult) {
         //the bitshift operations are only defined for integers --> long, int, char, short, byte
         if (isNumericWithSIUnitType(leftResult)
                 && isIntegralType(getNumeric(leftResult).get())
                 && isIntegralType(rightResult)) {
             return Optional.of(leftResult);
         }
-        return super.calculateTypeBitOperation(expr, leftResult, rightResult);
+        return super.calculateTypeBitOperation(leftResult, rightResult);
     }
 
     /**

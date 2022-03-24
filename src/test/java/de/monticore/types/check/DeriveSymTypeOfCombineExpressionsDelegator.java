@@ -42,12 +42,6 @@ public class DeriveSymTypeOfCombineExpressionsDelegator implements IDerive {
     init();
   }
 
-  @Override
-  public Optional<SymTypeExpression> getResult() {
-    return typeCheckResult.isPresentCurrentResult()? Optional.of(typeCheckResult.getCurrentResult()) : Optional.empty();
-  }
-
-  @Override
   public CombineExpressionsWithLiteralsTraverser getTraverser(){
     return traverser;
   }
@@ -69,7 +63,6 @@ public class DeriveSymTypeOfCombineExpressionsDelegator implements IDerive {
   /**
    * initialize the typescalculator
    */
-  @Override
   public void init() {
     this.traverser = CombineExpressionsWithLiteralsMill.traverser();
     this.typeCheckResult = new TypeCheckResult();
@@ -98,5 +91,19 @@ public class DeriveSymTypeOfCombineExpressionsDelegator implements IDerive {
     traverser.setJavaClassExpressionsHandler(deriveSymTypeOfJavaClassExpressions);
     traverser.add4CombineExpressionsWithLiterals(deriveSymTypeOfCombineExpressions);
     traverser.setCombineExpressionsWithLiteralsHandler(deriveSymTypeOfCombineExpressions);
+  }
+
+  @Override
+  public TypeCheckResult deriveType(ASTExpression expr) {
+    typeCheckResult.reset();
+    expr.accept(getTraverser());
+    return typeCheckResult;
+  }
+
+  @Override
+  public TypeCheckResult deriveType(ASTLiteral lit) {
+    typeCheckResult.reset();
+    lit.accept(getTraverser());
+    return typeCheckResult;
   }
 }

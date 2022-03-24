@@ -12,6 +12,7 @@ import de.monticore.lang.testsijava.testsijavawithcustomtypes._symboltable.TestS
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._visitor.TestSIJavaWithCustomTypesVisitor2;
 import de.monticore.types.check.DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing;
 import de.monticore.types.check.SynthesizeSymTypeFromTestSIJavaWithCustomSIUnitTypes4Computing;
+import de.monticore.types.check.TypeCalculator;
 import de.monticore.types.check.TypeCheck;
 import de.monticore.types.check.cocos.TypeCheckCoCo;
 
@@ -25,12 +26,12 @@ public class TestSIJavaWithCustomTypesTypeCheckCoCo extends TypeCheckCoCo
         implements TestSIJavaWithCustomTypesASTSIJavaClassCoCo, TestSIJavaWithCustomTypesVisitor2 {
 
     public static TestSIJavaWithCustomTypesTypeCheckCoCo getCoCo() {
-        TypeCheck typeCheck = new TypeCheck(new SynthesizeSymTypeFromTestSIJavaWithCustomSIUnitTypes4Computing(),
+        TypeCalculator typeCheck = new TypeCalculator(new SynthesizeSymTypeFromTestSIJavaWithCustomSIUnitTypes4Computing(),
                 new DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing());
         return new TestSIJavaWithCustomTypesTypeCheckCoCo(typeCheck);
     }
 
-    public TestSIJavaWithCustomTypesTypeCheckCoCo(TypeCheck tc) {
+    public TestSIJavaWithCustomTypesTypeCheckCoCo(TypeCalculator tc) {
         super(tc);
     }
 

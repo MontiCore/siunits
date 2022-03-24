@@ -3,6 +3,9 @@ package de.monticore.types.check;
 
 import de.monticore.expressions.combineexpressionswithliterals.CombineExpressionsWithLiteralsMill;
 import de.monticore.expressions.combineexpressionswithliterals._visitor.CombineExpressionsWithLiteralsTraverser;
+import de.monticore.types.mcbasictypes._ast.ASTMCQualifiedName;
+import de.monticore.types.mcbasictypes._ast.ASTMCReturnType;
+import de.monticore.types.mcbasictypes._ast.ASTMCType;
 import de.monticore.types.mcbasictypes._visitor.MCBasicTypesTraverser;
 
 import java.util.Optional;
@@ -17,16 +20,6 @@ public class SynthesizeSymTypeFromCombineExpressionsWithLiteralsDelegator implem
     init();
   }
 
-  @Override
-  public Optional<SymTypeExpression> getResult() {
-    if(typeCheckResult.isPresentCurrentResult()){
-      return Optional.of(typeCheckResult.getCurrentResult());
-    }else{
-      return Optional.empty();
-    }
-  }
-
-  @Override
   public void init() {
     this.traverser = CombineExpressionsWithLiteralsMill.traverser();
     this.typeCheckResult = new TypeCheckResult();
@@ -47,8 +40,28 @@ public class SynthesizeSymTypeFromCombineExpressionsWithLiteralsDelegator implem
     traverser.setMCSimpleGenericTypesHandler(symTypeFromMCSimpleGenericTypes);
   }
 
-  @Override
   public MCBasicTypesTraverser getTraverser() {
     return traverser;
+  }
+
+  @Override
+  public TypeCheckResult synthesizeType(ASTMCType type) {
+    typeCheckResult.reset();
+    type.accept(getTraverser());
+    return typeCheckResult;
+  }
+
+  @Override
+  public TypeCheckResult synthesizeType(ASTMCReturnType type) {
+    typeCheckResult.reset();
+    type.accept(getTraverser());
+    return typeCheckResult;
+  }
+
+  @Override
+  public TypeCheckResult synthesizeType(ASTMCQualifiedName qName) {
+    typeCheckResult.reset();
+    qName.accept(getTraverser());
+    return typeCheckResult;
   }
 }

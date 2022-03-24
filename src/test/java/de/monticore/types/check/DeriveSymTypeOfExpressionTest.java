@@ -99,7 +99,7 @@ public class DeriveSymTypeOfExpressionTest extends DeriveSymTypeAbstractTest {
     // other arguments not used (and therefore deliberately null)
 
     // This is the TypeChecker under Test:
-    TypeCheck tc = new TypeCheck(null,derLit);
+    TypeCalculator tc = new TypeCalculator(null,derLit);
     setTypeCheck(tc);
   }
 

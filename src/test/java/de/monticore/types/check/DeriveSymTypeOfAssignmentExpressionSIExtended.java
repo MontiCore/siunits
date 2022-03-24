@@ -11,6 +11,6 @@ public class DeriveSymTypeOfAssignmentExpressionSIExtended extends DeriveSymType
         IDerive derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator();
 
         // other arguments not used (and therefore deliberately null)
-        setTypeCheck(new TypeCheck(null, derLit));
+        setTypeCheck(new TypeCalculator(null, derLit));
     }
 }

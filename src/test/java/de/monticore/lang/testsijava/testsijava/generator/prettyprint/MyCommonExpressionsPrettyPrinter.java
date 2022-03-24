@@ -33,7 +33,7 @@ public class MyCommonExpressionsPrettyPrinter extends CommonExpressionsPrettyPri
     private final String value = "value";
     private final String basevalue = "basevalue";
 
-    TypeCheck tc = new TypeCheck(new SynthesizeSymTypeFromTestSIJava(),
+    TypeCalculator tc = new TypeCalculator(new SynthesizeSymTypeFromTestSIJava(),
             new DeriveSymTypeOfTestSIJava());
 
 
@@ -108,7 +108,7 @@ public class MyCommonExpressionsPrettyPrinter extends CommonExpressionsPrettyPri
             }
 
             DeriveSymTypeOfTestSIJava der = new DeriveSymTypeOfTestSIJava();
-            TypeCheck tc = new TypeCheck(null, der);
+            TypeCalculator tc = new TypeCalculator(null, der);
 
             for (int i = 0; i < node.getArguments().getExpressionList().size(); i++) {
                 ASTExpression givenParameter = node.getArguments().getExpression(i);

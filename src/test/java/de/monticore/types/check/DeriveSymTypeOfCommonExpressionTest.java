@@ -43,7 +43,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
 
 
     // other arguments not used (and therefore deliberately null)
-    setTypeCheck(new TypeCheck(null, derLit));
+    setTypeCheck(new TypeCalculator(null, derLit));
   }
 
   @Override

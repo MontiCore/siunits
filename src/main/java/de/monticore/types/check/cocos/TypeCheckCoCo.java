@@ -7,10 +7,7 @@ import de.monticore.symbols.basicsymbols._ast.ASTFunction;
 import de.monticore.symbols.basicsymbols._ast.ASTVariable;
 import de.monticore.symbols.oosymbols._ast.ASTField;
 import de.monticore.symbols.oosymbols._ast.ASTMethod;
-import de.monticore.types.check.ISynthesize;
-import de.monticore.types.check.IDerive;
-import de.monticore.types.check.SymTypeExpression;
-import de.monticore.types.check.TypeCheck;
+import de.monticore.types.check.*;
 import de.se_rwth.commons.logging.Log;
 
 /**
@@ -23,7 +20,7 @@ import de.se_rwth.commons.logging.Log;
  */
 public abstract class TypeCheckCoCo {
 
-    protected TypeCheck tc;
+    protected TypeCalculator tc;
 
     /**
      * Creates an instance of TypeCheckCoCo
@@ -31,7 +28,7 @@ public abstract class TypeCheckCoCo {
      *                  {@link ISynthesize} and {@link IDerive} objects of
      *                  the current language
      */
-    public TypeCheckCoCo(TypeCheck typeCheck) {
+    public TypeCheckCoCo(TypeCalculator typeCheck) {
         this.tc = typeCheck;
     }
 

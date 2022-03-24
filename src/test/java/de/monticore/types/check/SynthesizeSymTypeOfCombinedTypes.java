@@ -4,6 +4,9 @@ package de.monticore.types.check;
 
 import de.monticore.expressions.combineexpressionswithsiunitliterals.CombineExpressionsWithSIUnitLiteralsMill;
 import de.monticore.expressions.combineexpressionswithsiunitliterals._visitor.CombineExpressionsWithSIUnitLiteralsTraverser;
+import de.monticore.types.mcbasictypes._ast.ASTMCQualifiedName;
+import de.monticore.types.mcbasictypes._ast.ASTMCReturnType;
+import de.monticore.types.mcbasictypes._ast.ASTMCType;
 import de.monticore.types.mcbasictypes._visitor.MCBasicTypesTraverser;
 
 import java.util.Optional;
@@ -25,12 +28,6 @@ public class SynthesizeSymTypeOfCombinedTypes implements ISynthesize {
     private TypeCheckResult typeCheckResult = new TypeCheckResult();
 
 
-    @Override
-    public Optional<SymTypeExpression> getResult() {
-        return Optional.of(typeCheckResult.getCurrentResult());
-    }
-
-    @Override
     public void init() {
         traverser = CombineExpressionsWithSIUnitLiteralsMill.traverser();
 
@@ -55,7 +52,6 @@ public class SynthesizeSymTypeOfCombinedTypes implements ISynthesize {
         setTypeCheckResult(new TypeCheckResult());
     }
 
-    @Override
     public MCBasicTypesTraverser getTraverser() {
         return traverser;
     }
@@ -67,5 +63,26 @@ public class SynthesizeSymTypeOfCombinedTypes implements ISynthesize {
         this.symTypeFromMCSimpleGenericTypes.setTypeCheckResult(typeCheckResult);
         this.symTypeFromSIUnitTypes4Math.setTypeCheckResult(typeCheckResult);
         this.symTypeFromSIUnitTypes4Computing.setTypeCheckResult(typeCheckResult);
+    }
+
+    @Override
+    public TypeCheckResult synthesizeType(ASTMCType type) {
+        typeCheckResult.reset();
+        type.accept(getTraverser());
+        return typeCheckResult;
+    }
+
+    @Override
+    public TypeCheckResult synthesizeType(ASTMCReturnType type) {
+        typeCheckResult.reset();
+        type.accept(getTraverser());
+        return typeCheckResult;
+    }
+
+    @Override
+    public TypeCheckResult synthesizeType(ASTMCQualifiedName qName) {
+        typeCheckResult.reset();
+        qName.accept(getTraverser());
+        return typeCheckResult;
     }
 }

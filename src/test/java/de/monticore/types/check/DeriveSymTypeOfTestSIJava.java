@@ -14,7 +14,6 @@ public class DeriveSymTypeOfTestSIJava implements IDerive {
 
     private TestSIJavaTraverser traverser;
 
-    @Override
     public TestSIJavaTraverser getTraverser() {
         return traverser;
     }
@@ -52,15 +51,9 @@ public class DeriveSymTypeOfTestSIJava implements IDerive {
         deriveSymTypeOfSIUnitLiterals.setTypeCheckResult(typeCheckResult);
     }
 
-    @Override
-    public Optional<SymTypeExpression> getResult() {
-        return typeCheckResult.isPresentCurrentResult()? Optional.of(typeCheckResult.getCurrentResult()) : Optional.empty();
-    }
-
     /**
      * initialize the typescalculator
      */
-    @Override
     public void init() {
         this.traverser = TestSIJavaMill.traverser();
 
@@ -88,4 +81,17 @@ public class DeriveSymTypeOfTestSIJava implements IDerive {
         setTypeCheckResult(typeCheckResult);
     }
 
+    @Override
+    public TypeCheckResult deriveType(ASTExpression expr) {
+        typeCheckResult.reset();
+        expr.accept(getTraverser());
+        return typeCheckResult;
+    }
+
+    @Override
+    public TypeCheckResult deriveType(ASTLiteral lit) {
+        typeCheckResult.reset();
+        lit.accept(getTraverser());
+        return typeCheckResult;
+    }
 }

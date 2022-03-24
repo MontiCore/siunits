@@ -11,6 +11,7 @@ import de.monticore.lang.testsijava.testsijava._symboltable.TestSIJavaScopesGeni
 import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaVisitor2;
 import de.monticore.types.check.DeriveSymTypeOfTestSIJava;
 import de.monticore.types.check.SynthesizeSymTypeFromTestSIJava;
+import de.monticore.types.check.TypeCalculator;
 import de.monticore.types.check.TypeCheck;
 import de.monticore.types.check.cocos.TypeCheckCoCo;
 
@@ -25,11 +26,11 @@ public class TestSIJavaTypeCheckCoCo extends TypeCheckCoCo
     implements TestSIJavaASTSIJavaClassCoCo, TestSIJavaVisitor2 {
 
     public static TestSIJavaTypeCheckCoCo getCoCo() {
-        TypeCheck typeCheck = new TypeCheck(new SynthesizeSymTypeFromTestSIJava(), new DeriveSymTypeOfTestSIJava());
+        TypeCalculator typeCheck = new TypeCalculator(new SynthesizeSymTypeFromTestSIJava(), new DeriveSymTypeOfTestSIJava());
         return new TestSIJavaTypeCheckCoCo(typeCheck);
     }
 
-    public TestSIJavaTypeCheckCoCo(TypeCheck tc) {
+    public TestSIJavaTypeCheckCoCo(TypeCalculator tc) {
         super(tc);
     }
 

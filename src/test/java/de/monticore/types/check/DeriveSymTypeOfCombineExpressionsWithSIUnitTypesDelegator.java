@@ -16,7 +16,6 @@ public class DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator implement
   
   private CombineExpressionsWithSIUnitLiteralsTraverser traverser;
 
-  @Override
   public CombineExpressionsWithSIUnitLiteralsTraverser getTraverser() {
     return traverser;
   }
@@ -45,11 +44,6 @@ public class DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator implement
   private SynthesizeSymTypeFromCombineExpressionsWithLiteralsDelegator symTypeFromCombineExpressionsWithLiteralsDelegator;
 
   private TypeCheckResult typeCheckResult = new TypeCheckResult();
-
-  @Override
-  public Optional<SymTypeExpression> getResult() {
-    return typeCheckResult.isPresentCurrentResult()? Optional.of(typeCheckResult.getCurrentResult()) : Optional.empty();
-  }
 
   public DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator(){
     this.traverser= CombineExpressionsWithSIUnitLiteralsMill.traverser();
@@ -118,7 +112,6 @@ public class DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator implement
   /**
    * initialize the typescalculator
    */
-  @Override
   public void init() {
     deriveSymTypeOfCommonExpressions = new DeriveSymTypeOfCommonExpressionsWithSIUnitTypes();
     deriveSymTypeOfAssignmentExpressions = new DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes();
@@ -130,5 +123,19 @@ public class DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator implement
     deriveSymTypeOfCombineExpressions = new DeriveSymTypeOfCombineExpressions(symTypeFromCombineExpressionsWithLiteralsDelegator);
     deriveSymTypeOfSIUnitLiterals = new DeriveSymTypeOfSIUnitLiterals();
     setTypeCheckResult(typeCheckResult);
+  }
+
+  @Override
+  public TypeCheckResult deriveType(ASTExpression expr) {
+    typeCheckResult.reset();
+    expr.accept(getTraverser());
+    return typeCheckResult;
+  }
+
+  @Override
+  public TypeCheckResult deriveType(ASTLiteral lit) {
+    typeCheckResult.reset();
+    lit.accept(getTraverser());
+    return typeCheckResult;
   }
 }

@@ -4,6 +4,9 @@ package de.monticore.types.check;
 
 import de.monticore.lang.testsijava.testsijavawithcustomtypes.TestSIJavaWithCustomTypesMill;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._visitor.TestSIJavaWithCustomTypesTraverser;
+import de.monticore.types.mcbasictypes._ast.ASTMCQualifiedName;
+import de.monticore.types.mcbasictypes._ast.ASTMCReturnType;
+import de.monticore.types.mcbasictypes._ast.ASTMCType;
 
 import java.util.Optional;
 
@@ -35,7 +38,6 @@ public class SynthesizeSymTypeFromTestSIJavaWithCustomSIUnitTypes4Computing
         setTypeCheckResult(new TypeCheckResult());
     }
 
-    @Override
     public TestSIJavaWithCustomTypesTraverser getTraverser() {
         return traverser;
     }
@@ -52,19 +54,32 @@ public class SynthesizeSymTypeFromTestSIJavaWithCustomSIUnitTypes4Computing
      */
     protected TypeCheckResult typeCheckResult = new TypeCheckResult();
 
-    public Optional<SymTypeExpression> getResult() {
-        if(typeCheckResult.isPresentCurrentResult()){
-            return Optional.of(typeCheckResult.getCurrentResult());
-        }else{
-            return Optional.empty();
-        }
-    }
-
     public void setTypeCheckResult(TypeCheckResult typeCheckResult){
         this.typeCheckResult = typeCheckResult;
         this.symTypeFromMCBasicTypes.setTypeCheckResult(typeCheckResult);
         this.symTypeFromSIUnitTypes4Math.setTypeCheckResult(typeCheckResult);
         this.symTypeFromSIUnitTypes4Computing.setTypeCheckResult(typeCheckResult);
         this.symTypeFromCustomSIUnitTypes4Computing.setTypeCheckResult(typeCheckResult);
+    }
+
+    @Override
+    public TypeCheckResult synthesizeType(ASTMCType type) {
+        typeCheckResult.reset();
+        type.accept(getTraverser());
+        return typeCheckResult;
+    }
+
+    @Override
+    public TypeCheckResult synthesizeType(ASTMCReturnType type) {
+        typeCheckResult.reset();
+        type.accept(getTraverser());
+        return typeCheckResult;
+    }
+
+    @Override
+    public TypeCheckResult synthesizeType(ASTMCQualifiedName qName) {
+        typeCheckResult.reset();
+        qName.accept(getTraverser());
+        return typeCheckResult;
     }
 }

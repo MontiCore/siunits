@@ -7,6 +7,9 @@ import de.monticore.siunittypes4math.SIUnitTypes4MathMill;
 import de.monticore.siunittypes4math._ast.ASTSIUnitType;
 import de.monticore.siunittypes4math._visitor.SIUnitTypes4MathHandler;
 import de.monticore.siunittypes4math._visitor.SIUnitTypes4MathTraverser;
+import de.monticore.types.mcbasictypes._ast.ASTMCQualifiedName;
+import de.monticore.types.mcbasictypes._ast.ASTMCReturnType;
+import de.monticore.types.mcbasictypes._ast.ASTMCType;
 
 import java.util.Optional;
 
@@ -64,5 +67,26 @@ public class SynthesizeSymTypeFromSIUnitTypes4Math extends AbstractSynthesizeFro
                 UnitPrettyPrinter.printUnit(node.getSIUnit()), getScope(node.getEnclosingScope()));
 
         typeCheckResult.setCurrentResult(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(numericType, siunitType, getScope(node.getEnclosingScope())));
+    }
+
+    @Override
+    public TypeCheckResult synthesizeType(ASTMCType type) {
+        typeCheckResult.reset();
+        type.accept(getTraverser());
+        return typeCheckResult;
+    }
+
+    @Override
+    public TypeCheckResult synthesizeType(ASTMCReturnType type) {
+        typeCheckResult.reset();
+        type.accept(getTraverser());
+        return typeCheckResult;
+    }
+
+    @Override
+    public TypeCheckResult synthesizeType(ASTMCQualifiedName qName) {
+        typeCheckResult.reset();
+        qName.accept(traverser);
+        return typeCheckResult;
     }
 }

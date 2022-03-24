@@ -84,7 +84,7 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     // other arguments not used (and therefore deliberately null)
 
     // This is the TypeChecker under Test:
-    TypeCheck tc = new TypeCheck(null, derLit);
+    TypeCalculator tc = new TypeCalculator(null, derLit);
 
 
     @Override
@@ -93,7 +93,7 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
         IDerive derLit = new DeriveSymTypeOfCombineExpressionsDelegator();
 
         // other arguments not used (and therefore deliberately null)
-        setTypeCheck(new TypeCheck(null, derLit));
+        setTypeCheck(new TypeCalculator(null, derLit));
     }
 
     CombineExpressionsWithLiteralsParser p = new CombineExpressionsWithLiteralsParser();

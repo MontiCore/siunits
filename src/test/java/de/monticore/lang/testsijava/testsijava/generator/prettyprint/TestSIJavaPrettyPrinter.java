@@ -8,10 +8,7 @@ import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaVisitor2;
 import de.monticore.prettyprint.CommentPrettyPrinter;
 import de.monticore.prettyprint.IndentPrinter;
 import de.monticore.siunits.utility.Converter;
-import de.monticore.types.check.DeriveSymTypeOfTestSIJava;
-import de.monticore.types.check.SymTypeExpression;
-import de.monticore.types.check.SymTypeOfNumericWithSIUnit;
-import de.monticore.types.check.TypeCheck;
+import de.monticore.types.check.*;
 
 import javax.measure.converter.UnitConverter;
 import javax.measure.unit.Unit;
@@ -78,7 +75,7 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaHandler, TestSIJavaVis
             UnitConverter converter = UnitConverter.IDENTITY;
             if (node.getSymbol().getType() instanceof SymTypeOfNumericWithSIUnit) {
                 Unit unit = ((SymTypeOfNumericWithSIUnit) node.getSymbol().getType()).getUnit();
-                TypeCheck tc = new TypeCheck(null, new DeriveSymTypeOfTestSIJava());
+                TypeCalculator tc = new TypeCalculator(null, new DeriveSymTypeOfTestSIJava());
                 SymTypeOfNumericWithSIUnit rightType = (SymTypeOfNumericWithSIUnit) tc.typeOf(node.getExpression());
                 converter = Converter.getConverter(rightType.getUnit(), unit);
             }
@@ -121,7 +118,7 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaHandler, TestSIJavaVis
             UnitConverter converter = UnitConverter.IDENTITY;
             if (node.getSymbol().getReturnType() instanceof SymTypeOfNumericWithSIUnit) {
                 Unit unit = ((SymTypeOfNumericWithSIUnit) node.getSymbol().getReturnType()).getUnit();
-                TypeCheck tc = new TypeCheck(null, new DeriveSymTypeOfTestSIJava());
+                TypeCalculator tc = new TypeCalculator(null, new DeriveSymTypeOfTestSIJava());
                 SymTypeExpression rightType = tc.typeOf(node.getSIJavaMethodReturn().getExpression());
                 if (rightType instanceof SymTypeOfNumericWithSIUnit)
                     converter = Converter.getConverter(((SymTypeOfNumericWithSIUnit) rightType).getUnit(), unit);
