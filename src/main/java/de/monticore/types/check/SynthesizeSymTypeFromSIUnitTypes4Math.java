@@ -44,10 +44,6 @@ public class SynthesizeSymTypeFromSIUnitTypes4Math extends AbstractSynthesizeFro
      */
     public TypeCheckResult typeCheckResult = new TypeCheckResult();
 
-    public Optional<SymTypeExpression> getResult() {
-        return Optional.of(typeCheckResult.getCurrentResult());
-    }
-
     public void init() {
         if (traverser == null)
             traverser = SIUnitTypes4MathMill.traverser();

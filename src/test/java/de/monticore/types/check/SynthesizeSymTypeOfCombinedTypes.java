@@ -27,6 +27,10 @@ public class SynthesizeSymTypeOfCombinedTypes implements ISynthesize {
 
     private TypeCheckResult typeCheckResult = new TypeCheckResult();
 
+    public SynthesizeSymTypeOfCombinedTypes(){
+        init();
+    }
+
 
     public void init() {
         traverser = CombineExpressionsWithSIUnitLiteralsMill.traverser();

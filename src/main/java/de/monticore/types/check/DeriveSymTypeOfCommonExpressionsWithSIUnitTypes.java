@@ -35,7 +35,7 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
         Optional<SymTypeExpression> leftResult = acceptThisAndReturnSymTypeExpressionOrLogError(expr.getLeft(), "0xA0493");
         Optional<SymTypeExpression> rightResult = acceptThisAndReturnSymTypeExpressionOrLogError(expr.getRight(), "0xA0494");
         if(leftResult.isPresent() && rightResult.isPresent()) {
-            wholeResult = calculateMultDivideExpression(expr, "*", leftResult.get(), rightResult.get());
+            wholeResult = calculateMultDivideExpression(expr, "/", leftResult.get(), rightResult.get());
         }
         if (wholeResult.isPresent())
             return wholeResult;

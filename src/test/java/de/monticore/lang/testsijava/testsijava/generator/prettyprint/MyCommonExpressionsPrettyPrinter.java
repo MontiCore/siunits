@@ -93,9 +93,9 @@ public class MyCommonExpressionsPrettyPrinter extends CommonExpressionsPrettyPri
             node.accept(traverser);
 
             List<FunctionSymbol> functionSymbols = ((ITestSIJavaScope) node.getEnclosingScope())
-                    .resolveFunctionMany(node.getName());
+                    .resolveFunctionMany(visitor.getLastName());
             List<MethodSymbol> methodSymbols = ((ITestSIJavaScope) node.getEnclosingScope())
-                    .resolveMethodMany(node.getName());
+                    .resolveMethodMany(visitor.getLastName());
             functionSymbols.addAll(methodSymbols);
 
             if (functionSymbols.size() != 1) {
