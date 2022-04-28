@@ -1162,7 +1162,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
     //super
     FieldSymbol elementField = field("element", _StringSymType);
     MethodSymbol add = OOSymbolsMill.methodSymbolBuilder()
-            .setReturnType(_voidSymType)
+            .setType(_voidSymType)
             .setName("add")
             .build();
     add.setSpannedScope(CombineExpressionsWithLiteralsMill.scope());
@@ -1195,7 +1195,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
     FieldSymbol myNext = field("myNext", _StringSymType);
     MethodSymbol myAdd = OOSymbolsMill.methodSymbolBuilder()
             .setName("myAdd")
-            .setReturnType(_voidSymType)
+            .setType(_voidSymType)
             .build();
     myAdd.setSpannedScope(CombineExpressionsWithLiteralsMill.scope());
     OOTypeSymbol subsubclass = OOSymbolsMill.oOTypeSymbolBuilder()

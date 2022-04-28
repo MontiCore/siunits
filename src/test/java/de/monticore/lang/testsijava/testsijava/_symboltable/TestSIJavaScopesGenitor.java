@@ -145,7 +145,7 @@ public class TestSIJavaScopesGenitor extends TestSIJavaScopesGenitorTOP {
         // Add type in the symbol table creation process
         ASTMCReturnType astType = node.getReturnType();
         SymTypeExpression symTypeExpression = tc.symTypeFromAST(astType);
-        node.getSymbol().setReturnType(symTypeExpression);
+        node.getSymbol().setType(symTypeExpression);
 
         // Add parameters
     }

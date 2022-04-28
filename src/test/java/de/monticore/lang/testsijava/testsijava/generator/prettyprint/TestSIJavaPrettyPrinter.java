@@ -90,7 +90,7 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaHandler, TestSIJavaVis
     @Override
     public void traverse(ASTMethodDeclaration node) {
         CommentPrettyPrinter.printPreComments(node, printer);
-        String typePrint = printNumericType(node.getSymbol().getReturnType());
+        String typePrint = printNumericType(node.getSymbol().getType());
         printer.print("public " + typePrint + " " + node.getName() + "(");
 
         boolean first = true;
@@ -116,8 +116,8 @@ public class TestSIJavaPrettyPrinter implements TestSIJavaHandler, TestSIJavaVis
                 printer.println();
 
             UnitConverter converter = UnitConverter.IDENTITY;
-            if (node.getSymbol().getReturnType() instanceof SymTypeOfNumericWithSIUnit) {
-                Unit unit = ((SymTypeOfNumericWithSIUnit) node.getSymbol().getReturnType()).getUnit();
+            if (node.getSymbol().getType() instanceof SymTypeOfNumericWithSIUnit) {
+                Unit unit = ((SymTypeOfNumericWithSIUnit) node.getSymbol().getType()).getUnit();
                 TypeCalculator tc = new TypeCalculator(null, new DeriveSymTypeOfTestSIJava());
                 SymTypeExpression rightType = tc.typeOf(node.getSIJavaMethodReturn().getExpression());
                 if (rightType instanceof SymTypeOfNumericWithSIUnit)
