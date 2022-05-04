@@ -79,7 +79,7 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     }
 
     // This is an auxiliary
-    DeriveSymTypeOfCombineExpressionsDelegator derLit = new DeriveSymTypeOfCombineExpressionsDelegator();
+    FullDeriveFromCombineExpressionsWithLiterals derLit = new FullDeriveFromCombineExpressionsWithLiterals();
 
     // other arguments not used (and therefore deliberately null)
 
@@ -90,7 +90,7 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     @Override
     public void setupTypeCheck() {
         // This is an auxiliary
-        IDerive derLit = new DeriveSymTypeOfCombineExpressionsDelegator();
+        AbstractDerive derLit = new FullDeriveFromCombineExpressionsWithLiterals();
 
         // other arguments not used (and therefore deliberately null)
         setTypeCheck(new TypeCalculator(null, derLit));

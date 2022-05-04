@@ -38,22 +38,22 @@ public class DeriveSymTypeOfSIUnitLiterals implements SIUnitLiteralsHandler {
     @Override
     public void traverse(ASTSIUnitLiteral node) {
         node.getNumericLiteral().accept(getTraverser());
-        traverseSIUnitLiteral(typeCheckResult.getCurrentResult(), node.getSIUnit(), node.getEnclosingScope());
+        traverseSIUnitLiteral(typeCheckResult.getResult(), node.getSIUnit(), node.getEnclosingScope());
     }
 
     @Override
     public void traverse(ASTSignedSIUnitLiteral node) {
         node.getSignedNumericLiteral().accept(getTraverser());
-        traverseSIUnitLiteral(typeCheckResult.getCurrentResult(), node.getSIUnit(), node.getEnclosingScope());
+        traverseSIUnitLiteral(typeCheckResult.getResult(), node.getSIUnit(), node.getEnclosingScope());
     }
 
     private void traverseSIUnitLiteral(SymTypeExpression literalType, ASTSIUnit astsiUnit, ISIUnitLiteralsScope enclosingScope) {
         SymTypeExpression siunitType = SIUnitSymTypeExpressionFactory.createSIUnit(SIUnitsPrettyPrinter.prettyprint(astsiUnit), getScope(enclosingScope));
         if (siunitType instanceof SymTypeOfSIUnit)
-            typeCheckResult.setCurrentResult(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(
+            typeCheckResult.setResult(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(
                     literalType, siunitType, getScope(enclosingScope)));
         else // case for siunit m/m
-            typeCheckResult.setCurrentResult(literalType);
+            typeCheckResult.setResult(literalType);
     }
 
     public IBasicSymbolsScope getScope (ISIUnitLiteralsScope expressionsBasisScope){

@@ -19,7 +19,7 @@ import java.util.Optional;
  * types/SIUnitTypes.mc4
  */
 public class SynthesizeSymTypeFromSIUnitTypes4Math extends AbstractSynthesizeFromType
-        implements SIUnitTypes4MathHandler, ISynthesize {
+        implements SIUnitTypes4MathHandler {
     /**
      * Using the visitor functionality to calculate the SymType Expression
      */
@@ -62,27 +62,7 @@ public class SynthesizeSymTypeFromSIUnitTypes4Math extends AbstractSynthesizeFro
         siunitType = SIUnitSymTypeExpressionFactory.createSIUnit(
                 UnitPrettyPrinter.printUnit(node.getSIUnit()), getScope(node.getEnclosingScope()));
 
-        typeCheckResult.setCurrentResult(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(numericType, siunitType, getScope(node.getEnclosingScope())));
+        typeCheckResult.setResult(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(numericType, siunitType, getScope(node.getEnclosingScope())));
     }
 
-    @Override
-    public TypeCheckResult synthesizeType(ASTMCType type) {
-        typeCheckResult.reset();
-        type.accept(getTraverser());
-        return typeCheckResult;
-    }
-
-    @Override
-    public TypeCheckResult synthesizeType(ASTMCReturnType type) {
-        typeCheckResult.reset();
-        type.accept(getTraverser());
-        return typeCheckResult;
-    }
-
-    @Override
-    public TypeCheckResult synthesizeType(ASTMCQualifiedName qName) {
-        typeCheckResult.reset();
-        qName.accept(traverser);
-        return typeCheckResult;
-    }
 }

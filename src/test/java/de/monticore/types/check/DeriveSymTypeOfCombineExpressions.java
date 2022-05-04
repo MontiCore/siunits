@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public class DeriveSymTypeOfCombineExpressions extends AbstractDeriveFromExpression implements CombineExpressionsWithLiteralsVisitor2, CombineExpressionsWithLiteralsHandler {
 
-  private SynthesizeSymTypeFromCombineExpressionsWithLiteralsDelegator synthesizer;
+  private FullSynthesizeFromCombineExpressionsWithLiterals synthesizer;
 
   protected CombineExpressionsWithLiteralsTraverser traverser;
 
@@ -26,7 +26,7 @@ public class DeriveSymTypeOfCombineExpressions extends AbstractDeriveFromExpress
     this.traverser = traverser;
   }
 
-  public DeriveSymTypeOfCombineExpressions(SynthesizeSymTypeFromCombineExpressionsWithLiteralsDelegator synthesizer){
+  public DeriveSymTypeOfCombineExpressions(FullSynthesizeFromCombineExpressionsWithLiterals synthesizer){
     this.synthesizer = synthesizer;
   }
 
@@ -34,11 +34,11 @@ public class DeriveSymTypeOfCombineExpressions extends AbstractDeriveFromExpress
   public void traverse(ASTExtType type){
     SymTypeExpression wholeResult = null;
     TypeCheckResult result = synthesizer.synthesizeType(type.getMCType());
-    if(result.isPresentCurrentResult()){
-      wholeResult=result.getCurrentResult();
+    if(result.isPresentResult()){
+      wholeResult=result.getResult();
     }
     if(wholeResult!=null){
-      typeCheckResult.setCurrentResult(wholeResult);
+      typeCheckResult.setResult(wholeResult);
       typeCheckResult.setType();
     }else{
       typeCheckResult.reset();
@@ -52,12 +52,12 @@ public class DeriveSymTypeOfCombineExpressions extends AbstractDeriveFromExpress
       wholeResult = SymTypeExpressionFactory.createTypeVoid();
     }else if(returnType.getMCReturnType().isPresentMCType()){
       TypeCheckResult result = synthesizer.synthesizeType(returnType.getMCReturnType());
-      if(result.isPresentCurrentResult()){
-        wholeResult = result.getCurrentResult();
+      if(result.isPresentResult()){
+        wholeResult = result.getResult();
       }
     }
     if(wholeResult!=null){
-      typeCheckResult.setCurrentResult(wholeResult);
+      typeCheckResult.setResult(wholeResult);
       typeCheckResult.setType();
     }else{
       typeCheckResult.reset();
@@ -69,12 +69,12 @@ public class DeriveSymTypeOfCombineExpressions extends AbstractDeriveFromExpress
     SymTypeExpression wholeResult = null;
     if(typeArgument.getMCTypeArgument().getMCTypeOpt().isPresent()){
       TypeCheckResult result = synthesizer.synthesizeType(typeArgument.getMCTypeArgument().getMCTypeOpt().get());
-      if(result.isPresentCurrentResult()){
-        wholeResult = result.getCurrentResult();
+      if(result.isPresentResult()){
+        wholeResult = result.getResult();
       }
     }
     if(wholeResult!=null){
-      typeCheckResult.setCurrentResult(wholeResult);
+      typeCheckResult.setResult(wholeResult);
       typeCheckResult.setType();
     }else{
       typeCheckResult.reset();

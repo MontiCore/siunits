@@ -31,7 +31,7 @@ public class DeriveSymTypeOfCommonExpressionSIExtended extends DeriveSymTypeOfCo
     @Override
     public void setupTypeCheck() {
         // This is an auxiliary
-        IDerive derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator();
+        AbstractDerive derLit = new DeriveSymTypeOfCombineExpressionsWithSIUnitTypesDelegator();
 
         // other arguments not used (and therefore deliberately null)
         setTypeCheck(new TypeCalculator(null, derLit));

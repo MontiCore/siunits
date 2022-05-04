@@ -2,21 +2,11 @@
 
 package de.monticore.types.check;
 
-import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes.TestSIJavaWithCustomTypesMill;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._visitor.TestSIJavaWithCustomTypesTraverser;
-import de.monticore.literals.mccommonliterals._ast.ASTSignedLiteral;
-import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
 
-import java.util.Optional;
+public class DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing extends AbstractDerive {
 
-public class DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing implements IDerive {
-
-    private TestSIJavaWithCustomTypesTraverser traverser;
-
-    public TestSIJavaWithCustomTypesTraverser getTraverser() {
-        return traverser;
-    }
     private DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes deriveSymTypeOfAssignmentExpressions;
 
     private DeriveSymTypeOfCommonExpressionsWithSIUnitTypes deriveSymTypeOfCommonExpressions;
@@ -29,11 +19,14 @@ public class DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing implements
 
     private DeriveSymTypeOfMCCommonLiterals deriveSymTypeOfMCCommonLiterals;
 
-    private TypeCheckResult typeCheckResult = new TypeCheckResult();
 
+    public DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing(TestSIJavaWithCustomTypesTraverser traverser) {
+        super(traverser);
+        init(traverser);
+    }
 
-    public DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing() {
-        init();
+    public DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing(){
+        this(TestSIJavaWithCustomTypesMill.traverser());
     }
 
     /**
@@ -51,9 +44,7 @@ public class DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing implements
     /**
      * initialize the typescalculator
      */
-    public void init() {
-        traverser = TestSIJavaWithCustomTypesMill.traverser();
-
+    public void init(TestSIJavaWithCustomTypesTraverser traverser) {
         deriveSymTypeOfCommonExpressions = new DeriveSymTypeOfCommonExpressionsWithSIUnitTypes();
         traverser.add4CommonExpressions(deriveSymTypeOfCommonExpressions);
         traverser.setCommonExpressionsHandler(deriveSymTypeOfCommonExpressions);
@@ -76,19 +67,5 @@ public class DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing implements
         traverser.setSIUnitLiteralsHandler(deriveSymTypeOfSIUnitLiterals);
 
         setTypeCheckResult(typeCheckResult);
-    }
-
-    @Override
-    public TypeCheckResult deriveType(ASTExpression expr) {
-        typeCheckResult.reset();
-        expr.accept(getTraverser());
-        return typeCheckResult;
-    }
-
-    @Override
-    public TypeCheckResult deriveType(ASTLiteral lit) {
-        typeCheckResult.reset();
-        lit.accept(getTraverser());
-        return typeCheckResult;
     }
 }
