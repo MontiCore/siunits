@@ -11,19 +11,19 @@ import de.monticore.types.mcbasictypes._ast.ASTMCType;
 import java.util.Optional;
 
 public class SynthesizeSymTypeFromTestSIJavaWithCustomSIUnitTypes4Computing
-        implements ISynthesize {
-
-    protected TestSIJavaWithCustomTypesTraverser traverser;
+        extends AbstractSynthesize {
 
     private SynthesizeSymTypeFromMCBasicTypes symTypeFromMCBasicTypes;
     private SynthesizeSymTypeFromSIUnitTypes4Math symTypeFromSIUnitTypes4Math;
     private SynthesizeSymTypeFromSIUnitTypes4Computing symTypeFromSIUnitTypes4Computing;
     private SynthesizeSymTypeFromCustomSIUnitTypes4Computing symTypeFromCustomSIUnitTypes4Computing;
 
+    public SynthesizeSymTypeFromTestSIJavaWithCustomSIUnitTypes4Computing(TestSIJavaWithCustomTypesTraverser traverser) {
+        super(traverser);
+        init(traverser);
+    }
 
-    public void init() {
-        traverser = TestSIJavaWithCustomTypesMill.traverser();
-
+    public void init(TestSIJavaWithCustomTypesTraverser traverser) {
         symTypeFromMCBasicTypes = new SynthesizeSymTypeFromMCBasicTypes();
         symTypeFromSIUnitTypes4Math = new SynthesizeSymTypeFromSIUnitTypes4Math();
         symTypeFromSIUnitTypes4Computing = new SynthesizeSymTypeFromCustomSIUnitTypes4Computing();
@@ -38,21 +38,9 @@ public class SynthesizeSymTypeFromTestSIJavaWithCustomSIUnitTypes4Computing
         setTypeCheckResult(new TypeCheckResult());
     }
 
-    public TestSIJavaWithCustomTypesTraverser getTraverser() {
-        return traverser;
-    }
-
     public SynthesizeSymTypeFromTestSIJavaWithCustomSIUnitTypes4Computing() {
-        init();
+        this(TestSIJavaWithCustomTypesMill.traverser());
     }
-
-    // ---------------------------------------------------------- Storage typeCheckResult
-
-    /**
-     * Storage in the Visitor: typeCheckResult of the last endVisit.
-     * This attribute is synthesized upward.
-     */
-    protected TypeCheckResult typeCheckResult = new TypeCheckResult();
 
     public void setTypeCheckResult(TypeCheckResult typeCheckResult){
         this.typeCheckResult = typeCheckResult;
@@ -60,26 +48,5 @@ public class SynthesizeSymTypeFromTestSIJavaWithCustomSIUnitTypes4Computing
         this.symTypeFromSIUnitTypes4Math.setTypeCheckResult(typeCheckResult);
         this.symTypeFromSIUnitTypes4Computing.setTypeCheckResult(typeCheckResult);
         this.symTypeFromCustomSIUnitTypes4Computing.setTypeCheckResult(typeCheckResult);
-    }
-
-    @Override
-    public TypeCheckResult synthesizeType(ASTMCType type) {
-        typeCheckResult.reset();
-        type.accept(getTraverser());
-        return typeCheckResult;
-    }
-
-    @Override
-    public TypeCheckResult synthesizeType(ASTMCReturnType type) {
-        typeCheckResult.reset();
-        type.accept(getTraverser());
-        return typeCheckResult;
-    }
-
-    @Override
-    public TypeCheckResult synthesizeType(ASTMCQualifiedName qName) {
-        typeCheckResult.reset();
-        qName.accept(getTraverser());
-        return typeCheckResult;
     }
 }

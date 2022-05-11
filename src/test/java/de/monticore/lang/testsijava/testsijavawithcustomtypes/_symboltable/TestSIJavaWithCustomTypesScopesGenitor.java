@@ -123,8 +123,8 @@ public class TestSIJavaWithCustomTypesScopesGenitor extends TestSIJavaWithCustom
     private TypeCalculator tc;
 
     private void initTypeCheck() {
-        ISynthesize synthesize = new SynthesizeSymTypeFromTestSIJavaWithCustomSIUnitTypes4Computing();
-        IDerive der = new DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing();
+        AbstractSynthesize synthesize = new SynthesizeSymTypeFromTestSIJavaWithCustomSIUnitTypes4Computing();
+        AbstractDerive der = new DeriveSymTypeOfTestSIJavaWithCustomSIUnitTypes4Computing();
         tc = new TypeCalculator(synthesize, der);
     }
 

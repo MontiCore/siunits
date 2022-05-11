@@ -94,7 +94,7 @@ public class DeriveSymTypeOfExpressionTest extends DeriveSymTypeAbstractTest {
     DeriveSymTypeOfExpression derEx = new DeriveSymTypeOfExpression();
 
     // This is an auxiliary
-    DeriveSymTypeOfCombineExpressionsDelegator derLit = new DeriveSymTypeOfCombineExpressionsDelegator();
+    FullDeriveFromCombineExpressionsWithLiterals derLit = new FullDeriveFromCombineExpressionsWithLiterals();
 
     // other arguments not used (and therefore deliberately null)
 

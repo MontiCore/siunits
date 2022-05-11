@@ -2,21 +2,10 @@
 
 package de.monticore.types.check;
 
-import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaTraverser;
-import de.monticore.literals.mccommonliterals._ast.ASTSignedLiteral;
-import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
 
-import java.util.Optional;
-
-public class DeriveSymTypeOfTestSIJava implements IDerive {
-
-    private TestSIJavaTraverser traverser;
-
-    public TestSIJavaTraverser getTraverser() {
-        return traverser;
-    }
+public class DeriveSymTypeOfTestSIJava extends AbstractDerive {
 
     private DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes deriveSymTypeOfAssignmentExpressions;
 
@@ -30,12 +19,13 @@ public class DeriveSymTypeOfTestSIJava implements IDerive {
 
     private DeriveSymTypeOfMCCommonLiterals deriveSymTypeOfMCCommonLiterals;
 
-    private TypeCheckResult typeCheckResult = new TypeCheckResult();
+    public DeriveSymTypeOfTestSIJava(TestSIJavaTraverser traverser) {
+        super(traverser);
+        init(traverser);
+    }
 
-
-    public DeriveSymTypeOfTestSIJava() {
-        traverser = TestSIJavaMill.traverser();
-        init();
+    public DeriveSymTypeOfTestSIJava(){
+        this(TestSIJavaMill.traverser());
     }
 
 
@@ -54,9 +44,7 @@ public class DeriveSymTypeOfTestSIJava implements IDerive {
     /**
      * initialize the typescalculator
      */
-    public void init() {
-        this.traverser = TestSIJavaMill.traverser();
-
+    public void init(TestSIJavaTraverser traverser) {
         deriveSymTypeOfCommonExpressions = new DeriveSymTypeOfCommonExpressionsWithSIUnitTypes();
         traverser.add4CommonExpressions(deriveSymTypeOfCommonExpressions);
         traverser.setCommonExpressionsHandler(deriveSymTypeOfCommonExpressions);
@@ -79,19 +67,5 @@ public class DeriveSymTypeOfTestSIJava implements IDerive {
         traverser.setSIUnitLiteralsHandler(deriveSymTypeOfSIUnitLiterals);
 
         setTypeCheckResult(typeCheckResult);
-    }
-
-    @Override
-    public TypeCheckResult deriveType(ASTExpression expr) {
-        typeCheckResult.reset();
-        expr.accept(getTraverser());
-        return typeCheckResult;
-    }
-
-    @Override
-    public TypeCheckResult deriveType(ASTLiteral lit) {
-        typeCheckResult.reset();
-        lit.accept(getTraverser());
-        return typeCheckResult;
     }
 }
