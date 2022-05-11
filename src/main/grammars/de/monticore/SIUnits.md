@@ -401,9 +401,9 @@ For Variant 2, we provide the following implementation:
 [SIUnitTypes4ComputingGrammar]: SIUnitTypes4Computing.mc4
 [TestSIJavaGrammar]: ../../../../test/grammars/de/monticore/lang/testsijava/TestSIJava.mc4
 [CustomSIUnitTypes4ComputingGrammar]: ../../../../test/grammars/de/monticore/CustomSIUnitTypes4Computing.mc4
-[MCCommonLiteralsGrammar]: https://github.com/MontiCore/monticore/blob/dev/monticore-grammar/src/main/grammars/de/monticore/literals/MCCommonLiterals.mc4
-[MCBasicTypesGrammar]: https://github.com/MontiCore/monticore/blob/dev/monticore-grammar/src/main/grammars/de/monticore/types/MCBasicTypes.mc4
-[OOSymbols]: https://github.com/MontiCore/monticore/blob/dev/monticore-grammar/src/main/grammars/de/monticore/symbols/OOSymbols.mc4
+[MCCommonLiteralsGrammar]: https://github.com/MontiCore/monticore/blob/opendev/monticore-grammar/src/main/grammars/de/monticore/literals/MCCommonLiterals.mc4
+[MCBasicTypesGrammar]: https://github.com/MontiCore/monticore/blob/opendev/monticore-grammar/src/main/grammars/de/monticore/types/MCBasicTypes.mc4
+[OOSymbols]: https://github.com/MontiCore/monticore/blob/opendev/monticore-grammar/src/main/grammars/de/monticore/symbols/OOSymbols.mc4
 
 [SIUnitsPrettyPrinter]: ../../../java/de/monticore/siunits/prettyprint/SIUnitsPrettyPrinter.java
 [SIUnitLiteralsPrettyPrinter]: ../../../java/de/monticore/siunitliterals/prettyprint/SIUnitLiteralsPrettyPrinter.java
@@ -427,14 +427,14 @@ For Variant 2, we provide the following implementation:
 [SynthesizeSymTypeFromSIUnitTypes4Computing]: ../../../java/de/monticore/types/check/SynthesizeSymTypeFromSIUnitTypes4Computing.java
 [SynthesizeSymTypeFromCustomSIUnitTypes4Computing]: ../../../../test/java/de/monticore/types/check/SynthesizeSymTypeFromCustomSIUnitTypes4Computing.java
 [DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes]: ../../../java/de/monticore/types/check/DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes.java
-[DeriveSymTypeOfAssignmentExpressions]: https://github.com/MontiCore/monticore/blob/dev/monticore-grammar/src/main/java/de/monticore/types/check/DeriveSymTypeOfAssignmentExpressions.java
+[DeriveSymTypeOfAssignmentExpressions]: https://github.com/MontiCore/monticore/blob/opendev/monticore-grammar/src/main/java/de/monticore/types/check/DeriveSymTypeOfAssignmentExpressions.java
 [DeriveSymTypeOfCommonExpressionsWithSIUnitTypes]: ../../../java/de/monticore/types/check/DeriveSymTypeOfCommonExpressionsWithSIUnitTypes.java
-[DeriveSymTypeOfCommonExpressions]: https://github.com/MontiCore/monticore/blob/dev/monticore-grammar/src/main/java/de/monticore/types/check/DeriveSymTypeOfCommonExpressions.java
-[SymTypeExpression]: https://github.com/MontiCore/monticore/blob/dev/monticore-grammar/src/main/java/de/monticore/types/check/SymTypeExpression.java
-[TypeCheck]: https://github.com/MontiCore/monticore/blob/dev/monticore-grammar/src/main/java/de/monticore/types/check/TypeCheck.java
+[DeriveSymTypeOfCommonExpressions]: https://github.com/MontiCore/monticore/blob/opendev/monticore-grammar/src/main/java/de/monticore/types/check/DeriveSymTypeOfCommonExpressions.java
+[SymTypeExpression]: https://github.com/MontiCore/monticore/blob/opendev/monticore-grammar/src/main/java/de/monticore/types/check/SymTypeExpression.java
+[TypeCheck]: https://github.com/MontiCore/monticore/blob/opendev/monticore-grammar/src/main/java/de/monticore/types/check/TypeCheck.java
 
 [TestSIJavaDoc]: ../../../../test/grammars/de/monticore/lang/testsijava/TestSIJava.md
-[Types]: https://github.com/MontiCore/monticore/blob/dev/monticore-grammar/src/main/java/de/monticore/types/check/TypeCheck.md
+[Types]: https://github.com/MontiCore/monticore/blob/opendev/monticore-grammar/src/main/java/de/monticore/types/check/TypeCheck.md
 
 [JavaUnit]: http://unitsofmeasurement.github.io/unit-api/site/apidocs/javax/measure/Unit.html
 [JavaMeasure]: http://unitsofmeasurement.github.io/unit-api/site/apidocs/javax/measure/package-summary.html
@@ -443,9 +443,9 @@ For Variant 2, we provide the following implementation:
 
 * [Project root: MontiCore @github](https://github.com/MontiCore/monticore)
 * [MontiCore documentation](http://www.monticore.de/)
-* [**List of languages**](https://github.com/MontiCore/monticore/blob/dev/docs/Languages.md)
-* [**MontiCore Core Grammar Library**](https://github.com/MontiCore/monticore/blob/dev/monticore-grammar/src/main/grammars/de/monticore/Grammars.md)
-* [Best Practices](https://github.com/MontiCore/monticore/blob/dev/docs/BestPractices.md)
+* [**List of languages**](https://github.com/MontiCore/monticore/blob/opendev/docs/Languages.md)
+* [**MontiCore Core Grammar Library**](https://github.com/MontiCore/monticore/blob/opendev/monticore-grammar/src/main/grammars/de/monticore/Grammars.md)
+* [Best Practices](https://github.com/MontiCore/monticore/blob/opendev/docs/BestPractices.md)
 * [Publications about MBSE and MontiCore](https://www.se-rwth.de/publications/)
 * [Licence definition](https://github.com/MontiCore/monticore/blob/master/00.org/Licenses/LICENSE-MONTICORE-3-LEVEL.md)
 
