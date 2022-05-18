@@ -115,18 +115,18 @@ public abstract class TypeCheckCoCo {
     protected void checkMethodOrFunction(ASTFunction node, SymTypeExpression returnType) {
         if (!node.isPresentSymbol())
             logError(node, "Function symbol not present");
-        else if (node.getSymbol().getReturnType() == null)
+        else if (node.getSymbol().getType() == null)
             logError(node, "Function symbol has no return type");
         else {
-            if (node.getSymbol().getReturnType().isVoidType()) {
+            if (node.getSymbol().getType().isVoidType()) {
                 if (returnType != null && !returnType.isVoidType())
                     logError(node, String.format("Return type void incompatible to actual return type %s",
                             returnType.print()));
             } else if (returnType == null)
                 logError(node, "No return type given");
-            else if (!TypeCheck.compatible(node.getSymbol().getReturnType(), returnType))
+            else if (!TypeCheck.compatible(node.getSymbol().getType(), returnType))
                 logError(node, String.format("Return type %s incompatible to actual return type %s",
-                        node.getSymbol().getReturnType().print(), returnType.print()));
+                        node.getSymbol().getType().print(), returnType.print()));
         }
     }
 
