@@ -16,7 +16,7 @@ def jscience_version = "4.3.1"
 
 group = "de.monticore"
 description = "SI Units"
-sourceCompatibility = "1.8"
+sourceCompatibility = "11"
 
 
 // configure non-standard source sets
