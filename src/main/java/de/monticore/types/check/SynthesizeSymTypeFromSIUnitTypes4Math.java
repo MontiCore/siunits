@@ -56,7 +56,7 @@ public class SynthesizeSymTypeFromSIUnitTypes4Math extends AbstractSynthesizeFro
 
     @Override
     public void traverse(ASTSIUnitType node) {
-        SymTypeExpression numericType = SymTypeExpressionFactory.createTypeConstant("double");
+        SymTypeExpression numericType = SymTypeExpressionFactory.createPrimitive("double");
         SymTypeExpression siunitType = null;
 
         siunitType = SIUnitSymTypeExpressionFactory.createSIUnit(

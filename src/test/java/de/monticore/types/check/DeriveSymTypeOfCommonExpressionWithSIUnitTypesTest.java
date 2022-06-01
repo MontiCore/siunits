@@ -264,9 +264,9 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         SymTypeExpression kMe2perHMSe4 = SIUnitSymTypeExpressionFactory.createSIUnit("km^2/(h*ms^4)", scope);
 
         // Constants
-        SymTypeConstant d = SIUnitSymTypeExpressionFactory.createTypeConstant("double");
-        SymTypeConstant i = SIUnitSymTypeExpressionFactory.createTypeConstant("int");
-        SymTypeConstant l = SIUnitSymTypeExpressionFactory.createTypeConstant("long");
+        SymTypePrimitive d = SIUnitSymTypeExpressionFactory.createPrimitive("double");
+        SymTypePrimitive i = SIUnitSymTypeExpressionFactory.createPrimitive("int");
+        SymTypePrimitive l = SIUnitSymTypeExpressionFactory.createPrimitive("long");
 
         // SIUnitLiterals
         add2scope(scope, field("varD_S", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(d, s, scope)));
