@@ -178,7 +178,7 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
 
         SymTypeExpression result;
         if (numerator.size() == 0 && denominator.size() == 0 || typeSymbol.getName().equals("1"))
-            result = createTypeConstant("int");
+            result = createPrimitive("int");
         else
             result = new SymTypeOfSIUnit(typeSymbol, numerator, denominator);
 

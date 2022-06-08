@@ -33,7 +33,7 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
             TypeSymbol loader = (new TypeSymbol(name));
             loader.setEnclosingScope(enclosingScope);
 
-            SymTypeConstant doubeType = SymTypeExpressionFactory.createTypeConstant("double");
+            SymTypePrimitive doubeType = SymTypeExpressionFactory.createPrimitive("double");
             superNumericUnitType = new SymTypeOfNumericWithSIUnit(loader, doubeType, SymTypeOfSIUnit.getSuperUnitType());
         }
         return superNumericUnitType;
@@ -49,7 +49,7 @@ public class SymTypeOfNumericWithSIUnit extends SymTypeExpression {
         setSuperType();
     }
 
-    public SymTypeOfNumericWithSIUnit(IBasicSymbolsScope enclosingScope, SymTypeConstant numericType, SymTypeExpression siunitType) {
+    public SymTypeOfNumericWithSIUnit(IBasicSymbolsScope enclosingScope, SymTypePrimitive numericType, SymTypeExpression siunitType) {
         this.numericType = numericType;
         this.siunitType = siunitType;
         this.typeSymbol = new TypeSymbol(print());

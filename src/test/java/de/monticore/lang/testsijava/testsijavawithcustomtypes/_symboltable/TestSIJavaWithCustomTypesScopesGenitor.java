@@ -34,7 +34,7 @@ public class TestSIJavaWithCustomTypesScopesGenitor extends TestSIJavaWithCustom
     }
 
     private void addMethods(ASTSIJavaClass node) {
-        SymTypeConstant _double = SymTypeExpressionFactory.createTypeConstant("double");
+        SymTypePrimitive _double = SymTypeExpressionFactory.createPrimitive("double");
         SymTypeOfNumericWithSIUnit _superNumericUnitType = SymTypeOfNumericWithSIUnit.getSuperNumericUnitType();
         SymTypeVoid _void = SymTypeExpressionFactory.createTypeVoid();
 

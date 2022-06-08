@@ -86,7 +86,7 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
             SymTypeExpression leftSIUnitType = getSIUnit(leftResult).get();
             SymTypeExpression rightSIUnitType = getSIUnit(rightResult).get();
             if (TypeCheck.compatible(leftSIUnitType, rightSIUnitType)) {
-                return Optional.of(SymTypeExpressionFactory.createTypeConstant("boolean"));
+                return Optional.of(SymTypeExpressionFactory.createPrimitive("boolean"));
             }
             return Optional.empty();
         }
@@ -98,9 +98,9 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
      */
     protected Optional<SymTypeExpression> calculateTypeLogical(ASTInfixExpression expr, SymTypeExpression rightResult, SymTypeExpression leftResult) {
         if (isSIUnitType(leftResult) && isSIUnitType(rightResult)) {
-            return Optional.of(SymTypeExpressionFactory.createTypeConstant("boolean"));
+            return Optional.of(SymTypeExpressionFactory.createPrimitive("boolean"));
         } else if (isNumericWithSIUnitType(leftResult) && isNumericWithSIUnitType(rightResult)) {
-            return Optional.of(SymTypeExpressionFactory.createTypeConstant("boolean"));
+            return Optional.of(SymTypeExpressionFactory.createPrimitive("boolean"));
         }
         return super.calculateTypeLogical(expr, leftResult, rightResult);
     }
