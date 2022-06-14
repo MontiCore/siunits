@@ -13,3 +13,7 @@ build
 *.bak
 out
 target-emf/
+
+gradle
+gradlew
+gradlew.bat
