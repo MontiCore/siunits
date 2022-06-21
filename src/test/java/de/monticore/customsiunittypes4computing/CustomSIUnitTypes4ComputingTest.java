@@ -39,8 +39,8 @@ public class CustomSIUnitTypes4ComputingTest {
     private void test(String control, String s, boolean expectedParseError) {
         Optional<ASTCustomSIUnitType4Computing> astOpt = Optional.empty();
         try {
-            astOpt = parser.parseCustomSIUnitType4Computing(new StringReader(s));
-        } catch (IOException e) {
+            astOpt = parser.(new StringReader(s));
+        } catch (IOException e) {parseCustomSIUnitType4Computing
             e.printStackTrace();
         }
         if (expectedParseError) {

@@ -1,4 +1,4 @@
-<!-- (c) https://github.com/MontiCore/monticore -->
+﻿<!-- (c) https://github.com/MontiCore/monticore -->
 
 <!-- This is a MontiCore stable explanation. -->
 
