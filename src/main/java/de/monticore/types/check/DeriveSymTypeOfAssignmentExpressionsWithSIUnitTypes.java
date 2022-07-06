@@ -17,7 +17,7 @@ public class DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes extends DeriveS
      * helper method for the basic arithmetic assignment operations +=,-=,%=,*=,/=
      */
     @Override
-    protected Optional<SymTypeExpression> calculateTypeArithmetic(ASTAssignmentExpression expr, SymTypeExpression leftResult, SymTypeExpression rightResult) {
+    protected Optional<SymTypeExpression> calculateTypeArithmeticAssignment(ASTAssignmentExpression expr, SymTypeExpression leftResult, SymTypeExpression rightResult) {
         if (isNumericWithSIUnitType(leftResult) && isNumericWithSIUnitType(rightResult)
                 && (expr.getOperator() == ASTConstantsAssignmentExpressions.PLUSEQUALS
                 || expr.getOperator() == ASTConstantsAssignmentExpressions.MINUSEQUALS
@@ -27,7 +27,7 @@ public class DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes extends DeriveS
             Optional<SymTypeExpression> rightNumericType = getNumeric(rightResult);
             Optional<SymTypeExpression> leftSIUnit = getSIUnit(leftResult);
             Optional<SymTypeExpression> rightSIUnit = getSIUnit(rightResult);
-            Optional<SymTypeExpression> numericType = super.calculateTypeArithmetic(
+            Optional<SymTypeExpression> numericType = super.calculateTypeArithmeticAssignment(
                     expr, leftNumericType.get(), rightNumericType.get());
             if (numericType.isPresent() && isNumericType(numericType.get())
                     && TypeCheck.compatible(leftSIUnit.get(), rightSIUnit.get())) {
@@ -39,14 +39,14 @@ public class DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes extends DeriveS
                 expr.getOperator() == ASTConstantsAssignmentExpressions.SLASHEQUALS)) {
             // case for *= and /= can only be calculated if the right type is a numeric type, e.g. var_Int_M *= 3
             Optional<SymTypeExpression> leftNumericType = getNumeric(leftResult);
-            Optional<SymTypeExpression> numericType = calculateTypeArithmetic(expr, leftNumericType.get(), rightResult);
+            Optional<SymTypeExpression> numericType = calculateTypeArithmeticAssignment(expr, leftNumericType.get(), rightResult);
             Optional<SymTypeExpression> siUnitType = getSIUnit(leftResult);
             if (numericType.isPresent() && isNumericType(numericType.get()) && siUnitType.isPresent()) {
                 return Optional.of(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(
                         numericType.get(), siUnitType.get(), getScope(expr.getEnclosingScope())));
             }
         }
-        return super.calculateTypeArithmetic(expr, leftResult, rightResult);
+        return super.calculateTypeArithmeticAssignment(expr, leftResult, rightResult);
     }
 
     /**
@@ -77,13 +77,13 @@ public class DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes extends DeriveS
      * e.g. 5 m |= 3 => 7 m
      */
     @Override
-    protected Optional<SymTypeExpression> calculateTypeBinaryOperations(SymTypeExpression leftResult, SymTypeExpression rightResult) {
+    protected Optional<SymTypeExpression> calculateTypeBinaryOperationsAssignment(SymTypeExpression leftResult, SymTypeExpression rightResult) {
         if (isNumericWithSIUnitType(leftResult)
                 && isIntegralType(getNumeric(leftResult).get())
                 && isIntegralType(rightResult)) {
             return Optional.of(leftResult);
         }
-        return super.calculateTypeBinaryOperations(leftResult, rightResult);
+        return super.calculateTypeBinaryOperationsAssignment(leftResult, rightResult);
     }
 
     /**
@@ -92,14 +92,14 @@ public class DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes extends DeriveS
      * e.g. 4 m >>= 1 => 2 m
      */
     @Override
-    protected Optional<SymTypeExpression> calculateTypeBitOperation(SymTypeExpression leftResult, SymTypeExpression rightResult) {
+    protected Optional<SymTypeExpression> calculateTypeBitOperationAssignment(SymTypeExpression leftResult, SymTypeExpression rightResult) {
         //the bitshift operations are only defined for integers --> long, int, char, short, byte
         if (isNumericWithSIUnitType(leftResult)
                 && isIntegralType(getNumeric(leftResult).get())
                 && isIntegralType(rightResult)) {
             return Optional.of(leftResult);
         }
-        return super.calculateTypeBitOperation(leftResult, rightResult);
+        return super.calculateTypeBitOperationAssignment(leftResult, rightResult);
     }
 
     /**
