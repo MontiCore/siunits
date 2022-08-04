@@ -240,7 +240,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidMultAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because int m = int m * (int m) String returns a casting error
-        checkError("varI_M*=\"Hello\"", "0xA0178");
+        checkError("varI_M*=\"Hello\"", "0xA0238");
     }
 
     @Test
@@ -273,7 +273,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidDivideAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because int m = int m / (int m) String returns a casting error
-        checkError("varI_M/=\"Hello\"", "0xA0179");
+        checkError("varI_M/=\"Hello\"", "0xA0238");
     }
 
     @Test

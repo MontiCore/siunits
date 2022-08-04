@@ -2,6 +2,7 @@
 
 package de.monticore.types.check;
 
+import com.google.common.collect.Lists;
 import de.monticore.expressions.assignmentexpressions._ast.ASTAssignmentExpression;
 import de.monticore.expressions.assignmentexpressions._ast.ASTConstantsAssignmentExpressions;
 
@@ -17,33 +18,42 @@ public class DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes extends DeriveS
      * helper method for the basic arithmetic assignment operations +=,-=,%=,*=,/=
      */
     @Override
-    protected Optional<SymTypeExpression> calculateTypeArithmeticAssignment(ASTAssignmentExpression expr, SymTypeExpression leftResult, SymTypeExpression rightResult) {
+    protected SymTypeExpression calculateTypeArithmeticAssignment(ASTAssignmentExpression expr, SymTypeExpression leftResult, SymTypeExpression rightResult) {
         if (isNumericWithSIUnitType(leftResult) && isNumericWithSIUnitType(rightResult)
                 && (expr.getOperator() == ASTConstantsAssignmentExpressions.PLUSEQUALS
                 || expr.getOperator() == ASTConstantsAssignmentExpressions.MINUSEQUALS
                 || expr.getOperator() == ASTConstantsAssignmentExpressions.PERCENTEQUALS)) {
             // case for +=, -= and %=, can only be calculated for equal siunit types
-            Optional<SymTypeExpression> leftNumericType = getNumeric(leftResult);
-            Optional<SymTypeExpression> rightNumericType = getNumeric(rightResult);
-            Optional<SymTypeExpression> leftSIUnit = getSIUnit(leftResult);
-            Optional<SymTypeExpression> rightSIUnit = getSIUnit(rightResult);
-            Optional<SymTypeExpression> numericType = super.calculateTypeArithmeticAssignment(
-                    expr, leftNumericType.get(), rightNumericType.get());
-            if (numericType.isPresent() && isNumericType(numericType.get())
-                    && TypeCheck.compatible(leftSIUnit.get(), rightSIUnit.get())) {
-                return Optional.of(SIUnitSymTypeExpressionFactory.
-                        createNumericWithSIUnitType(numericType.get(), leftSIUnit.get(), getScope(expr.getEnclosingScope())));
+            SymTypeExpression leftNumericType = getNumeric(leftResult);
+            SymTypeExpression rightNumericType = getNumeric(rightResult);
+            SymTypeExpression leftSIUnit = getSIUnit(leftResult);
+            SymTypeExpression rightSIUnit = getSIUnit(rightResult);
+            if(checkNotObscure(Lists.newArrayList(leftNumericType, rightNumericType, leftSIUnit, rightSIUnit))) {
+                SymTypeExpression numericType = super.calculateTypeArithmeticAssignment(
+                  expr, leftNumericType, rightNumericType);
+                if (isNumericType(numericType) && TypeCheck.compatible(leftSIUnit, rightSIUnit)) {
+                    return SIUnitSymTypeExpressionFactory.
+                      createNumericWithSIUnitType(numericType, leftSIUnit, getScope(expr.getEnclosingScope()));
+                }
+            }else{
+                return SymTypeExpressionFactory.createObscureType();
             }
         } else if (isNumericWithSIUnitType(leftResult) && isNumericType(rightResult)
                 && (expr.getOperator() == ASTConstantsAssignmentExpressions.STAREQUALS ||
                 expr.getOperator() == ASTConstantsAssignmentExpressions.SLASHEQUALS)) {
             // case for *= and /= can only be calculated if the right type is a numeric type, e.g. var_Int_M *= 3
-            Optional<SymTypeExpression> leftNumericType = getNumeric(leftResult);
-            Optional<SymTypeExpression> numericType = calculateTypeArithmeticAssignment(expr, leftNumericType.get(), rightResult);
-            Optional<SymTypeExpression> siUnitType = getSIUnit(leftResult);
-            if (numericType.isPresent() && isNumericType(numericType.get()) && siUnitType.isPresent()) {
-                return Optional.of(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(
-                        numericType.get(), siUnitType.get(), getScope(expr.getEnclosingScope())));
+            SymTypeExpression leftNumericType = getNumeric(leftResult);
+            SymTypeExpression siUnitType = getSIUnit(leftResult);
+            if(!leftNumericType.isObscureType() && !siUnitType.isObscureType()) {
+                SymTypeExpression numericType = calculateTypeArithmeticAssignment(expr, leftNumericType, rightResult);
+                if (!numericType.isObscureType() && isNumericType(numericType)) {
+                    return SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(
+                      numericType, siUnitType, getScope(expr.getEnclosingScope()));
+                } else {
+                    return SymTypeExpressionFactory.createObscureType();
+                }
+            }else{
+                return SymTypeExpressionFactory.createObscureType();
             }
         }
         return super.calculateTypeArithmeticAssignment(expr, leftResult, rightResult);
@@ -53,19 +63,27 @@ public class DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes extends DeriveS
      * helper method for the calculation of a regular assignment (=)
      */
     @Override
-    protected Optional<SymTypeExpression> calculateRegularAssignment(ASTAssignmentExpression expr, SymTypeExpression leftResult, SymTypeExpression rightResult) {
+    protected SymTypeExpression calculateRegularAssignment(ASTAssignmentExpression expr, SymTypeExpression leftResult, SymTypeExpression rightResult) {
         if (isNumericWithSIUnitType(leftResult) && isNumericWithSIUnitType(rightResult)) {
             // both are numericWithSIUnit types and are assignable
-            Optional<SymTypeExpression> leftNumericType = getNumeric(leftResult);
-            Optional<SymTypeExpression> rightNumericType = getNumeric(rightResult);
-            Optional<SymTypeExpression> leftSIUnit = getSIUnit(leftResult);
-            Optional<SymTypeExpression> rightSIUnit = getSIUnit(rightResult);
-            Optional<SymTypeExpression> numericType = super.calculateRegularAssignment(expr, leftNumericType.get(), rightNumericType.get());
-            // assignments of SIUnit types are covered by the super class
-            Optional<SymTypeExpression> siUnitType = super.calculateRegularAssignment(expr, leftSIUnit.get(), rightSIUnit.get());
-            if (numericType.isPresent() && isNumericType(numericType.get()) && siUnitType.isPresent()) {
-                return Optional.of(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(
-                        numericType.get(), siUnitType.get(), getScope(expr.getEnclosingScope())));
+            SymTypeExpression leftNumericType = getNumeric(leftResult);
+            SymTypeExpression rightNumericType = getNumeric(rightResult);
+            SymTypeExpression leftSIUnit = getSIUnit(leftResult);
+            SymTypeExpression rightSIUnit = getSIUnit(rightResult);
+            if(checkNotObscure(Lists.newArrayList(leftNumericType, rightNumericType, leftSIUnit, rightSIUnit))) {
+                SymTypeExpression numericType = super.calculateRegularAssignment(expr, leftNumericType, rightNumericType);
+                // assignments of SIUnit types are covered by the super class
+                SymTypeExpression siUnitType = super.calculateRegularAssignment(expr, leftSIUnit, rightSIUnit);
+                if(!numericType.isObscureType() && !siUnitType.isObscureType()) {
+                    if (isNumericType(numericType)) {
+                        return SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(
+                          numericType, siUnitType, getScope(expr.getEnclosingScope()));
+                    }
+                }else{
+                    return SymTypeExpressionFactory.createObscureType();
+                }
+            } else {
+                return SymTypeExpressionFactory.createObscureType();
             }
         }
         return super.calculateRegularAssignment(expr, leftResult, rightResult);
@@ -77,11 +95,11 @@ public class DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes extends DeriveS
      * e.g. 5 m |= 3 => 7 m
      */
     @Override
-    protected Optional<SymTypeExpression> calculateTypeBinaryOperationsAssignment(SymTypeExpression leftResult, SymTypeExpression rightResult) {
+    protected SymTypeExpression calculateTypeBinaryOperationsAssignment(SymTypeExpression leftResult, SymTypeExpression rightResult) {
         if (isNumericWithSIUnitType(leftResult)
-                && isIntegralType(getNumeric(leftResult).get())
+                && isIntegralType(getNumeric(leftResult))
                 && isIntegralType(rightResult)) {
-            return Optional.of(leftResult);
+            return leftResult;
         }
         return super.calculateTypeBinaryOperationsAssignment(leftResult, rightResult);
     }
@@ -92,12 +110,12 @@ public class DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes extends DeriveS
      * e.g. 4 m >>= 1 => 2 m
      */
     @Override
-    protected Optional<SymTypeExpression> calculateTypeBitOperationAssignment(SymTypeExpression leftResult, SymTypeExpression rightResult) {
+    protected SymTypeExpression calculateTypeBitOperationAssignment(SymTypeExpression leftResult, SymTypeExpression rightResult) {
         //the bitshift operations are only defined for integers --> long, int, char, short, byte
         if (isNumericWithSIUnitType(leftResult)
-                && isIntegralType(getNumeric(leftResult).get())
+                && isIntegralType(getNumeric(leftResult))
                 && isIntegralType(rightResult)) {
-            return Optional.of(leftResult);
+            return leftResult;
         }
         return super.calculateTypeBitOperationAssignment(leftResult, rightResult);
     }
@@ -106,16 +124,20 @@ public class DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes extends DeriveS
      * helper method for the calculation of the ASTBooleanNotExpression
      */
     @Override
-    protected Optional<SymTypeExpression> getUnaryNumericPromotionType(SymTypeExpression type) {
+    protected SymTypeExpression getUnaryNumericPromotionType(SymTypeExpression type) {
         if (isNumericWithSIUnitType(type)) {
-            Optional<SymTypeExpression> numericType = getNumeric(type);
-            Optional<SymTypeExpression> siUnitType = getSIUnit(type);
-            numericType = super.getUnaryNumericPromotionType(numericType.get());
-            if (numericType.isPresent() && isNumericType(numericType.get())) {
-                return Optional.of(SIUnitSymTypeExpressionFactory.
-                        createNumericWithSIUnitType(numericType.get(), siUnitType.get(), type.getTypeInfo().getEnclosingScope()));
+            SymTypeExpression numericType = getNumeric(type);
+            SymTypeExpression siUnitType = getSIUnit(type);
+            if(!numericType.isObscureType() && !siUnitType.isObscureType()) {
+                numericType = super.getUnaryNumericPromotionType(numericType);
+                if (!numericType.isObscureType() && isNumericType(numericType)) {
+                    return SIUnitSymTypeExpressionFactory.
+                      createNumericWithSIUnitType(numericType, siUnitType, type.getTypeInfo().getEnclosingScope());
+                }
+                return SymTypeExpressionFactory.createObscureType();
+            }else{
+                return SymTypeExpressionFactory.createObscureType();
             }
-            return Optional.empty();
         }
         return super.getUnaryNumericPromotionType(type);
     }
@@ -131,24 +153,24 @@ public class DeriveSymTypeOfAssignmentExpressionsWithSIUnitTypes extends DeriveS
     /**
      * Helper method to extract numeric type of an SymTypeExpression
      */
-    private Optional<SymTypeExpression> getNumeric(SymTypeExpression type) {
+    private SymTypeExpression getNumeric(SymTypeExpression type) {
         if (isNumericWithSIUnitType(type)) {
-            return Optional.ofNullable(((SymTypeOfNumericWithSIUnit) type).getNumericType());
+            return ((SymTypeOfNumericWithSIUnit) type).getNumericType();
         } else if (isNumericType(type)) {
-            return Optional.ofNullable(type);
+            return type;
         }
-        return Optional.empty();
+        return SymTypeExpressionFactory.createObscureType();
     }
 
     /**
      * Helper method to extract siunit type of an SymTypeExpression
      */
-    public Optional<SymTypeExpression> getSIUnit(SymTypeExpression type) {
+    public SymTypeExpression getSIUnit(SymTypeExpression type) {
         if (isNumericWithSIUnitType(type)) {
-            return Optional.ofNullable(((SymTypeOfNumericWithSIUnit) type).getSIUnit());
+            return ((SymTypeOfNumericWithSIUnit) type).getSIUnit();
         } else if (isSIUnitType(type)) {
-            return Optional.of(type);
+            return type;
         }
-        return Optional.empty();
+        return SymTypeExpressionFactory.createObscureType();
     }
 }

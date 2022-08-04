@@ -9,6 +9,7 @@ import de.monticore.expressions.combineexpressionswithsiunitliterals._parser.Com
 import de.monticore.expressions.combineexpressionswithsiunitliterals._symboltable.ICombineExpressionsWithSIUnitLiteralsScope;
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.expressions.expressionsbasis._visitor.ExpressionsBasisTraverser;
+import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -256,6 +257,8 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         scope.setEnclosingScope(null);     // No enclosing Scope: Search ending here
         scope.setExportingSymbols(true);
         scope.setAstNode(null);
+        BasicSymbolsMill.reset();
+        BasicSymbolsMill.initializePrimitives();
 
         // SIUnits
         SymTypeExpression s = SIUnitSymTypeExpressionFactory.createSIUnit("s", scope);

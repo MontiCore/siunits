@@ -59,7 +59,7 @@ public abstract class TypeCheckCoCo {
             SymTypeExpression returnType = null;
             try {
                 returnType = tc.typeOf(assignmentExpression);
-                if (returnType == null)
+                if (returnType == null || returnType.isObscureType())
                     logError(assignmentExpression, "Could not calculate type of assigned expression");
             } catch (Exception e) {
                 logError(assignmentExpression, "Could not calculate type of assigned expression");
@@ -79,7 +79,7 @@ public abstract class TypeCheckCoCo {
             logError(node, "Variable symbol not present");
         else if (node.getSymbol().getType() == null)
             logError(node, "Variable symbol has no type");
-        else if (assignmentType != null && !TypeCheck.compatible(node.getSymbol().getType(), assignmentType))
+        else if (assignmentType != null && (assignmentType.isObscureType() || !TypeCheck.compatible(node.getSymbol().getType(), assignmentType)))
             logError(node, String.format("Variable type %s incompatible to assigned type %s",
                     node.getSymbol().getType().print(), assignmentType.print()));
     }

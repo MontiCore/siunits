@@ -52,6 +52,9 @@ public class SynthesizeSymTypeFromSIUnitTypes4Computing extends AbstractSynthesi
         SymTypeExpression siunitType = null;
 
         node.getMCPrimitiveType().accept(getTraverser());
+        if(typeCheckResult.isPresentResult() && typeCheckResult.getResult().isObscureType()){
+            return;
+        }
         if (!typeCheckResult.isPresentResult() || !isNumericType(typeCheckResult.getResult())) {
             Log.error("0xA0495");
         }
