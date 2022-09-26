@@ -122,7 +122,7 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
         check("4.5f++", "float");
 
         //example with char
-        check("\'e\'++", "int");
+        check("\'e\'++", "char");
     }
 
     @Test

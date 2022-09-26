@@ -167,6 +167,23 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
         return super.getUnaryIntegralPromotionType(type);
     }
 
+    @Override
+    protected SymTypeExpression getBitUnaryNumericPromotionType(SymTypeExpression type) {
+        if (isNumericWithSIUnitType(type)) {
+            SymTypeExpression numericType = getNumeric(type);
+            SymTypeExpression siUnitType = getSIUnit(type);
+            if (!numericType.isObscureType()) {
+                numericType = super.getUnaryNumericPromotionType(numericType);
+                if (!numericType.isObscureType() && isNumericType(numericType)
+                  && !siUnitType.isObscureType()) {
+                    return SIUnitSymTypeExpressionFactory.
+                      createNumericWithSIUnitType(numericType, siUnitType, type.getTypeInfo().getEnclosingScope());
+                }
+                return SymTypeExpressionFactory.createObscureType();
+            }
+        }
+        return super.getBitUnaryNumericPromotionType(type);
+    }
 
     /**
      * helper method for the calculation of the ASTBooleanNotExpression
