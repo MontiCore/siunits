@@ -6,7 +6,6 @@ import de.monticore.expressions.combineexpressionswithliterals.CombineExpression
 import de.monticore.expressions.combineexpressionswithliterals._parser.CombineExpressionsWithLiteralsParser;
 import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICombineExpressionsWithLiteralsScope;
 import de.monticore.expressions.combineexpressionswithsiunitliterals.CombineExpressionsWithSIUnitLiteralsMill;
-import de.monticore.expressions.combineexpressionswithsiunitliterals._parser.CombineExpressionsWithSIUnitLiteralsParser;
 import de.monticore.expressions.combineexpressionswithsiunitliterals._visitor.CombineExpressionsWithSIUnitLiteralsTraverser;
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.expressions.expressionsbasis._visitor.ExpressionsBasisTraverser;
@@ -23,13 +22,6 @@ import static org.junit.Assert.assertEquals;
 
 public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstractTest {
 
-    /**
-     * Focus: Deriving Type of Literals, here:
-     * literals/MCLiteralsBasis.mc4
-     */
-
-    private ICombineExpressionsWithLiteralsScope scope;
-    private FlatExpressionScopeSetter flatExpressionScopeSetter;
     private CombineExpressionsWithSIUnitLiteralsTraverser traverser;
 
     @Before
@@ -40,7 +32,7 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
         SIUnitsMill.initializeSIUnits();
 
         // we add a variety of TypeSymbols to the same scope (which in reality doesn't happen)
-        scope = CombineExpressionsWithLiteralsMill.scope();
+        ICombineExpressionsWithLiteralsScope scope = CombineExpressionsWithLiteralsMill.scope();
         scope.setExportingSymbols(true);
         scope.setEnclosingScope(null);       // No enclosing Scope: Search ending here
         scope.setAstNode(null);
@@ -73,7 +65,7 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
         add2scope(scope, field("firstsemester", SymTypeExpressionFactory.createTypeObject("FirstSemesterStudent", scope)));
 
         setFlatExpressionScopeSetter(scope);
-        flatExpressionScopeSetter = new FlatExpressionScopeSetter(scope);
+        FlatExpressionScopeSetter flatExpressionScopeSetter = new FlatExpressionScopeSetter(scope);
         traverser = getTraverser(flatExpressionScopeSetter);
 
     }
@@ -116,19 +108,19 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     @Test
     public void deriveFromIncSuffixExpression() throws IOException {
         //example with int
-        check("3++", "int");
+        check("varint++", "int");
 
         //example with float
-        check("4.5f++", "float");
+        check("varfloat++", "float");
 
         //example with char
-        check("\'e\'++", "char");
+        check("varchar++", "char");
     }
 
     @Test
     public void testInvalidIncSuffixExpression() throws IOException {
         //only possible with numeric types
-        checkError("\"Hello\"++", "0xA0170");
+        checkError("varString++", "0xA0184");
     }
 
     /**
@@ -137,16 +129,16 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     @Test
     public void deriveFromDecSuffixExpression() throws IOException {
         //example with int
-        check("12--", "int");
+        check("varint--", "int");
 
         //example with double
-        check("4.2--", "double");
+        check("vardouble--", "double");
     }
 
     @Test
     public void testInvalidDecSuffixExpression() throws IOException {
         //only possible with numeric types
-        checkError("\"Hello\"--", "0xA0171");
+        checkError("varString--", "0xA0184");
     }
 
     /**
@@ -155,16 +147,16 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     @Test
     public void deriveFromIncPrefixExpression() throws IOException {
         //example with int
-        check("++3", "int");
+        check("++varint", "int");
 
         //example with long
-        check("++6L", "long");
+        check("++varlong", "long");
     }
 
     @Test
     public void testInvalidIncPrefixExpression() throws IOException {
         //only possible with numeric types
-        checkError("++\"Hello\"", "0xA0172");
+        checkError("++varString", "0xA0184");
     }
 
     /**
@@ -173,16 +165,16 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     @Test
     public void deriveFromDecPrefixExpression() throws IOException {
         //example with int
-        check("--1", "int");
+        check("--varint", "int");
 
         //example with float
-        check("--6.7f", "float");
+        check("--varfloat", "float");
     }
 
     @Test
     public void testInvalidDecPrefixExpression() throws IOException {
         //only possible with numeric types
-        checkError("--\"Hello\"", "0xA0173");
+        checkError("--varString", "0xA0184");
     }
 
     /**
@@ -240,7 +232,7 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     @Test
     public void testInvalidPlusAssignmentExpression() throws IOException {
         //not possible because int = int + (int) String returns a casting error
-        checkError("varint+=\"Hello\"", "0xA0176");
+        checkError("varint+=\"Hello\"", "0xA0178");
     }
 
     /**
@@ -258,7 +250,7 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     @Test
     public void testInvalidMinusAssignmentExpression() throws IOException {
         //not possible because int = int - (int) String returns a casting error
-        checkError("varint-=\"Hello\"", "0xA0177");
+        checkError("varint-=\"Hello\"", "0xA0178");
     }
 
     /**
@@ -294,7 +286,7 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     @Test
     public void testInvalidDivideAssignmentExpression() throws IOException {
         //not possible because int = int / (int) String returns a casting error
-        checkError("varint/=\"Hello\"", "0xA0179");
+        checkError("varint/=\"Hello\"", "0xA0178");
     }
 
     /**
@@ -312,7 +304,7 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     @Test
     public void testInvalidModuloAssignmentExpression() throws IOException {
         //not possible because int = int % (int) String returns a casting error
-        checkError("varint%=\"Hello\"", "0xA0189");
+        checkError("varint%=\"Hello\"", "0xA0178");
     }
 
     /**
@@ -333,7 +325,7 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     @Test
     public void testInvalidAndAssignmentExpression() throws IOException {
         //not possible because int = int & (int) String returns a casting error
-        checkError("varint&=\"Hello\"", "0xA0183");
+        checkError("varint&=\"Hello\"", "0xA0176");
     }
 
     /**
@@ -351,7 +343,7 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     @Test
     public void testInvalidOrAssignmentExpression() throws IOException {
         //not possible because int = int | (int) String returns a casting error
-        checkError("varint|=\"Hello\"", "0xA0184");
+        checkError("varint|=\"Hello\"", "0xA0176");
     }
 
     /**
@@ -361,12 +353,12 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     public void deriveFromBinaryXorAssignmentExpression() throws IOException {
         //example with int - int
         String s = "varint^=9";
-        ASTExpression astex = p.parse_StringExpression(s).get();
+        ASTExpression astex = p.parse_StringExpression(s).orElseThrow();
         astex.accept(traverser);
         assertEquals("int", tc.typeOf(astex).print());
         //example with boolean - boolean
         s = "bar2^=false";
-        astex = p.parse_StringExpression(s).get();
+        astex = p.parse_StringExpression(s).orElseThrow();
         astex.accept(traverser);
         assertEquals("boolean", tc.typeOf(astex).print());
 
@@ -375,7 +367,7 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     @Test
     public void testInvalidBinaryXorAssignmentExpression() throws IOException {
         //not possible because int = int ^ (int) String returns a casting error
-        checkError("varint^=\"Hello\"", "0xA0185");
+        checkError("varint^=\"Hello\"", "0xA0176");
     }
 
     /**
@@ -387,13 +379,13 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
         check("varint<<=9", "int");
 
         //example with int - char
-        check("foo<<=\'c\'", "int");
+        check("foo<<='c'", "int");
     }
 
     @Test
     public void testInvalidDoubleLeftAssignmentExpression() throws IOException {
         //not possible because int = int << (int) String returns a casting error
-        checkError("varint<<=\"Hello\"", "0xA0187");
+        checkError("varint<<=\"Hello\"", "0xA0177");
     }
 
     /**
@@ -411,7 +403,7 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     @Test
     public void testInvalidDoubleRightAssignmentExpression() throws IOException {
         //not possible because int = int >> (int) String returns a casting error
-        checkError("varint>>=\"Hello\"", "0xA0186");
+        checkError("varint>>=\"Hello\"", "0xA0177");
     }
 
     /**
@@ -423,13 +415,13 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
         check("varint>>>=9", "int");
 
         //example with char - char
-        check("varchar>>>=\'3\'", "char");
+        check("varchar>>>='3'", "char");
     }
 
     @Test
     public void testInvalidLogicalRightAssignmentExpression() throws IOException {
         //not possible because int = int >>> (int) String returns a casting error
-        checkError("varint>>>=\"Hello\"", "0xA0188");
+        checkError("varint>>>=\"Hello\"", "0xA0177");
     }
 
     /**
@@ -453,13 +445,13 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
     @Test
     public void testInvalidRegularAssignmentExpression() throws IOException {
         //not possible because int = (int) String returns a casting error
-        checkError("varint=\"Hello\"", "0xA0182");
+        checkError("varint=\"Hello\"", "0xA0179");
     }
 
     @Test
     public void testInvalidRegularAssignmentExpression2() throws IOException {
         //test with no field on the left side of the assignment
-        checkError("3=4", "0xA0182");
+        checkError("3=4", "0xA0181");
     }
     private CombineExpressionsWithSIUnitLiteralsTraverser getTraverser(FlatExpressionScopeSetter flatExpressionScopeSetter){
         CombineExpressionsWithSIUnitLiteralsTraverser traverser = CombineExpressionsWithSIUnitLiteralsMill.traverser();

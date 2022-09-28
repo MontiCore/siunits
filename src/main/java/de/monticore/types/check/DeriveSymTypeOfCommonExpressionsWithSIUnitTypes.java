@@ -173,7 +173,7 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
             SymTypeExpression numericType = getNumeric(type);
             SymTypeExpression siUnitType = getSIUnit(type);
             if (!numericType.isObscureType()) {
-                numericType = super.getUnaryNumericPromotionType(numericType);
+                numericType = super.getBitUnaryNumericPromotionType(numericType);
                 if (!numericType.isObscureType() && isNumericType(numericType)
                   && !siUnitType.isObscureType()) {
                     return SIUnitSymTypeExpressionFactory.
@@ -183,26 +183,6 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
             }
         }
         return super.getBitUnaryNumericPromotionType(type);
-    }
-
-    /**
-     * helper method for the calculation of the ASTBooleanNotExpression
-     */
-    @Override
-    protected SymTypeExpression getUnaryNumericPromotionType(SymTypeExpression type) {
-        if (isNumericWithSIUnitType(type)) {
-            SymTypeExpression numericType = getNumeric(type);
-            SymTypeExpression siUnitType = getSIUnit(type);
-            if (!numericType.isObscureType() && !siUnitType.isObscureType()) {
-                numericType = super.getUnaryNumericPromotionType(numericType);
-                if (!numericType.isObscureType() && isNumericType(numericType)) {
-                    return SIUnitSymTypeExpressionFactory.
-                      createNumericWithSIUnitType(numericType, siUnitType, type.getTypeInfo().getEnclosingScope());
-                }
-                return SymTypeExpressionFactory.createObscureType();
-            }
-        }
-        return super.getUnaryNumericPromotionType(type);
     }
 
     public boolean isSIUnitType(SymTypeExpression type) {

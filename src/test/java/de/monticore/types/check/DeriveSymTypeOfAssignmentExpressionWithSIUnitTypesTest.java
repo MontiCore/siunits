@@ -2,8 +2,6 @@
 
 package de.monticore.types.check;
 
-import de.monticore.expressions.combineexpressionswithliterals.CombineExpressionsWithLiteralsMill;
-import de.monticore.expressions.combineexpressionswithliterals._parser.CombineExpressionsWithLiteralsParser;
 import de.monticore.expressions.combineexpressionswithsiunitliterals.CombineExpressionsWithSIUnitLiteralsMill;
 import de.monticore.expressions.combineexpressionswithsiunitliterals._parser.CombineExpressionsWithSIUnitLiteralsParser;
 import de.monticore.expressions.combineexpressionswithsiunitliterals._symboltable.ICombineExpressionsWithSIUnitLiteralsScope;
@@ -41,8 +39,6 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         return CombineExpressionsWithSIUnitLiteralsMill.traverser();
     }
 
-    private ICombineExpressionsWithSIUnitLiteralsScope scope;
-
     @Before
     public void setupForEach() {
         CombineExpressionsWithSIUnitLiteralsMill.reset();
@@ -50,7 +46,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         CombineExpressionsWithSIUnitLiteralsMill.globalScope();
         SIUnitsMill.initializeSIUnits();
 
-        scope = CombineExpressionsWithSIUnitLiteralsMill.scope();
+        ICombineExpressionsWithSIUnitLiteralsScope scope = CombineExpressionsWithSIUnitLiteralsMill.scope();
         scope.setEnclosingScope(null)  ;     // No enclosing Scope: Search ending here
         scope.setExportingSymbols(true);
         scope.setAstNode(null);
@@ -58,6 +54,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         // SIUnits
         SymTypeExpression s = SIUnitSymTypeExpressionFactory.createSIUnit("s", scope);
         SymTypeExpression m = SIUnitSymTypeExpressionFactory.createSIUnit("m", scope);
+        SymTypeExpression km = SIUnitSymTypeExpressionFactory.createSIUnit("km", scope);
         SymTypeExpression kMe2perH = SIUnitSymTypeExpressionFactory.createSIUnit("km^2/h", scope);
         SymTypeExpression kMe2perHMSe4 = SIUnitSymTypeExpressionFactory.createSIUnit("km^2/(h*ms^4)", scope);
 
@@ -70,6 +67,8 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         add2scope(scope, field("varD_S", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(d, s, scope)));
         add2scope(scope, field("varI_M", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(i, m, scope)));
         add2scope(scope, field("varD_M", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(d, m, scope)));
+        add2scope(scope, field("varI_KM", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(i, km, scope)));
+        add2scope(scope, field("varD_KM", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(d, km, scope)));
         add2scope(scope, field("varL_KMe2perH", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(l, kMe2perH, scope)));
         add2scope(scope, field("varD_KMe2perHmSe4", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(d, kMe2perHMSe4, scope)));
 
@@ -89,13 +88,13 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void deriveFromIncSuffixExpressionWithSIUnits() throws IOException {
         //example with siunit literal
-        check("4km++", "(int,km)");
+        check("varI_KM++", "(int,km)");
     }
 
     @Test
     public void testInvalidIncSuffixExpressionWithSIUnits() throws IOException {
         //not possible because ++ is not defined for siunits
-        checkError("varS++", "0xA0170");
+        checkError("varS++", "0xA0184");
     }
 
     /**
@@ -104,13 +103,13 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void deriveFromDecSuffixExpressionWithSIUnits() throws IOException {
         //example with siunit literal
-        check("4.2km--", "(double,km)");
+        check("varD_KM--", "(double,km)");
     }
 
     @Test
     public void testInvalidDecSuffixExpressionWithSIUnits() throws IOException {
         //not possible because -- is not defined for siunits
-        checkError("varS--", "0xA0171");
+        checkError("varS--", "0xA0184");
     }
 
     /**
@@ -119,13 +118,13 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void deriveFromIncPrefixExpressionWithSIUnits() throws IOException {
         //example with siunit literal
-        check("++4km", "(int,km)");
+        check("++varI_KM", "(int,km)");
     }
 
     @Test
     public void testInvalidIncPrefixExpressionWithSIUnits() throws IOException {
         //not possible because ++ is not defined for siunits
-        checkError("++varS", "0xA0172");
+        checkError("++varS", "0xA0184");
     }
 
     /**
@@ -134,13 +133,13 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void deriveFromDecPrefixExpressionWithSIUnits() throws IOException {
         //example with siunit literal
-        check("--4.1km", "(double,km)");
+        check("--varD_KM", "(double,km)");
     }
 
     @Test
     public void testInvalidDecPrefixExpressionWithSIUnits() throws IOException {
         //not possible because -- is not defined for siunits
-        checkError("--varS", "0xA0173");
+        checkError("--varS", "0xA0184");
     }
 
     /**
@@ -192,13 +191,13 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidPlusAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because s = s + m cannot be calculated
-        checkError("varD_S+=4km", "0xA0176");
+        checkError("varD_S+=4km", "0xA0178");
     }
 
     @Test
     public void testInvalidPlusAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because += is not defined for siunits
-        checkError("varS+=4km", "0xA0176");
+        checkError("varS+=4km", "0xA0178");
     }
 
     /**
@@ -213,13 +212,13 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidMinusAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because s = s - m cannot be calculated
-        checkError("varD_S-=4km", "0xA0177");
+        checkError("varD_S-=4km", "0xA0178");
     }
 
     @Test
     public void testInvalidMinusAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because -= is not defined for siunits
-        checkError("varS-=4km", "0xA0177");
+        checkError("varS-=4km", "0xA0178");
     }
 
     /**
@@ -279,13 +278,13 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidDivideAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because m != m / m
-        checkError("varI_M/=varI_M", "0xA0179");
+        checkError("varI_M/=varI_M", "0xA0178");
     }
 
     @Test
     public void testInvalidDivideAssignmentExpressionWithSIUnits3() throws IOException {
         //not possible because m != m / m
-        checkError("varM/=varM", "0xA0179");
+        checkError("varM/=varM", "0xA0178");
     }
 
     /**
@@ -303,19 +302,19 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidModuloAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because s = s % m cannot be calculated
-        checkError("varD_S%=3m", "0xA0189");
+        checkError("varD_S%=3m", "0xA0178");
     }
 
     @Test
     public void testInvalidModuloAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because s = s % int cannot be calculated
-        checkError("varD_S%=3", "0xA0189");
+        checkError("varD_S%=3", "0xA0178");
     }
 
     @Test
     public void testInvalidModuloAssignmentExpressionWithSIUnits3() throws IOException {
         //not possible because s = s % int cannot be calculated
-        checkError("varS%=3", "0xA0189");
+        checkError("varS%=3", "0xA0178");
     }
 
     @Test
@@ -329,13 +328,13 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidAndAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because int m = int m & int m cannot be calculated
-        checkError("varI_M&=varI_M", "0xA0183");
+        checkError("varI_M&=varI_M", "0xA0176");
     }
 
     @Test
     public void testInvalidAndAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because int m = int m & int m cannot be calculated
-        checkError("varM&=2", "0xA0183");
+        checkError("varM&=2", "0xA0176");
     }
 
     @Test
@@ -350,14 +349,14 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidOrAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because int m = int m | int m cannot be calculated
-        checkError("varI_M|=3 m", "0xA0184");
+        checkError("varI_M|=3 m", "0xA0176");
     }
 
 
     @Test
     public void testInvalidOrAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because int m = int m | int m cannot be calculated
-        checkError("varM|=3", "0xA0184");
+        checkError("varM|=3", "0xA0176");
     }
 
     @Test
@@ -371,13 +370,13 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidBinaryXorAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because int m = int m ^ int m cannot be calculated
-        checkError("varI_M^=3 m", "0xA0185");
+        checkError("varI_M^=3 m", "0xA0176");
     }
 
     @Test
     public void testInvalidBinaryXorAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because int m = int m ^ int m cannot be calculated
-        checkError("varM^=3 m", "0xA0185");
+        checkError("varM^=3 m", "0xA0176");
     }
 
     @Test
@@ -385,19 +384,19 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         //example with int m - int
         check("varI_M<<=9", "(int,m)");
         //example with int m - char
-        check("varI_M<<=\'c\'", "(int,m)");
+        check("varI_M<<='c'", "(int,m)");
     }
 
     @Test
     public void testInvalidDoubleLeftAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because int m = int m << int m cannot be calculated
-        checkError("varI_M<<=3 m", "0xA0187");
+        checkError("varI_M<<=3 m", "0xA0177");
     }
 
     @Test
     public void testInvalidDoubleLeftAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because int m = int m << int m cannot be calculated
-        checkError("varM<<=3", "0xA0187");
+        checkError("varM<<=3", "0xA0177");
     }
 
     /**
@@ -408,19 +407,19 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         //example with int m - int
         check("varI_M>>=9", "(int,m)");
         //example with int m - char
-        check("varI_M>>=\'c\'", "(int,m)");
+        check("varI_M>>='c'", "(int,m)");
     }
 
     @Test
     public void testInvalidDoubleRightAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because int m = int m >> int m cannot be calculated
-        checkError("varI_M>>=3m", "0xA0186");
+        checkError("varI_M>>=3m", "0xA0177");
     }
 
     @Test
     public void testInvalidDoubleRightAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because int m = int m >> int m cannot be calculated
-        checkError("varM>>=varM", "0xA0186");
+        checkError("varM>>=varM", "0xA0177");
     }
 
     /**
@@ -431,19 +430,19 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         //example with int - int
         check("varI_M>>>=9", "(int,m)");
         //example with char - char
-        check("varI_M>>>=\'3\'", "(int,m)");
+        check("varI_M>>>='3'", "(int,m)");
     }
 
     @Test
     public void testInvalidLogicalRightAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because int m = int m >>> int m cannot be calculated
-        checkError("varI_M>>>=varI_M", "0xA0188");
+        checkError("varI_M>>>=varI_M", "0xA0177");
     }
 
     @Test
     public void testInvalidLogicalRightAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because int m = int m >>> int m cannot be calculated
-        checkError("varM>>>=2", "0xA0188");
+        checkError("varM>>>=2", "0xA0177");
     }
 
     /**
@@ -463,12 +462,12 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidRegularAssignmentExpressionWithSIUnits1() throws IOException {
         //not possible because m^2/s^5 and m/s^5 are incompatible types
-        checkError("varD_KMe2perHmSe4 = 3 mm/ks^3h^2", "0xA0182");
+        checkError("varD_KMe2perHmSe4 = 3 mm/ks^3h^2", "0xA0179");
     }
 
     @Test
     public void testInvalidRegularAssignmentExpressionWithSIUnits2() throws IOException {
         //not possible because m^2/s^5 and m/s^5 are incompatible types
-        checkError("varM = 3 m", "0xA0182");
+        checkError("varM = 3 m", "0xA0179");
     }
 }
