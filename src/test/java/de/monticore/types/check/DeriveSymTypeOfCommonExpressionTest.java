@@ -413,7 +413,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
   public void testInvalidBracketExpression() throws IOException {
     //a cannot be resolved -> a has no type
     init_basic();
-    checkError("(a)", "0xED680");
+    checkError("(a)", "0xA0240");
   }
 
   /**
@@ -660,25 +660,23 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
 
   @Test
   public void testInvalidCallExpressionWithInvalidArgument() throws IOException {
-    String divideError = "0xA0212";
-    String noMethodError = "0xA1242";
 
     init_advanced();
-    checkErrorsAndFailOnException("isInt(\"foo\" / 2)", divideError, noMethodError);
+    checkErrorsAndFailOnException("isInt(\"foo\" / 2)", "0xA0212");
   }
 
   @Test
   public void testRegularAssignmentWithTwoMissingFields() throws IOException {
-    String regularAssignmentError = "0xA0180";
+    String[] errors = new String[] { "0xA0240", "0xA0240" };
     init_advanced();
-    checkErrorsAndFailOnException("missingField = missingField2", regularAssignmentError);
+    checkErrorsAndFailOnException("missingField = missingField2", errors);
   }
 
   @Test
   public void testMissingMethodWithMissingArgs() throws IOException {
-    String functionError = "0xA1242";
+    String[] errors = new String[] { "0xA0240", "0xA0240", "0xA1242"};
     init_advanced();
-    checkErrorsAndFailOnException("missingMethod(missing1, missing2)", functionError);
+    checkErrorsAndFailOnException("missingMethod(missing1, missing2)", errors);
   }
 
   /**
@@ -1351,7 +1349,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
   public void testInvalidStaticType() throws IOException {
     init_static_example();
 
-    checkError("B.D", "0xA1303");
+    checkError("B.D", "0xA0241");
   }
 
   @Test
@@ -1365,7 +1363,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
   public void testInvalidStaticField() throws IOException {
     init_static_example();
 
-    checkError("B.field", "0xA1236");
+    checkError("B.field", "0xA0241");
   }
 
   @Test
@@ -1393,7 +1391,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
   public void testSubClassesDoNotKnowStaticFieldsOfSuperClasses() throws IOException{
     init_static_example();
 
-    checkError("C.field", "0xA1317");
+    checkError("C.field", "0xA0241");
   }
 
   @Test
