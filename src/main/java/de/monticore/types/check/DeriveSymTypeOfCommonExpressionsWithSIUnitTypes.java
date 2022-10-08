@@ -6,9 +6,9 @@ import de.monticore.expressions.commonexpressions._ast.ASTDivideExpression;
 import de.monticore.expressions.commonexpressions._ast.ASTInfixExpression;
 import de.monticore.expressions.commonexpressions._ast.ASTMultExpression;
 import de.monticore.siunits.utility.Converter;
+import de.se_rwth.commons.SourcePosition;
 
 import javax.measure.unit.Unit;
-import java.util.Optional;
 
 /**
  * This class is used to derive the symtype of common expressions where SI unit types are used, including primitive
@@ -167,22 +167,27 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
         return super.getUnaryIntegralPromotionType(type);
     }
 
-    @Override
-    protected SymTypeExpression getBitUnaryNumericPromotionType(SymTypeExpression type) {
-        if (isNumericWithSIUnitType(type)) {
-            SymTypeExpression numericType = getNumeric(type);
-            SymTypeExpression siUnitType = getSIUnit(type);
+    @Override protected SymTypeExpression numericPrefix(SymTypeExpression inner,
+                                                        String op,
+                                                        SourcePosition pos) {
+        if (isNumericWithSIUnitType(inner)) {
+            SymTypeExpression numericType = getNumeric(inner);
+            SymTypeExpression siUnitType = getSIUnit(inner);
             if (!numericType.isObscureType()) {
-                numericType = super.getBitUnaryNumericPromotionType(numericType);
+                numericType = super.numericPrefix(numericType, op, pos);
                 if (!numericType.isObscureType() && isNumericType(numericType)
                   && !siUnitType.isObscureType()) {
                     return SIUnitSymTypeExpressionFactory.
-                      createNumericWithSIUnitType(numericType, siUnitType, type.getTypeInfo().getEnclosingScope());
+                      createNumericWithSIUnitType(numericType, siUnitType, inner.getTypeInfo()
+                        .getEnclosingScope());
                 }
                 return SymTypeExpressionFactory.createObscureType();
+            } else {
+                return SymTypeExpressionFactory.createObscureType();
             }
+        } else {
+            return super.numericPrefix(inner, op, pos);
         }
-        return super.getBitUnaryNumericPromotionType(type);
     }
 
     public boolean isSIUnitType(SymTypeExpression type) {

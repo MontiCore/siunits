@@ -379,7 +379,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     @Test
     public void testInvalidLogicalNotExpression() throws IOException {
         //only possible with a boolean as inner expression
-        checkError("!4 m", "0xA0228");
+        checkError("!4 m", "0xA0171");
     }
 
     /**

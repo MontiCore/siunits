@@ -169,7 +169,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
     @Test
     public void testInvalidPlusPrefixExpressionWithSIUnits() throws IOException {
         //not possible because + is not defined for siunits
-        checkError("+varS", "0xA0174");
+        checkError("+varS", "0xA0175");
     }
 
     /**
