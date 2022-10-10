@@ -3,6 +3,7 @@
 package de.monticore.types.check;
 
 import com.google.common.collect.Lists;
+import de.monticore.siunits.SIUnitsMill;
 import de.monticore.siunits.utility.UnitPrettyPrinter;
 import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
 import de.monticore.symbols.basicsymbols._symboltable.IBasicSymbolsScope;
@@ -114,6 +115,10 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
         }
     }
 
+    public static SymTypeExpression createSIUnit(String name) {
+        return createSIUnit(name, BasicSymbolsMill.globalScope());
+    }
+
     /**
      * createSIUnit: for SIUnitTypes
      * returns SymTypeExpression because the unit could be dimensionless (e.g. m/m)
@@ -223,6 +228,10 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
             BasicSymbolsMill.globalScope().add(newType);
             return createNumericWithSIUnitType(numericType, siunitType, newType);
         }
+    }
+
+    public static SymTypeExpression createNumericWithSIUnitType(SymTypeExpression numericType, SymTypeExpression siunitType) {
+        return createNumericWithSIUnitType(numericType, siunitType, BasicSymbolsMill.globalScope());
     }
 
     /**

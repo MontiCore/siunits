@@ -94,7 +94,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
 
   @Test
   public void testInvalidPlusExpression() throws IOException {
-    checkError("3+true", "0xA0210");
+    checkError("3+true", "0xA0168");
   }
 
   /**
@@ -111,7 +111,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
 
   @Test
   public void testInvalidMinusExpression() throws IOException {
-    checkError("3-true", "0xA0213");
+    checkError("3-true", "0xA0168");
   }
 
   /**
@@ -128,7 +128,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
 
   @Test
   public void testInvalidMultExpression() throws IOException {
-    checkError("3*true", "0xA0211");
+    checkError("3*true", "0xA0168");
   }
 
   /**
@@ -145,7 +145,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
 
   @Test
   public void testInvalidDivideExpression() throws IOException {
-    checkError("3/true", "0xA0212");
+    checkError("3/true", "0xA0168");
   }
 
   /**
@@ -162,7 +162,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
 
   @Test
   public void testInvalidModuloExpression() throws IOException {
-    checkError("3%true", "0xA0214");
+    checkError("3%true", "0xA0168");
   }
 
   /**
@@ -179,7 +179,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
 
   @Test
   public void testInvalidLessEqualExpression() throws IOException {
-    checkError("3<=true", "0xA0215");
+    checkError("3<=true", "0xA0167");
   }
 
   /**
@@ -196,7 +196,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
 
   @Test
   public void testInvalidGreaterEqualExpression() throws IOException {
-    checkError("3>=true", "0xA0216");
+    checkError("3>=true", "0xA0167");
   }
 
   /**
@@ -213,7 +213,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
 
   @Test
   public void testInvalidLessThanExpression() throws IOException {
-    checkError("3<true", "0xA0217");
+    checkError("3<true", "0xA0167");
   }
 
   /**
@@ -230,7 +230,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
 
   @Test
   public void testInvalidGreaterThanExpression() throws IOException {
-    checkError("3>true", "0xA0218");
+    checkError("3>true", "0xA0167");
   }
 
   /**
@@ -297,7 +297,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
   public void testInvalidEqualsExpression() throws IOException {
     init_basic();
 
-    checkError("3==true", "0xA0219");
+    checkError("3==true", "0xA0166");
   }
 
   @Test
@@ -305,7 +305,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
     init_basic();
 
     //person1 has the type Person, foo is a boolean
-    checkError("person1==foo", "0xA0219");
+    checkError("person1==foo", "0xA0166");
   }
 
   /**
@@ -330,14 +330,14 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
   public void testInvalidNotEqualsExpression() throws IOException {
     init_basic();
 
-    checkError("3!=true", "0xA0220");
+    checkError("3!=true", "0xA0166");
   }
 
   @Test
   public void testInvalidNotEqualsExpression2() throws IOException{
     init_basic();
     //person1 is a Person, foo is a boolean
-    checkError("person1!=foo", "0xA0220");
+    checkError("person1!=foo", "0xA0166");
   }
 
   /**
@@ -354,7 +354,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
   @Test
   public void testInvalidAndOpExpression() throws IOException {
     //only possible with two booleans
-    checkError("3&&true", "0xA0223");
+    checkError("3&&true", "0xA0167");
   }
 
   /**
@@ -371,7 +371,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
   @Test
   public void testInvalidOrOpExpression() throws IOException {
     //only possible with two booleans
-    checkError("3||true", "0xA0226");
+    checkError("3||true", "0xA0167");
   }
 
   /**
@@ -662,7 +662,7 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
   public void testInvalidCallExpressionWithInvalidArgument() throws IOException {
 
     init_advanced();
-    checkErrorsAndFailOnException("isInt(\"foo\" / 2)", "0xA0212");
+    checkErrorsAndFailOnException("isInt(\"foo\" / 2)", "0xA0168");
   }
 
   @Test
