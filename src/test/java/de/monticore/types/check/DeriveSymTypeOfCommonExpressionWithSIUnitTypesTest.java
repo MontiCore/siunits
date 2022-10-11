@@ -412,6 +412,6 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         init_basic();
 
         //true and 7 are not of the same type
-        checkError("3<4?varS:varM", "0xA0234");
+        checkError("3<4?varS:varM", "0xA0164");
     }
 }

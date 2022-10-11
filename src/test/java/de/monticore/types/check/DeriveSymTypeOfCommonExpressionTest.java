@@ -4,7 +4,6 @@ package de.monticore.types.check;
 import com.google.common.collect.Lists;
 import de.monticore.expressions.combineexpressionswithliterals.CombineExpressionsWithLiteralsMill;
 import de.monticore.expressions.combineexpressionswithliterals._parser.CombineExpressionsWithLiteralsParser;
-import de.monticore.expressions.combineexpressionswithliterals._symboltable.CombineExpressionsWithLiteralsScope;
 import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICombineExpressionsWithLiteralsArtifactScope;
 import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICombineExpressionsWithLiteralsGlobalScope;
 import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICombineExpressionsWithLiteralsScope;
@@ -19,6 +18,7 @@ import de.monticore.symbols.oosymbols._symboltable.FieldSymbol;
 import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
 import de.monticore.symbols.oosymbols._symboltable.MethodSymbol;
 import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbol;
+import de.se_rwth.commons.logging.Log;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -440,14 +440,9 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
   @Test
   public void testInvalidConditionalExpression() throws IOException {
     //true and 7 are not of the same type
-    checkError("3<4?true:7", "0xA0234");
+    checkError("3<4?true:7", "0xA0164");
   }
 
-  @Test
-  public void testInvalidConditionalExpression2() throws IOException {
-    //3 is not a boolean condition
-    checkError("3?true:false", "0xA0234");
-  }
   /**
    * test BooleanNotExpression
    */
