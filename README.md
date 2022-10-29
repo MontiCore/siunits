@@ -1,4 +1,5 @@
 # siunits
+
 This documentation is intended for modelers who want to use si unit-based type systems. Language engineers aiming to incorporate
 the si units framework into their languages can find a detailed technical description on the si units project [here](https://github.com/MontiCore/siunits/blob/master/src/main/grammars/de/monticore/SIUnits.md)
 
@@ -58,6 +59,9 @@ by the compiler and the unit information is thrown away at runtime. For instance
 /* (c) https://github.com/MontiCore/monticore */
 package test.de.monticore.lang.testsijava.testsijava;
 
+// This is the generated code for the example above: it has all SI Types expanded
+// It is lesse readable, and would especially be more error prone to write this way
+
 public class Main {
 
     public int main() {
@@ -67,7 +71,6 @@ public class Main {
 
         return (int) ((((calculateTime(v, (distance) * 100.0) * 20) * 60.0) + time) * 60.0);
     }
-
 
     public double calculateTime(double v, double d) {
         double d_R = (double) (d);
