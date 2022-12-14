@@ -5,8 +5,10 @@ package de.monticore.types.check;
 import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
 import de.monticore.lang.testsijava.testsijava._symboltable.ITestSIJavaScope;
+import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaTraverser;
 import de.monticore.siunits.SIUnitsMill;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
+import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
 import de.se_rwth.commons.logging.Log;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -35,6 +37,7 @@ public class SynthesizeSymTypeFromSIUnitTypes4ComputingTest {
 
     @Before
     public void setupForEach() {
+        BasicSymbolsMill.reset();
         TestSIJavaMill.reset();
         TestSIJavaMill.init();
         SIUnitsMill.initializeSIUnits();
@@ -54,6 +57,7 @@ public class SynthesizeSymTypeFromSIUnitTypes4ComputingTest {
     private void check(String control, String s) throws IOException {
         ASTSIUnitType4Computing asttype = parseSIUnitType4Computing(s);
         asttype.setEnclosingScope(scope);
+        asttype.getMCPrimitiveType().setEnclosingScope(BasicSymbolsMill.globalScope());
         SymTypeExpression type = tc.symTypeFromAST(asttype);
         assertEquals(control, printType(type));
     }

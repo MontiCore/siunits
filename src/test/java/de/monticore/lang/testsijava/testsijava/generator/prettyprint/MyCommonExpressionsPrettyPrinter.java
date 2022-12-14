@@ -1,6 +1,7 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.lang.testsijava.testsijava.generator.prettyprint;
 
+import com.google.common.base.Preconditions;
 import de.monticore.expressions.commonexpressions.CommonExpressionsMill;
 import de.monticore.expressions.commonexpressions._ast.*;
 import de.monticore.expressions.commonexpressions._visitor.CommonExpressionsTraverser;
@@ -84,18 +85,12 @@ public class MyCommonExpressionsPrettyPrinter extends CommonExpressionsPrettyPri
         } else {
             node.getExpression().accept(getTraverser());
             printer.print("(");
-            NameToCallExpressionVisitor visitor = new NameToCallExpressionVisitor();
-            CommonExpressionsTraverser traverser = CommonExpressionsMill.traverser();
-            traverser.setCommonExpressionsHandler(visitor);
-            traverser.add4CommonExpressions(visitor);
-            traverser.setExpressionsBasisHandler(visitor);
-            traverser.add4ExpressionsBasis(visitor);
-            node.accept(traverser);
+            Preconditions.checkState(node.getDefiningSymbol().isPresent());
 
             List<FunctionSymbol> functionSymbols = ((ITestSIJavaScope) node.getEnclosingScope())
-                    .resolveFunctionMany(visitor.getLastName());
+                    .resolveFunctionMany(node.getDefiningSymbol().get().getFullName());
             List<MethodSymbol> methodSymbols = ((ITestSIJavaScope) node.getEnclosingScope())
-                    .resolveMethodMany(visitor.getLastName());
+                    .resolveMethodMany(node.getDefiningSymbol().get().getFullName());
             functionSymbols.addAll(methodSymbols);
 
             if (functionSymbols.size() != 1) {

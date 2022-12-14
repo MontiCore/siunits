@@ -9,6 +9,7 @@ import de.monticore.expressions.combineexpressionswithsiunitliterals._parser.Com
 import de.monticore.expressions.combineexpressionswithsiunitliterals._symboltable.ICombineExpressionsWithSIUnitLiteralsScope;
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.expressions.expressionsbasis._visitor.ExpressionsBasisTraverser;
+import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -58,17 +59,17 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
 
     @Test
     public void testInvalidPlusExpression1() throws IOException {
-        checkError("4.1km/h + 12m", "0xA0210");
+        checkError("4.1km/h + 12m", "0xA0168");
     }
 
     @Test
     public void testInvalidPlusExpression2() throws IOException {
-        checkError("4.1km/h + 12", "0xA0210");
+        checkError("4.1km/h + 12", "0xA0168");
     }
 
     @Test
     public void testInvalidPlusExpression3() throws IOException {
-        checkError("varM + 2 m", "0xA0210");
+        checkError("varM + 2 m", "0xA0168");
     }
 
     /**
@@ -82,17 +83,17 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
 
     @Test
     public void testInvalidMinusExpression1() throws IOException {
-        checkError("4.1km/h - 12m", "0xA0213");
+        checkError("4.1km/h - 12m", "0xA0168");
     }
 
     @Test
     public void testInvalidMinusExpression2() throws IOException {
-        checkError("4.1km/h - 12", "0xA0213");
+        checkError("4.1km/h - 12", "0xA0168");
     }
 
     @Test
     public void testInvalidMinusExpression3() throws IOException {
-        checkError("varM - 2 m", "0xA0213");
+        checkError("varM - 2 m", "0xA0168");
     }
 
     /**
@@ -121,7 +122,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
 
     @Test
     public void testInvalidMultExpression() throws IOException {
-        checkError("3 m*true", "0xA0211");
+        checkError("3 m*true", "0xA0168");
     }
 
     /**
@@ -152,7 +153,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
 
     @Test
     public void testInvalidDivideExpression() throws IOException {
-        checkError("3 m/true", "0xA0212");
+        checkError("3 m/true", "0xA0168");
     }
 
     /**
@@ -166,7 +167,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
 
     @Test
     public void testInvalidModuloExpression() throws IOException {
-        checkError("3 m%2", "0xA0214");
+        checkError("3 m%2", "0xA0168");
     }
 
     /**
@@ -180,12 +181,12 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
 
     @Test
     public void testInvalidLessEqualExpression1() throws IOException {
-        checkError("4.1km <= 12s", "0xA0215");
+        checkError("4.1km <= 12s", "0xA0167");
     }
 
     @Test
     public void testInvalidLessEqualExpression2() throws IOException {
-        checkError("varS <= varM", "0xA0215");
+        checkError("varS <= varM", "0xA0167");
     }
 
     /**
@@ -199,12 +200,12 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
 
     @Test
     public void testInvalidGreaterEqualExpression1() throws IOException {
-        checkError("4.1km >= 12s", "0xA0216");
+        checkError("4.1km >= 12s", "0xA0167");
     }
 
     @Test
     public void testInvalidGreaterEqualExpression2() throws IOException {
-        checkError("varM >= 3 m", "0xA0216");
+        checkError("varM >= 3 m", "0xA0167");
     }
 
     /**
@@ -218,12 +219,12 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
 
     @Test
     public void testInvalidLessThanExpression1() throws IOException {
-        checkError("4.1km < 12s", "0xA0217");
+        checkError("4.1km < 12s", "0xA0167");
     }
 
     @Test
     public void testInvalidLessThanExpression2() throws IOException {
-        checkError("varS < 12s", "0xA0217");
+        checkError("varS < 12s", "0xA0167");
     }
 
     /**
@@ -237,12 +238,12 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
 
     @Test
     public void testInvalidGreaterThanExpression1() throws IOException {
-        checkError("4.1km > 12s", "0xA0218");
+        checkError("4.1km > 12s", "0xA0167");
     }
 
     @Test
     public void testInvalidGreaterThanExpression2() throws IOException {
-        checkError("4.1km > varM", "0xA0218");
+        checkError("4.1km > varM", "0xA0167");
     }
 
     private ICombineExpressionsWithSIUnitLiteralsScope scope;
@@ -256,6 +257,8 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         scope.setEnclosingScope(null);     // No enclosing Scope: Search ending here
         scope.setExportingSymbols(true);
         scope.setAstNode(null);
+        BasicSymbolsMill.reset();
+        BasicSymbolsMill.initializePrimitives();
 
         // SIUnits
         SymTypeExpression s = SIUnitSymTypeExpressionFactory.createSIUnit("s", scope);
@@ -305,7 +308,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     public void testInvalidEqualsExpression1() throws IOException {
         init_basic();
 
-        checkError("varM==3 m", "0xA0219");
+        checkError("varM==3 m", "0xA0166");
     }
 
     @Test
@@ -313,7 +316,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         init_basic();
 
         //person1 has the type Person, foo is a boolean
-        checkError("varI_M==3", "0xA0219");
+        checkError("varI_M==3", "0xA0166");
     }
 
     /**
@@ -335,14 +338,14 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     public void testInvalidNotEqualsExpression() throws IOException {
         init_basic();
 
-        checkError("varM!=varI_M", "0xA0220");
+        checkError("varM!=varI_M", "0xA0166");
     }
 
     @Test
     public void testInvalidNotEqualsExpression2() throws IOException {
         init_basic();
         //person1 is a Person, foo is a boolean
-        checkError("varM!=3", "0xA0220");
+        checkError("varM!=3", "0xA0166");
     }
 
     /**
@@ -356,7 +359,7 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     @Test
     public void testInvalidAndOpExpression() throws IOException {
         //only possible with two booleans
-        checkError("3 km &&true", "0xA0223");
+        checkError("3 km &&true", "0xA0167");
     }
 
     /**
@@ -370,13 +373,13 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     @Test
     public void testInvalidOrOpExpression() throws IOException {
         //only possible with two booleans
-        checkError("3 m||true", "0xA0226");
+        checkError("3 m||true", "0xA0167");
     }
 
     @Test
     public void testInvalidLogicalNotExpression() throws IOException {
         //only possible with a boolean as inner expression
-        checkError("!4 m", "0xA0228");
+        checkError("!4 m", "0xA0171");
     }
 
     /**
@@ -409,6 +412,6 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         init_basic();
 
         //true and 7 are not of the same type
-        checkError("3<4?varS:varM", "0xA0234");
+        checkError("3<4?varS:varM", "0xA0164");
     }
 }
