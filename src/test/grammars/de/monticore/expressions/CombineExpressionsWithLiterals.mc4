@@ -21,4 +21,6 @@ grammar CombineExpressionsWithLiterals extends
 
     @Override
     ExtTypeArgument = MCTypeArgument;
+
+    MyModifier implements MCModifier = "public" ;
 }
