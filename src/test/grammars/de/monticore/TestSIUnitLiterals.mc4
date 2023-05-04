@@ -5,4 +5,6 @@ package de.monticore;
 grammar TestSIUnitLiterals extends de.monticore.SIUnitLiterals,
                                     de.monticore.symbols.OOSymbols {
 
+  start Literal;
+
 }
