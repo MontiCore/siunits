@@ -9,6 +9,7 @@ import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
 import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
 import de.monticore.symbols.basicsymbols._symboltable.TypeSymbol;
 import de.se_rwth.commons.logging.*;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -23,10 +24,9 @@ public class DeriveSymTypeOfMCCommonLiteralsTest {
    *    literals/MCLiteralsBasis.mc4
    */
 
-  @BeforeClass
-  public static void init() {
-    LogStub.init();         // replace log by a sideffect free variant
-    // LogStub.initPlusLog();  // for manual testing purpose only
+  @Before
+  public void init() {
+    LogStub.init();
     Log.enableFailQuick(false);
     CombineExpressionsWithLiteralsMill.reset();
     CombineExpressionsWithLiteralsMill.init();

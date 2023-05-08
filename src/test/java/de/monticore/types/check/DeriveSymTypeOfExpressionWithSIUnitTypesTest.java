@@ -8,6 +8,8 @@ import de.monticore.expressions.combineexpressionswithsiunitliterals._parser.Com
 import de.monticore.expressions.combineexpressionswithsiunitliterals._symboltable.ICombineExpressionsWithSIUnitLiteralsScope;
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.expressions.expressionsbasis._visitor.ExpressionsBasisTraverser;
+import de.monticore.siunits.SIUnitsMill;
+import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,9 +41,12 @@ public class DeriveSymTypeOfExpressionWithSIUnitTypesTest extends DeriveSymTypeA
         setTypeCheck(new TypeCalculator(null, derLit));
     }
 
+    @Override
     @Before
     public void setupForEach() {
-        super.setupForEach();
+        CombineExpressionsWithSIUnitLiteralsMill.reset();
+        CombineExpressionsWithSIUnitLiteralsMill.init();
+        SIUnitsMill.initializeSIUnits();
         // No enclosing Scope: Search ending here
         ICombineExpressionsWithSIUnitLiteralsScope scope = CombineExpressionsWithSIUnitLiteralsMill.scope();
         scope.setEnclosingScope(null);       // No enclosing Scope: Search ending here

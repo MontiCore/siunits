@@ -26,6 +26,41 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
      * lang/literals/SIUnitLiterals.mc4
      */
 
+    @Before
+    public void init_basic() {
+        CombineExpressionsWithSIUnitLiteralsMill.reset();
+        CombineExpressionsWithSIUnitLiteralsMill.init();
+        scope = CombineExpressionsWithSIUnitLiteralsMill.scope();
+        scope.setEnclosingScope(null);     // No enclosing Scope: Search ending here
+        scope.setExportingSymbols(true);
+        scope.setAstNode(null);
+        BasicSymbolsMill.initializePrimitives();
+
+        // SIUnits
+        SymTypeExpression s = SIUnitSymTypeExpressionFactory.createSIUnit("s", scope);
+        SymTypeExpression m = SIUnitSymTypeExpressionFactory.createSIUnit("m", scope);
+        SymTypeExpression kMe2perH = SIUnitSymTypeExpressionFactory.createSIUnit("km^2/h", scope);
+        SymTypeExpression kMe2perHMSe4 = SIUnitSymTypeExpressionFactory.createSIUnit("km^2/(h*ms^4)", scope);
+
+        // Constants
+        SymTypePrimitive d = SIUnitSymTypeExpressionFactory.createPrimitive("double");
+        SymTypePrimitive i = SIUnitSymTypeExpressionFactory.createPrimitive("int");
+        SymTypePrimitive l = SIUnitSymTypeExpressionFactory.createPrimitive("long");
+
+        // SIUnitLiterals
+        add2scope(scope, field("varD_S", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(d, s, scope)));
+        add2scope(scope, field("varI_M", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(i, m, scope)));
+        add2scope(scope, field("varD_M", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(d, m, scope)));
+        add2scope(scope, field("varL_KMe2perH", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(l, kMe2perH, scope)));
+        add2scope(scope, field("varD_KMe2perHmSe4", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(d, kMe2perHMSe4, scope)));
+
+        add2scope(scope, field("varS", s));
+        add2scope(scope, field("varM", m));
+        add2scope(scope, field("varKMe2perH", kMe2perH));
+        add2scope(scope, field("varKMe2perHMSe4", kMe2perHMSe4));
+
+        setFlatExpressionScopeSetter(scope);
+    }
     @Override
     public void setupTypeCheck() {
         // This is an auxiliary
@@ -247,44 +282,6 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
     }
 
     private ICombineExpressionsWithSIUnitLiteralsScope scope;
-
-    /**
-     * initialize basic scope and a few symbols for testing
-     */
-    @Before
-    public void init_basic() {
-        scope = CombineExpressionsWithSIUnitLiteralsMill.scope();
-        scope.setEnclosingScope(null);     // No enclosing Scope: Search ending here
-        scope.setExportingSymbols(true);
-        scope.setAstNode(null);
-        BasicSymbolsMill.reset();
-        BasicSymbolsMill.initializePrimitives();
-
-        // SIUnits
-        SymTypeExpression s = SIUnitSymTypeExpressionFactory.createSIUnit("s", scope);
-        SymTypeExpression m = SIUnitSymTypeExpressionFactory.createSIUnit("m", scope);
-        SymTypeExpression kMe2perH = SIUnitSymTypeExpressionFactory.createSIUnit("km^2/h", scope);
-        SymTypeExpression kMe2perHMSe4 = SIUnitSymTypeExpressionFactory.createSIUnit("km^2/(h*ms^4)", scope);
-
-        // Constants
-        SymTypePrimitive d = SIUnitSymTypeExpressionFactory.createPrimitive("double");
-        SymTypePrimitive i = SIUnitSymTypeExpressionFactory.createPrimitive("int");
-        SymTypePrimitive l = SIUnitSymTypeExpressionFactory.createPrimitive("long");
-
-        // SIUnitLiterals
-        add2scope(scope, field("varD_S", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(d, s, scope)));
-        add2scope(scope, field("varI_M", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(i, m, scope)));
-        add2scope(scope, field("varD_M", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(d, m, scope)));
-        add2scope(scope, field("varL_KMe2perH", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(l, kMe2perH, scope)));
-        add2scope(scope, field("varD_KMe2perHmSe4", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(d, kMe2perHMSe4, scope)));
-
-        add2scope(scope, field("varS", s));
-        add2scope(scope, field("varM", m));
-        add2scope(scope, field("varKMe2perH", kMe2perH));
-        add2scope(scope, field("varKMe2perHMSe4", kMe2perHMSe4));
-
-        setFlatExpressionScopeSetter(scope);
-    }
 
     /**
      * test EqualsExpression

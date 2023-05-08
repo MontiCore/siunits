@@ -39,6 +39,7 @@ public class DeriveSymTypeOfAssignmentExpressionWithSIUnitTypesTest extends Deri
         return CombineExpressionsWithSIUnitLiteralsMill.traverser();
     }
 
+    @Override
     @Before
     public void setupForEach() {
         CombineExpressionsWithSIUnitLiteralsMill.reset();

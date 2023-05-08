@@ -4,13 +4,11 @@ package de.monticore.types.check;
 
 import de.monticore.literals.mcliteralsbasis._ast.ASTLiteral;
 import de.monticore.siunits.SIUnitsMill;
-import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
 import de.monticore.testsiunitliterals.TestSIUnitLiteralsMill;
 import de.monticore.testsiunitliterals._parser.TestSIUnitLiteralsParser;
 import de.monticore.testsiunitliterals._symboltable.ITestSIUnitLiteralsScope;
 import de.se_rwth.commons.logging.Log;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -24,18 +22,15 @@ public class DeriveSymTypeOfSIUnitLiteralsTest {
      *    literals/SIUnitLiterals.mc4
      */
 
-    @BeforeClass
-    public static void setup() {
-        Log.init();
-        Log.enableFailQuick(false);
-        TestSIUnitLiteralsMill.reset();
-        TestSIUnitLiteralsMill.init();
-        SIUnitsMill.initializeSIUnits();   }
-
     protected ITestSIUnitLiteralsScope scope;
 
     @Before
     public void setupForEach() {
+        Log.init();
+        Log.enableFailQuick(false);
+        TestSIUnitLiteralsMill.reset();
+        TestSIUnitLiteralsMill.init();
+        SIUnitsMill.initializeSIUnits();
         scope = TestSIUnitLiteralsMill.scope();
         scope.setEnclosingScope(null);       // No enclosing Scope: Search ending here
         scope.setExportingSymbols(true);

@@ -19,6 +19,7 @@ import de.monticore.symbols.oosymbols._symboltable.IOOSymbolsScope;
 import de.monticore.symbols.oosymbols._symboltable.MethodSymbol;
 import de.monticore.symbols.oosymbols._symboltable.OOTypeSymbol;
 import de.se_rwth.commons.logging.Log;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -42,8 +43,8 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
   }
 
   @Override
+  @Before
   public void setupForEach(){
-    super.setupForEach();
     // No enclosing Scopes: Search ending here
     CombineExpressionsWithLiteralsMill.reset();
     CombineExpressionsWithLiteralsMill.init();

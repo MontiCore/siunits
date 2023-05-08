@@ -7,7 +7,7 @@ import de.monticore.expressions.combineexpressionswithliterals._parser.CombineEx
 import de.monticore.expressions.combineexpressionswithliterals._symboltable.ICombineExpressionsWithLiteralsScope;
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.expressions.expressionsbasis._visitor.ExpressionsBasisTraverser;
-import de.monticore.siunits.SIUnitsMill;
+import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
 import de.monticore.symbols.basicsymbols._symboltable.TypeVarSymbol;
 import de.monticore.symbols.oosymbols.OOSymbolsMill;
 import de.monticore.symbols.oosymbols._symboltable.FieldSymbol;
@@ -28,12 +28,13 @@ public class DeriveSymTypeOfExpressionTest extends DeriveSymTypeAbstractTest {
    */
   private ICombineExpressionsWithLiteralsScope scope;
 
+  @Override
   @Before
   public void setupForEach() {
     // Setting up a Scope Infrastructure (without a global Scope)
     CombineExpressionsWithLiteralsMill.reset();
     CombineExpressionsWithLiteralsMill.init();
-    SIUnitsMill.initializeSIUnits();
+    BasicSymbolsMill.initializePrimitives();
     scope = CombineExpressionsWithLiteralsMill.scope();
     scope.setEnclosingScope(null);       // No enclosing Scope: Search ending here
     scope.setExportingSymbols(true);

@@ -8,7 +8,7 @@ import de.monticore.siunits.utility.SIUnitConstants;
 import de.monticore.siunits.utility.UnitPrettyPrinter;
 import de.se_rwth.commons.logging.Log;
 import de.se_rwth.commons.logging.LogStub;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -23,10 +23,13 @@ public class SIUnitTest {
 
     SIUnitsParser parser = new SIUnitsParser();
 
-    @BeforeClass
-    public static void init() {
+    @Before
+    public void init() {
         LogStub.init();
         Log.enableFailQuick(false);
+        SIUnitsMill.reset();
+        SIUnitsMill.init();
+        SIUnitsMill.initializeSIUnits();
     }
 
     private void checkSIUnit(String s, String unitAsString, String baseUnitAsString) throws IOException {

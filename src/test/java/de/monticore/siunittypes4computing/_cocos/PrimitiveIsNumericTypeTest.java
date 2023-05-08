@@ -2,11 +2,14 @@
 
 package de.monticore.siunittypes4computing._cocos;
 
+import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
+import de.monticore.siunits.SIUnitsMill;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitTypes4ComputingNode;
 import de.se_rwth.commons.logging.Log;
 import de.se_rwth.commons.logging.LogStub;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,6 +23,9 @@ public class PrimitiveIsNumericTypeTest {
     public void init() {
         LogStub.init();
         Log.enableFailQuick(false);
+        TestSIJavaMill.reset();
+        TestSIJavaMill.init();
+        SIUnitsMill.initializeSIUnits();
     }
 
     @Test

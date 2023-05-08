@@ -1,6 +1,7 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.expressions.combineexpressionswithliterals._cocos;
 
+import de.monticore.expressions.combineexpressionswithliterals.CombineExpressionsWithLiteralsMill;
 import de.monticore.expressions.combineexpressionswithliterals._parser.CombineExpressionsWithLiteralsParser;
 import de.monticore.expressions.javaclassexpressions._ast.ASTClassExpression;
 import de.monticore.expressions.javaclassexpressions._ast.ASTJavaClassExpressionsNode;
@@ -23,6 +24,8 @@ public class TestNoClassExpressionForGenerics {
   public void setup(){
     LogStub.init();
     Log.enableFailQuick(false);
+    CombineExpressionsWithLiteralsMill.reset();
+    CombineExpressionsWithLiteralsMill.init();
   }
 
   @Test
