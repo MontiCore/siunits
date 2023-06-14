@@ -24,7 +24,6 @@ public class DeriveSymTypeOfAssignmentExpressionTest extends DeriveSymTypeAbstra
 
     private CombineExpressionsWithSIUnitLiteralsTraverser traverser;
 
-    @Override
     @Before
     public void setupForEach() {
         // Setting up a Scope Infrastructure (without a global Scope)

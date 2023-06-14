@@ -42,7 +42,6 @@ public class DeriveSymTypeOfCommonExpressionTest extends DeriveSymTypeAbstractTe
     setTypeCheck(new TypeCalculator(null, derLit));
   }
 
-  @Override
   @Before
   public void setupForEach(){
     // No enclosing Scopes: Search ending here

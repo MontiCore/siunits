@@ -41,7 +41,6 @@ public class DeriveSymTypeOfExpressionWithSIUnitTypesTest extends DeriveSymTypeA
         setTypeCheck(new TypeCalculator(null, derLit));
     }
 
-    @Override
     @Before
     public void setupForEach() {
         CombineExpressionsWithSIUnitLiteralsMill.reset();

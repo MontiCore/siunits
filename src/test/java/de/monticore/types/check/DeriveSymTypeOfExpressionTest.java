@@ -28,7 +28,6 @@ public class DeriveSymTypeOfExpressionTest extends DeriveSymTypeAbstractTest {
    */
   private ICombineExpressionsWithLiteralsScope scope;
 
-  @Override
   @Before
   public void setupForEach() {
     // Setting up a Scope Infrastructure (without a global Scope)
