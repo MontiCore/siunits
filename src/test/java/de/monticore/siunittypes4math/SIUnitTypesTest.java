@@ -2,8 +2,10 @@
 
 package de.monticore.siunittypes4math;
 
+import de.monticore.siunits.SIUnitsMill;
 import de.monticore.siunittypes4math._ast.ASTSIUnitType;
 import de.monticore.siunittypes4math.prettyprint.SIUnitTypes4MathPrettyPrinter;
+import de.monticore.testsiunittypes.TestSIUnitTypesMill;
 import de.monticore.testsiunittypes._parser.TestSIUnitTypesParser;
 import de.monticore.types.mcbasictypes._ast.ASTMCType;
 import de.se_rwth.commons.logging.Log;
@@ -25,6 +27,9 @@ public class SIUnitTypesTest {
     public void init() {
         LogStub.init();
         Log.enableFailQuick(false);
+        TestSIUnitTypesMill.reset();
+        TestSIUnitTypesMill.init();
+        SIUnitsMill.initializeSIUnits();
     }
 
     @Test

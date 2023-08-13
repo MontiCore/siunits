@@ -9,9 +9,11 @@ import de.monticore.siunitliterals._ast.ASTSIUnitLiteral;
 import de.monticore.siunitliterals.utility.SIUnitLiteralDecoder;
 import de.monticore.siunits.prettyprint.SIUnitsPrettyPrinter;
 import de.monticore.siunits.utility.UnitPrettyPrinter;
+import de.monticore.testsiunitliterals.TestSIUnitLiteralsMill;
 import de.monticore.testsiunitliterals._parser.TestSIUnitLiteralsParser;
 import de.se_rwth.commons.logging.Log;
-import org.junit.BeforeClass;
+import de.se_rwth.commons.logging.LogStub;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -22,10 +24,12 @@ import static org.junit.Assert.*;
 
 public class SIUnitLiteralsTest {
 
-    @BeforeClass
-    public static void init() {
-        Log.init();
+    @Before
+    public void init() {
+        LogStub.init();
         Log.enableFailQuick(false);
+        TestSIUnitLiteralsMill.reset();
+        TestSIUnitLiteralsMill.init();
     }
 
     private void checkSIUnitLiteral(String s, double number, String unit, double value,

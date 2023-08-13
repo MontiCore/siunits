@@ -5,13 +5,11 @@ package de.monticore.types.check;
 import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
 import de.monticore.lang.testsijava.testsijava._symboltable.ITestSIJavaScope;
-import de.monticore.lang.testsijava.testsijava._visitor.TestSIJavaTraverser;
 import de.monticore.siunits.SIUnitsMill;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
 import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
 import de.se_rwth.commons.logging.Log;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -27,20 +25,17 @@ public class SynthesizeSymTypeFromSIUnitTypes4ComputingTest {
     // This is the TypeChecker under Test:
     private TypeCalculator tc = new TypeCalculator(new SynthesizeSymTypeOfCombinedTypes(), null);
 
-    @BeforeClass
-    public static void setup() {
-        Log.init();
-        Log.enableFailQuick(false);
-    }
-
     ITestSIJavaScope scope;
 
     @Before
     public void setupForEach() {
-        BasicSymbolsMill.reset();
+        Log.init();
+        Log.enableFailQuick(false);
+
         TestSIJavaMill.reset();
         TestSIJavaMill.init();
         SIUnitsMill.initializeSIUnits();
+
         scope = TestSIJavaMill.scope();
         scope.setEnclosingScope(null);     // No enclosing Scope: Search ending here
         scope.setExportingSymbols(true);

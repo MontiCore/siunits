@@ -2,9 +2,12 @@
 
 package de.monticore.lang.testsijava;
 
+import de.monticore.lang.testsijava.testsijavawithcustomtypes.TestSIJavaWithCustomTypesMill;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._ast.ASTSIJavaClass;
 import de.monticore.lang.testsijava.testsijavawithcustomtypes._parser.TestSIJavaWithCustomTypesParser;
+import de.monticore.siunits.SIUnitsMill;
 import de.se_rwth.commons.logging.Log;
+import de.se_rwth.commons.logging.LogStub;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,8 +20,11 @@ public class SIJavaWithCustomTypesTest {
 
     @Before
     public void init() {
-        Log.init();
+        LogStub.init();
         Log.enableFailQuick(false);
+        TestSIJavaWithCustomTypesMill.reset();
+        TestSIJavaWithCustomTypesMill.init();
+        SIUnitsMill.initializeSIUnits();
     }
 
     private ASTSIJavaClass parseModel(String input) {

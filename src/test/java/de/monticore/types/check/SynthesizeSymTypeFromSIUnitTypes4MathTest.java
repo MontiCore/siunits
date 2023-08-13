@@ -10,7 +10,6 @@ import de.monticore.siunits.utility.UnitPrettyPrinter;
 import de.monticore.siunittypes4math._ast.ASTSIUnitType;
 import de.se_rwth.commons.logging.Log;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -26,19 +25,17 @@ public class SynthesizeSymTypeFromSIUnitTypes4MathTest {
     // This is the TypeChecker under Test:
     private TypeCalculator tc = new TypeCalculator(new SynthesizeSymTypeOfCombinedTypes(), null);
 
-    @BeforeClass
-    public static void setup() {
-        Log.init();
-        Log.enableFailQuick(false);
-    }
-
     ITestSIJavaScope scope;
 
     @Before
     public void setupForEach() {
+        Log.init();
+        Log.enableFailQuick(false);
+
         TestSIJavaMill.reset();
         TestSIJavaMill.init();
         SIUnitsMill.initializeSIUnits();
+
         scope = TestSIJavaMill.scope();
         scope.setEnclosingScope(null);     // No enclosing Scope: Search ending here
         scope.setExportingSymbols(true);

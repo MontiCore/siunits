@@ -2,12 +2,13 @@
 
 package de.monticore.siunits.utility;
 
+import de.monticore.siunits.SIUnitsMill;
 import de.monticore.siunits._ast.ASTSIUnit;
 import de.monticore.siunits._parser.SIUnitsParser;
+import de.se_rwth.commons.logging.Log;
 import de.se_rwth.commons.logging.LogStub;
 import org.junit.Before;
 import org.junit.Test;
-
 import javax.measure.unit.Unit;
 import java.io.IOException;
 import java.io.StringReader;
@@ -20,6 +21,10 @@ public class UnitPrettyPrinterTest {
     @Before
     public void init() {
         LogStub.init();
+        Log.enableFailQuick(false);
+        SIUnitsMill.reset();
+        SIUnitsMill.init();
+        SIUnitsMill.initializeSIUnits();
     }
 
     @Test

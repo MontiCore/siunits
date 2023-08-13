@@ -2,9 +2,12 @@
 
 package de.monticore.lang.testsijava;
 
+import de.monticore.lang.testsijava.testsijava.TestSIJavaMill;
 import de.monticore.lang.testsijava.testsijava._ast.ASTSIJavaClass;
 import de.monticore.lang.testsijava.testsijava._parser.TestSIJavaParser;
+import de.monticore.siunits.SIUnitsMill;
 import de.se_rwth.commons.logging.Log;
+import de.se_rwth.commons.logging.LogStub;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,8 +20,11 @@ public class SIJavaTest {
 
     @Before
     public void init() {
-        Log.init();
+        LogStub.init();
         Log.enableFailQuick(true);
+        TestSIJavaMill.reset();
+        TestSIJavaMill.init();
+        SIUnitsMill.initializeSIUnits();
     }
 
     private ASTSIJavaClass parseModel(String input) {
