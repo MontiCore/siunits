@@ -13,14 +13,5 @@ grammar CombineExpressionsWithLiterals extends
 
     Foo="bar" Expression;
 
-    @Override
-    ExtType = MCType;
-
-    @Override
-    ExtReturnType = MCReturnType;
-
-    @Override
-    ExtTypeArgument = MCTypeArgument;
-
     MyModifier implements MCModifier = "public" ;
 }

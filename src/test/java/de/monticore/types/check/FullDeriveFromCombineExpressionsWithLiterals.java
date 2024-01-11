@@ -23,10 +23,6 @@ public class FullDeriveFromCombineExpressionsWithLiterals extends AbstractDerive
 
   private DeriveSymTypeOfMCCommonLiterals deriveSymTypeOfMCCommonLiterals;
 
-  private DeriveSymTypeOfCombineExpressions deriveSymTypeOfCombineExpressions;
-
-  private FullSynthesizeFromCombineExpressionsWithLiterals synthesizer;
-
   public FullDeriveFromCombineExpressionsWithLiterals() {
     this(CombineExpressionsWithLiteralsMill.traverser());
   }
@@ -47,7 +43,6 @@ public class FullDeriveFromCombineExpressionsWithLiterals extends AbstractDerive
     deriveSymTypeOfLiterals.setTypeCheckResult(typeCheckResult);
     deriveSymTypeOfBitExpressions.setTypeCheckResult(typeCheckResult);
     deriveSymTypeOfJavaClassExpressions.setTypeCheckResult(typeCheckResult);
-    deriveSymTypeOfCombineExpressions.setTypeCheckResult(typeCheckResult);
   }
 
   /**
@@ -61,8 +56,6 @@ public class FullDeriveFromCombineExpressionsWithLiterals extends AbstractDerive
     deriveSymTypeOfLiterals = new DeriveSymTypeOfLiterals();
     deriveSymTypeOfBitExpressions = new DeriveSymTypeOfBitExpressions();
     deriveSymTypeOfJavaClassExpressions = new DeriveSymTypeOfJavaClassExpressions();
-    synthesizer = new FullSynthesizeFromCombineExpressionsWithLiterals();
-    deriveSymTypeOfCombineExpressions = new DeriveSymTypeOfCombineExpressions(synthesizer);
     setTypeCheckResult(getTypeCheckResult());
 
     traverser.add4CommonExpressions(deriveSymTypeOfCommonExpressions);
@@ -77,7 +70,5 @@ public class FullDeriveFromCombineExpressionsWithLiterals extends AbstractDerive
     traverser.setBitExpressionsHandler(deriveSymTypeOfBitExpressions);
     traverser.add4JavaClassExpressions(deriveSymTypeOfJavaClassExpressions);
     traverser.setJavaClassExpressionsHandler(deriveSymTypeOfJavaClassExpressions);
-    traverser.add4CombineExpressionsWithLiterals(deriveSymTypeOfCombineExpressions);
-    traverser.setCombineExpressionsWithLiteralsHandler(deriveSymTypeOfCombineExpressions);
   }
 }
