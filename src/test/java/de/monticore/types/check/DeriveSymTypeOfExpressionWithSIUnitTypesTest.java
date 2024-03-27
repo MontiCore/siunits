@@ -1,15 +1,12 @@
 /* (c) https://github.com/MontiCore/monticore */
 package de.monticore.types.check;
 
-import de.monticore.expressions.combineexpressionswithliterals.CombineExpressionsWithLiteralsMill;
-import de.monticore.expressions.combineexpressionswithliterals._parser.CombineExpressionsWithLiteralsParser;
 import de.monticore.expressions.combineexpressionswithsiunitliterals.CombineExpressionsWithSIUnitLiteralsMill;
 import de.monticore.expressions.combineexpressionswithsiunitliterals._parser.CombineExpressionsWithSIUnitLiteralsParser;
 import de.monticore.expressions.combineexpressionswithsiunitliterals._symboltable.ICombineExpressionsWithSIUnitLiteralsScope;
 import de.monticore.expressions.expressionsbasis._ast.ASTExpression;
 import de.monticore.expressions.expressionsbasis._visitor.ExpressionsBasisTraverser;
 import de.monticore.siunits.SIUnitsMill;
-import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,9 +49,9 @@ public class DeriveSymTypeOfExpressionWithSIUnitTypesTest extends DeriveSymTypeA
         scope.setExportingSymbols(true);
         scope .setAstNode(null);
 
-        add2scope(scope, field("varM", SIUnitSymTypeExpressionFactory.createSIUnit("m", scope)));
-        add2scope(scope, field("varKM", SIUnitSymTypeExpressionFactory.createSIUnit("km", scope)));
-        add2scope(scope, field("varS", SIUnitSymTypeExpressionFactory.createSIUnit("s", scope)));
+        add2scope(scope, field("varM", SIUnitSymTypeExpressionFactory._deprecated_createSIUnit("m", scope)));
+        add2scope(scope, field("varKM", SIUnitSymTypeExpressionFactory._deprecated_createSIUnit("km", scope)));
+        add2scope(scope, field("varS", SIUnitSymTypeExpressionFactory._deprecated_createSIUnit("s", scope)));
 
         setFlatExpressionScopeSetter(scope);
     }

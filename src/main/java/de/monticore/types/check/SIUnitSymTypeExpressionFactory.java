@@ -3,7 +3,6 @@
 package de.monticore.types.check;
 
 import com.google.common.collect.Lists;
-import de.monticore.siunits.SIUnitsMill;
 import de.monticore.siunits.utility.UnitPrettyPrinter;
 import de.monticore.symbols.basicsymbols.BasicSymbolsMill;
 import de.monticore.symbols.basicsymbols._symboltable.IBasicSymbolsScope;
@@ -24,20 +23,24 @@ import static de.monticore.types.check.TypeCheck.*;
  * the SymTypeOfSIUnit or SymTypeOfNumericWithSIUnit
  * This factory therefore should be the only source to create those SymTypeExpressions.
  * No other source is needed.
+ * @deprecated these functions are now in SymTypeExpressionFactory,
+ * albeit implemented differently, with a different signature
  */
+@Deprecated
 public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
     /**
      * createSIUnitBasic: for SIUnitBasicTypes
      *
      * @param name Of form deg, m, km^2, ...
      */
-    public static SymTypeOfSIUnitBasic createSIUnitBasic(String name) {
+    @Deprecated
+    public static SymTypeOfSIUnitBasic _deprecated_createSIUnitBasic(String name) {
         if (!name.contains("^"))
-            return createSIUnitBasic(name, null);
+            return _deprecated_createSIUnitBasic(name, null);
         else {
             String nameWithPrefix = name.split("\\^")[0];
             Integer exponent = Integer.parseInt(name.split("\\^")[1]);
-            return createSIUnitBasic(nameWithPrefix, exponent);
+            return _deprecated_createSIUnitBasic(nameWithPrefix, exponent);
         }
     }
 
@@ -47,7 +50,8 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
      * @param nameWithPrefix Of form deg, m, km, ...
      * @param exponent       The exponent of the BasicType
      */
-    public static SymTypeOfSIUnitBasic createSIUnitBasic(String nameWithPrefix, Integer exponent) {
+    @Deprecated
+    public static SymTypeOfSIUnitBasic _deprecated_createSIUnitBasic(String nameWithPrefix, Integer exponent) {
         SymTypeOfSIUnitBasic symType = null;
 
         if (nameWithPrefix.equals("kL")){
@@ -80,7 +84,8 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
         return symType;
     }
 
-    public static SymTypeOfSIUnitBasic createSIUnitBasic(TypeSymbol typeSymbol) {
+    @Deprecated
+    public static SymTypeOfSIUnitBasic _deprecated_createSIUnitBasic(TypeSymbol typeSymbol) {
         return new SymTypeOfSIUnitBasic(typeSymbol);
     }
 
@@ -91,7 +96,8 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
      * @param name           Of form km^2*s/kg, ...
      * @param enclosingScope The node's enclosing scope
      */
-    public static SymTypeExpression createSIUnit(String name, IBasicSymbolsScope enclosingScope) {
+    @Deprecated
+    public static SymTypeExpression _deprecated_createSIUnit(String name, IBasicSymbolsScope enclosingScope) {
         String formattedStandard = UnitPrettyPrinter.printUnit(name);
         String[] split = formattedStandard.split("\\/");
         List<String> numeratorStringList = Arrays.asList(split[0].split("\\*"));
@@ -106,17 +112,18 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
         }
         Optional<TypeSymbol> type = BasicSymbolsMill.globalScope().resolveTypeLocally(formattedStandard);
         if (type.isPresent()) {
-            return createSIUnit(numeratorStringList, denominatorStringList, type.get());
+            return _deprecated_createSIUnit(numeratorStringList, denominatorStringList, type.get());
         } else {
             TypeSymbol loader = BasicSymbolsMill.typeSymbolBuilder().setName(formattedStandard).
                     setEnclosingScope(enclosingScope).build();
             BasicSymbolsMill.globalScope().add(loader);
-            return createSIUnit(numeratorStringList, denominatorStringList, loader);
+            return _deprecated_createSIUnit(numeratorStringList, denominatorStringList, loader);
         }
     }
 
-    public static SymTypeExpression createSIUnit(String name) {
-        return createSIUnit(name, BasicSymbolsMill.globalScope());
+    @Deprecated
+    public static SymTypeExpression _deprecated_createSIUnit(String name) {
+        return _deprecated_createSIUnit(name, BasicSymbolsMill.globalScope());
     }
 
     /**
@@ -127,7 +134,8 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
      * @param denominator    List of the denominator SIBasicTypes
      * @param enclosingScope The node's enclosing scope
      */
-    public static SymTypeExpression createSIUnit(List<SymTypeOfSIUnitBasic> numerator, List<SymTypeOfSIUnitBasic> denominator, IOOSymbolsScope enclosingScope) {
+    @Deprecated
+    public static SymTypeExpression _deprecated_createSIUnit(List<SymTypeOfSIUnitBasic> numerator, List<SymTypeOfSIUnitBasic> denominator, IOOSymbolsScope enclosingScope) {
         String numeratorString = numerator.stream().map(SymTypeOfSIUnitBasic::print).collect(Collectors.joining("*"));
         String denominatorString = numerator.stream().map(SymTypeOfSIUnitBasic::print).collect(Collectors.joining("*"));
         if (numerator.size() > 1)
@@ -137,12 +145,12 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
         String name = numeratorString + ((denominator.size() >= 1) ? "/" + denominatorString : "");
         Optional<TypeSymbol> type = BasicSymbolsMill.globalScope().resolveTypeLocally(name);
         if (type.isPresent()) {
-            return createSIUnit(type.get(), numerator, denominator);
+            return _deprecated_createSIUnit(type.get(), numerator, denominator);
         } else {
             TypeSymbol loader = BasicSymbolsMill.typeSymbolBuilder().setName(name).
                     setEnclosingScope(BasicSymbolsMill.globalScope()).build();
             BasicSymbolsMill.globalScope().add(loader);
-            return createSIUnit(loader, numerator, denominator);
+            return _deprecated_createSIUnit(loader, numerator, denominator);
         }
     }
 
@@ -155,14 +163,15 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
      * @param numerator   List of the numerator SIBasicTypes as Strings
      * @param denominator List of the denominator SIBasicTypes as Strings
      */
-    public static SymTypeExpression createSIUnit(List<String> numerator, List<String> denominator, TypeSymbol typeSymbol) {
+    @Deprecated
+    public static SymTypeExpression _deprecated_createSIUnit(List<String> numerator, List<String> denominator, TypeSymbol typeSymbol) {
         List<SymTypeOfSIUnitBasic> numeratorSymTypes = new ArrayList<>();
         List<SymTypeOfSIUnitBasic> denominatorSymTypes = new ArrayList<>();
         for (String num : numerator)
-            numeratorSymTypes.add(createSIUnitBasic(num));
+            numeratorSymTypes.add(_deprecated_createSIUnitBasic(num));
         for (String den : denominator)
-            denominatorSymTypes.add(createSIUnitBasic(den));
-        return createSIUnit(typeSymbol, numeratorSymTypes, denominatorSymTypes);
+            denominatorSymTypes.add(_deprecated_createSIUnitBasic(den));
+        return _deprecated_createSIUnit(typeSymbol, numeratorSymTypes, denominatorSymTypes);
     }
 
     /**
@@ -172,7 +181,8 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
      * @param numerator   List of the numerator SIBasicTypes
      * @param denominator List of the denominator SIBasicTypes
      */
-    public static SymTypeExpression createSIUnit(TypeSymbol typeSymbol, List<SymTypeOfSIUnitBasic> numerator, List<SymTypeOfSIUnitBasic> denominator) {
+    @Deprecated
+    public static SymTypeExpression _deprecated_createSIUnit(TypeSymbol typeSymbol, List<SymTypeOfSIUnitBasic> numerator, List<SymTypeOfSIUnitBasic> denominator) {
         // Check if the symType is already in the scope and add it otherwise
         // Needed because there can be created new SIUnitType while computing, e.g. varM*varS
         final String name = typeSymbol.getName();
@@ -193,7 +203,8 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
     /**
      * creates a numeric with siunit type
      */
-    public static SymTypeExpression createNumericWithSIUnitType(SymTypeExpression numericType, SymTypeExpression siunitType, TypeSymbol typeSymbol) {
+    @Deprecated
+    public static SymTypeExpression _deprecated_createNumericWithSIUnitType(SymTypeExpression numericType, SymTypeExpression siunitType, TypeSymbol typeSymbol) {
         // Check if the symType is already in the scope and add it otherwise
         // Needed because there can be created new SIUnitType while computing, e.g. varM*varS
         final String name = typeSymbol.getName();
@@ -216,22 +227,24 @@ public class SIUnitSymTypeExpressionFactory extends SymTypeExpressionFactory {
     /**
      * creates a numeric with siunit type
      */
-    public static SymTypeExpression createNumericWithSIUnitType(SymTypeExpression numericType, SymTypeExpression siunitType, IBasicSymbolsScope enclosingScope) {
+    @Deprecated
+    public static SymTypeExpression _deprecated_createNumericWithSIUnitType(SymTypeExpression numericType, SymTypeExpression siunitType, IBasicSymbolsScope enclosingScope) {
         String siUnitPrint = siunitType.print();
         String name = "(" + numericType.print() + "," + siUnitPrint + ")";
         Optional<TypeSymbol> type = BasicSymbolsMill.globalScope().resolveTypeLocally(name);
         if (type.isPresent()) {
-            return createNumericWithSIUnitType(numericType, siunitType, type.get());
+            return _deprecated_createNumericWithSIUnitType(numericType, siunitType, type.get());
         } else {
             TypeSymbol newType = BasicSymbolsMill.typeSymbolBuilder().setName(name).
                     setEnclosingScope(BasicSymbolsMill.globalScope()).build();
             BasicSymbolsMill.globalScope().add(newType);
-            return createNumericWithSIUnitType(numericType, siunitType, newType);
+            return _deprecated_createNumericWithSIUnitType(numericType, siunitType, newType);
         }
     }
 
-    public static SymTypeExpression createNumericWithSIUnitType(SymTypeExpression numericType, SymTypeExpression siunitType) {
-        return createNumericWithSIUnitType(numericType, siunitType, BasicSymbolsMill.globalScope());
+    @Deprecated
+    public static SymTypeExpression _deprecated_createNumericWithSIUnitType(SymTypeExpression numericType, SymTypeExpression siunitType) {
+        return _deprecated_createNumericWithSIUnitType(numericType, siunitType, BasicSymbolsMill.globalScope());
     }
 
     /**
