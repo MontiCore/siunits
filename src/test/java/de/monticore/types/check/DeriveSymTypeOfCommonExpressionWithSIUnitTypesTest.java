@@ -2,8 +2,6 @@
 
 package de.monticore.types.check;
 
-import de.monticore.expressions.combineexpressionswithliterals.CombineExpressionsWithLiteralsMill;
-import de.monticore.expressions.combineexpressionswithliterals._parser.CombineExpressionsWithLiteralsParser;
 import de.monticore.expressions.combineexpressionswithsiunitliterals.CombineExpressionsWithSIUnitLiteralsMill;
 import de.monticore.expressions.combineexpressionswithsiunitliterals._parser.CombineExpressionsWithSIUnitLiteralsParser;
 import de.monticore.expressions.combineexpressionswithsiunitliterals._symboltable.ICombineExpressionsWithSIUnitLiteralsScope;
@@ -37,10 +35,10 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         BasicSymbolsMill.initializePrimitives();
 
         // SIUnits
-        SymTypeExpression s = SIUnitSymTypeExpressionFactory.createSIUnit("s", scope);
-        SymTypeExpression m = SIUnitSymTypeExpressionFactory.createSIUnit("m", scope);
-        SymTypeExpression kMe2perH = SIUnitSymTypeExpressionFactory.createSIUnit("km^2/h", scope);
-        SymTypeExpression kMe2perHMSe4 = SIUnitSymTypeExpressionFactory.createSIUnit("km^2/(h*ms^4)", scope);
+        SymTypeExpression s = SIUnitSymTypeExpressionFactory._deprecated_createSIUnit("s", scope);
+        SymTypeExpression m = SIUnitSymTypeExpressionFactory._deprecated_createSIUnit("m", scope);
+        SymTypeExpression kMe2perH = SIUnitSymTypeExpressionFactory._deprecated_createSIUnit("km^2/h", scope);
+        SymTypeExpression kMe2perHMSe4 = SIUnitSymTypeExpressionFactory._deprecated_createSIUnit("km^2/(h*ms^4)", scope);
 
         // Constants
         SymTypePrimitive d = SIUnitSymTypeExpressionFactory.createPrimitive("double");
@@ -48,11 +46,11 @@ public class DeriveSymTypeOfCommonExpressionWithSIUnitTypesTest extends DeriveSy
         SymTypePrimitive l = SIUnitSymTypeExpressionFactory.createPrimitive("long");
 
         // SIUnitLiterals
-        add2scope(scope, field("varD_S", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(d, s, scope)));
-        add2scope(scope, field("varI_M", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(i, m, scope)));
-        add2scope(scope, field("varD_M", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(d, m, scope)));
-        add2scope(scope, field("varL_KMe2perH", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(l, kMe2perH, scope)));
-        add2scope(scope, field("varD_KMe2perHmSe4", SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(d, kMe2perHMSe4, scope)));
+        add2scope(scope, field("varD_S", SIUnitSymTypeExpressionFactory._deprecated_createNumericWithSIUnitType(d, s, scope)));
+        add2scope(scope, field("varI_M", SIUnitSymTypeExpressionFactory._deprecated_createNumericWithSIUnitType(i, m, scope)));
+        add2scope(scope, field("varD_M", SIUnitSymTypeExpressionFactory._deprecated_createNumericWithSIUnitType(d, m, scope)));
+        add2scope(scope, field("varL_KMe2perH", SIUnitSymTypeExpressionFactory._deprecated_createNumericWithSIUnitType(l, kMe2perH, scope)));
+        add2scope(scope, field("varD_KMe2perHmSe4", SIUnitSymTypeExpressionFactory._deprecated_createNumericWithSIUnitType(d, kMe2perHMSe4, scope)));
 
         add2scope(scope, field("varS", s));
         add2scope(scope, field("varM", m));

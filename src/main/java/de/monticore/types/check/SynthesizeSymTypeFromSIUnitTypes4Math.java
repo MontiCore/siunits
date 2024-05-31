@@ -7,11 +7,6 @@ import de.monticore.siunittypes4math.SIUnitTypes4MathMill;
 import de.monticore.siunittypes4math._ast.ASTSIUnitType;
 import de.monticore.siunittypes4math._visitor.SIUnitTypes4MathHandler;
 import de.monticore.siunittypes4math._visitor.SIUnitTypes4MathTraverser;
-import de.monticore.types.mcbasictypes._ast.ASTMCQualifiedName;
-import de.monticore.types.mcbasictypes._ast.ASTMCReturnType;
-import de.monticore.types.mcbasictypes._ast.ASTMCType;
-
-import java.util.Optional;
 
 /**
  * Visitor for Derivation of SymType from SIUnitTypes
@@ -59,10 +54,10 @@ public class SynthesizeSymTypeFromSIUnitTypes4Math extends AbstractSynthesizeFro
         SymTypeExpression numericType = SymTypeExpressionFactory.createPrimitive("double");
         SymTypeExpression siunitType = null;
 
-        siunitType = SIUnitSymTypeExpressionFactory.createSIUnit(
+        siunitType = SIUnitSymTypeExpressionFactory._deprecated_createSIUnit(
                 UnitPrettyPrinter.printUnit(node.getSIUnit()), getScope(node.getEnclosingScope()));
 
-        typeCheckResult.setResult(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(numericType, siunitType, getScope(node.getEnclosingScope())));
+        typeCheckResult.setResult(SIUnitSymTypeExpressionFactory._deprecated_createNumericWithSIUnitType(numericType, siunitType, getScope(node.getEnclosingScope())));
     }
 
 }

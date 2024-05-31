@@ -7,9 +7,6 @@ import de.monticore.siunittypes4computing._ast.ASTSIUnitType4Computing;
 import de.monticore.siunittypes4computing._ast.ASTSIUnitType4ComputingInt;
 import de.monticore.siunittypes4computing._visitor.SIUnitTypes4ComputingHandler;
 import de.monticore.siunittypes4computing._visitor.SIUnitTypes4ComputingTraverser;
-import de.monticore.types.mcbasictypes._ast.ASTMCQualifiedName;
-import de.monticore.types.mcbasictypes._ast.ASTMCReturnType;
-import de.monticore.types.mcbasictypes._ast.ASTMCType;
 import de.se_rwth.commons.logging.Log;
 
 import static de.monticore.types.check.TypeCheck.*;
@@ -61,9 +58,9 @@ public class SynthesizeSymTypeFromSIUnitTypes4Computing extends AbstractSynthesi
         numericType = typeCheckResult.getResult();
         typeCheckResult.reset();
 
-        siunitType = SIUnitSymTypeExpressionFactory.createSIUnit(
+        siunitType = SIUnitSymTypeExpressionFactory._deprecated_createSIUnit(
                 UnitPrettyPrinter.printUnit(node.getSIUnit()), getScope(node.getEnclosingScope()));
-        typeCheckResult.setResult(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(numericType, siunitType, getScope(node.getEnclosingScope())));
+        typeCheckResult.setResult(SIUnitSymTypeExpressionFactory._deprecated_createNumericWithSIUnitType(numericType, siunitType, getScope(node.getEnclosingScope())));
     }
 
     /**

@@ -28,17 +28,17 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
         if (isSIUnitType(left) && isSIUnitType(right)) {
             // if both are SI unit types then the result has to be calculated depending on the operator
             String newUnitName = "(" + printType(left) + ")" + op + "(" + printType(right) + ")";
-            return SIUnitSymTypeExpressionFactory.createSIUnit(newUnitName);
+            return SIUnitSymTypeExpressionFactory._deprecated_createSIUnit(newUnitName);
         } else if (isSIUnitType(left) && isNumericType(right)) {
-            return SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(right, left);
+            return SIUnitSymTypeExpressionFactory._deprecated_createNumericWithSIUnitType(right, left);
         } else if (isNumericType(left) && isSIUnitType(right)) {
             SymTypeExpression siUnitType;
             if ("*".equals(op))
                 siUnitType = right;
             else {
-                siUnitType = SIUnitSymTypeExpressionFactory.createSIUnit("(" + printType(right) + ")^-1");
+                siUnitType = SIUnitSymTypeExpressionFactory._deprecated_createSIUnit("(" + printType(right) + ")^-1");
             }
-            return SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(left, siUnitType);
+            return SIUnitSymTypeExpressionFactory._deprecated_createNumericWithSIUnitType(left, siUnitType);
         } else if (isNumericWithSIUnitType(left) || isNumericWithSIUnitType(right)) {
             // The result is again a SIUnitType4Computing
             SymTypeExpression numericType;
@@ -64,7 +64,7 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
                 } else {
                     siUnitType = calculateMultDivideExpression(leftSIUnitType, rightSIUnitType, op, pos);
                 }
-                return SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(numericType, siUnitType);
+                return SIUnitSymTypeExpressionFactory._deprecated_createNumericWithSIUnitType(numericType, siUnitType);
             }
         } else {
             return super.calculateArithmeticExpression(left, right, op, pos);
@@ -133,7 +133,7 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
                         if (Converter.convert(1, leftUnit, rightUnit) > 1)
                             typeOfSIUnit = rightSIUnitType;
 
-                    return SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(
+                    return SIUnitSymTypeExpressionFactory._deprecated_createNumericWithSIUnitType(
                       numericType, typeOfSIUnit, left.getTypeInfo().getEnclosingScope());
                 } else {
                     return super.calculateArithmeticExpression(left, right, op, pos);
@@ -154,7 +154,7 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
                 if (!numericType.isObscureType() && isNumericType(numericType)
                   && !siUnitType.isObscureType()) {
                     return SIUnitSymTypeExpressionFactory.
-                      createNumericWithSIUnitType(numericType, siUnitType, inner.getTypeInfo().getEnclosingScope());
+                        _deprecated_createNumericWithSIUnitType(numericType, siUnitType, inner.getTypeInfo().getEnclosingScope());
                 }
                 return SymTypeExpressionFactory.createObscureType();
             }
@@ -175,7 +175,7 @@ public class DeriveSymTypeOfCommonExpressionsWithSIUnitTypes extends DeriveSymTy
                 if (!numericType.isObscureType() && isNumericType(numericType)
                   && !siUnitType.isObscureType()) {
                     return SIUnitSymTypeExpressionFactory.
-                      createNumericWithSIUnitType(numericType, siUnitType, inner.getTypeInfo()
+                        _deprecated_createNumericWithSIUnitType(numericType, siUnitType, inner.getTypeInfo()
                         .getEnclosingScope());
                 }
                 return SymTypeExpressionFactory.createObscureType();

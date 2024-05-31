@@ -48,9 +48,9 @@ public class DeriveSymTypeOfSIUnitLiterals implements SIUnitLiteralsHandler {
     }
 
     private void traverseSIUnitLiteral(SymTypeExpression literalType, ASTSIUnit astsiUnit, ISIUnitLiteralsScope enclosingScope) {
-        SymTypeExpression siunitType = SIUnitSymTypeExpressionFactory.createSIUnit(SIUnitsPrettyPrinter.prettyprint(astsiUnit), getScope(enclosingScope));
+        SymTypeExpression siunitType = SIUnitSymTypeExpressionFactory._deprecated_createSIUnit(SIUnitsPrettyPrinter.prettyprint(astsiUnit), getScope(enclosingScope));
         if (siunitType instanceof SymTypeOfSIUnit)
-            typeCheckResult.setResult(SIUnitSymTypeExpressionFactory.createNumericWithSIUnitType(
+            typeCheckResult.setResult(SIUnitSymTypeExpressionFactory._deprecated_createNumericWithSIUnitType(
                     literalType, siunitType, getScope(enclosingScope)));
         else // case for siunit m/m
             typeCheckResult.setResult(literalType);
