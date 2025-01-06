@@ -1,3 +1,5 @@
+*This project is archived. SI units are further maintained within the [MontiCore repository](https://github.com/MontiCore/monticore/tree/dev/monticore-grammar/src/main/grammars/de/monticore/siunit).*
+
 # siunits
 
 This documentation is intended for modelers who want to use si unit-based type systems. Language engineers aiming to incorporate
